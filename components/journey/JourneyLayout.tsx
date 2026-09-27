@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import type { JourneyStep } from "@/types/progress";
+import { HomeResetButton } from "./HomeResetButton";
 import { ProgressIndicator } from "./ProgressIndicator";
 
 interface JourneyLayoutProps {
@@ -14,6 +15,7 @@ export function JourneyLayout({ userName, step, children }: JourneyLayoutProps) 
       <header className="flex w-full max-w-2xl flex-col gap-3">
         <div className="flex items-center justify-between">
           <span className="font-semibold">Olá, {userName}!</span>
+          <HomeResetButton />
         </div>
         <ProgressIndicator step={step} />
       </header>

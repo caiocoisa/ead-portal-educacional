@@ -83,4 +83,10 @@ export class LocalStorageUserProgressRepository
     };
     return write(updated);
   }
+
+  clearAll(): void {
+    if (isBrowser()) {
+      window.localStorage.removeItem(STORAGE_KEY);
+    }
+  }
 }

@@ -7,4 +7,6 @@ export interface UserProgressRepository {
   markVideoCompleted(): UserProgress | null;
   saveAssessmentResult(result: AssessmentResult): UserProgress | null;
   resetJourney(): UserProgress | null;
+  /** Apaga todo o progresso, incluindo `userId`/`userName` (volta para a identificação). */
+  clearAll(): void;
 }
