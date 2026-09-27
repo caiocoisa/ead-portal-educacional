@@ -281,6 +281,51 @@ Tudo abaixo foi deliberadamente removido do MVP para priorizar o core
    progresso de vários alunos. Isso exigiria backend/conta — fica para
    quando a Opção B/C de identidade (seção 6) for adotada.
 
+### 9.1 Requisitos de segurança para o login do Administrador (item 1)
+
+Avaliação feita em 2026-09-27, antes de qualquer implementação, para não
+perder o contexto até essa feature entrar em desenvolvimento. O login do
+Administrador é uma autenticação real (diferente da identificação do
+aluno, que não tem senha) e **não pode ser resolvido só no cliente** — a
+app atual é 100% estática/local (`localStorage`), sem backend, então essa
+feature exige introduzir server-side (Route Handlers/Middleware do
+Next.js) só para isso.
+
+**Bloqueadores de design (resolver antes de codar):**
+- **Nunca validar a senha no client-side.** Comparar senha digitada com um
+  valor embutido no bundle JS (mesmo com hash) é trivialmente extraível
+  pelo DevTools/código-fonte. A checagem tem que rodar em um Route Handler
+  no servidor.
+- **Sessão via cookie `httpOnly` + `Secure` + `SameSite=Lax` (ou
+  `Strict`), assinado/criptografado no servidor** (ex. `iron-session`,
+  Auth.js/NextAuth com Credentials Provider, ou JWT assinado com segredo
+  guardado em env var). **Não usar `localStorage`/`sessionStorage`** para
+  o estado de sessão do admin — são acessíveis via JS e viram alvo fácil
+  de roubo de sessão em qualquer XSS.
+- **Senha nunca em texto puro.** Hash com `bcrypt` ou `argon2` (custo
+  adequado); a v1 do task-master mencionava "cookie assinado" como opção
+  de persistência mas não detalhava hashing — reforçar isso na task
+  quando for escrita.
+- **Segredo de assinatura da sessão em variável de ambiente da Vercel**
+  (nunca hardcoded, nunca commitado) — gerar um valor aleatório forte por
+  ambiente (produção/preview), sem fallback hardcoded no código caso a env
+  var esteja ausente.
+- **Proteção de rotas `/admin/**` no servidor** (middleware.ts verificando
+  o cookie de sessão), não apenas um redirect client-side — um redirect só
+  no client não impede acesso a dados servidos por Route Handlers/API por
+  trás da tela.
+
+**Recomendado, mas negociável para uma v2 pequena (1 admin):**
+- Rate limiting/backoff no endpoint de login (ex. Upstash Redis ou mesmo
+  um contador em memória para MVP) para dificultar força bruta.
+- Sem endpoint de "esqueci minha senha" na v2 inicial — reset manual via
+  variável de ambiente é aceitável para um único administrador.
+- Logs de acesso/ações administrativas (auditoria) — nice-to-have, não
+  bloqueante para o primeiro corte.
+
+**Fora de escopo mesmo na v2 do login:** 2FA, SSO corporativo (já decidido
+como fora de escopo na seção 6), múltiplos perfis de permissão.
+
 ---
 
 ## 10. Stack (definida)
