@@ -28,7 +28,7 @@ export function ProgressIndicator({ step }: ProgressIndicatorProps) {
           <ProgressBar.Fill />
         </ProgressBar.Track>
       </ProgressBar>
-      <span className="text-sm text-zinc-500">
+      <span className="text-sm text-(--muted)">
         Etapa {currentIndex + 1} de {STEP_ORDER.length}: {STEP_LABELS[step]}
       </span>
     </div>

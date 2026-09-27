@@ -180,12 +180,13 @@ Estrutura mínima necessária para sustentar o fluxo:
 
 - **Design system:** componentes visuais do **NextUI**, usados de forma
   consistente — botões, cards, inputs, navegação, diálogos, feedback
-  (toasts) e tipografia, com o **tema padrão único** da biblioteca (sem
-  alternância light/dark nesta v1 — ver seção 9).
+  (toasts) e tipografia, com tema **light/dark** (implementado na Task 18,
+  ver seção 5.1).
 - **Responsividade:** layout adaptável mobile/desktop, seguindo os
   breakpoints padrão do NextUI/Tailwind CSS.
 - **Acessibilidade:** contraste mínimo AA, foco visível, navegação por
-  teclado, labels ARIA nos componentes interativos.
+  teclado, labels ARIA nos componentes interativos, tamanho de fonte
+  ajustável e modo de alto contraste (Task 19, ver seção 5.1).
 - **Idioma:** interface em **PT-BR apenas** nesta v1 (sem arquitetura de
   i18n — ver seção 9). Textos centralizados em um único arquivo de
   strings, para facilitar extração futura para i18n sem reescrever
@@ -204,9 +205,27 @@ Estrutura mínima necessária para sustentar o fluxo:
 - Componentes esperados no fluxo: `Navbar` (topo), `Card` (blocos de
   conteúdo), `Button` (ações), `Modal` de confirmação (para o reset da
   jornada), `Progress`/`Steps` (progresso da jornada), `Toast` (feedback).
-- Tema único definido de forma centralizada (`tailwind.config.ts`/tokens do
-  NextUI) — nunca cor hardcoded em componente, para não pagar custo de
-  retrabalho quando o tema light/dark voltar ao escopo.
+- Tema definido de forma centralizada em tokens do HeroUI (`app/globals.css`)
+  — nunca cor hardcoded em componente (ex. `text-zinc-500`); sempre uma
+  referência a um token (`text-(--muted)`, `border-(--border)`, etc.), para
+  o dark mode e o alto contraste funcionarem em toda a interface sem
+  exceções.
+
+### 5.1 Tema, tamanho de fonte e alto contraste (Tasks 18–19)
+
+- **Tema light/dark/sistema:** via `useTheme()` nativo do HeroUI v3 —
+  persiste em `localStorage`, resolve "sistema" pela preferência do SO
+  (`prefers-color-scheme`), aplica `data-theme` no `<html>`. Controle
+  (`ThemeToggle`) disponível em todas as telas (área pública e restrita).
+- **Tamanho de fonte:** 3 níveis (normal/grande/extra grande), persistido
+  e aplicado via atributo `data-font-size` no `<html>` (escala o `font-size`
+  raiz).
+- **Alto contraste:** liga/desliga, persistido via `data-contrast="high"` —
+  força textos secundários e bordas ao mesmo tom do texto principal, e
+  reforça o anel de foco.
+- Todas as três preferências funcionam **antes da identificação** (já na
+  tela de boas-vindas), pois são independentes do progresso do aluno —
+  não ficam dentro de `UserProgress`.
 
 ---
 
@@ -283,8 +302,8 @@ Tudo abaixo foi deliberadamente removido do MVP para priorizar o core
    para uma fase futura.
 3. **Internacionalização (i18n)** — a v1 é **PT-BR apenas**. Arquitetura de
    tradução (`next-intl`/roteamento por locale) fica para depois.
-4. **Alternância de tema (light/dark)** — a v1 usa um único tema fixo do
-   NextUI.
+4. ~~**Alternância de tema (light/dark)**~~ — **implementado** na Task 18
+   (2026-09-27), a pedido do usuário. Ver seção 5.1.
 5. **Certificação/exportação do relatório** — o relatório final é exibido
    apenas em tela; exportação em PDF ou certificado formal é extensão
    futura.

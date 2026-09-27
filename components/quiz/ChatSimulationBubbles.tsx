@@ -17,8 +17,8 @@ export function ChatSimulationBubbles({ messages }: ChatSimulationBubblesProps) 
             <div
               className={`max-w-[80%] rounded-2xl px-4 py-2 text-sm ${
                 isUser
-                  ? "bg-zinc-900 text-zinc-50"
-                  : "bg-zinc-100 text-zinc-900"
+                  ? "bg-(--accent) text-(--accent-foreground)"
+                  : "bg-(--surface-secondary) text-(--surface-secondary-foreground)"
               }`}
             >
               {message.content}

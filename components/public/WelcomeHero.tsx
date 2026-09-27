@@ -61,10 +61,10 @@ export function WelcomeHero() {
     <div className="grid w-full max-w-4xl gap-10 md:grid-cols-2 md:items-center">
       <div className="flex flex-col gap-4">
         <h1 className="text-3xl font-bold">{moduleContent.title}</h1>
-        <p className="text-zinc-600">{moduleContent.description}</p>
+        <p className="text-(--muted)">{moduleContent.description}</p>
         <ul className="flex flex-col gap-2">
           {FEATURES.map((feature) => (
-            <li key={feature.label} className="flex items-center gap-2 text-sm text-zinc-700">
+            <li key={feature.label} className="flex items-center gap-2 text-sm">
               <span aria-hidden="true">{feature.icon}</span>
               {feature.label}
             </li>

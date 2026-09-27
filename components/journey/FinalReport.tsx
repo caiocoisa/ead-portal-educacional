@@ -20,7 +20,7 @@ export function FinalReport({ assessmentResult }: FinalReportProps) {
           Você acertou <strong>{correctCount}</strong> de{" "}
           <strong>{totalCount}</strong> perguntas.
         </p>
-        <ul className="flex flex-col gap-1 text-sm text-zinc-600">
+        <ul className="flex flex-col gap-1 text-sm text-(--muted)">
           {assessmentResult.answers.map((answer, index) => (
             <li key={answer.questionId}>
               Pergunta {index + 1}: {answer.correct ? "✅ correta" : "❌ incorreta"}

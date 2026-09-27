@@ -2,7 +2,7 @@
 
 > Gerado em: 2026-09-27
 > Baseado em: `PRD.md` (raiz do repositório, versão MVP de escopo reduzido)
-> Total de tasks: 17 (15 do MVP + 2 de refinamento pós-deploy)
+> Total de tasks: 19 (15 do MVP + 4 de refinamento pós-deploy)
 
 ## Visão geral
 
@@ -882,6 +882,134 @@ avança para `/avaliacao`. axe-core: 0 violações.
 
 ---
 
+### Task 18
+| Field | Value |
+|---|---|
+| **ID** | 18 |
+| **Title** | Alternância de tema light/dark |
+| **Status** | `done` |
+| **Priority** | `medium` |
+| **Complexity** | 3 |
+| **Dependencies** | `[6, 9, 11]` |
+| **Phase** | 6 — Acessibilidade estendida |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Pedido do usuário (2026-09-27): trazer de volta a alternância de tema
+light/dark (removida do escopo do MVP na redução inicial, PRD seção 9,
+item 4). O HeroUI v3 já traz um hook `useTheme()` nativo (persiste em
+`localStorage`, resolve `"system"` pela preferência do SO, aplica
+`data-theme` no `<html>`) — não foi necessário nenhuma lib nova.
+
+**Details:**
+- **Bug corrigido antes de implementar:** `app/globals.css` tinha
+  `--background`/`--foreground` fixos em `:root`, sobrescrevendo
+  incondicionalmente os tokens (já theme-aware) do HeroUI — o tema nunca
+  mudaria visualmente. Removidos; `--color-background`/`--color-foreground`
+  (usados em `app/layout.tsx`) agora seguem os tokens nativos do HeroUI.
+- `components/accessibility/ThemeToggle.tsx` — grupo de 3 botões
+  (Claro/Escuro/Sistema) usando `useTheme()` do `@heroui/react`.
+- Adicionado a `PortalHeader` (área pública) e ao header da
+  `JourneyLayout` (vídeo/avaliação/relatório).
+- Refatoradas cores `zinc-*` hardcoded (que não seguiam tema) para tokens
+  do HeroUI (`--muted`, `--border`, `--surface-secondary`, `--accent`) em
+  todos os componentes que as usavam — necessário para o dark mode não
+  ficar com texto/bolhas de chat ilegíveis.
+- **Segundo bug encontrado ao testar:** o `--muted` padrão do tema claro
+  do HeroUI só atinge 4.43:1 de contraste (abaixo do mínimo AA de 4.5:1) —
+  detectado pela varredura axe-core depois da refatoração acima (que
+  passou a usar `--muted` em vários lugares). Corrigido com um override
+  escopado só ao tema claro (`:root[data-theme="light"] { --muted: ... }`);
+  o tema escuro já não tinha esse problema.
+
+**Files:**
+- `app/globals.css`
+- `components/accessibility/ThemeToggle.tsx` (novo)
+- `components/public/PortalHeader.tsx`, `components/journey/JourneyLayout.tsx`
+- `components/public/WelcomeHero.tsx`, `components/video/VideoSkeleton.tsx`,
+  `components/journey/ProgressIndicator.tsx`, `components/journey/FinalReport.tsx`,
+  `components/quiz/ChatSimulationBubbles.tsx` (refactor de cores para tokens)
+
+**Test strategy:**
+Playwright alternando os 3 valores de tema e verificando `data-theme` no
+`<html>` e persistência entre reloads; axe-core em light e dark (0
+violações, incluindo contraste dos botões primary/danger já ajustados).
+
+**Acceptance criteria:**
+- [x] Alternância manual entre claro/escuro/sistema funcional em todas as
+      telas.
+- [x] Preferência persiste entre sessões (via `localStorage`, chave nativa
+      do HeroUI).
+- [x] Nenhum componente com cor hardcoded fora dos tokens do tema (NFR da
+      seção 4 do PRD).
+
+**Source:** Pedido do usuário (2026-09-27); PRD seção 4, seção 9 (item 4)
+
+---
+
+### Task 19
+| Field | Value |
+|---|---|
+| **ID** | 19 |
+| **Title** | Controles de acessibilidade: tamanho de fonte e alto contraste |
+| **Status** | `done` |
+| **Priority** | `medium` |
+| **Complexity** | 4 |
+| **Dependencies** | `[18]` |
+| **Phase** | 6 — Acessibilidade estendida |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Pedido do usuário (2026-09-27), junto com a Task 18. Adiciona dois novos
+controles de acessibilidade, persistidos localmente e aplicados via
+atributos `data-*` no `<html>`, no mesmo padrão do `useTheme()` nativo do
+HeroUI (sem lib nova).
+
+**Details:**
+- `lib/preferences/usePersistentAttribute.ts` — hook genérico
+  (`localStorage` + `data-*` no `<html>`), reaproveitado pelos dois
+  controles abaixo.
+- `lib/preferences/useFontSize.ts` — `"normal" | "large" | "extra-large"`,
+  aplica `data-font-size`; `app/globals.css` mapeia cada valor para uma
+  escala de `font-size` no `html` (112.5%/125%), afetando toda a UI (a
+  maioria dos tamanhos de texto do Tailwind usa `rem`).
+- `lib/preferences/useHighContrast.ts` — `"normal" | "high"`, aplica
+  `data-contrast`; `app/globals.css` sobrescreve `--muted`/`--border`/
+  `--focus` para o valor de `--foreground` (máximo contraste) e reforça o
+  anel de foco (`outline` mais grosso) quando ativo.
+- `components/accessibility/FontSizeControl.tsx` — grupo de 3 botões
+  (A/A+/A++).
+- `components/accessibility/HighContrastToggle.tsx` — `Switch` do HeroUI.
+- `components/accessibility/AccessibilityControls.tsx` — agrupa
+  `ThemeToggle` + `FontSizeControl` + `HighContrastToggle`; substituiu o
+  uso direto de `ThemeToggle` na `PortalHeader`/`JourneyLayout`.
+
+**Files:**
+- `lib/preferences/usePersistentAttribute.ts`,
+  `lib/preferences/useFontSize.ts`, `lib/preferences/useHighContrast.ts` (novos)
+- `components/accessibility/FontSizeControl.tsx`,
+  `components/accessibility/HighContrastToggle.tsx`,
+  `components/accessibility/AccessibilityControls.tsx` (novos)
+- `app/globals.css`
+
+**Test strategy:**
+Playwright alternando tamanho de fonte e alto contraste, conferindo os
+atributos `data-font-size`/`data-contrast` no `<html>` e persistência entre
+reloads; axe-core em todas as combinações relevantes (alto contraste
+ligado/desligado × light/dark) — 0 violações.
+
+**Acceptance criteria:**
+- [x] Tamanho de fonte ajustável em pelo menos 3 níveis, refletindo em
+      toda a interface.
+- [x] Alto contraste ativável, aumentando o contraste de textos
+      secundários e do anel de foco.
+- [x] Ambas as preferências persistem entre sessões, independente da
+      identificação do aluno (funcionam já na tela de boas-vindas).
+
+**Source:** Pedido do usuário (2026-09-27); PRD seção 4 (Acessibilidade)
+
+---
+
 ## Resumo
 
 ### Tasks por fase
@@ -893,33 +1021,36 @@ avança para `/avaliacao`. axe-core: 0 violações.
 | 3 — Avaliação | 9, 10, 11, 12, 13 | 10 depende de 2,9; 11 depende de 1,4; 12 depende de 3,5,9,10,11; 13 depende de 4,5,11,12 |
 | 4 — Qualidade e deploy | 14, 15 | 14 depende de 13; 15 depende de 13,14 |
 | 5 — Refinamento de UX | 16, 17 | 16 depende de 6; 17 depende de 8 |
+| 6 — Acessibilidade estendida | 18, 19 | 18 depende de 6,9,11; 19 depende de 18 |
 
 ### Tasks por prioridade
 | Prioridade | IDs |
 |---|---|
 | high | 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 15 |
-| medium | 11, 14, 16, 17 |
+| medium | 11, 14, 16, 17, 18, 19 |
 | low | — |
 
 ### Pronto para iniciar (dependências vazias)
 - Task 1: Inicializar projeto Next.js (App Router) + TypeScript + Tailwind + NextUI + config Vercel — `done`
 
 ### Status atual (2026-09-27)
-**Todas as 17 tasks estão `done`.** MVP implementado, testado (build,
+**Todas as 19 tasks estão `done`.** MVP implementado, testado (build,
 lint, testes end-to-end com Playwright, auditoria de acessibilidade com
-axe-core: 0 violações em todas as telas) e implantado em produção na
-Vercel: https://ead-portal-educacional.vercel.app/ — os 10 critérios de
-aceite da seção 8 do PRD foram verificados na URL pública. Tasks 16
-(redesign da tela inicial) e 17 (skeleton no lugar do vídeo real) foram
-adicionadas depois do primeiro deploy, a partir de feedback do usuário, e
-já estão implementadas — falta apenas dar `git push` para propagar à
-Vercel.
+axe-core: 0 violações em 15 combinações de tema/contraste/tamanho de
+fonte × tela) e implantado em produção na Vercel:
+https://ead-portal-educacional.vercel.app/ — os 10 critérios de aceite da
+seção 8 do PRD foram verificados na URL pública. Tasks 16–19 (redesign da
+tela inicial, skeleton de vídeo, tema light/dark, tamanho de fonte/alto
+contraste) foram adicionadas depois do primeiro deploy, a partir de
+feedback do usuário, e já estão implementadas — falta apenas dar
+`git push` para propagar à Vercel.
 
 Repositório no GitHub: https://github.com/caiocoisa/ead-portal-educacional
 (privado).
 
 Próximos passos ficam no backlog de extensão futura — PRD.md, seção 9
-(CMS/área administrativa, múltiplos módulos, i18n, tema light/dark,
-exportação do relatório, acompanhamento de múltiplos alunos). Antes de ir
-ao ar, lembrar de substituir `content/module.ts` → `youtubeVideoId` (hoje
-`null`, mostrando o skeleton da Task 17) pelo ID real do vídeo do módulo.
+(CMS/área administrativa, múltiplos módulos, i18n, exportação do
+relatório, acompanhamento de múltiplos alunos — item de tema light/dark
+já implementado na Task 18, removido do backlog). Antes de ir ao ar,
+lembrar de substituir `content/module.ts` → `youtubeVideoId` (hoje `null`,
+mostrando o skeleton da Task 17) pelo ID real do vídeo do módulo.

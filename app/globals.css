@@ -1,12 +1,18 @@
 @import "@heroui/styles";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
   /* Overrides dos tons padrão do HeroUI: os originais não atingem
-     contraste AA (4.5:1) com o texto branco/claro usado em cima. */
+     contraste AA (4.5:1) com o texto branco/claro usado em cima.
+     Aplicam-se em qualquer tema (claro/escuro) pois o texto sobre esses
+     tokens (--accent-foreground/--danger-foreground) é sempre claro. */
   --accent: #0c62c7;
   --danger: #b91c1c;
+}
+
+/* O `--muted` padrão do tema claro do HeroUI só atinge 4.43:1 de contraste
+   (abaixo do mínimo AA de 4.5:1) — o tema escuro já não tem esse problema. */
+:root[data-theme="light"] {
+  --muted: #52525b;
 }
 
 @theme inline {
@@ -20,4 +26,27 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Tamanho de fonte (lib/preferences/useFontSize.ts) — escala o root em
+   rem, o que cobre a maior parte dos tamanhos de texto do Tailwind. */
+html[data-font-size="large"] {
+  font-size: 112.5%;
+}
+
+html[data-font-size="extra-large"] {
+  font-size: 125%;
+}
+
+/* Alto contraste (lib/preferences/useHighContrast.ts) — força textos
+   "muted"/bordas/foco a usarem o mesmo tom do texto principal. */
+:root[data-contrast="high"] {
+  --muted: var(--foreground);
+  --border: var(--foreground);
+  --focus: var(--foreground);
+}
+
+[data-contrast="high"] *:focus-visible {
+  outline: 3px solid var(--foreground);
+  outline-offset: 2px;
 }

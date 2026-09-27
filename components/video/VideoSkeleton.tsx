@@ -9,7 +9,7 @@ export function VideoSkeleton() {
         <span className="text-3xl" aria-hidden="true">
           🎬
         </span>
-        <p className="text-sm font-medium text-zinc-600">
+        <p className="text-sm font-medium text-(--muted)">
           O vídeo deste módulo será adicionado em breve.
         </p>
       </div>
