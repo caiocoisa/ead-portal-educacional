@@ -50,7 +50,7 @@ prévia. Todas as 15 tasks abaixo partem de um repositório vazio.
 |---|---|
 | **ID** | 1 |
 | **Title** | Inicializar projeto Next.js (App Router) + TypeScript + Tailwind + NextUI + config Vercel |
-| **Status** | `pending` |
+| **Status** | `done` |
 | **Priority** | `high` |
 | **Complexity** | 3 |
 | **Dependencies** | `[]` |
@@ -106,7 +106,7 @@ inicial na Vercel renderiza a página padrão publicamente.
 |---|---|
 | **ID** | 2 |
 | **Title** | Definir tipos de domínio (Question, ChatMessage, AssessmentResult, UserProgress) |
-| **Status** | `blocked` |
+| **Status** | `done` |
 | **Priority** | `high` |
 | **Complexity** | 2 |
 | **Dependencies** | `[1]` |
@@ -150,7 +150,7 @@ campo com a tabela da seção 3.3 e a estrutura da seção 3.2.2 do PRD.
 |---|---|
 | **ID** | 3 |
 | **Title** | Seed de conteúdo do módulo (vídeo + quiz) hardcoded no código |
-| **Status** | `blocked` |
+| **Status** | `done` |
 | **Priority** | `high` |
 | **Complexity** | 2 |
 | **Dependencies** | `[2]` |
@@ -193,7 +193,7 @@ respeita os tipos da Task 2 (`Question[]`, `videoUrl: string`).
 |---|---|
 | **ID** | 4 |
 | **Title** | Implementar `UserProgressRepository` sobre `localStorage` |
-| **Status** | `blocked` |
+| **Status** | `done` |
 | **Priority** | `high` |
 | **Complexity** | 4 |
 | **Dependencies** | `[2]` |
@@ -245,7 +245,7 @@ persistência entre "recarregamentos" (nova instância lendo o mesmo
 |---|---|
 | **ID** | 5 |
 | **Title** | Guarda de navegação da jornada (bloqueio de etapas fora de ordem + retomada) |
-| **Status** | `blocked` |
+| **Status** | `done` |
 | **Priority** | `high` |
 | **Complexity** | 5 |
 | **Dependencies** | `[4]` |
@@ -291,7 +291,7 @@ recarregar a página no meio de uma etapa mantém a etapa correta.
 |---|---|
 | **ID** | 6 |
 | **Title** | Página de boas-vindas + captura de nome do aluno |
-| **Status** | `blocked` |
+| **Status** | `done` |
 | **Priority** | `high` |
 | **Complexity** | 4 |
 | **Dependencies** | `[1, 4]` |
@@ -339,7 +339,7 @@ existente pula a captura de nome e vai direto para a etapa salva.
 |---|---|
 | **ID** | 7 |
 | **Title** | Componente `VideoPlayer` com YouTube IFrame Player API |
-| **Status** | `blocked` |
+| **Status** | `done` |
 | **Priority** | `high` |
 | **Complexity** | 7 |
 | **Dependencies** | `[1]` |
@@ -389,7 +389,7 @@ evento `ENDED` disparado ao terminar o vídeo, `getCurrentTime()`/
 |---|---|
 | **ID** | 8 |
 | **Title** | Página de vídeo (integração + marcação de `videoCompleted` + transição) |
-| **Status** | `blocked` |
+| **Status** | `done` |
 | **Priority** | `high` |
 | **Complexity** | 5 |
 | **Dependencies** | `[3, 5, 6, 7]` |
@@ -436,7 +436,7 @@ do tempo salvo; navegação para avaliação só é possível após conclusão.
 |---|---|
 | **ID** | 9 |
 | **Title** | Componente de Quiz (tipos "texto" e "simulação de chat") |
-| **Status** | `blocked` |
+| **Status** | `done` |
 | **Priority** | `high` |
 | **Complexity** | 6 |
 | **Dependencies** | `[2]` |
@@ -485,7 +485,7 @@ verificar navegação por teclado e labels ARIA nas alternativas.
 |---|---|
 | **ID** | 10 |
 | **Title** | Lógica de correção e cálculo de pontuação do quiz (`gradeQuiz`) |
-| **Status** | `blocked` |
+| **Status** | `done` |
 | **Priority** | `high` |
 | **Complexity** | 3 |
 | **Dependencies** | `[2, 9]` |
@@ -523,7 +523,7 @@ incorretas, mistas.
 |---|---|
 | **ID** | 11 |
 | **Title** | Layout com indicador de progresso da jornada |
-| **Status** | `blocked` |
+| **Status** | `done` |
 | **Priority** | `medium` |
 | **Complexity** | 3 |
 | **Dependencies** | `[1, 4]` |
@@ -565,7 +565,7 @@ desktop.
 |---|---|
 | **ID** | 12 |
 | **Title** | Página de avaliação do módulo |
-| **Status** | `blocked` |
+| **Status** | `done` |
 | **Priority** | `high` |
 | **Complexity** | 4 |
 | **Dependencies** | `[3, 5, 9, 10, 11]` |
@@ -611,7 +611,7 @@ ter concluído o vídeo é bloqueado (via Task 5).
 |---|---|
 | **ID** | 13 |
 | **Title** | Página de relatório final + "Reiniciar jornada" com confirmação |
-| **Status** | `blocked` |
+| **Status** | `done` |
 | **Priority** | `high` |
 | **Complexity** | 4 |
 | **Dependencies** | `[4, 5, 11, 12]` |
@@ -659,7 +659,7 @@ enviado a avaliação é bloqueado (via Task 5).
 |---|---|
 | **ID** | 14 |
 | **Title** | Revisão de acessibilidade básica (contraste, foco, teclado, ARIA) |
-| **Status** | `blocked` |
+| **Status** | `done` |
 | **Priority** | `medium` |
 | **Complexity** | 3 |
 | **Dependencies** | `[13]` |
@@ -703,7 +703,7 @@ violações de nível AA críticas.
 |---|---|
 | **ID** | 15 |
 | **Title** | Deploy final na Vercel + QA e mapeamento dos critérios de aceite |
-| **Status** | `blocked` |
+| **Status** | `pending` |
 | **Priority** | `high` |
 | **Complexity** | 3 |
 | **Dependencies** | `[13, 14]` |
@@ -770,4 +770,11 @@ satisfeito.
 | low | — |
 
 ### Pronto para iniciar (dependências vazias)
-- Task 1: Inicializar projeto Next.js (App Router) + TypeScript + Tailwind + NextUI + config Vercel
+- Task 1: Inicializar projeto Next.js (App Router) + TypeScript + Tailwind + NextUI + config Vercel — `done`
+
+### Status atual (2026-09-27)
+Tasks 1–14 implementadas e validadas (build, lint, testes end-to-end com
+Playwright cobrindo a jornada completa, e auditoria de acessibilidade com
+axe-core: 0 violações em todas as telas). Falta apenas a **Task 15** —
+conectar o projeto à Vercel (fluxo já preparado na Task 1) e validar os
+critérios de aceite em produção.
