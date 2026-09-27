@@ -3,6 +3,10 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  /* Overrides dos tons padrão do HeroUI: os originais não atingem
+     contraste AA (4.5:1) com o texto branco/claro usado em cima. */
+  --accent: #0c62c7;
+  --danger: #b91c1c;
 }
 
 @theme inline {
