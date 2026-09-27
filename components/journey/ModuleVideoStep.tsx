@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Button, Card } from "@heroui/react";
 import { userProgressRepository } from "@/services/user-progress";
 import { moduleContent } from "@/content/module";
+import { VideoSkeleton } from "@/components/video/VideoSkeleton";
 import type { VideoProgress } from "@/components/video/VideoPlayer";
 
 const VideoPlayer = dynamic(
@@ -41,11 +42,15 @@ export function ModuleVideoStep() {
         </Card.Description>
       </Card.Header>
       <Card.Content className="flex flex-col gap-4">
-        <VideoPlayer
-          youtubeVideoId={moduleContent.youtubeVideoId}
-          onProgress={handleProgress}
-          onEnded={completeAndAdvance}
-        />
+        {moduleContent.youtubeVideoId ? (
+          <VideoPlayer
+            youtubeVideoId={moduleContent.youtubeVideoId}
+            onProgress={handleProgress}
+            onEnded={completeAndAdvance}
+          />
+        ) : (
+          <VideoSkeleton />
+        )}
         <Button variant="outline" onPress={completeAndAdvance} fullWidth>
           Concluir
         </Button>

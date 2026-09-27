@@ -2,7 +2,7 @@
 
 > Gerado em: 2026-09-27
 > Baseado em: `PRD.md` (raiz do repositório, versão MVP de escopo reduzido)
-> Total de tasks: 16 (15 do MVP + 1 de refinamento de UX pós-deploy)
+> Total de tasks: 17 (15 do MVP + 2 de refinamento pós-deploy)
 
 ## Visão geral
 
@@ -764,7 +764,7 @@ JS capturado.
 |---|---|
 | **ID** | 16 |
 | **Title** | Redesign da tela de boas-vindas: aparência de portal + entrada em etapa única |
-| **Status** | `pending` |
+| **Status** | `done` |
 | **Priority** | `medium` |
 | **Complexity** | 4 |
 | **Dependencies** | `[6]` |
@@ -812,15 +812,73 @@ end-to-end já existentes (Playwright) e na auditoria de acessibilidade
 (axe-core).
 
 **Acceptance criteria:**
-- [ ] Página inicial tem header/identidade de portal, visualmente distinto
+- [x] Página inicial tem header/identidade de portal, visualmente distinto
       de um card solto.
-- [ ] Página inicial explica do que se trata o portal (vídeo + avaliação +
+- [x] Página inicial explica do que se trata o portal (vídeo + avaliação +
       relatório), não só o CTA.
-- [ ] Campo de nome visível na primeira renderização, sem etapa
+- [x] Campo de nome visível na primeira renderização, sem etapa
       intermediária de clique no CTA.
-- [ ] Retomada de progresso existente continua funcionando sem regressão.
+- [x] Retomada de progresso existente continua funcionando sem regressão.
+
+**Implementado em:** `components/public/PortalHeader.tsx` (novo),
+`components/public/WelcomeHero.tsx` (removido o estado `showForm`; agora
+mostra descrição + lista de features + formulário de nome numa única
+tela), `app/page.tsx` (inclui o header). Validado com Playwright (campo de
+nome visível já no primeiro load, fluxo de retomada intacto) e axe-core
+(0 violações).
 
 **Source:** Feedback do usuário (2026-09-27); PRD seção 3.1
+
+---
+
+### Task 17
+| Field | Value |
+|---|---|
+| **ID** | 17 |
+| **Title** | Skeleton no lugar do vídeo real (conteúdo do módulo ainda não definido) |
+| **Status** | `done` |
+| **Priority** | `medium` |
+| **Complexity** | 2 |
+| **Dependencies** | `[8]` |
+| **Phase** | 5 — Refinamento de UX |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Pedido do usuário (2026-09-27): o vídeo em `content/module.ts` apontava
+para um ID de exemplo real do YouTube (placeholder), mas o vídeo
+definitivo do módulo ainda não existe. Substituído por um skeleton visual
+no lugar do player, deixando claro que o conteúdo será adicionado depois.
+
+**Details:**
+- `content/module.ts`: `youtubeVideoId` agora é `string | null`; valor
+  atual `null` (sem vídeo definido).
+- Novo componente `components/video/VideoSkeleton.tsx` — placeholder no
+  formato `aspect-video` (mesma proporção do player real, para não pular
+  layout quando o vídeo for adicionado), com `Skeleton` do HeroUI e texto
+  "O vídeo deste módulo será adicionado em breve.".
+- `components/journey/ModuleVideoStep.tsx`: renderiza `VideoPlayer` só
+  quando `moduleContent.youtubeVideoId` existe; caso contrário, renderiza
+  `VideoSkeleton`. O botão "Concluir" (fallback manual, já existente)
+  continua funcionando normalmente com o skeleton, permitindo avançar a
+  jornada mesmo sem vídeo real.
+
+**Files:**
+- `content/module.ts`
+- `components/video/VideoSkeleton.tsx` (novo)
+- `components/journey/ModuleVideoStep.tsx`
+
+**Test strategy:**
+Playwright: `/video` exibe o texto do skeleton e o botão "Concluir" ainda
+avança para `/avaliacao`. axe-core: 0 violações.
+
+**Acceptance criteria:**
+- [x] Sem vídeo real definido, a etapa de vídeo mostra um skeleton, não um
+      player quebrado ou um vídeo de exemplo real.
+- [x] Botão "Concluir" continua permitindo avançar a jornada.
+- [x] Ao definir um `youtubeVideoId` real futuramente, o player volta a
+      aparecer automaticamente (sem mudança de código além do valor).
+
+**Source:** Pedido do usuário (2026-09-27)
 
 ---
 
@@ -834,30 +892,34 @@ end-to-end já existentes (Playwright) e na auditoria de acessibilidade
 | 2 — Fluxo do aluno | 5, 6, 7, 8 | 5 depende de 4; 6 depende de 1,4; 7 depende de 1; 8 depende de 3,5,6,7 |
 | 3 — Avaliação | 9, 10, 11, 12, 13 | 10 depende de 2,9; 11 depende de 1,4; 12 depende de 3,5,9,10,11; 13 depende de 4,5,11,12 |
 | 4 — Qualidade e deploy | 14, 15 | 14 depende de 13; 15 depende de 13,14 |
-| 5 — Refinamento de UX | 16 | 16 depende de 6 |
+| 5 — Refinamento de UX | 16, 17 | 16 depende de 6; 17 depende de 8 |
 
 ### Tasks por prioridade
 | Prioridade | IDs |
 |---|---|
 | high | 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 15 |
-| medium | 11, 14, 16 |
+| medium | 11, 14, 16, 17 |
 | low | — |
 
 ### Pronto para iniciar (dependências vazias)
 - Task 1: Inicializar projeto Next.js (App Router) + TypeScript + Tailwind + NextUI + config Vercel — `done`
 
 ### Status atual (2026-09-27)
-**MVP completo: as 15 tasks estão `done`.** Implementado, testado
-(build, lint, testes end-to-end com Playwright, auditoria de
-acessibilidade com axe-core: 0 violações) e implantado em produção na
+**Todas as 17 tasks estão `done`.** MVP implementado, testado (build,
+lint, testes end-to-end com Playwright, auditoria de acessibilidade com
+axe-core: 0 violações em todas as telas) e implantado em produção na
 Vercel: https://ead-portal-educacional.vercel.app/ — os 10 critérios de
-aceite da seção 8 do PRD foram verificados na URL pública.
+aceite da seção 8 do PRD foram verificados na URL pública. Tasks 16
+(redesign da tela inicial) e 17 (skeleton no lugar do vídeo real) foram
+adicionadas depois do primeiro deploy, a partir de feedback do usuário, e
+já estão implementadas — falta apenas dar `git push` para propagar à
+Vercel.
 
 Repositório no GitHub: https://github.com/caiocoisa/ead-portal-educacional
 (privado).
 
 Próximos passos ficam no backlog de extensão futura — PRD.md, seção 9
 (CMS/área administrativa, múltiplos módulos, i18n, tema light/dark,
-exportação do relatório, acompanhamento de múltiplos alunos) — e a
-**Task 16** (`pending`), refinamento de UX da tela inicial pedido pelo
-usuário em 2026-09-27, ainda não implementada.
+exportação do relatório, acompanhamento de múltiplos alunos). Antes de ir
+ao ar, lembrar de substituir `content/module.ts` → `youtubeVideoId` (hoje
+`null`, mostrando o skeleton da Task 17) pelo ID real do vídeo do módulo.

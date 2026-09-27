@@ -3,8 +3,12 @@ import type { Question } from "@/types/quiz";
 export interface ModuleContent {
   title: string;
   description: string;
-  /** ID de um vídeo do YouTube não listado, sem monetização (ver PRD 3.2.1). */
-  youtubeVideoId: string;
+  /**
+   * ID de um vídeo do YouTube não listado, sem monetização (ver PRD 3.2.1).
+   * `null` enquanto o vídeo real do módulo ainda não foi definido — a etapa
+   * de vídeo exibe um skeleton no lugar do player.
+   */
+  youtubeVideoId: string | null;
   questions: Question[];
 }
 
@@ -12,8 +16,8 @@ export const moduleContent: ModuleContent = {
   title: "Fundamentos de Prompts para LLMs",
   description:
     "Assista ao vídeo e responda à avaliação para concluir este módulo.",
-  // Vídeo de exemplo (não listado). Substituir pelo ID real do vídeo do módulo.
-  youtubeVideoId: "dQw4w9WgXcQ",
+  // Vídeo do módulo ainda não definido — ver VideoSkeleton.
+  youtubeVideoId: null,
   questions: [
     {
       id: "q1",

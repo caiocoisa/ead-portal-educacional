@@ -20,10 +20,15 @@ const STEP_ROUTES = {
   relatorio: "/relatorio",
 } as const;
 
+const FEATURES = [
+  { icon: "🎬", label: "Assista a um vídeo curto sobre o tema" },
+  { icon: "📝", label: "Responda a uma avaliação de múltipla escolha" },
+  { icon: "📊", label: "Veja seu resultado em um relatório final" },
+];
+
 export function WelcomeHero() {
   const router = useRouter();
   const [isReady, setIsReady] = useState(false);
-  const [showForm, setShowForm] = useState(false);
   const [userName, setUserName] = useState("");
   const [error, setError] = useState<string | null>(null);
 
@@ -53,19 +58,28 @@ export function WelcomeHero() {
   }
 
   return (
-    <Card className="max-w-lg w-full">
-      <Card.Header>
-        <Card.Title>{moduleContent.title}</Card.Title>
-        <Card.Description>
-          Bem-vindo(a) ao portal! {moduleContent.description}
-        </Card.Description>
-      </Card.Header>
-      <Card.Content>
-        {!showForm ? (
-          <Button onPress={() => setShowForm(true)} fullWidth>
-            Iniciar minha jornada
-          </Button>
-        ) : (
+    <div className="grid w-full max-w-4xl gap-10 md:grid-cols-2 md:items-center">
+      <div className="flex flex-col gap-4">
+        <h1 className="text-3xl font-bold">{moduleContent.title}</h1>
+        <p className="text-zinc-600">{moduleContent.description}</p>
+        <ul className="flex flex-col gap-2">
+          {FEATURES.map((feature) => (
+            <li key={feature.label} className="flex items-center gap-2 text-sm text-zinc-700">
+              <span aria-hidden="true">{feature.icon}</span>
+              {feature.label}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <Card className="w-full">
+        <Card.Header>
+          <Card.Title>Vamos começar?</Card.Title>
+          <Card.Description>
+            Informe seu nome para iniciar a jornada.
+          </Card.Description>
+        </Card.Header>
+        <Card.Content>
           <Form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <TextField
               value={userName}
@@ -81,11 +95,11 @@ export function WelcomeHero() {
               {error ? <FieldError>{error}</FieldError> : null}
             </TextField>
             <Button type="submit" fullWidth>
-              Entrar
+              Iniciar minha jornada
             </Button>
           </Form>
-        )}
-      </Card.Content>
-    </Card>
+        </Card.Content>
+      </Card>
+    </div>
   );
 }
