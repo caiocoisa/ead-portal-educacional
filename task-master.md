@@ -703,7 +703,7 @@ violações de nível AA críticas.
 |---|---|
 | **ID** | 15 |
 | **Title** | Deploy final na Vercel + QA e mapeamento dos critérios de aceite |
-| **Status** | `pending` |
+| **Status** | `done` |
 | **Priority** | `high` |
 | **Complexity** | 3 |
 | **Dependencies** | `[13, 14]` |
@@ -743,9 +743,17 @@ produção (URL da Vercel), com evidência (print ou nota) de cada um sendo
 satisfeito.
 
 **Acceptance criteria:**
-- [ ] Todos os 10 critérios de aceite da seção 8 verificados e satisfeitos
+- [x] Todos os 10 critérios de aceite da seção 8 verificados e satisfeitos
       em produção.
-- [ ] URL de produção na Vercel funcional e compartilhável.
+- [x] URL de produção na Vercel funcional e compartilhável.
+
+**Validado em produção (2026-09-27):** https://ead-portal-educacional.vercel.app/
+Roteiro completo (Playwright) rodado contra a URL pública: boas-vindas → CTA
+→ identificação → vídeo → "Concluir" → quiz (3 perguntas, tipos texto e
+chat_simulation) → envio → relatório final → reiniciar jornada (cancelar e
+confirmar) → reload mantendo a etapa. Guarda de navegação bloqueou acesso
+direto a `/relatorio` sem progresso, redirecionando para `/`. Nenhum erro de
+JS capturado.
 
 **Source:** PRD seção 8 (Critérios de aceite)
 
@@ -773,8 +781,15 @@ satisfeito.
 - Task 1: Inicializar projeto Next.js (App Router) + TypeScript + Tailwind + NextUI + config Vercel — `done`
 
 ### Status atual (2026-09-27)
-Tasks 1–14 implementadas e validadas (build, lint, testes end-to-end com
-Playwright cobrindo a jornada completa, e auditoria de acessibilidade com
-axe-core: 0 violações em todas as telas). Falta apenas a **Task 15** —
-conectar o projeto à Vercel (fluxo já preparado na Task 1) e validar os
-critérios de aceite em produção.
+**MVP completo: as 15 tasks estão `done`.** Implementado, testado
+(build, lint, testes end-to-end com Playwright, auditoria de
+acessibilidade com axe-core: 0 violações) e implantado em produção na
+Vercel: https://ead-portal-educacional.vercel.app/ — os 10 critérios de
+aceite da seção 8 do PRD foram verificados na URL pública.
+
+Repositório no GitHub: https://github.com/caiocoisa/ead-portal-educacional
+(privado).
+
+Próximos passos ficam no backlog de extensão futura — PRD.md, seção 9
+(CMS/área administrativa, múltiplos módulos, i18n, tema light/dark,
+exportação do relatório, acompanhamento de múltiplos alunos).
