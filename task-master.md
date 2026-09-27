@@ -2,7 +2,7 @@
 
 > Gerado em: 2026-09-27
 > Baseado em: `PRD.md` (raiz do repositório, versão MVP de escopo reduzido)
-> Total de tasks: 15
+> Total de tasks: 16 (15 do MVP + 1 de refinamento de UX pós-deploy)
 
 ## Visão geral
 
@@ -759,6 +759,71 @@ JS capturado.
 
 ---
 
+### Task 16
+| Field | Value |
+|---|---|
+| **ID** | 16 |
+| **Title** | Redesign da tela de boas-vindas: aparência de portal + entrada em etapa única |
+| **Status** | `pending` |
+| **Priority** | `medium` |
+| **Complexity** | 4 |
+| **Dependencies** | `[6]` |
+| **Phase** | 5 — Refinamento de UX |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Feedback do usuário (2026-09-27): a tela inicial atual (`WelcomeHero`,
+Task 6) está visualmente pobre para uma tela de portal — é só um `Card`
+centralizado — e força duas etapas (clicar no CTA para só então revelar o
+campo de nome). Redesenhar para parecer um portal de verdade e reduzir a
+entrada a uma etapa única.
+
+**Details:**
+- Adicionar um header/topo à página (`app/page.tsx`), com identidade do
+  portal (nome/logo textual), distinto do conteúdo do hero — hoje não há
+  nenhum header, só o card de identificação.
+- Adicionar uma seção de apresentação do portal (o que é, o que o aluno
+  vai encontrar: vídeo + avaliação + relatório) **antes ou ao lado** do
+  formulário de entrada — hoje só existe o título do módulo e uma frase
+  curta.
+- **Unificar em uma etapa única**: o campo de nome (`Input` do HeroUI) deve
+  estar visível desde o primeiro carregamento da página, junto da
+  descrição do portal — remover o clique intermediário em "Iniciar minha
+  jornada" que hoje só revela o formulário (`components/public/WelcomeHero.tsx`,
+  estado `showForm`).
+- Manter o comportamento já existente e testado: se já houver
+  `UserProgress` salvo, pular direto para a etapa correspondente (sem
+  mostrar essa tela) — não alterar essa lógica, só o layout/fluxo de quem
+  ainda não tem progresso.
+- Manter a mesma stack (Next.js + HeroUI, sem novas dependências) e o
+  tema único já definido (seção 5 do PRD).
+
+**Files:**
+- `app/page.tsx` — adicionar header/seção de apresentação
+- `components/public/WelcomeHero.tsx` — remover a etapa intermediária
+  (`showForm`), unificando descrição + formulário de nome numa tela só
+
+**Test strategy:**
+Revisão visual (checklist manual) comparando com a observação de UX da
+seção 3.1 do PRD; teste de que o campo de nome aparece imediatamente ao
+carregar `/` (sem progresso salvo) e que o fluxo de retomada (usuário com
+progresso salvo) continua pulando essa tela, sem regressão nos testes
+end-to-end já existentes (Playwright) e na auditoria de acessibilidade
+(axe-core).
+
+**Acceptance criteria:**
+- [ ] Página inicial tem header/identidade de portal, visualmente distinto
+      de um card solto.
+- [ ] Página inicial explica do que se trata o portal (vídeo + avaliação +
+      relatório), não só o CTA.
+- [ ] Campo de nome visível na primeira renderização, sem etapa
+      intermediária de clique no CTA.
+- [ ] Retomada de progresso existente continua funcionando sem regressão.
+
+**Source:** Feedback do usuário (2026-09-27); PRD seção 3.1
+
+---
+
 ## Resumo
 
 ### Tasks por fase
@@ -769,12 +834,13 @@ JS capturado.
 | 2 — Fluxo do aluno | 5, 6, 7, 8 | 5 depende de 4; 6 depende de 1,4; 7 depende de 1; 8 depende de 3,5,6,7 |
 | 3 — Avaliação | 9, 10, 11, 12, 13 | 10 depende de 2,9; 11 depende de 1,4; 12 depende de 3,5,9,10,11; 13 depende de 4,5,11,12 |
 | 4 — Qualidade e deploy | 14, 15 | 14 depende de 13; 15 depende de 13,14 |
+| 5 — Refinamento de UX | 16 | 16 depende de 6 |
 
 ### Tasks por prioridade
 | Prioridade | IDs |
 |---|---|
 | high | 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 15 |
-| medium | 11, 14 |
+| medium | 11, 14, 16 |
 | low | — |
 
 ### Pronto para iniciar (dependências vazias)
@@ -792,4 +858,6 @@ Repositório no GitHub: https://github.com/caiocoisa/ead-portal-educacional
 
 Próximos passos ficam no backlog de extensão futura — PRD.md, seção 9
 (CMS/área administrativa, múltiplos módulos, i18n, tema light/dark,
-exportação do relatório, acompanhamento de múltiplos alunos).
+exportação do relatório, acompanhamento de múltiplos alunos) — e a
+**Task 16** (`pending`), refinamento de UX da tela inicial pedido pelo
+usuário em 2026-09-27, ainda não implementada.

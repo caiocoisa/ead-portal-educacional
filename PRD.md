@@ -44,6 +44,18 @@ relatório) em produção, com o menor custo de implementação possível.
 - Se o usuário já tiver progresso salvo (retorno ao portal), pula a captura
   de nome e retoma diretamente da etapa em que parou.
 
+> **Observação de UX (2026-09-27, feedback do usuário — pendente de
+> implementação, ver Task 16 do task-master.md):** a implementação atual
+> está visualmente pobre para uma tela inicial de portal e usa **duas
+> etapas** (clicar no CTA → só então aparece o campo de nome). Requisitos
+> para a próxima iteração:
+> - **Aparência de portal**, não só um card centralizado: header/topo com
+>   identidade do portal, e uma seção explicando do que se trata o
+>   conteúdo (não só o CTA).
+> - **Entrada em etapa única**: o campo de nome deve ficar visível já na
+>   primeira tela (junto com a explicação do portal), sem exigir um clique
+>   intermediário só para revelar o formulário.
+
 ### 3.2 Jornada do módulo (área restrita)
 
 Fluxo linear e obrigatório, com progresso persistido:
