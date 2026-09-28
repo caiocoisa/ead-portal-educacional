@@ -1130,8 +1130,8 @@ critérios de aceite da seção 8 do PRD foram verificados na URL pública.
 Tasks 16–20 (redesign da tela inicial, skeleton de vídeo, tema light/dark,
 tamanho de fonte/alto contraste, banco de questões definitivo com feedback
 pedagógico) foram adicionadas depois do primeiro deploy, a partir de
-feedback do usuário, e já estão implementadas — falta apenas dar
-`git push` para propagar à Vercel.
+feedback do usuário — implementadas, commitadas e já propagadas para o
+GitHub (a Vercel redeploya automaticamente a cada push em `main`).
 
 Repositório no GitHub: https://github.com/caiocoisa/ead-portal-educacional
 (privado).
