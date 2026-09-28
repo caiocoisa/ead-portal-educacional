@@ -9,7 +9,8 @@ interface QuestionRendererProps {
   total: number;
   selectedOptionIndex: number | null;
   onSelect: (optionIndex: number) => void;
-  isDisabled?: boolean;
+  /** Índice da alternativa correta, informado só após a confirmação. */
+  revealedCorrectIndex?: number;
 }
 
 export function QuestionRenderer({
@@ -18,7 +19,7 @@ export function QuestionRenderer({
   total,
   selectedOptionIndex,
   onSelect,
-  isDisabled,
+  revealedCorrectIndex,
 }: QuestionRendererProps) {
   return (
     <div className="flex flex-col gap-4">
@@ -39,7 +40,7 @@ export function QuestionRenderer({
         value={selectedOptionIndex}
         onChange={onSelect}
         ariaLabel={`Alternativas da pergunta ${index + 1}`}
-        isDisabled={isDisabled}
+        correctIndex={revealedCorrectIndex}
       />
     </div>
   );

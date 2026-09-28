@@ -13,6 +13,7 @@ import {
   TextField,
 } from "@heroui/react";
 import { userProgressRepository } from "@/services/user-progress";
+import { JourneyLoading } from "@/components/journey/JourneyLoading";
 import { moduleContent } from "@/content/module";
 
 const STEP_ROUTES = {
@@ -56,7 +57,7 @@ export function WelcomeHero() {
   }
 
   if (!isReady) {
-    return null;
+    return <JourneyLoading fullScreen={false} />;
   }
 
   return (
@@ -93,6 +94,32 @@ export function WelcomeHero() {
         </a>
       </div>
 
+      <div className="flex flex-col gap-4">
+      <ol
+        aria-label="Etapas da jornada"
+        className="flex items-center justify-between gap-2 rounded-xl border border-(--border) bg-(--surface) p-3"
+      >
+        {[
+          { icon: "🎬", label: "Vídeo" },
+          { icon: "📝", label: "Avaliação" },
+          { icon: "📊", label: "Relatório" },
+        ].map((item, index, all) => (
+          <li key={item.label} className="flex flex-1 items-start gap-2">
+            <div className="flex flex-col items-center gap-1">
+              <span
+                aria-hidden="true"
+                className="flex size-10 items-center justify-center rounded-full bg-(--accent)/15 text-lg"
+              >
+                {item.icon}
+              </span>
+              <span className="text-xs font-medium">{item.label}</span>
+            </div>
+            {index < all.length - 1 ? (
+              <span aria-hidden="true" className="mt-5 h-0.5 flex-1 bg-(--border)" />
+            ) : null}
+          </li>
+        ))}
+      </ol>
       <Card className="w-full">
         <Card.Header>
           <Card.Title>Vamos começar?</Card.Title>
@@ -121,6 +148,7 @@ export function WelcomeHero() {
           </Form>
         </Card.Content>
       </Card>
+      </div>
     </div>
   );
 }
