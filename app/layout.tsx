@@ -28,7 +28,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col bg-(--color-background) text-(--color-foreground)">
         <AccessibilityInitializer />
-        <Toast.Provider placement="bottom end" />
+        <Toast.Provider placement="top end" />
         {children}
       </body>
     </html>

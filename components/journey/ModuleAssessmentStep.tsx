@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button, toast } from "@heroui/react";
 import { moduleContent } from "@/content/module";
@@ -20,6 +20,10 @@ export function ModuleAssessmentStep() {
   /** Alternativa marcada, ainda não confirmada, por pergunta. */
   const [drafts, setDrafts] = useState<Record<string, number>>({});
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  const feedbackRef = useRef<HTMLDivElement>(null);
+  /** Só rola até o retorno quando a resposta acabou de ser confirmada. */
+  const shouldRevealFeedbackRef = useRef(false);
 
   const currentQuestion = questions[currentIndex];
   const confirmedOption = answers[currentQuestion.id];
@@ -44,12 +48,20 @@ export function ModuleAssessmentStep() {
     (q, i) => i > currentIndex && answers[q.id] === undefined
   );
 
+  useEffect(() => {
+    if (feedback && shouldRevealFeedbackRef.current) {
+      shouldRevealFeedbackRef.current = false;
+      feedbackRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+  }, [feedback]);
+
   function handleSelect(optionIndex: number) {
     setDrafts((prev) => ({ ...prev, [currentQuestion.id]: optionIndex }));
   }
 
   function handleConfirm() {
     if (selectedOption === undefined) return;
+    shouldRevealFeedbackRef.current = true;
     setAnswers((prev) => ({ ...prev, [currentQuestion.id]: selectedOption }));
     const { level } = resolveFeedback(currentQuestion, selectedOption);
     if (level === "correct") toast.success("Resposta correta!");
@@ -108,7 +120,9 @@ export function ModuleAssessmentStep() {
             revealedCorrectIndex={isConfirmed ? currentQuestion.correctOptionIndex : undefined}
           />
           {feedback ? (
-            <AnswerFeedback level={feedback.level} message={feedback.message} />
+            <div ref={feedbackRef} role="status">
+              <AnswerFeedback level={feedback.level} message={feedback.message} />
+            </div>
           ) : null}
         </div>
         <div className="flex shrink-0 items-center justify-between gap-2 border-t border-(--border) p-3 sm:px-6">
