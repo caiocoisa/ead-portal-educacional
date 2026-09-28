@@ -1321,5 +1321,9 @@ Próximos passos ficam no backlog de extensão futura — PRD.md, seção 9
 relatório, acompanhamento de múltiplos alunos — item de tema light/dark
 já implementado na Task 18, removido do backlog). Antes de ir ao ar,
 lembrar de substituir `content/module.ts` → `youtubeVideoId` (hoje `null`,
-mostrando o skeleton da Task 17) pelo ID real do vídeo do módulo — o
-roteiro de gravação já existe em `roteiro_audiovisual_completo.md`.
+mostrando o skeleton da Task 17) pelo ID real do vídeo do módulo — usar
+**`roteiro_audiovisual_completo_v2.md`** para a gravação (revisão de
+2026-09-27: adiciona o Bloco 4B, cobrindo a auditoria de viabilidade
+técnica/logística da Questão 3 de `banco-questoes.md`, que a v1 do
+roteiro não demonstrava; ver changelog no próprio arquivo). A v1
+(`roteiro_audiovisual_completo.md`) fica só como histórico.
