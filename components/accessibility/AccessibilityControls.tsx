@@ -13,7 +13,7 @@ export function AccessibilityControls() {
         aria-label="Abrir menu de acessibilidade"
         className={
           buttonVariants({ variant: "ghost", size: "sm" }) +
-          " fixed top-1/2 left-0 z-40 -translate-y-1/2 rounded-l-none border border-l-0 border-(--border) bg-(--surface) py-3 shadow-md [writing-mode:vertical-rl]"
+          " fixed top-1/2 left-0 z-40 -translate-y-1/2 !h-auto !w-auto rounded-l-none border border-l-0 border-(--border) bg-(--surface) !px-2 !py-3 shadow-md [writing-mode:vertical-rl]"
         }
       >
         Acessibilidade

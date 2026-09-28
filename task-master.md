@@ -1242,6 +1242,14 @@ a pergunta. Reposicionado como uma aba fixa na borda esquerda da tela
   normal do documento — não precisou de nenhuma mudança em
   `PortalHeader.tsx`/`JourneyLayout.tsx`, que continuam só chamando
   `<AccessibilityControls />` sem reservar espaço extra para ele.
+- **Fix de acompanhamento (mesmo dia):** o texto "Acessibilidade" vazava
+  para fora do botão. Causa: a classe base `.button`/`.button--sm` do
+  HeroUI fixa `height` (~32–36px) pensando em texto horizontal; com
+  `writing-mode: vertical-rl`, essa altura física passa a ser o espaço
+  disponível *na direção do texto* (inline-size), pequeno demais para as
+  14 letras de "Acessibilidade" com `white-space: nowrap`. Corrigido
+  sobrescrevendo com `!h-auto !w-auto !px-2 !py-3`, deixando a caixa
+  crescer conforme o conteúdo em vez de usar a altura fixa do componente.
 
 **Files:**
 - `components/accessibility/AccessibilityControls.tsx`
