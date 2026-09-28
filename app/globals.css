@@ -1,12 +1,36 @@
 @import "@heroui/styles";
 
 :root {
-  /* Overrides dos tons padrão do HeroUI: os originais não atingem
-     contraste AA (4.5:1) com o texto branco/claro usado em cima.
-     Aplicam-se em qualquer tema (claro/escuro) pois o texto sobre esses
-     tokens (--accent-foreground/--danger-foreground) é sempre claro. */
-  --accent: #0c62c7;
+  /* Paleta do portal: azul marinho, dourado, verde e branco.
+     `--brand` e `--gold` são tokens próprios (não existem no HeroUI):
+     o marinho é o fundo dos cabeçalhos e o dourado só deve ser usado
+     sobre marinho ou como detalhe decorativo (sobre branco não atinge
+     contraste AA como texto: 2,4:1).
+     Os demais sobrescrevem tokens do HeroUI e mantêm contraste AA com o
+     texto que vai por cima (marinho/branco 15,4:1; branco/verde 5,9:1;
+     marinho/dourado 6,4:1). */
+  --brand: #0b2545;
+  --gold: #c9a227;
+  --accent: #0b2545;
+  --accent-foreground: #ffffff;
+  --success: #157347;
+  --success-foreground: #ffffff;
+  --warning: #c9a227;
+  --warning-foreground: #0b2545;
   --danger: #b91c1c;
+}
+
+/* No tema escuro o marinho some contra o fundo: o acento vira um azul
+   mais claro (branco sobre ele: 4,8:1) e o verde passa a ser claro, com
+   texto escuro por cima (8,9:1). */
+:root[data-theme="dark"] {
+  --accent: #3f74b8;
+  --success: #4ade9b;
+  --success-foreground: #062b1b;
+}
+
+:root[data-theme="light"] {
+  --background: #f5f7fa;
 }
 
 /* O `--muted` padrão do tema claro do HeroUI só atinge 4.43:1 de contraste

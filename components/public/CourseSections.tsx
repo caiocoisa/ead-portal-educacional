@@ -1,4 +1,6 @@
 import { Card } from "@heroui/react";
+import { CircleCheck } from "lucide-react";
+import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
 import { FaqAccordion } from "./FaqAccordion";
 import {
   courseFormat,
@@ -14,11 +16,14 @@ function Section({
   id,
   title,
   subtitle,
+  aside,
   children,
 }: {
   id: string;
   title: string;
   subtitle?: string;
+  /** Conteúdo lateral opcional (ex.: espaço para ilustração). */
+  aside?: React.ReactNode;
   children: React.ReactNode;
 }) {
   return (
@@ -31,9 +36,17 @@ function Section({
           <h2 id={`${id}-title`} className="text-2xl font-semibold">
             {title}
           </h2>
+          <span aria-hidden="true" className="h-1 w-12 rounded-full bg-(--gold)" />
           {subtitle ? <p className="text-(--muted)">{subtitle}</p> : null}
         </div>
-        {children}
+        {aside ? (
+          <div className="grid items-center gap-6 md:grid-cols-[3fr_2fr]">
+            <div>{children}</div>
+            {aside}
+          </div>
+        ) : (
+          children
+        )}
       </div>
     </section>
   );
@@ -44,9 +57,7 @@ function CheckList({ items }: { items: string[] }) {
     <ul className="flex flex-col gap-3">
       {items.map((item) => (
         <li key={item} className="flex gap-3">
-          <span aria-hidden="true" className="text-(--accent)">
-            ✔
-          </span>
+          <CircleCheck aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-(--success)" />
           <span>{item}</span>
         </li>
       ))}
@@ -61,8 +72,11 @@ function CardGrid({ items, columns }: { items: LandingItem[]; columns: string })
         <li key={item.title} className="flex">
           <Card className="w-full">
             <Card.Content className="flex flex-col gap-2">
-              <span aria-hidden="true" className="text-2xl">
-                {item.icon}
+              <span
+                aria-hidden="true"
+                className="flex size-11 items-center justify-center rounded-xl bg-(--brand) text-(--gold)"
+              >
+                <item.icon className="size-6" />
               </span>
               <h3 className="font-semibold">{item.title}</h3>
               {item.description ? (
@@ -83,6 +97,13 @@ export function CourseSections() {
         id="objetivos"
         title="Objetivos do curso"
         subtitle="O que este módulo se propõe a desenvolver em você."
+        aside={
+          <ImagePlaceholder
+            label="Ilustração dos objetivos"
+            hint="public/img/objetivos.svg · 480×360"
+            className="aspect-[4/3] w-full"
+          />
+        }
       >
         <CheckList items={courseObjectives} />
       </Section>
@@ -111,8 +132,15 @@ export function CourseSections() {
         id="como-funciona"
         title="Como funciona"
         subtitle="Uma jornada linear em três etapas."
+        aside={
+          <ImagePlaceholder
+            label="Ilustração da jornada"
+            hint="public/img/jornada.svg · 480×360"
+            className="aspect-[4/3] w-full"
+          />
+        }
       >
-        <CardGrid items={journeySteps} columns="sm:grid-cols-3" />
+        <CardGrid items={journeySteps} columns="grid-cols-1" />
       </Section>
 
       <Section id="formato" title="Formato e recursos">
@@ -123,11 +151,11 @@ export function CourseSections() {
         <FaqAccordion />
       </Section>
 
-      <section className="w-full border-t border-(--border) px-6 py-10 text-center">
+      <section className="w-full border-t-4 border-(--gold) bg-(--brand) px-6 py-10 text-center text-white">
         <p className="mb-3 text-lg font-semibold">Pronto para começar?</p>
         <a
           href="#inicio"
-          className="inline-block rounded-full bg-(--accent) px-6 py-2 font-medium text-(--accent-foreground)"
+          className="inline-block rounded-full bg-(--gold) px-6 py-2 font-medium text-(--brand)"
         >
           Iniciar minha jornada
         </a>

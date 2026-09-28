@@ -1,3 +1,4 @@
+import { Check } from "lucide-react";
 import type { JourneyStep } from "@/types/progress";
 
 const STEP_ORDER: JourneyStep[] = ["video", "avaliacao", "relatorio"];
@@ -32,15 +33,15 @@ export function ProgressIndicator({ step }: ProgressIndicatorProps) {
               aria-hidden="true"
               className={`flex size-7 items-center justify-center rounded-full text-xs font-semibold ${
                 isDone || isCurrent
-                  ? "bg-(--accent) text-(--accent-foreground)"
-                  : "border border-(--border) text-(--muted)"
+                  ? "bg-(--gold) text-(--brand)"
+                  : "border border-white/50 text-white/80"
               }`}
             >
-              {isDone ? "✓" : index + 1}
+              {isDone ? <Check className="size-4" /> : index + 1}
             </span>
             <span
               className={`hidden text-sm sm:inline ${
-                isCurrent ? "font-semibold" : "text-(--muted)"
+                isCurrent ? "font-semibold" : "text-white/80"
               }`}
             >
               {STEP_LABELS[item]}
@@ -49,7 +50,7 @@ export function ProgressIndicator({ step }: ProgressIndicatorProps) {
               <span
                 aria-hidden="true"
                 className={`h-0.5 w-6 sm:w-10 ${
-                  isDone ? "bg-(--accent)" : "bg-(--border)"
+                  isDone ? "bg-(--gold)" : "bg-white/30"
                 }`}
               />
             ) : null}
