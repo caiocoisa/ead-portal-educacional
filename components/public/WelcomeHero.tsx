@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import {
   Button,
   Card,
+  Chip,
   FieldError,
   Form,
   Input,
@@ -59,18 +60,37 @@ export function WelcomeHero() {
   }
 
   return (
-    <div className="grid w-full max-w-4xl gap-10 md:grid-cols-2 md:items-center">
+    <div className="m-auto grid w-full max-w-5xl gap-8 md:grid-cols-[3fr_2fr] md:items-center">
       <div className="flex flex-col gap-4">
-        <h1 className="text-3xl font-bold">{moduleContent.title}</h1>
+        <div className="flex flex-wrap gap-2">
+          <Chip color="accent" variant="soft" size="sm">
+            <Chip.Label>Curso online</Chip.Label>
+          </Chip>
+          <Chip color="success" variant="soft" size="sm">
+            <Chip.Label>Ritmo livre</Chip.Label>
+          </Chip>
+          <Chip variant="soft" size="sm">
+            <Chip.Label>Sem cadastro</Chip.Label>
+          </Chip>
+        </div>
+        <h1 className="text-3xl font-bold md:text-4xl">{moduleContent.title}</h1>
         <p className="text-(--muted)">{moduleContent.description}</p>
-        <ul className="flex flex-col gap-2">
+        <ul className="grid gap-2 sm:grid-cols-2">
           {FEATURES.map((feature) => (
-            <li key={feature.label} className="flex items-center gap-2 text-sm">
-              <span aria-hidden="true">{feature.icon}</span>
+            <li
+              key={feature.label}
+              className="flex items-start gap-3 rounded-xl border border-(--border) bg-(--surface) p-3 text-sm"
+            >
+              <span aria-hidden="true" className="text-xl">
+                {feature.icon}
+              </span>
               {feature.label}
             </li>
           ))}
         </ul>
+        <a href="#objetivos-title" className="text-sm text-(--accent) underline">
+          Conheça os objetivos, o público e os pré-requisitos ↓
+        </a>
       </div>
 
       <Card className="w-full">

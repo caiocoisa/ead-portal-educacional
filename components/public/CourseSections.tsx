@@ -1,8 +1,8 @@
 import { Card } from "@heroui/react";
+import { FaqAccordion } from "./FaqAccordion";
 import {
   courseFormat,
   courseObjectives,
-  faqs,
   journeySteps,
   learningOutcomes,
   prerequisites,
@@ -120,19 +120,7 @@ export function CourseSections() {
       </Section>
 
       <Section id="faq" title="Perguntas frequentes">
-        <div className="flex flex-col gap-2">
-          {faqs.map((faq) => (
-            <details
-              key={faq.question}
-              className="rounded-lg border border-(--border) p-4"
-            >
-              <summary className="cursor-pointer font-medium">
-                {faq.question}
-              </summary>
-              <p className="mt-2 text-(--muted)">{faq.answer}</p>
-            </details>
-          ))}
-        </div>
+        <FaqAccordion />
       </Section>
 
       <section className="w-full border-t border-(--border) px-6 py-10 text-center">

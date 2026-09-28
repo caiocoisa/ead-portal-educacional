@@ -1,11 +1,10 @@
-import { ProgressBar } from "@heroui/react";
 import type { JourneyStep } from "@/types/progress";
 
 const STEP_ORDER: JourneyStep[] = ["video", "avaliacao", "relatorio"];
 const STEP_LABELS: Record<JourneyStep, string> = {
   video: "Vídeo",
   avaliacao: "Avaliação",
-  relatorio: "Relatório final",
+  relatorio: "Relatório",
 };
 
 interface ProgressIndicatorProps {
@@ -14,23 +13,49 @@ interface ProgressIndicatorProps {
 
 export function ProgressIndicator({ step }: ProgressIndicatorProps) {
   const currentIndex = STEP_ORDER.indexOf(step);
-  const value = ((currentIndex + 1) / STEP_ORDER.length) * 100;
 
   return (
-    <div className="flex w-full flex-col gap-1">
-      <ProgressBar
-        value={value}
-        minValue={0}
-        maxValue={100}
-        aria-label={`Progresso da jornada: ${STEP_LABELS[step]}`}
-      >
-        <ProgressBar.Track>
-          <ProgressBar.Fill />
-        </ProgressBar.Track>
-      </ProgressBar>
-      <span className="text-sm text-(--muted)">
-        Etapa {currentIndex + 1} de {STEP_ORDER.length}: {STEP_LABELS[step]}
-      </span>
-    </div>
+    <ol
+      aria-label={`Progresso da jornada: etapa ${currentIndex + 1} de ${STEP_ORDER.length}, ${STEP_LABELS[step]}`}
+      className="flex items-center gap-2"
+    >
+      {STEP_ORDER.map((item, index) => {
+        const isDone = index < currentIndex;
+        const isCurrent = index === currentIndex;
+        return (
+          <li
+            key={item}
+            aria-current={isCurrent ? "step" : undefined}
+            className="flex items-center gap-2"
+          >
+            <span
+              aria-hidden="true"
+              className={`flex size-7 items-center justify-center rounded-full text-xs font-semibold ${
+                isDone || isCurrent
+                  ? "bg-(--accent) text-(--accent-foreground)"
+                  : "border border-(--border) text-(--muted)"
+              }`}
+            >
+              {isDone ? "✓" : index + 1}
+            </span>
+            <span
+              className={`hidden text-sm sm:inline ${
+                isCurrent ? "font-semibold" : "text-(--muted)"
+              }`}
+            >
+              {STEP_LABELS[item]}
+            </span>
+            {index < STEP_ORDER.length - 1 ? (
+              <span
+                aria-hidden="true"
+                className={`h-0.5 w-6 sm:w-10 ${
+                  isDone ? "bg-(--accent)" : "bg-(--border)"
+                }`}
+              />
+            ) : null}
+          </li>
+        );
+      })}
+    </ol>
   );
 }

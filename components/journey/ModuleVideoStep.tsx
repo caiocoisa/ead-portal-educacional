@@ -34,23 +34,26 @@ export function ModuleVideoStep() {
   }
 
   return (
-    <Card className="w-full max-w-2xl">
+    <Card className="h-fit max-h-full w-full max-w-3xl">
       <Card.Header>
         <Card.Title>{moduleContent.title}</Card.Title>
         <Card.Description>
           Assista ao vídeo até o final para liberar a avaliação.
         </Card.Description>
       </Card.Header>
-      <Card.Content className="flex flex-col gap-4">
-        {moduleContent.youtubeVideoId ? (
-          <VideoPlayer
-            youtubeVideoId={moduleContent.youtubeVideoId}
-            onProgress={handleProgress}
-            onEnded={completeAndAdvance}
-          />
-        ) : (
-          <VideoSkeleton />
-        )}
+      <Card.Content className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto">
+        {/* Limita a largura para que o vídeo 16:9 caiba na altura da tela. */}
+        <div className="mx-auto w-full max-w-[min(100%,calc(50dvh*16/9))]">
+          {moduleContent.youtubeVideoId ? (
+            <VideoPlayer
+              youtubeVideoId={moduleContent.youtubeVideoId}
+              onProgress={handleProgress}
+              onEnded={completeAndAdvance}
+            />
+          ) : (
+            <VideoSkeleton />
+          )}
+        </div>
         <Button variant="outline" onPress={completeAndAdvance} fullWidth>
           Concluir
         </Button>
