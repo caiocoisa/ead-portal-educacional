@@ -1,4 +1,5 @@
 import { Chip, ProgressCircle, Tooltip } from "@heroui/react";
+import { Check, Circle, X } from "lucide-react";
 import type { Question } from "@/types/quiz";
 
 interface QuestionNavigatorProps {
@@ -90,7 +91,13 @@ export function QuestionNavigator({
                   </Chip.Label>
                 </Chip>
                 <span aria-hidden="true" className="lg:hidden">
-                  {!isAnswered ? "○" : isCorrect ? "✓" : "✗"}
+                  {!isAnswered ? (
+                    <Circle className="size-4" />
+                  ) : isCorrect ? (
+                    <Check className="size-4" />
+                  ) : (
+                    <X className="size-4" />
+                  )}
                 </span>
               </button>
               </Tooltip.Trigger>

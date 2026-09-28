@@ -1,5 +1,23 @@
+import {
+  Accessibility,
+  Clapperboard,
+  ChartColumn,
+  ClipboardList,
+  GraduationCap,
+  Map,
+  MessageSquare,
+  Presentation,
+  Puzzle,
+  Search,
+  Smartphone,
+  Timer,
+  Unlock,
+  Wrench,
+  type LucideIcon,
+} from "lucide-react";
+
 export interface LandingItem {
-  icon: string;
+  icon: LucideIcon;
   title: string;
   description?: string;
 }
@@ -13,17 +31,17 @@ export const courseObjectives: string[] = [
 
 export const targetAudience: LandingItem[] = [
   {
-    icon: "👩‍🏫",
+    icon: Presentation,
     title: "Professores e educadores",
     description: "Que atuam ou desejam atuar em cursos a distância.",
   },
   {
-    icon: "🎓",
+    icon: GraduationCap,
     title: "Licenciandos e estudantes de Pedagogia",
     description: "Em formação e interessados em planejamento didático.",
   },
   {
-    icon: "🧩",
+    icon: Puzzle,
     title: "Designers instrucionais e tutores",
     description: "Que buscam ganhar agilidade no desenho de aulas com IA.",
   },
@@ -38,22 +56,22 @@ export const prerequisites: string[] = [
 
 export const learningOutcomes: LandingItem[] = [
   {
-    icon: "🗺️",
+    icon: Map,
     title: "Planejar uma aula a distância",
     description: "Definindo público, objetivos, conteúdos, atividades e avaliação de forma coerente.",
   },
   {
-    icon: "💬",
+    icon: MessageSquare,
     title: "Pedir bem à IA",
     description: "Usando os quatro pilares do comando: papel, contexto, tarefa e formato.",
   },
   {
-    icon: "🔍",
+    icon: Search,
     title: "Analisar respostas da IA",
     description: "Identificando falhas de alinhamento e barreiras de acesso do seu público.",
   },
   {
-    icon: "🛠️",
+    icon: Wrench,
     title: "Melhorar o material gerado",
     description: "Refinando os comandos e assumindo a curadoria pedagógica final.",
   },
@@ -61,27 +79,27 @@ export const learningOutcomes: LandingItem[] = [
 
 export const journeySteps: LandingItem[] = [
   {
-    icon: "🎬",
+    icon: Clapperboard,
     title: "1. Vídeo",
     description: "Assista à aula sobre planejamento pedagógico com apoio de IA.",
   },
   {
-    icon: "📝",
+    icon: ClipboardList,
     title: "2. Avaliação",
     description: "Responda a questões que simulam situações reais de planejamento.",
   },
   {
-    icon: "📊",
+    icon: ChartColumn,
     title: "3. Relatório final",
     description: "Veja seu resultado, acertos e pontos de atenção.",
   },
 ];
 
 export const courseFormat: LandingItem[] = [
-  { icon: "⏱️", title: "Ritmo livre", description: "Estude quando quiser; seu progresso fica salvo neste navegador." },
-  { icon: "📱", title: "Acesso em qualquer dispositivo", description: "Interface adaptável a celular, tablet e computador." },
-  { icon: "♿", title: "Acessível", description: "Ajuste tema, tamanho da fonte e alto contraste." },
-  { icon: "🆓", title: "Sem cadastro", description: "Basta informar seu nome para começar, sem senha." },
+  { icon: Timer, title: "Ritmo livre", description: "Estude quando quiser; seu progresso fica salvo neste navegador." },
+  { icon: Smartphone, title: "Acesso em qualquer dispositivo", description: "Interface adaptável a celular, tablet e computador." },
+  { icon: Accessibility, title: "Acessível", description: "Ajuste tema, tamanho da fonte e alto contraste." },
+  { icon: Unlock, title: "Sem cadastro", description: "Basta informar seu nome para começar, sem senha." },
 ];
 
 export const faqs: { question: string; answer: string }[] = [

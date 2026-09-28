@@ -1,4 +1,5 @@
 import { Label, Radio, RadioGroup } from "@heroui/react";
+import { Check, X } from "lucide-react";
 
 interface OptionsRadioGroupProps {
   options: string[];
@@ -45,13 +46,13 @@ export function OptionsRadioGroup({
             </Radio.Control>
             <Label>{option}</Label>
             {isRevealed && index === correctIndex ? (
-              <span className="ml-auto text-sm font-medium text-(--success)">
-                ✓ Correta
+              <span className="ml-auto flex items-center gap-1 text-sm font-medium text-(--success)">
+                <Check aria-hidden="true" className="size-4" /> Correta
               </span>
             ) : null}
             {isRevealed && index === value && index !== correctIndex ? (
-              <span className="ml-auto text-sm font-medium text-(--danger)">
-                ✗ Sua resposta
+              <span className="ml-auto flex items-center gap-1 text-sm font-medium text-(--danger)">
+                <X aria-hidden="true" className="size-4" /> Sua resposta
               </span>
             ) : null}
           </Radio.Content>

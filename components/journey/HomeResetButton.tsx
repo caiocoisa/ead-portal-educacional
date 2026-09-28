@@ -18,7 +18,12 @@ export function HomeResetButton() {
     <>
       <Tooltip delay={300}>
         <Tooltip.Trigger>
-          <Button variant="ghost" size="sm" onPress={() => setIsOpen(true)}>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-white hover:bg-white/10"
+            onPress={() => setIsOpen(true)}
+          >
             Início
           </Button>
         </Tooltip.Trigger>

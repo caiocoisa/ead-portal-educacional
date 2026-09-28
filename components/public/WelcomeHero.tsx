@@ -12,7 +12,9 @@ import {
   Label,
   TextField,
 } from "@heroui/react";
+import { ArrowDown, Bot, ChartColumn, ClipboardList, Clapperboard } from "lucide-react";
 import { userProgressRepository } from "@/services/user-progress";
+import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
 import { JourneyLoading } from "@/components/journey/JourneyLoading";
 import { moduleContent } from "@/content/module";
 
@@ -23,10 +25,10 @@ const STEP_ROUTES = {
 } as const;
 
 const FEATURES = [
-  { icon: "🎬", label: "Assista a um vídeo sobre planejamento pedagógico para EaD" },
-  { icon: "🤖", label: "Veja um exemplo de aula de Computação com apoio de IA" },
-  { icon: "📝", label: "Pratique como pedir, analisar e melhorar sugestões da IA" },
-  { icon: "📊", label: "Veja seu resultado em um relatório final" },
+  { icon: Clapperboard, label: "Assista a um vídeo sobre planejamento pedagógico para EaD" },
+  { icon: Bot, label: "Veja um exemplo de aula de Computação com apoio de IA" },
+  { icon: ClipboardList, label: "Pratique como pedir, analisar e melhorar sugestões da IA" },
+  { icon: ChartColumn, label: "Veja seu resultado em um relatório final" },
 ];
 
 export function WelcomeHero() {
@@ -64,7 +66,7 @@ export function WelcomeHero() {
     <div className="m-auto grid w-full max-w-5xl gap-8 md:grid-cols-[3fr_2fr] md:items-center">
       <div className="flex flex-col gap-4">
         <div className="flex flex-wrap gap-2">
-          <Chip color="accent" variant="soft" size="sm">
+          <Chip size="sm" className="bg-(--gold) text-(--brand)">
             <Chip.Label>Curso online</Chip.Label>
           </Chip>
           <Chip color="success" variant="soft" size="sm">
@@ -82,35 +84,47 @@ export function WelcomeHero() {
               key={feature.label}
               className="flex items-start gap-3 rounded-xl border border-(--border) bg-(--surface) p-3 text-sm"
             >
-              <span aria-hidden="true" className="text-xl">
-                {feature.icon}
+              <span
+                aria-hidden="true"
+                className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-(--brand) text-(--gold)"
+              >
+                <feature.icon className="size-5" />
               </span>
               {feature.label}
             </li>
           ))}
         </ul>
-        <a href="#objetivos-title" className="text-sm text-(--accent) underline">
-          Conheça os objetivos, o público e os pré-requisitos ↓
+        <a
+          href="#objetivos-title"
+          className="flex items-center gap-1 text-sm font-medium underline"
+        >
+          Conheça os objetivos, o público e os pré-requisitos
+          <ArrowDown aria-hidden="true" className="size-4" />
         </a>
       </div>
 
       <div className="flex flex-col gap-4">
+      <ImagePlaceholder
+        label="Ilustração principal"
+        hint="public/img/hero.svg · 560×280"
+        className="aspect-[2/1] max-h-[24dvh] w-full"
+      />
       <ol
         aria-label="Etapas da jornada"
         className="flex items-center justify-between gap-2 rounded-xl border border-(--border) bg-(--surface) p-3"
       >
         {[
-          { icon: "🎬", label: "Vídeo" },
-          { icon: "📝", label: "Avaliação" },
-          { icon: "📊", label: "Relatório" },
+          { icon: Clapperboard, label: "Vídeo" },
+          { icon: ClipboardList, label: "Avaliação" },
+          { icon: ChartColumn, label: "Relatório" },
         ].map((item, index, all) => (
           <li key={item.label} className="flex flex-1 items-start gap-2">
             <div className="flex flex-col items-center gap-1">
               <span
                 aria-hidden="true"
-                className="flex size-10 items-center justify-center rounded-full bg-(--accent)/15 text-lg"
+                className="flex size-10 items-center justify-center rounded-full bg-(--brand) text-(--gold)"
               >
-                {item.icon}
+                <item.icon className="size-5" />
               </span>
               <span className="text-xs font-medium">{item.label}</span>
             </div>

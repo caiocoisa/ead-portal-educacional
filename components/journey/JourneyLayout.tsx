@@ -18,9 +18,9 @@ interface JourneyLayoutProps {
 export function JourneyLayout({ userName, step, children }: JourneyLayoutProps) {
   return (
     <div className="flex h-dvh flex-col overflow-hidden">
-      <header className="flex shrink-0 flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-(--border) bg-(--surface) px-4 py-2 sm:px-6">
+      <header className="flex shrink-0 flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b-4 border-(--gold) bg-(--brand) px-4 py-2 text-white sm:px-6">
         <div className="flex items-center gap-2">
-          <Avatar size="sm" color="accent" variant="soft">
+          <Avatar size="sm" className="bg-(--gold) text-(--brand)">
             <Avatar.Fallback>{userName.trim().charAt(0).toUpperCase()}</Avatar.Fallback>
           </Avatar>
           <span className="font-semibold">Olá, {userName}!</span>
