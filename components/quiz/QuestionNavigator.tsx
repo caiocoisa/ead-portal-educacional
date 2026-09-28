@@ -1,4 +1,4 @@
-import { Chip, ProgressCircle } from "@heroui/react";
+import { Chip, ProgressCircle, Tooltip } from "@heroui/react";
 import type { Question } from "@/types/quiz";
 
 interface QuestionNavigatorProps {
@@ -65,6 +65,8 @@ export function QuestionNavigator({
               : "incorreta";
           return (
             <li key={question.id} className="shrink-0">
+              <Tooltip delay={300}>
+              <Tooltip.Trigger>
               <button
                 type="button"
                 onClick={() => onNavigate(index)}
@@ -91,6 +93,9 @@ export function QuestionNavigator({
                   {!isAnswered ? "○" : isCorrect ? "✓" : "✗"}
                 </span>
               </button>
+              </Tooltip.Trigger>
+              <Tooltip.Content>{question.topic}</Tooltip.Content>
+              </Tooltip>
             </li>
           );
         })}

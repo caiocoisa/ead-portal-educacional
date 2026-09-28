@@ -23,6 +23,7 @@ export const moduleContent: ModuleContent = {
   questions: [
     {
       id: "q1",
+      topic: "Alinhamento pedagógico",
       type: "text",
       prompt:
         "Durante o planejamento de uma aula a distância sobre Introdução à Lógica de Programação, o professor definiu como objetivo principal que o estudante seja capaz de construir rotinas de código para resolver problemas simples. Ao solicitar uma proposta de avaliação ao assistente de inteligência artificial, o sistema sugeriu a aplicação de uma prova objetiva de múltipla escolha focada na memorização de datas históricas da evolução dos computadores.\n\nConsiderando os princípios do alinhamento pedagógico, qual é a falha estrutural presente nessa proposta da máquina?",
@@ -46,6 +47,7 @@ export const moduleContent: ModuleContent = {
     },
     {
       id: "q2",
+      topic: "Comandos para a IA",
       type: "text",
       prompt:
         "Para obter uma proposta de plano de aula rica em detalhes pedagógicos e adequada ao ensino a distância, o educador deve estruturar o seu comando utilizando quatro pilares fundamentais.\n\nAssinale a alternativa que apresenta a aplicação correta da fórmula de comando estruturado.",
@@ -69,6 +71,7 @@ export const moduleContent: ModuleContent = {
     },
     {
       id: "q3",
+      topic: "Curadoria da IA",
       type: "text",
       prompt:
         "Ao analisar a proposta de atividade prática gerada pela inteligência artificial para um curso assíncrono, o professor notou que o sistema sugeriu um debate em grupo ao vivo com duração de duas horas, exigindo a instalação de um software pesado compatível apenas com computadores de alto desempenho. O público do curso é composto por adultos que estudam em horários flexíveis, utilizando predominantemente dispositivos móveis.\n\nQual deve ser a conduta do educador nesta etapa de auditoria do material?",
@@ -92,6 +95,7 @@ export const moduleContent: ModuleContent = {
     },
     {
       id: "q4",
+      topic: "Papel do educador",
       type: "text",
       prompt:
         "A utilização de assistentes virtuais de inteligência artificial no planejamento de experiências de aprendizagem a distância oferece agilidade na organização de conteúdos e na geração de ideias primárias.\n\nDiante dessa premissa, como deve ser definida a relação entre a ferramenta tecnológica e o trabalho do educador?",

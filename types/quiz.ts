@@ -21,6 +21,8 @@ export interface QuestionFeedback {
 
 export interface Question {
   id: string;
+  /** Competência avaliada, usada no relatório final. */
+  topic: string;
   type: QuestionType;
   /** Enunciado (type "text") ou turnos de conversa (type "chat_simulation"). */
   prompt: string | ChatMessage[];

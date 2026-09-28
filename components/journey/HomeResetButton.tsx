@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { AlertDialog, Button } from "@heroui/react";
+import { AlertDialog, Button, Tooltip } from "@heroui/react";
 import { userProgressRepository } from "@/services/user-progress";
 
 export function HomeResetButton() {
@@ -16,9 +16,14 @@ export function HomeResetButton() {
 
   return (
     <>
-      <Button variant="ghost" size="sm" onPress={() => setIsOpen(true)}>
-        Início
-      </Button>
+      <Tooltip delay={300}>
+        <Tooltip.Trigger>
+          <Button variant="ghost" size="sm" onPress={() => setIsOpen(true)}>
+            Início
+          </Button>
+        </Tooltip.Trigger>
+        <Tooltip.Content>Volta à tela de boas-vindas e apaga o progresso</Tooltip.Content>
+      </Tooltip>
       <AlertDialog.Root isOpen={isOpen} onOpenChange={setIsOpen}>
         <AlertDialog.Backdrop>
           <AlertDialog.Container>

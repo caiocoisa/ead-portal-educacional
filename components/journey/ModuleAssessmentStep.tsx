@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@heroui/react";
+import { Button, toast } from "@heroui/react";
 import { moduleContent } from "@/content/module";
 import { gradeQuiz } from "@/lib/quiz/gradeQuiz";
 import { resolveFeedback } from "@/lib/quiz/resolveFeedback";
@@ -51,11 +51,16 @@ export function ModuleAssessmentStep() {
   function handleConfirm() {
     if (selectedOption === undefined) return;
     setAnswers((prev) => ({ ...prev, [currentQuestion.id]: selectedOption }));
+    const { level } = resolveFeedback(currentQuestion, selectedOption);
+    if (level === "correct") toast.success("Resposta correta!");
+    else if (level === "near") toast.warning("Quase lá! Leia o retorno abaixo.");
+    else toast.danger("Resposta incorreta. Veja o retorno para revisar.");
   }
 
   function handleFinish() {
     const result = gradeQuiz(questions, answers);
     userProgressRepository.saveAssessmentResult(result);
+    toast.success("Avaliação concluída! Veja seu relatório.");
     router.push("/relatorio");
   }
 
@@ -100,7 +105,7 @@ export function ModuleAssessmentStep() {
             total={questions.length}
             selectedOptionIndex={selectedOption ?? null}
             onSelect={handleSelect}
-            isDisabled={isConfirmed}
+            revealedCorrectIndex={isConfirmed ? currentQuestion.correctOptionIndex : undefined}
           />
           {feedback ? (
             <AnswerFeedback level={feedback.level} message={feedback.message} />
