@@ -13,8 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Portal de Conteúdo Educativo",
-  description: "Assista ao vídeo, faça a avaliação e receba seu relatório final.",
+  title: "Planejamento Pedagógico para EaD com Apoio de IA",
+  description:
+    "Aprenda a planejar aulas a distância com apoio de IA: assista ao vídeo, faça a avaliação e receba seu relatório final.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

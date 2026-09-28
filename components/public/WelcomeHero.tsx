@@ -21,8 +21,9 @@ const STEP_ROUTES = {
 } as const;
 
 const FEATURES = [
-  { icon: "🎬", label: "Assista a um vídeo curto sobre o tema" },
-  { icon: "📝", label: "Responda a uma avaliação de múltipla escolha" },
+  { icon: "🎬", label: "Assista a um vídeo sobre planejamento pedagógico para EaD" },
+  { icon: "🤖", label: "Veja um exemplo de aula de Computação com apoio de IA" },
+  { icon: "📝", label: "Pratique como pedir, analisar e melhorar sugestões da IA" },
   { icon: "📊", label: "Veja seu resultado em um relatório final" },
 ];
 

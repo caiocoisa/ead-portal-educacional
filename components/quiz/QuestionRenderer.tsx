@@ -8,6 +8,7 @@ interface QuestionRendererProps {
   index: number;
   selectedOptionIndex: number | null;
   onSelect: (optionIndex: number) => void;
+  isDisabled?: boolean;
 }
 
 export function QuestionRenderer({
@@ -15,6 +16,7 @@ export function QuestionRenderer({
   index,
   selectedOptionIndex,
   onSelect,
+  isDisabled,
 }: QuestionRendererProps) {
   return (
     <Card>
@@ -23,7 +25,7 @@ export function QuestionRenderer({
       </Card.Header>
       <Card.Content className="flex flex-col gap-4">
         {question.type === "text" ? (
-          <p>{question.prompt as string}</p>
+          <p className="whitespace-pre-line">{question.prompt as string}</p>
         ) : (
           <ChatSimulationBubbles messages={question.prompt as ChatMessage[]} />
         )}
@@ -32,6 +34,7 @@ export function QuestionRenderer({
           value={selectedOptionIndex}
           onChange={onSelect}
           ariaLabel={`Alternativas da pergunta ${index + 1}`}
+          isDisabled={isDisabled}
         />
       </Card.Content>
     </Card>

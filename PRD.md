@@ -1,19 +1,28 @@
-# PRD — Portal de Conteúdo Educativo (MVP)
+# PRD — Portal de Planejamento Pedagógico para EaD com Apoio de IA (MVP)
 
 **Status:** Aprovado para execução (escopo reduzido ao core)
 **Autor:** Engenharia de Requisitos (Claude Code)
-**Data:** 2026-09-27
+**Data:** 2026-09-27 (tema/objetivo pedagógico definidos em 2026-09-27)
 
 ---
 
 ## 1. Visão do produto
 
-MVP de um portal web para entrega de **um módulo de conteúdo educativo**:
-o aluno assiste a um vídeo, responde a uma avaliação sobre o conteúdo e
-recebe um relatório final com o resultado. O objetivo desta v1 é ter o
-**core da jornada funcionando e implantado na Vercel** o quanto antes —
-qualquer outra funcionalidade (múltiplos módulos, área administrativa,
-i18n, troca de tema) fica para uma fase futura (ver seção 9).
+MVP de um portal web para entrega de **um módulo de conteúdo educativo**
+sobre **planejamento pedagógico para Educação a Distância (EaD) com apoio
+de Inteligência Artificial**: o aluno assiste a um vídeo, responde a uma
+avaliação sobre o conteúdo e recebe um relatório final com o resultado.
+
+**Tema do módulo:** ensinar a planejar experiências de aprendizagem a
+distância articulando **público, objetivos, conteúdos, atividades e
+avaliação** — usando uma aula de **Computação** como exemplo prático, e
+demonstrando como **solicitar, analisar e melhorar** sugestões de um
+assistente de IA (ex. Gemini) ao longo desse planejamento.
+
+O objetivo desta v1 é ter o **core da jornada funcionando e implantado na
+Vercel** o quanto antes — qualquer outra funcionalidade (múltiplos
+módulos, área administrativa, i18n) fica para uma fase futura (ver
+seção 9).
 
 **Objetivo de negócio:** validar a jornada mínima (vídeo → avaliação →
 relatório) em produção, com o menor custo de implementação possível.
@@ -24,7 +33,7 @@ relatório) em produção, com o menor custo de implementação possível.
 
 | Persona | Perfil | Necessidade de linguagem/interface |
 |---|---|---|
-| **Aluno/usuário final** | Público geral, sem conhecimento técnico prévio do tema | Linguagem simples, direta, sem jargão; foco em orientação passo a passo |
+| **Aluno/usuário final** | Educador, licenciando ou estudante interessado em planejar aulas a distância com apoio de IA — não precisa ter experiência prévia com ferramentas de IA | Linguagem simples, direta, sem jargão técnico de IA; foco em orientação passo a passo e em exemplos concretos (aula de Computação) |
 
 > Nesta v1 **não existe** persona de Administrador nem área administrativa.
 > O conteúdo (vídeo + quiz) é cadastrado **diretamente no código-fonte**
@@ -105,13 +114,15 @@ página e o iframe), sem depender apenas dos controles nativos do player.
 
 #### 3.2.2 Formato do artefato avaliativo (quiz)
 
-Quiz de **múltipla escolha**, com perguntas sobre **prompts e saídas de um
-chat de LLM**. Dois tipos de pergunta suportados:
+Quiz de **múltipla escolha**, com perguntas sobre **planejamento
+pedagógico para EaD e sobre como solicitar, analisar e melhorar sugestões
+de um assistente de IA** (ex. Gemini) nesse planejamento — usando uma aula
+de Computação como exemplo. Dois tipos de pergunta suportados:
 
 | Tipo | Pergunta | Alternativas |
 |---|---|---|
-| **Tipo 1 — Texto** | Texto simples (ex. pergunta sobre um conceito de prompt) | Texto simples |
-| **Tipo 2 — Simulação de chat** | Renderizada como uma **conversa simulada** (bolhas de mensagem, papel usuário/assistente), reproduzindo um prompt e a saída de um LLM | Texto simples |
+| **Tipo 1 — Texto** | Texto simples (ex. pergunta sobre um conceito de planejamento pedagógico) | Texto simples |
+| **Tipo 2 — Simulação de chat** | Renderizada como uma **conversa simulada** (bolhas de mensagem, papel usuário/assistente), reproduzindo um prompt pedido a um assistente de IA e a sugestão recebida, para o aluno analisar | Texto simples |
 
 Estrutura de dados de cada pergunta (definida diretamente no arquivo de seed
 de conteúdo, seção 3.5, e usada no modelo de persistência, seção 3.6):
@@ -138,6 +149,13 @@ Regras do quiz:
 
 - Todas as perguntas são de **múltipla escolha com resposta única** (uma
   alternativa correta por pergunta).
+- **Validação imediata, uma pergunta por vez** (Task 20): o aluno responde
+  e confirma cada pergunta antes de ver a próxima — não é um formulário
+  único enviado ao final. Ao confirmar, alternativas ficam bloqueadas e um
+  painel de **retorno pedagógico imediato** é exibido, categorizado por
+  proximidade da resposta escolhida: acerto, erro próximo (uma alternativa
+  específica, plausível mas incorreta) ou erro distante (demais
+  alternativas) — conteúdo definido em `banco-questoes.md`.
 - O resultado (`assessmentResult`, seção 3.6) registra, por pergunta, a
   alternativa escolhida e se estava correta, além da pontuação total —
   usado no relatório final (item 3 da seção 3.2).

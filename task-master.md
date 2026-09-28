@@ -1,8 +1,8 @@
-# Task Master — Portal de Conteúdo Educativo (MVP)
+# Task Master — Portal de Planejamento Pedagógico para EaD com Apoio de IA (MVP)
 
 > Gerado em: 2026-09-27
 > Baseado em: `PRD.md` (raiz do repositório, versão MVP de escopo reduzido)
-> Total de tasks: 19 (15 do MVP + 4 de refinamento pós-deploy)
+> Total de tasks: 20 (15 do MVP + 5 de refinamento pós-deploy)
 
 ## Visão geral
 
@@ -1010,6 +1010,92 @@ ligado/desligado × light/dark) — 0 violações.
 
 ---
 
+### Task 20
+| Field | Value |
+|---|---|
+| **ID** | 20 |
+| **Title** | Reformular conteúdo e mecânica da avaliação a partir de `banco-questoes.md` |
+| **Status** | `done` |
+| **Priority** | `high` |
+| **Complexity** | 6 |
+| **Dependencies** | `[9, 10, 12]` |
+| **Phase** | 7 — Conteúdo pedagógico definitivo |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Pedido do usuário (2026-09-27): substituir o conteúdo de exemplo do quiz
+(genérico, sobre "prompts de LLM") pelo banco de questões definitivo em
+`banco-questoes.md` — 4 questões de cenário sobre planejamento pedagógico
+para EaD com apoio de IA, cada uma com **retorno pedagógico categorizado**
+por proximidade da resposta (acerto / erro próximo / erro distante). Isso
+exigiu reformular a **mecânica** da avaliação, não só o conteúdo: o banco
+especifica validação imediata por pergunta (não mais "responder tudo e
+enviar no final").
+
+**Details:**
+- `types/quiz.ts`: `Question` ganhou o campo `feedback` (`QuestionFeedback`
+  — mensagens de acerto, de um erro próximo específico por índice de
+  alternativa, e de erro distante para as demais); novo tipo
+  `FeedbackLevel = "correct" | "near" | "far"`.
+- `lib/quiz/resolveFeedback.ts` (novo) — função pura que decide o nível e
+  a mensagem de feedback a partir da alternativa escolhida.
+- `content/module.ts` — as 3 perguntas de exemplo foram substituídas pelas
+  4 do banco (Alinhamento Pedagógico, Arquitetura de Comandos/Prompts,
+  Auditoria Crítica de sugestões da IA, Papel do educador), com
+  `correctOptionIndex`/`feedback` fiéis ao documento.
+- `components/journey/ModuleAssessmentStep.tsx` — **reescrito**: de "todas
+  as perguntas na tela + botão Enviar" para **uma pergunta por vez**, com
+  botão "Confirmar resposta" → exibe `AnswerFeedback` (painel colorido:
+  verde/acerto, amarelo/erro próximo, vermelho/erro distante) → botão
+  "Próxima pergunta" (ou "Ver relatório final" na última) libera o avanço.
+  Alternativas ficam bloqueadas (`isDisabled`) após a confirmação.
+- `components/quiz/AnswerFeedback.tsx` (novo) — usa o componente `Alert`
+  do HeroUI (`status="success"|"warning"|"danger"`) para o painel de
+  feedback.
+- `components/quiz/OptionsRadioGroup.tsx`, `QuestionRenderer.tsx` — ganharam
+  a prop `isDisabled`, propagada até o `RadioGroup` para travar a resposta
+  após a confirmação.
+- O resultado agregado (`AssessmentResult`/`gradeQuiz`, Task 10) não
+  mudou de forma — continua acumulando `answers[]` + `correctCount`/
+  `totalCount`, agora computado ao final da última pergunta em vez de um
+  clique único de "enviar".
+- **Nota:** um segundo arquivo, `roteiro_audiovisual_completo.md`, também
+  apareceu no diretório nesta mesma leva (roteiro de gravação do vídeo
+  real do módulo, ~27min, mesmo tema). Não gerou mudança de código nesta
+  task — fica registrado aqui como referência para quando o vídeo for
+  gravado e `content/module.ts` → `youtubeVideoId` (Task 17) for
+  preenchido.
+
+**Files:**
+- `types/quiz.ts`
+- `lib/quiz/resolveFeedback.ts` (novo)
+- `content/module.ts`
+- `components/journey/ModuleAssessmentStep.tsx`
+- `components/quiz/AnswerFeedback.tsx` (novo)
+- `components/quiz/OptionsRadioGroup.tsx`, `components/quiz/QuestionRenderer.tsx`
+
+**Test strategy:**
+Playwright cobrindo as 4 perguntas com uma resposta de cada nível (acerto,
+erro próximo, erro distante), verificando o título/status do painel de
+feedback (`data-slot="alert-root"`) e o bloqueio do `RadioGroup` após
+confirmar; regressão completa da jornada (identificação → vídeo → 4
+perguntas → relatório → reiniciar → reload) sem erros de JS; axe-core nos
+3 níveis de feedback × light/dark (0 violações).
+
+**Acceptance criteria:**
+- [x] As 4 questões do `banco-questoes.md` estão implementadas com gabarito
+      e feedback fiéis ao documento.
+- [x] Cada pergunta exige confirmação individual antes de liberar o
+      avanço; alternativas ficam bloqueadas após confirmar.
+- [x] O painel de feedback reflete corretamente o nível (verde/amarelo/
+      vermelho) e a mensagem correspondente à alternativa escolhida.
+- [x] O relatório final ao término da 4ª pergunta continua exibindo a
+      pontuação agregada corretamente.
+
+**Source:** Pedido do usuário (2026-09-27) — `banco-questoes.md`
+
+---
+
 ## Resumo
 
 ### Tasks por fase
@@ -1022,11 +1108,12 @@ ligado/desligado × light/dark) — 0 violações.
 | 4 — Qualidade e deploy | 14, 15 | 14 depende de 13; 15 depende de 13,14 |
 | 5 — Refinamento de UX | 16, 17 | 16 depende de 6; 17 depende de 8 |
 | 6 — Acessibilidade estendida | 18, 19 | 18 depende de 6,9,11; 19 depende de 18 |
+| 7 — Conteúdo pedagógico definitivo | 20 | 20 depende de 9,10,12 |
 
 ### Tasks por prioridade
 | Prioridade | IDs |
 |---|---|
-| high | 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 15 |
+| high | 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 15, 20 |
 | medium | 11, 14, 16, 17, 18, 19 |
 | low | — |
 
@@ -1034,14 +1121,15 @@ ligado/desligado × light/dark) — 0 violações.
 - Task 1: Inicializar projeto Next.js (App Router) + TypeScript + Tailwind + NextUI + config Vercel — `done`
 
 ### Status atual (2026-09-27)
-**Todas as 19 tasks estão `done`.** MVP implementado, testado (build,
+**Todas as 20 tasks estão `done`.** MVP implementado, testado (build,
 lint, testes end-to-end com Playwright, auditoria de acessibilidade com
-axe-core: 0 violações em 15 combinações de tema/contraste/tamanho de
-fonte × tela) e implantado em produção na Vercel:
-https://ead-portal-educacional.vercel.app/ — os 10 critérios de aceite da
-seção 8 do PRD foram verificados na URL pública. Tasks 16–19 (redesign da
-tela inicial, skeleton de vídeo, tema light/dark, tamanho de fonte/alto
-contraste) foram adicionadas depois do primeiro deploy, a partir de
+axe-core: 0 violações em todas as combinações de tema/contraste/tamanho de
+fonte × tela, incluindo os 3 níveis de feedback do quiz) e implantado em
+produção na Vercel: https://ead-portal-educacional.vercel.app/ — os 10
+critérios de aceite da seção 8 do PRD foram verificados na URL pública.
+Tasks 16–20 (redesign da tela inicial, skeleton de vídeo, tema light/dark,
+tamanho de fonte/alto contraste, banco de questões definitivo com feedback
+pedagógico) foram adicionadas depois do primeiro deploy, a partir de
 feedback do usuário, e já estão implementadas — falta apenas dar
 `git push` para propagar à Vercel.
 
@@ -1053,4 +1141,5 @@ Próximos passos ficam no backlog de extensão futura — PRD.md, seção 9
 relatório, acompanhamento de múltiplos alunos — item de tema light/dark
 já implementado na Task 18, removido do backlog). Antes de ir ao ar,
 lembrar de substituir `content/module.ts` → `youtubeVideoId` (hoje `null`,
-mostrando o skeleton da Task 17) pelo ID real do vídeo do módulo.
+mostrando o skeleton da Task 17) pelo ID real do vídeo do módulo — o
+roteiro de gravação já existe em `roteiro_audiovisual_completo.md`.

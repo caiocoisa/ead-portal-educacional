@@ -1,8 +1,9 @@
-# Portal de Conteúdo Educativo (MVP)
+# Portal de Planejamento Pedagógico para EaD com Apoio de IA (MVP)
 
-Portal web em Next.js: o aluno assiste a um vídeo, responde a uma avaliação
-e recebe um relatório final de desempenho. Veja `PRD.md` para o escopo do
-produto e `task-master.md` para o plano de implementação.
+Portal web em Next.js sobre planejamento de experiências de aprendizagem a
+distância com apoio de IA: o aluno assiste a um vídeo, responde a uma
+avaliação e recebe um relatório final de desempenho. Veja `PRD.md` para o
+escopo do produto e `task-master.md` para o plano de implementação.
 
 ## Rodando localmente
 

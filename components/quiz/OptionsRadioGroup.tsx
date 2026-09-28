@@ -5,6 +5,7 @@ interface OptionsRadioGroupProps {
   value: number | null;
   onChange: (index: number) => void;
   ariaLabel: string;
+  isDisabled?: boolean;
 }
 
 export function OptionsRadioGroup({
@@ -12,12 +13,14 @@ export function OptionsRadioGroup({
   value,
   onChange,
   ariaLabel,
+  isDisabled,
 }: OptionsRadioGroupProps) {
   return (
     <RadioGroup
       aria-label={ariaLabel}
       value={value === null ? null : String(value)}
       onChange={(next) => onChange(Number(next))}
+      isDisabled={isDisabled}
       className="flex flex-col gap-2"
     >
       {options.map((option, index) => (
