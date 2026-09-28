@@ -2,7 +2,7 @@
 
 > Gerado em: 2026-09-27
 > Baseado em: `PRD.md` (raiz do repositório, versão MVP de escopo reduzido)
-> Total de tasks: 22 (15 do MVP + 7 de refinamento pós-deploy)
+> Total de tasks: 23 (15 do MVP + 8 de refinamento pós-deploy)
 
 ## Visão geral
 
@@ -1212,6 +1212,59 @@ Regressão completa da jornada e de persistência de preferências.
 
 ---
 
+### Task 23
+| Field | Value |
+|---|---|
+| **ID** | 23 |
+| **Title** | Reposicionar o gatilho "Acessibilidade" como aba fixa na lateral da tela |
+| **Status** | `done` |
+| **Priority** | `low` |
+| **Complexity** | 1 |
+| **Dependencies** | `[22]` |
+| **Phase** | 6 — Acessibilidade estendida |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Pedido do usuário (2026-09-27): mesmo depois da Task 22, o botão
+"Acessibilidade" ainda ficava numa linha própria no header, em posição de
+destaque acima do conteúdo — na tela de avaliação isso ainda competia com
+a pergunta. Reposicionado como uma aba fixa na borda esquerda da tela
+(`position: fixed`), fora do fluxo do layout.
+
+**Details:**
+- `components/accessibility/AccessibilityControls.tsx` — `Drawer.Trigger`
+  ganhou classes `fixed left-0 top-1/2 -translate-y-1/2` (aba vertical
+  grudada na lateral, texto em `[writing-mode:vertical-rl]`), em vez de
+  `buttonVariants` sozinho ocupando uma linha do header. `aria-label`
+  adicionado para manter o nome acessível independente da rotação visual
+  do texto.
+- Como o elemento passa a ser `position: fixed`, ele é removido do fluxo
+  normal do documento — não precisou de nenhuma mudança em
+  `PortalHeader.tsx`/`JourneyLayout.tsx`, que continuam só chamando
+  `<AccessibilityControls />` sem reservar espaço extra para ele.
+
+**Files:**
+- `components/accessibility/AccessibilityControls.tsx`
+
+**Test strategy:**
+Playwright: bounding box do gatilho confirma posição na borda esquerda
+(`x < 50`) com o header/pergunta permanecendo no topo da tela; clique na
+aba lateral ainda abre o drawer corretamente. axe-core no drawer aberto/
+fechado em `/`, `/video` e `/avaliacao` (0 violações); matriz completa de
+tema × contraste × tamanho de fonte revalidada (0 violações); regressão
+completa da jornada e do fluxo de avaliação.
+
+**Acceptance criteria:**
+- [x] O gatilho de acessibilidade não ocupa mais uma posição de destaque
+      no topo do conteúdo principal.
+- [x] O gatilho fica fixo na lateral da tela, acessível em qualquer
+      posição de rolagem.
+- [x] Nenhuma regressão funcional ou de acessibilidade.
+
+**Source:** Pedido do usuário (2026-09-27)
+
+---
+
 ## Resumo
 
 ### Tasks por fase
@@ -1223,7 +1276,7 @@ Regressão completa da jornada e de persistência de preferências.
 | 3 — Avaliação | 9, 10, 11, 12, 13 | 10 depende de 2,9; 11 depende de 1,4; 12 depende de 3,5,9,10,11; 13 depende de 4,5,11,12 |
 | 4 — Qualidade e deploy | 14, 15 | 14 depende de 13; 15 depende de 13,14 |
 | 5 — Refinamento de UX | 16, 17 | 16 depende de 6; 17 depende de 8 |
-| 6 — Acessibilidade estendida | 18, 19, 22 | 18 depende de 6,9,11; 19 depende de 18; 22 depende de 18,19 |
+| 6 — Acessibilidade estendida | 18, 19, 22, 23 | 18 depende de 6,9,11; 19 depende de 18; 22 depende de 18,19; 23 depende de 22 |
 | 7 — Conteúdo pedagógico definitivo | 20, 21 | 20 depende de 9,10,12; 21 depende de 13,20 |
 
 ### Tasks por prioridade
@@ -1231,25 +1284,26 @@ Regressão completa da jornada e de persistência de preferências.
 |---|---|
 | high | 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 15, 20 |
 | medium | 11, 14, 16, 17, 18, 19, 21, 22 |
-| low | — |
+| low | 23 |
 
 ### Pronto para iniciar (dependências vazias)
 - Task 1: Inicializar projeto Next.js (App Router) + TypeScript + Tailwind + NextUI + config Vercel — `done`
 
 ### Status atual (2026-09-27)
-**Todas as 22 tasks estão `done`.** MVP implementado, testado (build,
+**Todas as 23 tasks estão `done`.** MVP implementado, testado (build,
 lint, testes end-to-end com Playwright, auditoria de acessibilidade com
 axe-core: 0 violações em todas as combinações de tema/contraste/tamanho de
 fonte × tela, incluindo os 3 níveis de feedback do quiz e o drawer de
 acessibilidade aberto/fechado) e implantado em produção na Vercel:
 https://ead-portal-educacional.vercel.app/ — os 10 critérios de aceite da
-seção 8 do PRD foram verificados na URL pública. Tasks 16–22 (redesign da
+seção 8 do PRD foram verificados na URL pública. Tasks 16–23 (redesign da
 tela inicial, skeleton de vídeo, tema light/dark, tamanho de fonte/alto
 contraste, banco de questões definitivo com feedback pedagógico,
-comentários por pergunta no relatório final, drawer de acessibilidade)
-foram adicionadas depois do primeiro deploy, a partir de feedback do
-usuário — implementadas, commitadas e já propagadas para o GitHub (a
-Vercel redeploya automaticamente a cada push em `main`).
+comentários por pergunta no relatório final, drawer de acessibilidade e
+seu gatilho reposicionado como aba lateral fixa) foram adicionadas depois
+do primeiro deploy, a partir de feedback do usuário — implementadas,
+commitadas e já propagadas para o GitHub (a Vercel redeploya
+automaticamente a cada push em `main`).
 
 Repositório no GitHub: https://github.com/caiocoisa/ead-portal-educacional
 (privado).

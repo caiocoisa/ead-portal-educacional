@@ -9,7 +9,13 @@ import { ThemeToggle } from "./ThemeToggle";
 export function AccessibilityControls() {
   return (
     <Drawer.Root>
-      <Drawer.Trigger className={buttonVariants({ variant: "ghost", size: "sm" })}>
+      <Drawer.Trigger
+        aria-label="Abrir menu de acessibilidade"
+        className={
+          buttonVariants({ variant: "ghost", size: "sm" }) +
+          " fixed top-1/2 left-0 z-40 -translate-y-1/2 rounded-l-none border border-l-0 border-(--border) bg-(--surface) py-3 shadow-md [writing-mode:vertical-rl]"
+        }
+      >
         Acessibilidade
       </Drawer.Trigger>
       <Drawer.Backdrop>
