@@ -2,7 +2,7 @@
 
 > Gerado em: 2026-09-27
 > Baseado em: `PRD.md` (raiz do repositório, versão MVP de escopo reduzido)
-> Total de tasks: 20 (15 do MVP + 5 de refinamento pós-deploy)
+> Total de tasks: 21 (15 do MVP + 6 de refinamento pós-deploy)
 
 ## Visão geral
 
@@ -1096,6 +1096,55 @@ perguntas → relatório → reiniciar → reload) sem erros de JS; axe-core nos
 
 ---
 
+### Task 21
+| Field | Value |
+|---|---|
+| **ID** | 21 |
+| **Title** | Relatório final com comentários por pergunta + remoção de travessões da tela inicial |
+| **Status** | `done` |
+| **Priority** | `medium` |
+| **Complexity** | 2 |
+| **Dependencies** | `[13, 20]` |
+| **Phase** | 7 — Conteúdo pedagógico definitivo |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Pedido do usuário (2026-09-27): (1) o relatório final mostrava só
+✅/❌ por pergunta, sem o comentário pedagógico; reformulado para exibir a
+mesma mensagem categorizada (acerto/erro próximo/erro distante) usada na
+etapa de avaliação (Task 20), agora como revisão. (2) o texto da tela
+inicial (`content/module.ts` → `description`) tinha um travessão; reescrito
+em duas frases sem esse caractere.
+
+**Details:**
+- `components/journey/FinalReport.tsx` — para cada resposta, busca a
+  `Question` correspondente em `moduleContent.questions` e reaproveita
+  `resolveFeedback()` (Task 20) para renderizar um `AnswerFeedback` (o
+  mesmo painel colorido da avaliação) por pergunta, no lugar da linha de
+  texto simples anterior.
+- `content/module.ts` — descrição do módulo reescrita sem travessão,
+  mantendo o mesmo conteúdo.
+
+**Files:**
+- `components/journey/FinalReport.tsx`
+- `content/module.ts`
+
+**Test strategy:**
+Playwright: relatório final com respostas de acerto/erro próximo/erro
+distante mostra os 4 painéis de feedback com título e mensagem corretos;
+checagem de que o texto da tela inicial não contém `—`. axe-core no
+relatório em light/dark (0 violações). Regressão completa da jornada.
+
+**Acceptance criteria:**
+- [x] Relatório final exibe o comentário/observação pedagógica de cada
+      pergunta, não só o status de acerto/erro.
+- [x] Texto da tela inicial não contém travessões.
+- [x] Nenhuma regressão na jornada, guarda de navegação ou acessibilidade.
+
+**Source:** Pedido do usuário (2026-09-27)
+
+---
+
 ## Resumo
 
 ### Tasks por fase
@@ -1108,30 +1157,31 @@ perguntas → relatório → reiniciar → reload) sem erros de JS; axe-core nos
 | 4 — Qualidade e deploy | 14, 15 | 14 depende de 13; 15 depende de 13,14 |
 | 5 — Refinamento de UX | 16, 17 | 16 depende de 6; 17 depende de 8 |
 | 6 — Acessibilidade estendida | 18, 19 | 18 depende de 6,9,11; 19 depende de 18 |
-| 7 — Conteúdo pedagógico definitivo | 20 | 20 depende de 9,10,12 |
+| 7 — Conteúdo pedagógico definitivo | 20, 21 | 20 depende de 9,10,12; 21 depende de 13,20 |
 
 ### Tasks por prioridade
 | Prioridade | IDs |
 |---|---|
 | high | 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 15, 20 |
-| medium | 11, 14, 16, 17, 18, 19 |
+| medium | 11, 14, 16, 17, 18, 19, 21 |
 | low | — |
 
 ### Pronto para iniciar (dependências vazias)
 - Task 1: Inicializar projeto Next.js (App Router) + TypeScript + Tailwind + NextUI + config Vercel — `done`
 
 ### Status atual (2026-09-27)
-**Todas as 20 tasks estão `done`.** MVP implementado, testado (build,
+**Todas as 21 tasks estão `done`.** MVP implementado, testado (build,
 lint, testes end-to-end com Playwright, auditoria de acessibilidade com
 axe-core: 0 violações em todas as combinações de tema/contraste/tamanho de
 fonte × tela, incluindo os 3 níveis de feedback do quiz) e implantado em
 produção na Vercel: https://ead-portal-educacional.vercel.app/ — os 10
 critérios de aceite da seção 8 do PRD foram verificados na URL pública.
-Tasks 16–20 (redesign da tela inicial, skeleton de vídeo, tema light/dark,
+Tasks 16–21 (redesign da tela inicial, skeleton de vídeo, tema light/dark,
 tamanho de fonte/alto contraste, banco de questões definitivo com feedback
-pedagógico) foram adicionadas depois do primeiro deploy, a partir de
-feedback do usuário — implementadas, commitadas e já propagadas para o
-GitHub (a Vercel redeploya automaticamente a cada push em `main`).
+pedagógico, comentários por pergunta no relatório final) foram adicionadas
+depois do primeiro deploy, a partir de feedback do usuário — implementadas,
+commitadas e já propagadas para o GitHub (a Vercel redeploya
+automaticamente a cada push em `main`).
 
 Repositório no GitHub: https://github.com/caiocoisa/ead-portal-educacional
 (privado).

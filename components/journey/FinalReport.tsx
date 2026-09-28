@@ -1,5 +1,8 @@
 import { Card } from "@heroui/react";
 import type { AssessmentResult } from "@/types/quiz";
+import { moduleContent } from "@/content/module";
+import { resolveFeedback } from "@/lib/quiz/resolveFeedback";
+import { AnswerFeedback } from "@/components/quiz/AnswerFeedback";
 import { RestartJourneyModal } from "./RestartJourneyModal";
 
 interface FinalReportProps {
@@ -20,13 +23,21 @@ export function FinalReport({ assessmentResult }: FinalReportProps) {
           Você acertou <strong>{correctCount}</strong> de{" "}
           <strong>{totalCount}</strong> perguntas.
         </p>
-        <ul className="flex flex-col gap-1 text-sm text-(--muted)">
-          {assessmentResult.answers.map((answer, index) => (
-            <li key={answer.questionId}>
-              Pergunta {index + 1}: {answer.correct ? "✅ correta" : "❌ incorreta"}
-            </li>
-          ))}
-        </ul>
+        <div className="flex flex-col gap-4">
+          {assessmentResult.answers.map((answer, index) => {
+            const question = moduleContent.questions.find(
+              (q) => q.id === answer.questionId
+            );
+            if (!question) return null;
+            const feedback = resolveFeedback(question, answer.selectedOptionIndex);
+            return (
+              <div key={answer.questionId} className="flex flex-col gap-2">
+                <span className="text-sm font-medium">Pergunta {index + 1}</span>
+                <AnswerFeedback level={feedback.level} message={feedback.message} />
+              </div>
+            );
+          })}
+        </div>
         <RestartJourneyModal />
       </Card.Content>
     </Card>

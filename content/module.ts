@@ -15,7 +15,7 @@ export interface ModuleContent {
 export const moduleContent: ModuleContent = {
   title: "Planejamento Pedagógico para EaD com Apoio de IA",
   description:
-    "Aprenda a planejar uma experiência de aprendizagem a distância articulando público, objetivos, conteúdos, atividades e avaliação — usando uma aula de Computação como exemplo de como pedir, analisar e melhorar sugestões de um assistente de IA, como o Gemini.",
+    "Aprenda a planejar uma experiência de aprendizagem a distância articulando público, objetivos, conteúdos, atividades e avaliação. Use uma aula de Computação como exemplo prático de como pedir, analisar e melhorar sugestões de um assistente de IA, como o Gemini.",
   // Vídeo do módulo ainda não definido — ver VideoSkeleton.
   youtubeVideoId: null,
   // Banco de questões definido em banco-questoes.md — ver lib/quiz/resolveFeedback.ts
