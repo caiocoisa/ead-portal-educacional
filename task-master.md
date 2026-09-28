@@ -2,7 +2,7 @@
 
 > Gerado em: 2026-09-27
 > Baseado em: `PRD.md` (raiz do repositório, versão MVP de escopo reduzido)
-> Total de tasks: 21 (15 do MVP + 6 de refinamento pós-deploy)
+> Total de tasks: 22 (15 do MVP + 7 de refinamento pós-deploy)
 
 ## Visão geral
 
@@ -1145,6 +1145,73 @@ relatório em light/dark (0 violações). Regressão completa da jornada.
 
 ---
 
+### Task 22
+| Field | Value |
+|---|---|
+| **ID** | 22 |
+| **Title** | Mover controles de acessibilidade para um drawer lateral retrátil |
+| **Status** | `done` |
+| **Priority** | `medium` |
+| **Complexity** | 4 |
+| **Dependencies** | `[18, 19]` |
+| **Phase** | 6 — Acessibilidade estendida |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Pedido do usuário (2026-09-27): na tela de avaliação, os controles de
+acessibilidade (tema, tamanho de fonte, alto contraste) inline no header
+empurravam o conteúdo principal (a pergunta) para baixo. Movidos para um
+menu lateral retrátil (`Drawer` do HeroUI, `placement="right"`) — some do
+fluxo do layout quando fechado, abre como overlay por cima do conteúdo
+quando expandido, sem empurrar nada.
+
+**Details:**
+- `components/accessibility/AccessibilityControls.tsx` — reescrito para
+  envolver `ThemeToggle`/`FontSizeControl`/`HighContrastToggle` num
+  `Drawer.Root` do HeroUI, com um botão compacto "Acessibilidade" como
+  gatilho (`Drawer.Trigger`, que já é o próprio elemento pressionável do
+  HeroUI — sem o problema de interativo aninhado encontrado antes em
+  `AlertDialog.Trigger`/`Popover.Trigger`).
+- **Bug encontrado e corrigido:** como o conteúdo do `Drawer.Body` só é
+  montado quando aberto, os hooks `useTheme()`/`useFontSize()`/
+  `useHighContrast()` (que aplicam os atributos `data-*` no `<html>` via
+  efeito de montagem) paravam de rodar no carregamento da página — o tema/
+  tamanho de fonte/contraste salvos só eram aplicados depois que o usuário
+  abria o menu pelo menos uma vez. Corrigido com
+  `components/accessibility/AccessibilityInitializer.tsx` (novo), montado
+  sempre em `app/layout.tsx`, que só chama os três hooks (sem renderizar
+  UI) para garantir a aplicação imediata independente do estado do drawer.
+- `Drawer.Trigger` não aceita `variant`/`size` do HeroUI diretamente no
+  tipo (só props do `Button` primitivo do react-aria); usado
+  `buttonVariants` de `@heroui/styles` para estilizar sem depender de
+  nomes de classe internos.
+
+**Files:**
+- `components/accessibility/AccessibilityControls.tsx`
+- `components/accessibility/AccessibilityInitializer.tsx` (novo)
+- `app/layout.tsx`
+
+**Test strategy:**
+Playwright: controles de tema não aparecem inline por padrão; abrir o
+drawer revela os controles e alterá-los funciona (`data-theme` muda);
+fechar o drawer não deixa nada bloqueando cliques na pergunta; `data-theme`/
+`data-font-size`/`data-contrast` já aplicados logo no carregamento da
+página, sem precisar abrir o drawer (regressão do bug acima). axe-core com
+o drawer aberto e fechado, em `/`, `/video` e `/avaliacao` — 0 violações.
+Regressão completa da jornada e de persistência de preferências.
+
+**Acceptance criteria:**
+- [x] Controles de acessibilidade não ocupam espaço fixo no layout —
+      ficam escondidos até o usuário abrir o menu.
+- [x] Menu abre/fecha como overlay lateral, sem empurrar o conteúdo
+      principal (a pergunta, no caso da avaliação).
+- [x] Preferências salvas continuam sendo aplicadas imediatamente no
+      carregamento da página, mesmo com o menu fechado.
+
+**Source:** Pedido do usuário (2026-09-27)
+
+---
+
 ## Resumo
 
 ### Tasks por fase
@@ -1156,32 +1223,33 @@ relatório em light/dark (0 violações). Regressão completa da jornada.
 | 3 — Avaliação | 9, 10, 11, 12, 13 | 10 depende de 2,9; 11 depende de 1,4; 12 depende de 3,5,9,10,11; 13 depende de 4,5,11,12 |
 | 4 — Qualidade e deploy | 14, 15 | 14 depende de 13; 15 depende de 13,14 |
 | 5 — Refinamento de UX | 16, 17 | 16 depende de 6; 17 depende de 8 |
-| 6 — Acessibilidade estendida | 18, 19 | 18 depende de 6,9,11; 19 depende de 18 |
+| 6 — Acessibilidade estendida | 18, 19, 22 | 18 depende de 6,9,11; 19 depende de 18; 22 depende de 18,19 |
 | 7 — Conteúdo pedagógico definitivo | 20, 21 | 20 depende de 9,10,12; 21 depende de 13,20 |
 
 ### Tasks por prioridade
 | Prioridade | IDs |
 |---|---|
 | high | 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 15, 20 |
-| medium | 11, 14, 16, 17, 18, 19, 21 |
+| medium | 11, 14, 16, 17, 18, 19, 21, 22 |
 | low | — |
 
 ### Pronto para iniciar (dependências vazias)
 - Task 1: Inicializar projeto Next.js (App Router) + TypeScript + Tailwind + NextUI + config Vercel — `done`
 
 ### Status atual (2026-09-27)
-**Todas as 21 tasks estão `done`.** MVP implementado, testado (build,
+**Todas as 22 tasks estão `done`.** MVP implementado, testado (build,
 lint, testes end-to-end com Playwright, auditoria de acessibilidade com
 axe-core: 0 violações em todas as combinações de tema/contraste/tamanho de
-fonte × tela, incluindo os 3 níveis de feedback do quiz) e implantado em
-produção na Vercel: https://ead-portal-educacional.vercel.app/ — os 10
-critérios de aceite da seção 8 do PRD foram verificados na URL pública.
-Tasks 16–21 (redesign da tela inicial, skeleton de vídeo, tema light/dark,
-tamanho de fonte/alto contraste, banco de questões definitivo com feedback
-pedagógico, comentários por pergunta no relatório final) foram adicionadas
-depois do primeiro deploy, a partir de feedback do usuário — implementadas,
-commitadas e já propagadas para o GitHub (a Vercel redeploya
-automaticamente a cada push em `main`).
+fonte × tela, incluindo os 3 níveis de feedback do quiz e o drawer de
+acessibilidade aberto/fechado) e implantado em produção na Vercel:
+https://ead-portal-educacional.vercel.app/ — os 10 critérios de aceite da
+seção 8 do PRD foram verificados na URL pública. Tasks 16–22 (redesign da
+tela inicial, skeleton de vídeo, tema light/dark, tamanho de fonte/alto
+contraste, banco de questões definitivo com feedback pedagógico,
+comentários por pergunta no relatório final, drawer de acessibilidade)
+foram adicionadas depois do primeiro deploy, a partir de feedback do
+usuário — implementadas, commitadas e já propagadas para o GitHub (a
+Vercel redeploya automaticamente a cada push em `main`).
 
 Repositório no GitHub: https://github.com/caiocoisa/ead-portal-educacional
 (privado).

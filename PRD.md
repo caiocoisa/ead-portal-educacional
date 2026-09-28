@@ -229,7 +229,7 @@ Estrutura mínima necessária para sustentar o fluxo:
   o dark mode e o alto contraste funcionarem em toda a interface sem
   exceções.
 
-### 5.1 Tema, tamanho de fonte e alto contraste (Tasks 18–19)
+### 5.1 Tema, tamanho de fonte e alto contraste (Tasks 18–19, 22)
 
 - **Tema light/dark/sistema:** via `useTheme()` nativo do HeroUI v3 —
   persiste em `localStorage`, resolve "sistema" pela preferência do SO
@@ -244,6 +244,14 @@ Estrutura mínima necessária para sustentar o fluxo:
 - Todas as três preferências funcionam **antes da identificação** (já na
   tela de boas-vindas), pois são independentes do progresso do aluno —
   não ficam dentro de `UserProgress`.
+- **Menu retrátil (Task 22):** os três controles ficam recolhidos por
+  padrão em um drawer lateral (`Drawer` do HeroUI), aberto por um botão
+  "Acessibilidade" — evita empurrar o conteúdo principal (crítico na tela
+  de avaliação, onde o espaço acima da pergunta é escasso). Como o
+  conteúdo do drawer só é montado quando aberto, um componente sempre
+  montado (`AccessibilityInitializer`) garante que as preferências salvas
+  sejam aplicadas desde o primeiro carregamento da página, mesmo com o
+  menu fechado.
 
 ---
 
