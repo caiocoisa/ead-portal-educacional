@@ -1,8 +1,10 @@
 # PRD — Portal de Planejamento Pedagógico para EaD com Apoio de IA (MVP)
 
-**Status:** Aprovado para execução (escopo reduzido ao core)
+**Status:** Em produção, com refinamentos pós-deploy contínuos
 **Autor:** Engenharia de Requisitos (Claude Code)
-**Data:** 2026-09-27 (tema/objetivo pedagógico definidos em 2026-09-27)
+**Data:** 2026-09-27 (tema/objetivo pedagógico definidos em 2026-09-27;
+revisado em 2026-10-18 para refletir as Tasks 24–27, mescladas
+diretamente no GitHub via PRs #1–#4)
 
 ---
 
@@ -53,17 +55,39 @@ relatório) em produção, com o menor custo de implementação possível.
 - Se o usuário já tiver progresso salvo (retorno ao portal), pula a captura
   de nome e retoma diretamente da etapa em que parou.
 
-> **Observação de UX (2026-09-27, feedback do usuário — pendente de
-> implementação, ver Task 16 do task-master.md):** a implementação atual
-> está visualmente pobre para uma tela inicial de portal e usa **duas
-> etapas** (clicar no CTA → só então aparece o campo de nome). Requisitos
-> para a próxima iteração:
-> - **Aparência de portal**, não só um card centralizado: header/topo com
->   identidade do portal, e uma seção explicando do que se trata o
->   conteúdo (não só o CTA).
-> - **Entrada em etapa única**: o campo de nome deve ficar visível já na
->   primeira tela (junto com a explicação do portal), sem exigir um clique
->   intermediário só para revelar o formulário.
+> **Implementado (Task 16, 2026-09-27):** header com identidade do portal e
+> entrada em etapa única (campo de nome visível já na primeira tela, sem
+> clique intermediário).
+>
+> **Página inicial completa (Task 24, mesclada ao `main` via PR no
+> GitHub):** abaixo do bloco de identificação, a página pública passou a
+> ter seções de apresentação do curso completo, cada uma como âncora
+> navegável a partir do link "Conheça os objetivos, o público e os
+> pré-requisitos" do hero:
+> - **Objetivos do curso** — lista de verificação do que o módulo se
+>   propõe a desenvolver.
+> - **A quem se destina** — cartões para professores/educadores,
+>   licenciandos/estudantes de Pedagogia, designers instrucionais/tutores.
+> - **Pré-requisitos** — lista de verificação (sem experiência prévia com
+>   IA necessária).
+> - **O que você será capaz de fazer ao final** — cartões de competências
+>   (planejar, pedir bem à IA, analisar respostas, melhorar o material).
+> - **Como funciona** — as três etapas da jornada (vídeo, avaliação,
+>   relatório) em formato de cartão.
+> - **Formato e recursos** — ritmo livre, acesso em qualquer dispositivo,
+>   acessível, sem cadastro.
+> - **Perguntas frequentes** — acordeão com 5 perguntas (ex. "Preciso saber
+>   usar IA antes de começar?", "Posso pular etapas?").
+> - Rodapé de CTA ("Pronto para começar?") levando de volta ao formulário
+>   de entrada.
+>
+> Conteúdo centralizado em `content/landing.ts`; seções em
+> `components/public/CourseSections.tsx` e
+> `components/public/FaqAccordion.tsx`. Ilustrações (hero, objetivos,
+> jornada) ainda não produzidas — a página reserva o espaço com
+> `components/ui/ImagePlaceholder.tsx`, indicando caminho/tamanho sugerido
+> (ex. `public/img/hero.svg · 560×280`) até as imagens definitivas
+> existirem.
 
 ### 3.2 Jornada do módulo (área restrita)
 
@@ -130,6 +154,7 @@ de conteúdo, seção 3.5, e usada no modelo de persistência, seção 3.6):
 ```
 Question {
   id: string
+  topic: string            // competência avaliada, exibida no relatório final (Task 26)
   type: "text" | "chat_simulation"
   prompt:
     // se type = "text": string (enunciado)
@@ -149,24 +174,41 @@ Regras do quiz:
 
 - Todas as perguntas são de **múltipla escolha com resposta única** (uma
   alternativa correta por pergunta).
-- **Validação imediata, uma pergunta por vez** (Task 20): o aluno responde
-  e confirma cada pergunta antes de ver a próxima — não é um formulário
-  único enviado ao final. Ao confirmar, alternativas ficam bloqueadas e um
-  painel de **retorno pedagógico imediato** é exibido, categorizado por
-  proximidade da resposta escolhida: acerto, erro próximo (uma alternativa
-  específica, plausível mas incorreta) ou erro distante (demais
-  alternativas) — conteúdo definido em `banco-questoes.md`.
+- **Confirmação individual por pergunta** (Task 20): o aluno escolhe uma
+  alternativa e clica em "Confirmar resposta" antes de ver o retorno
+  pedagógico — não é um formulário único enviado ao final. Ao confirmar,
+  a alternativa escolhida fica bloqueada, a alternativa correta é
+  destacada visualmente (Task 25/26) e um painel de **retorno pedagógico
+  imediato** é exibido, categorizado por proximidade da resposta
+  escolhida: acerto, erro próximo (uma alternativa específica, plausível
+  mas incorreta) ou erro distante (demais alternativas) — conteúdo
+  definido em `banco-questoes.md`. Um toast reforça o resultado
+  (sucesso/atenção/erro) no momento da confirmação.
+- **Navegação livre entre perguntas (Task 25):** um menu de navegação
+  lateral (`QuestionNavigator`, vira uma faixa horizontal em telas
+  pequenas) lista todas as perguntas com seu status (pendente/correta/
+  revisar) e permite saltar livremente entre elas, inclusive revisitar uma
+  pergunta já respondida — a pergunta em si continua exigindo confirmação
+  individual (bullet anterior), mas a ordem de resposta não é mais travada
+  em sequência estrita. O botão "Ver relatório final" só habilita quando
+  todas as perguntas tiverem sido confirmadas.
 - O resultado (`assessmentResult`, seção 3.6) registra, por pergunta, a
   alternativa escolhida e se estava correta, além da pontuação total —
   usado no relatório final (item 3 da seção 3.2).
 
 #### 3.2.3 Relatório final
 
-Exibido após o envio do quiz. Mostra:
+Exibido após a confirmação da última pergunta pendente. Organizado em duas
+abas (Task 26):
 
-- Pontuação total (ex. acertos/total).
-- Por pergunta: alternativa escolhida e se estava correta (opcional, se
-  couber na v1 sem esforço extra).
+- **Resumo** — pontuação total (`ProgressCircle`, acertos/total/
+  percentual) e **desempenho por competência**: uma barra (`Meter`) por
+  pergunta, rotulada pelo `topic` (seção 3.2.2) e marcada como "Dominada"
+  ou "Vale revisar".
+- **Gabarito comentado** — acordeão com uma entrada por pergunta,
+  mostrando o mesmo painel de retorno pedagógico categorizado (acerto/erro
+  próximo/erro distante, `resolveFeedback`) exibido durante a avaliação
+  (Task 20/21), agora como revisão.
 - Status de conclusão da jornada.
 - Opção explícita e visível de **"Reiniciar jornada"**, que zera o
   progresso e retorna ao vídeo, com confirmação antes de executar (ação
@@ -196,10 +238,15 @@ Estrutura mínima necessária para sustentar o fluxo:
 
 ## 4. Requisitos não funcionais
 
-- **Design system:** componentes visuais do **NextUI**, usados de forma
-  consistente — botões, cards, inputs, navegação, diálogos, feedback
-  (toasts) e tipografia, com tema **light/dark** (implementado na Task 18,
-  ver seção 5.1).
+- **Design system:** componentes visuais do **NextUI/HeroUI**, usados de
+  forma consistente — botões, cards, inputs, navegação, diálogos, feedback
+  (toasts, tooltips) e tipografia, com tema **light/dark** (implementado
+  na Task 18, ver seção 5.1) e paleta própria marinho/dourado/verde/branco
+  (Task 27, ver seção 5).
+- **Iconografia:** ícones do pacote **`lucide-react`** em todos os pontos
+  que antes usavam emoji (Task 27) — consistência visual e leitura
+  correta por leitores de tela (`aria-hidden` nos ícones puramente
+  decorativos).
 - **Responsividade:** layout adaptável mobile/desktop, seguindo os
   breakpoints padrão do NextUI/Tailwind CSS.
 - **Acessibilidade:** contraste mínimo AA, foco visível, navegação por
@@ -211,23 +258,42 @@ Estrutura mínima necessária para sustentar o fluxo:
   componentes.
 - **Performance:** vídeo carregado sob demanda (lazy), sem bloquear o
   carregamento inicial da página.
+- **Estados de carregamento (Task 26):** enquanto o progresso salvo é
+  verificado no `localStorage` (antes de decidir se mostra a tela de
+  boas-vindas ou redireciona para a etapa salva), exibir
+  `components/journey/JourneyLoading.tsx` (spinner + skeleton), em vez de
+  uma tela em branco.
 
 ---
 
-## 5. Diretrizes de UI (NextUI)
+## 5. Diretrizes de UI (NextUI/HeroUI)
 
-- Usar os componentes nativos do **NextUI** (ex. `Button`, `Card`, `Input`,
-  `Modal`, `Progress`, `Navbar`, `RadioGroup`) como base de toda a
-  interface, evitando componentes customizados quando já houver equivalente
-  na biblioteca.
-- Componentes esperados no fluxo: `Navbar` (topo), `Card` (blocos de
-  conteúdo), `Button` (ações), `Modal` de confirmação (para o reset da
-  jornada), `Progress`/`Steps` (progresso da jornada), `Toast` (feedback).
-- Tema definido de forma centralizada em tokens do HeroUI (`app/globals.css`)
-  — nunca cor hardcoded em componente (ex. `text-zinc-500`); sempre uma
-  referência a um token (`text-(--muted)`, `border-(--border)`, etc.), para
-  o dark mode e o alto contraste funcionarem em toda a interface sem
-  exceções.
+- Usar os componentes nativos do **NextUI/HeroUI** (ex. `Button`, `Card`,
+  `Input`, `AlertDialog`, `Drawer`, `Tabs`, `Accordion`, `Meter`,
+  `ProgressCircle`, `Avatar`, `Tooltip`, `Chip`, `Skeleton`, `Spinner`,
+  `RadioGroup`) como base de toda a interface, evitando componentes
+  customizados quando já houver equivalente na biblioteca.
+- Ícones: **`lucide-react`** (Task 27) — nunca emoji em texto de UI.
+- Tema definido de forma centralizada em tokens do HeroUI
+  (`app/globals.css`) — nunca cor hardcoded em componente (ex.
+  `text-zinc-500`); sempre uma referência a um token (`text-(--muted)`,
+  `border-(--border)`, etc.), para o dark mode e o alto contraste
+  funcionarem em toda a interface sem exceções.
+- **Paleta própria (Task 27):** além dos tokens nativos do HeroUI, o
+  portal define dois tokens de marca — `--brand` (marinho, `#0b2545`) e
+  `--gold` (dourado, `#c9a227`) — usados no cabeçalho, nos ícones em
+  destaque e em detalhes decorativos. `--accent`/`--success`/`--warning`
+  foram remapeados para a paleta marinho/verde/dourado, com variantes
+  específicas no tema escuro (o marinho perde contraste contra o fundo
+  escuro, então o acento vira um azul mais claro e o verde fica mais
+  vivo) — todas as combinações auditadas para contraste AA (documentado
+  em comentário no próprio `app/globals.css`). O dourado nunca é usado
+  como cor de texto sobre fundo branco (2,4:1, abaixo de AA) — só sobre
+  marinho ou como elemento decorativo/ícone.
+- **Imagens ainda não produzidas:** `components/ui/ImagePlaceholder.tsx`
+  reserva o espaço e indica o caminho/tamanho sugerido para cada
+  ilustração da página inicial (hero, objetivos, jornada) até que os
+  arquivos finais sejam adicionados em `public/img/`.
 
 ### 5.1 Tema, tamanho de fonte e alto contraste (Tasks 18–19, 22)
 

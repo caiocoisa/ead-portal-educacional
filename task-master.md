@@ -1,8 +1,8 @@
 # Task Master — Portal de Planejamento Pedagógico para EaD com Apoio de IA (MVP)
 
-> Gerado em: 2026-09-27
+> Gerado em: 2026-09-27 · Revisado em: 2026-10-18
 > Baseado em: `PRD.md` (raiz do repositório, versão MVP de escopo reduzido)
-> Total de tasks: 23 (15 do MVP + 8 de refinamento pós-deploy)
+> Total de tasks: 27 (15 do MVP + 12 de refinamento pós-deploy)
 
 ## Visão geral
 
@@ -1273,6 +1273,282 @@ completa da jornada e do fluxo de avaliação.
 
 ---
 
+### Task 24
+| Field | Value |
+|---|---|
+| **ID** | 24 |
+| **Title** | Seções de apresentação do curso na página inicial (objetivos, público, pré-requisitos, resultados, como funciona, formato, FAQ) |
+| **Status** | `done` |
+| **Priority** | `medium` |
+| **Complexity** | 5 |
+| **Dependencies** | `[16]` |
+| **Phase** | 8 — Página inicial completa |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Implementado diretamente no GitHub (PR #1, branch
+`claude/course-portal-sections-lsqlok`, mesclada em `main` fora desta
+sessão — identificada e documentada aqui em 2026-10-18). Expande a página
+inicial (Task 16 cobria só o header + formulário em etapa única) com o
+conteúdo completo do curso, em seções navegáveis por âncora.
+
+**Details:**
+- `content/landing.ts` (novo) — centraliza `courseObjectives`,
+  `targetAudience`, `prerequisites`, `learningOutcomes`, `journeySteps`,
+  `courseFormat`, `faqs`.
+- `components/public/CourseSections.tsx` (novo) — renderiza as seções
+  "Objetivos do curso", "A quem se destina", "Pré-requisitos", "O que você
+  será capaz de fazer ao final", "Como funciona", "Formato e recursos",
+  "Perguntas frequentes" e um rodapé de CTA, cada uma com `id` ancorável.
+- `components/public/FaqAccordion.tsx` (novo) — acordeão do HeroUI para as
+  5 perguntas frequentes.
+- `components/public/WelcomeHero.tsx` — ganhou um link "Conheça os
+  objetivos, o público e os pré-requisitos" (`#objetivos-title`) levando
+  às novas seções.
+- `app/page.tsx` — passou a renderizar `<CourseSections />` abaixo do
+  hero.
+
+**Files:**
+- `content/landing.ts` (novo)
+- `components/public/CourseSections.tsx` (novo)
+- `components/public/FaqAccordion.tsx` (novo)
+- `components/public/WelcomeHero.tsx`, `app/page.tsx`
+
+**Test strategy:**
+Revisão manual do conteúdo (fiel ao tema do PRD, seção 1); verificação de
+que cada âncora (`#objetivos-title`, etc.) rola corretamente; acordeão da
+FAQ abre/fecha via teclado.
+
+**Acceptance criteria:**
+- [x] Página inicial apresenta objetivos, público-alvo, pré-requisitos,
+      resultados esperados, como funciona a jornada, formato/recursos e
+      FAQ, além do formulário de entrada.
+- [x] Conteúdo centralizado em um único arquivo (`content/landing.ts`),
+      sem duplicação entre componentes.
+
+**Source:** PR #1 no GitHub (`claude/course-portal-sections-lsqlok`),
+mesclada antes desta revisão; PRD seção 3.1
+
+---
+
+### Task 25
+| Field | Value |
+|---|---|
+| **ID** | 25 |
+| **Title** | Menu lateral de navegação livre entre perguntas da avaliação + ajuste de altura ao viewport |
+| **Status** | `done` |
+| **Priority** | `medium` |
+| **Complexity** | 5 |
+| **Dependencies** | `[20, 22]` |
+| **Phase** | 8 — Página inicial completa |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Implementado diretamente no GitHub (PR #2, mesma branch — identificada e
+documentada aqui em 2026-10-18). Substitui a navegação estritamente
+sequencial da avaliação (Task 20: só "Próxima pergunta" linear) por um
+menu lateral que lista todas as perguntas com status e permite saltar
+livremente entre elas. Também ajusta o layout da jornada para ocupar
+exatamente a altura da tela, sem rolagem da página inteira.
+
+**Details:**
+- `components/quiz/QuestionNavigator.tsx` (novo) — lista (`lg:w-64`
+  lateral; faixa horizontal rolável em telas pequenas) com um botão por
+  pergunta mostrando número, tópico (`Tooltip`) e status
+  (pendente/correta/revisar via `Chip`/ícone), além de um `ProgressCircle`
+  com o total respondido. `onNavigate(index)` troca a pergunta atual sem
+  nenhuma restrição de ordem.
+- `components/journey/ModuleAssessmentStep.tsx` — reescrito: estado
+  separado para `answers` (confirmadas) e `drafts` (selecionadas, não
+  confirmadas) por pergunta; botão "← Anterior"/"Próxima pergunta" (ou
+  "Ver relatório final", habilitado só quando todas as perguntas estão
+  confirmadas); o `QuestionNavigator` fica ao lado do card da pergunta.
+  Confirmar uma resposta continua travando a alternativa e exibindo o
+  painel de feedback (Task 20) — o que muda é só a liberdade de ordem de
+  navegação entre perguntas, não a mecânica de confirmação individual.
+- `components/journey/JourneyLayout.tsx` — layout recalculado para
+  `h-dvh`/`overflow-hidden` com cabeçalho fixo (`shrink-0`) e só a `main`
+  rolando internamente quando necessário — antes, o scroll da página
+  inteira competia com o conteúdo em telas pequenas.
+- `components/journey/ModuleVideoStep.tsx` — player limitado a
+  `max-w-[min(100%,calc(50dvh*16/9))]` para caber na altura disponível
+  sem cortar o card.
+- Um PR intermediário (`a3ea848`, "Resolve conflitos com a main mantendo a
+  versão atualizada das telas") resolveu conflitos de merge com o estado
+  do `main` desta sessão (Tasks 20–23) — sem perda de funcionalidade de
+  nenhum dos dois lados.
+
+**Files:**
+- `components/quiz/QuestionNavigator.tsx` (novo)
+- `components/journey/ModuleAssessmentStep.tsx`,
+  `components/journey/JourneyLayout.tsx`,
+  `components/journey/ModuleVideoStep.tsx`
+
+**Test strategy:**
+Navegar livremente entre as 4 perguntas pelo menu lateral, respondendo
+fora de ordem (ex. pergunta 3 antes da 1); confirmar que "Ver relatório
+final" só habilita com as 4 confirmadas; verificar que o layout não gera
+rolagem da página inteira em viewports comuns (apenas da área de
+conteúdo quando o texto é longo).
+
+**Acceptance criteria:**
+- [x] Menu lateral lista todas as perguntas com status correto
+      (pendente/correta/revisar) e permite navegação livre entre elas.
+- [x] Confirmação individual por pergunta (Task 20) continua obrigatória
+      antes de contar como respondida.
+- [x] Layout da jornada ocupa a altura do viewport sem rolagem
+      desnecessária da página.
+
+**Source:** PR #2 no GitHub (`claude/course-portal-sections-lsqlok`),
+mesclada antes desta revisão; PRD seção 3.2.2
+
+---
+
+### Task 26
+| Field | Value |
+|---|---|
+| **ID** | 26 |
+| **Title** | Destaque de alternativas, toasts e tooltips na avaliação; abas e desempenho por competência no relatório; estados de carregamento |
+| **Status** | `done` |
+| **Priority** | `medium` |
+| **Complexity** | 5 |
+| **Dependencies** | `[20, 21, 25]` |
+| **Phase** | 8 — Página inicial completa |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Implementado diretamente no GitHub (PR #3, mesma branch — identificada e
+documentada aqui em 2026-10-18). Reforça o retorno pedagógico da
+avaliação com destaque visual e toasts, e reformula o relatório final em
+abas com desempenho por competência. Adiciona também um estado de
+carregamento explícito enquanto o progresso salvo é verificado.
+
+**Details:**
+- `types/quiz.ts`/`content/module.ts` — `Question` ganhou o campo
+  `topic` (ex. "Alinhamento pedagógico", "Comandos para a IA",
+  "Curadoria da IA", "Papel do educador"), usado no relatório.
+- `components/quiz/QuestionRenderer.tsx`/`OptionsRadioGroup.tsx` —
+  ganharam `revealedCorrectIndex`: após confirmar, a alternativa correta é
+  destacada visualmente (independente de qual foi escolhida), reforçando
+  o retorno pedagógico já exibido no painel de `AnswerFeedback`.
+- `components/journey/ModuleAssessmentStep.tsx` — ao confirmar, dispara
+  um `toast` (`@heroui/react`) de sucesso/atenção/erro conforme o nível do
+  feedback (correct/near/far).
+- `components/journey/HomeResetButton.tsx` — ganhou `Tooltip` explicando a
+  ação ("Volta à tela de boas-vindas e apaga o progresso").
+- `components/journey/FinalReport.tsx` — reescrito com `Tabs`: aba
+  "Resumo" (um `Meter` por pergunta, rotulado pelo `topic`, "Dominada"/
+  "Vale revisar") e aba "Gabarito comentado" (`Accordion` com o painel de
+  `AnswerFeedback` de cada pergunta, reaproveitado da Task 21).
+- `components/journey/JourneyLoading.tsx` (novo) — `Spinner` + `Skeleton`
+  exibido enquanto o progresso salvo é verificado; usado em
+  `WelcomeHero.tsx` (antes mostrava uma tela em branco até a checagem do
+  `localStorage` terminar).
+
+**Files:**
+- `types/quiz.ts`, `content/module.ts`
+- `components/quiz/QuestionRenderer.tsx`, `components/quiz/OptionsRadioGroup.tsx`
+- `components/journey/ModuleAssessmentStep.tsx`,
+  `components/journey/HomeResetButton.tsx`,
+  `components/journey/FinalReport.tsx`
+- `components/journey/JourneyLoading.tsx` (novo)
+- `components/public/WelcomeHero.tsx`
+
+**Test strategy:**
+Confirmar uma resposta em cada nível (acerto/erro próximo/erro distante)
+e verificar o destaque da alternativa correta + o toast correspondente;
+no relatório, checar os valores de `Meter` por competência na aba Resumo
+e o conteúdo do `Accordion` na aba Gabarito comentado; recarregar `/` e
+confirmar que `JourneyLoading` aparece brevemente antes do redirecionamento
+(quando há progresso salvo) ou do formulário (quando não há).
+
+**Acceptance criteria:**
+- [x] Alternativa correta é destacada visualmente após a confirmação, em
+      toda pergunta.
+- [x] Toast reflete o nível do feedback (sucesso/atenção/erro).
+- [x] Relatório final mostra desempenho por competência (aba Resumo) e o
+      gabarito comentado por pergunta (aba Gabarito comentado).
+- [x] Estado de carregamento visível enquanto o progresso salvo é
+      verificado, sem tela em branco.
+
+**Source:** PR #3 no GitHub (`claude/course-portal-sections-lsqlok`),
+mesclada antes desta revisão; PRD seção 3.2.2, 3.2.3
+
+---
+
+### Task 27
+| Field | Value |
+|---|---|
+| **ID** | 27 |
+| **Title** | Paleta marinho/dourado/verde/branco, ícones Lucide e espaços reservados para imagens |
+| **Status** | `done` |
+| **Priority** | `low` |
+| **Complexity** | 3 |
+| **Dependencies** | `[18, 24, 26]` |
+| **Phase** | 8 — Página inicial completa |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Implementado diretamente no GitHub (PR #4, mesma branch — identificada e
+documentada aqui em 2026-10-18). Substitui os emojis usados nas novas
+seções (Tasks 24–26) por ícones da biblioteca `lucide-react`, aplica uma
+identidade visual própria (marinho/dourado/verde/branco) sobre os tokens
+padrão do HeroUI, e reserva espaços para as ilustrações que ainda não
+foram produzidas.
+
+**Details:**
+- `package.json` — nova dependência `lucide-react`.
+- Todos os ícones informativos de `content/landing.ts`,
+  `components/public/WelcomeHero.tsx`,
+  `components/journey/ProgressIndicator.tsx`,
+  `components/quiz/QuestionNavigator.tsx` passam a usar componentes
+  `lucide-react` (ex. `GraduationCap`, `ClipboardList`, `ChartColumn`),
+  com `aria-hidden="true"` quando puramente decorativos.
+- `app/globals.css` — novos tokens `--brand` (`#0b2545`, marinho) e
+  `--gold` (`#c9a227`, dourado), e remapeamento de `--accent`/`--success`/
+  `--warning` para a paleta do portal, com variantes dedicadas em
+  `:root[data-theme="dark"]` (o marinho perde contraste no escuro) —
+  todas as combinações comentadas no próprio arquivo com a razão de
+  contraste calculada (AA).
+- `components/ui/ImagePlaceholder.tsx` (novo) — espaço reservado
+  (`border-dashed`, ícone, rótulo e dica de caminho/tamanho) para cada
+  ilustração ainda não produzida (hero, objetivos, jornada); aceita um
+  `src` opcional para quando a imagem definitiva for adicionada em
+  `public/img/`, sem precisar trocar o componente que o usa.
+- `components/journey/JourneyLayout.tsx` — cabeçalho repintado com
+  `bg-(--brand)`/`text-white`/borda inferior `--gold`; `Avatar` com a
+  inicial do nome do aluno.
+
+**Files:**
+- `package.json`
+- `app/globals.css`
+- `components/ui/ImagePlaceholder.tsx` (novo)
+- `content/landing.ts`, `components/public/WelcomeHero.tsx`,
+  `components/public/CourseSections.tsx`,
+  `components/journey/ProgressIndicator.tsx`,
+  `components/journey/JourneyLayout.tsx`,
+  `components/quiz/QuestionNavigator.tsx`
+
+**Test strategy:**
+Revisão visual em light/dark; auditoria de contraste (axe-core ou
+cálculo manual) nas novas combinações de `--accent`/`--success`/
+`--warning`; verificação de que nenhum emoji permanece nas telas
+afetadas; placeholders de imagem renderizam com o rótulo/dica corretos
+quando `src` não é informado.
+
+**Acceptance criteria:**
+- [x] Nenhum emoji usado como ícone de UI nas seções afetadas — todos via
+      `lucide-react`.
+- [x] Paleta marinho/dourado/verde/branco aplicada de forma consistente,
+      com contraste AA validado em light e dark.
+- [x] Ilustrações ainda não produzidas aparecem como espaço reservado
+      claro (não como imagem quebrada ou espaço vazio sem explicação).
+
+**Source:** PR #4 no GitHub (`claude/course-portal-sections-lsqlok`),
+mesclada antes desta revisão; PRD seção 4, seção 5
+
+---
+
 ## Resumo
 
 ### Tasks por fase
@@ -1286,19 +1562,20 @@ completa da jornada e do fluxo de avaliação.
 | 5 — Refinamento de UX | 16, 17 | 16 depende de 6; 17 depende de 8 |
 | 6 — Acessibilidade estendida | 18, 19, 22, 23 | 18 depende de 6,9,11; 19 depende de 18; 22 depende de 18,19; 23 depende de 22 |
 | 7 — Conteúdo pedagógico definitivo | 20, 21 | 20 depende de 9,10,12; 21 depende de 13,20 |
+| 8 — Página inicial completa | 24, 25, 26, 27 | 24 depende de 16; 25 depende de 20,22; 26 depende de 20,21,25; 27 depende de 18,24,26 |
 
 ### Tasks por prioridade
 | Prioridade | IDs |
 |---|---|
 | high | 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 15, 20 |
-| medium | 11, 14, 16, 17, 18, 19, 21, 22 |
-| low | 23 |
+| medium | 11, 14, 16, 17, 18, 19, 21, 22, 24, 25, 26 |
+| low | 23, 27 |
 
 ### Pronto para iniciar (dependências vazias)
 - Task 1: Inicializar projeto Next.js (App Router) + TypeScript + Tailwind + NextUI + config Vercel — `done`
 
-### Status atual (2026-09-27)
-**Todas as 23 tasks estão `done`.** MVP implementado, testado (build,
+### Status atual (2026-10-18)
+**Todas as 27 tasks estão `done`.** MVP implementado, testado (build,
 lint, testes end-to-end com Playwright, auditoria de acessibilidade com
 axe-core: 0 violações em todas as combinações de tema/contraste/tamanho de
 fonte × tela, incluindo os 3 níveis de feedback do quiz e o drawer de
@@ -1309,9 +1586,23 @@ tela inicial, skeleton de vídeo, tema light/dark, tamanho de fonte/alto
 contraste, banco de questões definitivo com feedback pedagógico,
 comentários por pergunta no relatório final, drawer de acessibilidade e
 seu gatilho reposicionado como aba lateral fixa) foram adicionadas depois
-do primeiro deploy, a partir de feedback do usuário — implementadas,
-commitadas e já propagadas para o GitHub (a Vercel redeploya
-automaticamente a cada push em `main`).
+do primeiro deploy, a partir de feedback do usuário nesta sessão.
+
+**Tasks 24–27 (2026-10-18):** implementadas **diretamente no GitHub**,
+fora desta sessão de trabalho — 4 PRs (#1 a #4, branch
+`claude/course-portal-sections-lsqlok`) mesclados em `main` entre
+2026-09-27 e a data desta revisão: seções completas de apresentação do
+curso na página inicial (objetivos, público, pré-requisitos, resultados,
+como funciona, formato, FAQ — Task 24); menu lateral de navegação livre
+entre perguntas da avaliação, com ajuste de layout à altura do viewport
+(Task 25); destaque da alternativa correta, toasts, tooltips, abas no
+relatório final com desempenho por competência e estados de carregamento
+(Task 26); paleta marinho/dourado/verde/branco, ícones `lucide-react` e
+espaços reservados para ilustrações futuras (Task 27). Este
+`task-master.md` e o `PRD.md` foram **atualizados nesta revisão
+(2026-10-18)** para documentar esse trabalho — o código já estava
+mesclado e implantado antes da revisão; o `git pull` trouxe 11 commits
+que não existiam na sessão anterior.
 
 Repositório no GitHub: https://github.com/caiocoisa/ead-portal-educacional
 (privado).
@@ -1319,11 +1610,16 @@ Repositório no GitHub: https://github.com/caiocoisa/ead-portal-educacional
 Próximos passos ficam no backlog de extensão futura — PRD.md, seção 9
 (CMS/área administrativa, múltiplos módulos, i18n, exportação do
 relatório, acompanhamento de múltiplos alunos — item de tema light/dark
-já implementado na Task 18, removido do backlog). Antes de ir ao ar,
-lembrar de substituir `content/module.ts` → `youtubeVideoId` (hoje `null`,
-mostrando o skeleton da Task 17) pelo ID real do vídeo do módulo — usar
-**`roteiro_audiovisual_completo_v2.md`** para a gravação (revisão de
-2026-09-27: adiciona o Bloco 4B, cobrindo a auditoria de viabilidade
-técnica/logística da Questão 3 de `banco-questoes.md`, que a v1 do
-roteiro não demonstrava; ver changelog no próprio arquivo). A v1
-(`roteiro_audiovisual_completo.md`) fica só como histórico.
+já implementado na Task 18, removido do backlog). Além disso:
+- Antes de ir ao ar, substituir `content/module.ts` → `youtubeVideoId`
+  (hoje `null`, mostrando o skeleton da Task 17) pelo ID real do vídeo do
+  módulo — usar **`roteiro_audiovisual_completo_v2.md`** para a gravação
+  (revisão de 2026-09-27: adiciona o Bloco 4B, cobrindo a auditoria de
+  viabilidade técnica/logística da Questão 3 de `banco-questoes.md`, que a
+  v1 do roteiro não demonstrava; ver changelog no próprio arquivo). A v1
+  (`roteiro_audiovisual_completo.md`) fica só como histórico.
+- Produzir as ilustrações reservadas pela Task 27
+  (`components/ui/ImagePlaceholder.tsx`): `public/img/hero.svg` (560×280),
+  `public/img/objetivos.svg` (480×360) e `public/img/jornada.svg`
+  (480×360) — até lá, a página inicial mostra o espaço reservado com
+  rótulo/dica em vez da imagem final.
