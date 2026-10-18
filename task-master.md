@@ -1555,7 +1555,7 @@ mesclada antes desta revisão; PRD seção 4, seção 5
 |---|---|
 | **ID** | 28 |
 | **Title** | Guia de estilo curto documentado (paleta, ícones, tipografia, componentes-padrão) |
-| **Status** | `pending` |
+| **Status** | `done` |
 | **Priority** | `low` |
 | **Complexity** | 2 |
 | **Dependencies** | `[27]` |
@@ -1589,9 +1589,21 @@ e os componentes atuais — nenhuma divergência entre o documento e o
 código em produção.
 
 **Acceptance criteria:**
-- [ ] Paleta, tipografia, ícones e componentes-padrão documentados em um
+- [x] Paleta, tipografia, ícones e componentes-padrão documentados em um
       único arquivo, fora do código-fonte.
-- [ ] Nenhuma informação do guia contradiz o que está implementado.
+- [x] Nenhuma informação do guia contradiz o que está implementado.
+
+**Implementado em:** `docs/guia-de-estilo.md` (novo) — paleta completa
+(tokens de marca `--brand`/`--gold` + remapeamentos do HeroUI com razões
+de contraste, incluindo as variantes de tema escuro e alto contraste),
+tipografia (fonte + 3 níveis de `data-font-size`), catálogo vivo dos 20
+ícones `lucide-react` em uso e dos ~19 componentes HeroUI em uso (com os
+dois padrões de implementação já conhecidos: interativo aninhado e
+preferências sempre aplicadas), convenções de layout
+(`ImagePlaceholder`, cabeçalho da jornada) e instrução de como manter o
+guia atualizado. Extraído por inspeção direta de `app/globals.css` e
+`grep` dos imports reais de `lucide-react`/`@heroui/react` em todo o
+código — sem nenhuma informação inventada.
 
 **Source:** `plano-adequacao-design-instrucional.md`, seção 1 (prática
 "Consistency Is Key"); aprovado pelo usuário em 2026-10-18
@@ -2188,18 +2200,18 @@ espaços reservados para ilustrações futuras (Task 27). Este
 mesclado e implantado antes da revisão; o `git pull` trouxe 11 commits
 que não existiam na sessão anterior.
 
-**Tasks 28–38 (2026-10-18):** `pending`/`blocked`, recém-adicionadas a
-partir de `plano-adequacao-design-instrucional.md` — revisão do portal
-contra a seção "7 Best Practices" do artigo da D2L sobre design
-instrucional. Das 7 práticas do artigo, o usuário aprovou 11 ações
-específicas (uma por bullet de cada prática relevante); **nenhuma foi
-implementada ainda**. Ordem de execução recomendada, respeitando
-dependências:
+**Tasks 28–38 (2026-10-18):** promovidas a partir de
+`plano-adequacao-design-instrucional.md` — revisão do portal contra a
+seção "7 Best Practices" do artigo da D2L sobre design instrucional. Das
+7 práticas do artigo, o usuário aprovou 11 ações específicas (uma por
+bullet de cada prática relevante). **Task 28 já está `done`**
+(guia de estilo, ver `docs/guia-de-estilo.md`); as demais (29–38)
+continuam `pending`/`blocked`. Ordem de execução recomendada para o
+restante, respeitando dependências:
 1. **Sem bloqueio, podem começar já:** Task 29 (segmentar roteiro em
-   capítulos — só edição de documento), Task 28 (guia de estilo), Task
-   31 (Questão 3 antes/depois), Task 32 (exercício prático opcional),
-   Task 33 (canal de contato), Task 37 (avaliar flip card), Task 38
-   (link de feedback pós-curso).
+   capítulos — só edição de documento), Task 31 (Questão 3 antes/depois),
+   Task 32 (exercício prático opcional), Task 33 (canal de contato),
+   Task 37 (avaliar flip card), Task 38 (link de feedback pós-curso).
 2. **Depende da Task 29:** Task 30 (dividir vídeo em partes) — decisão
    de arquitetura maior, avaliar custo/benefício antes de iniciar dado
    que ainda não há vídeo real para validar.
