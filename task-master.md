@@ -2,7 +2,8 @@
 
 > Gerado em: 2026-09-27 · Revisado em: 2026-10-18
 > Baseado em: `PRD.md` (raiz do repositório, versão MVP de escopo reduzido)
-> Total de tasks: 27 (15 do MVP + 12 de refinamento pós-deploy)
+> Total de tasks: 38 (15 do MVP + 12 de refinamento pós-deploy + 11 de
+> adequação a design instrucional)
 
 ## Visão geral
 
@@ -1549,6 +1550,588 @@ mesclada antes desta revisão; PRD seção 4, seção 5
 
 ---
 
+### Task 28
+| Field | Value |
+|---|---|
+| **ID** | 28 |
+| **Title** | Guia de estilo curto documentado (paleta, ícones, tipografia, componentes-padrão) |
+| **Status** | `pending` |
+| **Priority** | `low` |
+| **Complexity** | 2 |
+| **Dependencies** | `[27]` |
+| **Phase** | 9 — Adequação a design instrucional (D2L) |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Aprovado em 2026-10-18 a partir de `plano-adequacao-design-instrucional.md`
+(prática 1 — "Consistency Is Key"). Extrai, para um documento curto e
+legível fora do código, as decisões de identidade visual que hoje só
+existem implícitas em `app/globals.css` e nos comentários das Tasks
+18–19, 27 — útil para quem for criar um segundo módulo no futuro (PRD
+seção 9) sem precisar reler o CSS inteiro.
+
+**Details:**
+- Novo `docs/guia-de-estilo.md`: paleta (`--brand`/`--gold`/tokens do
+  HeroUI remapeados, com as razões de contraste já calculadas em
+  `app/globals.css`), tipografia (escalas de `--font-size` da Task 19),
+  ícones (`lucide-react`, Task 27), lista de componentes-padrão do HeroUI
+  usados no portal (`Card`, `Tabs`, `Accordion`, `Meter`, `Drawer`,
+  `Tooltip`, etc.) e a convenção de nunca usar cor hardcoded fora de
+  tokens (PRD seção 5).
+- Documentação pura — nenhuma mudança de código ou comportamento visual.
+
+**Files:**
+- `docs/guia-de-estilo.md` (novo)
+
+**Test strategy:**
+Revisão manual comparando cada afirmação do guia com o `app/globals.css`
+e os componentes atuais — nenhuma divergência entre o documento e o
+código em produção.
+
+**Acceptance criteria:**
+- [ ] Paleta, tipografia, ícones e componentes-padrão documentados em um
+      único arquivo, fora do código-fonte.
+- [ ] Nenhuma informação do guia contradiz o que está implementado.
+
+**Source:** `plano-adequacao-design-instrucional.md`, seção 1 (prática
+"Consistency Is Key"); aprovado pelo usuário em 2026-10-18
+
+---
+
+### Task 29
+| Field | Value |
+|---|---|
+| **ID** | 29 |
+| **Title** | Segmentar o roteiro v2 do vídeo em capítulos nomeados |
+| **Status** | `pending` |
+| **Priority** | `high` |
+| **Complexity** | 2 |
+| **Dependencies** | `[]` |
+| **Phase** | 9 — Adequação a design instrucional (D2L) |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Aprovado em 2026-10-18 (prática 2 — "Create an Immersive Multimedia
+Experience"). O roteiro `roteiro_audiovisual_completo_v2.md` já existe,
+mas descreve um único bloco narrativo de ~30 minutos; o artigo de
+referência recomenda evitar vídeo longo sem pontos de navegação. Esta
+task revisa o **documento do roteiro** (não o vídeo em si, que ainda não
+foi gravado) para marcar explicitamente os capítulos que deverão ser
+cadastrados como "chapters" do YouTube quando o vídeo for publicado.
+
+**Details:**
+- Revisar `roteiro_audiovisual_completo_v2.md` e anotar, para cada bloco
+  já existente (1, 2, 3, 4A, 4B, 5), um título curto de capítulo e o
+  timestamp de início — material pronto para colar na descrição do vídeo
+  no YouTube Studio no momento da publicação (recurso nativo de
+  "chapters" do YouTube, não exige mudança no player do portal).
+- Esta task é **pré-requisito de conteúdo** para a Task 30 (dividir o
+  vídeo em partes) — a segmentação em capítulos aqui é o que informa onde
+  cortar, caso a Task 30 seja levada adiante.
+- Não depende de nenhuma outra task — pode ser feita a qualquer momento,
+  mesmo antes da gravação.
+
+**Files:**
+- `roteiro_audiovisual_completo_v2.md`
+
+**Test strategy:**
+Revisão manual: cada capítulo proposto cobre um bloco inteiro do roteiro,
+sem sobreposição nem lacuna de tempo; timestamps coerentes com a duração
+total (~30min) já documentada.
+
+**Acceptance criteria:**
+- [ ] Lista de capítulos (título + timestamp) cobrindo o roteiro
+      completo, pronta para uso no YouTube Studio.
+- [ ] Nenhuma mudança de conteúdo pedagógico do roteiro — só marcação de
+      capítulos.
+
+**Source:** `plano-adequacao-design-instrucional.md`, seção 2 (P0);
+aprovado pelo usuário em 2026-10-18
+
+---
+
+### Task 30
+| Field | Value |
+|---|---|
+| **ID** | 30 |
+| **Title** | Dividir o vídeo único em múltiplos vídeos curtos (um por momento pedagógico) |
+| **Status** | `blocked` |
+| **Priority** | `medium` |
+| **Complexity** | 7 |
+| **Dependencies** | `[29]` |
+| **Phase** | 9 — Adequação a design instrucional (D2L) |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Aprovado em 2026-10-18 (prática 2). Substitui o vídeo único de ~30min por
+2–3 vídeos curtos (ex. conceito → demonstração → auditoria/correção),
+cada um marcando conclusão de forma independente — reduz a "parede de
+vídeo" criticada pelo artigo e abre caminho para microlearning. É a mais
+complexa das tarefas aprovadas porque **exige mudança de modelo de
+dados**, não só de conteúdo.
+
+**Details:**
+- Depende da Task 29 definir os pontos de corte entre vídeos.
+- `types/quiz.ts`/`types/progress.ts`: `ModuleContent.youtubeVideoId:
+  string | null` precisa virar uma lista ordenada de vídeos (ex.
+  `videos: { id: string; youtubeVideoId: string | null; title: string
+  }[]`); `UserProgress` precisa rastrear qual vídeo da lista está em
+  andamento/concluído (hoje só existe `videoCompleted: boolean` — Task 4).
+- `components/journey/ModuleVideoStep.tsx`/`VideoPlayer.tsx` (Task 7–8):
+  passam a navegar entre vídeos da lista antes de liberar `/avaliacao`,
+  mantendo o `VideoSkeleton` (Task 17) em qualquer vídeo da lista ainda
+  sem `youtubeVideoId`.
+- `useJourneyGuard` (Task 5) não muda de forma (ainda é só
+  `video → avaliacao → relatorio`); a divisão em múltiplos vídeos é
+  **interna** à etapa "vídeo", sem novo `currentStep`.
+- **Decisão a confirmar antes de iniciar:** como os vídeos reais ainda
+  não existem, avaliar se vale a pena fazer essa mudança de modelo agora
+  (sem conteúdo real para validar) ou só quando o primeiro vídeo for
+  gravado — ver nota de dependência "vídeo real" nas Tasks 34/36.
+
+**Files:**
+- `types/quiz.ts`, `types/progress.ts`
+- `content/module.ts`
+- `services/user-progress/*`
+- `components/journey/ModuleVideoStep.tsx`, `components/video/VideoPlayer.tsx`
+
+**Test strategy:**
+Playwright: progresso através de 2–3 vídeos de teste, cada um marcando
+conclusão independentemente; `/avaliacao` só libera depois do último
+vídeo da lista; retomada exata ao recarregar no meio do segundo vídeo.
+
+**Acceptance criteria:**
+- [ ] `ModuleContent`/`UserProgress` suportam uma lista ordenada de
+      vídeos, não só um único `youtubeVideoId`.
+- [ ] Avanço para `/avaliacao` só ocorre após todos os vídeos da lista
+      serem concluídos.
+- [ ] Nenhuma regressão no fluxo de guarda de navegação (Task 5).
+
+**Source:** `plano-adequacao-design-instrucional.md`, seção 2 (P1);
+aprovado pelo usuário em 2026-10-18
+
+---
+
+### Task 31
+| Field | Value |
+|---|---|
+| **ID** | 31 |
+| **Title** | Reformular a Questão 3 como atividade interativa "antes/depois" |
+| **Status** | `pending` |
+| **Priority** | `medium` |
+| **Complexity** | 4 |
+| **Dependencies** | `[9, 20]` |
+| **Phase** | 9 — Adequação a design instrucional (D2L) |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Aprovado em 2026-10-18 (prática 2). A Questão 3 de `banco-questoes.md`
+(auditoria de viabilidade técnica/logística) hoje é só um parágrafo de
+cenário com alternativas, igual às outras três. Transformá-la em uma
+comparação visual "antes/depois" (a proposta original da IA vs. a
+proposta corrigida) aproxima a avaliação de um *branching scenario* leve,
+sem exigir motor de simulação completo.
+
+**Details:**
+- Avaliar se isso exige um novo `type` em `Question` (ex.
+  `"before_after"`, ao lado de `"text"`/`"chat_simulation"`, Task 2/9) ou
+  se pode ser resolvido só com `ChatMessage[]`/layout customizado dentro
+  do `prompt` já existente — decisão técnica a tomar na implementação,
+  mantendo o gabarito/feedback (`correctOptionIndex`, `feedback`) de
+  `banco-questoes.md` inalterado.
+- Conteúdo pedagógico (texto do cenário, alternativas, feedback) não
+  muda — só a apresentação visual da Questão 3 dentro de
+  `QuestionRenderer` (Task 9).
+
+**Files:**
+- `types/quiz.ts` (se novo `type` for necessário)
+- `content/module.ts` (questão `q3`)
+- `components/quiz/QuestionRenderer.tsx`
+
+**Test strategy:**
+Playwright: Questão 3 renderiza a comparação antes/depois corretamente
+nos 3 níveis de feedback (acerto/erro próximo/erro distante, Task 20);
+axe-core sem violações na nova apresentação.
+
+**Acceptance criteria:**
+- [ ] Questão 3 apresenta visualmente a proposta original da IA e uma
+      versão corrigida, não só texto corrido.
+- [ ] Gabarito e feedback pedagógico de `banco-questoes.md` preservados
+      sem alteração de conteúdo.
+
+**Source:** `plano-adequacao-design-instrucional.md`, seção 2 (P1);
+aprovado pelo usuário em 2026-10-18
+
+---
+
+### Task 32
+| Field | Value |
+|---|---|
+| **ID** | 32 |
+| **Title** | Exercício prático opcional ("escreva seu próprio comando para a IA") |
+| **Status** | `pending` |
+| **Priority** | `low` |
+| **Complexity** | 3 |
+| **Dependencies** | `[9]` |
+| **Phase** | 9 — Adequação a design instrucional (D2L) |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Aprovado em 2026-10-18 (prática 2). Reforça o "mão na massa" citado pelo
+artigo (também relevante na prática 6): um campo opcional, sem avaliação
+automática, onde o aluno escreve seu próprio comando estruturado para um
+assistente de IA (usando os quatro pilares da Task 20 — papel, contexto,
+tarefa, formato) e o mantém só para reflexão própria.
+
+**Details:**
+- Novo bloco, provavelmente ao final da etapa de avaliação ou do
+  relatório final, com um `TextField`/`Textarea` do HeroUI — "Pratique
+  você mesmo: escreva um comando para a IA usando os quatro pilares" —
+  **sem** envio a nenhum backend (coerente com a arquitetura 100%
+  client-side, PRD seção 10); salvar localmente (`localStorage`, mesmo
+  padrão da Task 4) só para o aluno não perder o texto ao navegar.
+  Explicitamente não é corrigido nem compartilhado — é só um espaço de
+  prática pessoal.
+- Marcar claramente como **opcional** (não bloqueia avanço de etapa).
+
+**Files:**
+- Novo componente em `components/quiz/` ou `components/journey/`
+  (nome a definir na implementação)
+- Possível extensão pontual de `services/user-progress/` para persistir o
+  rascunho (opcional; avaliar se vale a pena ou se um estado local
+  efêmero já basta)
+
+**Test strategy:**
+Playwright: campo aceita texto livre, não bloqueia navegação para a
+próxima etapa, texto persiste ao recarregar a página (se a persistência
+for implementada). axe-core sem violações.
+
+**Acceptance criteria:**
+- [ ] Aluno pode escrever um comando próprio num campo claramente opcional.
+- [ ] Nenhuma correção/avaliação automática é aplicada a esse texto.
+- [ ] Nenhuma regressão no fluxo obrigatório da jornada.
+
+**Source:** `plano-adequacao-design-instrucional.md`, seção 2 (P2);
+aprovado pelo usuário em 2026-10-18
+
+---
+
+### Task 33
+| Field | Value |
+|---|---|
+| **ID** | 33 |
+| **Title** | Canal de contato assíncrono (link de suporte na home e no relatório final) |
+| **Status** | `pending` |
+| **Priority** | `medium` |
+| **Complexity** | 1 |
+| **Dependencies** | `[13, 24]` |
+| **Phase** | 9 — Adequação a design instrucional (D2L) |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Aprovado em 2026-10-18 (prática 3 — "Provide Opportunities for
+Connection"). Como o portal não tem conta/backend (PRD seção 6), não é
+viável um fórum ou grupo de estudo nesta v1 — mas o artigo recomenda, no
+mínimo, deixar claro como o aluno encontra ajuda num ambiente assíncrono.
+Resolvido com um link simples, sem exigir nenhuma infraestrutura nova.
+
+**Details:**
+- Adicionar um link de contato (`mailto:` ou formulário externo simples,
+  a definir) visível em dois pontos: próximo à FAQ da página inicial
+  (`components/public/CourseSections.tsx`, Task 24) e no relatório final
+  (`components/journey/FinalReport.tsx`, Task 26) — "Ainda com dúvidas?
+  Fale com a gente".
+- Não exige nenhuma mudança de infraestrutura (sem backend novo) — é só
+  um link estático.
+
+**Files:**
+- `content/landing.ts` (texto/URL do canal de contato)
+- `components/public/CourseSections.tsx`, `components/journey/FinalReport.tsx`
+
+**Test strategy:**
+Revisão manual: link visível e funcional nas duas telas; axe-core
+confirma `aria-label`/texto do link compreensível fora de contexto
+("Fale com a gente", não "clique aqui").
+
+**Acceptance criteria:**
+- [ ] Canal de contato visível na página inicial e no relatório final.
+- [ ] Nenhuma infraestrutura de backend introduzida só para isso.
+
+**Source:** `plano-adequacao-design-instrucional.md`, seção 3 (P1);
+aprovado pelo usuário em 2026-10-18
+
+---
+
+### Task 34
+| Field | Value |
+|---|---|
+| **ID** | 34 |
+| **Title** | Revisão de todos os enunciados do banco de questões após as mudanças de conteúdo (Tasks 28–33) |
+| **Status** | `blocked` |
+| **Priority** | `medium` |
+| **Complexity** | 3 |
+| **Dependencies** | `[28, 29, 30, 31, 32, 33]` |
+| **Phase** | 9 — Adequação a design instrucional (D2L) |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Aprovado em 2026-10-18 (prática 4 — "Make Course Content Digestible").
+Pedido explícito do usuário: revisar **todas** as perguntas do banco de
+questões só depois que as tasks das seções 1, 2 e 3 do plano
+(Tasks 28–33) estiverem concluídas — qualquer uma delas pode mudar o que
+o vídeo ensina, como a Questão 3 é apresentada, ou o tom geral do
+conteúdo (guia de estilo), então revisar antes seria retrabalho.
+
+**Details:**
+- Reler as 4 perguntas de `content/module.ts`/`banco-questoes.md` à luz
+  de: (a) guia de estilo (Task 28, tom/linguagem), (b) estrutura final do
+  vídeo após segmentação/divisão (Tasks 29–30, pode mudar a ordem em que
+  conceitos são ensinados), (c) nova apresentação da Questão 3 (Task 31),
+  (d) exercício prático opcional (Task 32, pode revelar lacunas de
+  conteúdo), (e) canal de contato (Task 33, pode já ter trazido dúvidas
+  reais de early adopters a incorporar).
+- Além da revisão de conteúdo, aplicar a melhoria de apresentação já
+  identificada no plano: separar visualmente o **parágrafo de contexto**
+  do cenário da **pergunta objetiva** em cada enunciado (ex. a frase final
+  em destaque/`<strong>`), facilitando a leitura (`QuestionRenderer`,
+  Task 9).
+- Gabarito/feedback (`correctOptionIndex`/`feedback`) só muda se a
+  revisão de conteúdo identificar necessidade real — não é uma reescrita
+  automática.
+
+**Files:**
+- `content/module.ts`
+- `components/quiz/QuestionRenderer.tsx`
+- `banco-questoes.md` (se o conteúdo de referência precisar de ajuste)
+
+**Test strategy:**
+Revisão manual de conteúdo (checklist comparando cada pergunta com o
+vídeo final e o guia de estilo); Playwright + axe-core de regressão nas 4
+perguntas após qualquer ajuste de apresentação.
+
+**Acceptance criteria:**
+- [ ] Todas as 4 perguntas revisadas após a conclusão das Tasks 28–33.
+- [ ] Enunciados apresentam separação visual clara entre contexto e
+      pergunta objetiva.
+- [ ] Nenhuma regressão no gabarito/feedback pedagógico existente.
+
+**Source:** `plano-adequacao-design-instrucional.md`, seção 4 (P1);
+aprovado pelo usuário em 2026-10-18
+
+---
+
+### Task 35
+| Field | Value |
+|---|---|
+| **ID** | 35 |
+| **Title** | Legendas em português no vídeo real (pendente de gravação) |
+| **Status** | `blocked` |
+| **Priority** | `high` |
+| **Complexity** | 2 |
+| **Dependencies** | `[17]` |
+| **Phase** | 9 — Adequação a design instrucional (D2L) |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Aprovado em 2026-10-18 (prática 5 — "Make It Accessible"), **com a
+ressalva explícita do usuário**: esta task fica registrada agora, mas só
+pode ser executada e validada quando houver um vídeo real publicado —
+hoje `content/module.ts` → `youtubeVideoId` ainda é `null` (Task 17). É
+a lacuna de acessibilidade mais crítica do portal (afeta diretamente
+alunos surdos/com deficiência auditiva), por isso prioridade `high`
+mesmo bloqueada.
+
+**Details:**
+- **Bloqueio real: não é outra task do task-master, é a gravação e
+  publicação do vídeo** (processo de produção já documentado em
+  `roteiro_audiovisual_completo_v2.md` + capítulos da Task 29). A
+  dependência `[17]` aqui é só a referência formal no task-master; o
+  gate verdadeiro é "existe `youtubeVideoId` real".
+  Ao publicar o vídeo no YouTube: anexar legenda em português via YouTube
+  Studio (legenda enviada manualmente ou **legenda automática revisada
+  por humano** — nunca publicar só a automática sem revisão, por
+  precisão terminológica pedagógica).
+- Nenhuma mudança de código no portal é necessária — o embed do YouTube
+  (Task 7) já exibe legendas nativamente quando existem no vídeo.
+- Validar, após a publicação, que a legenda aparece corretamente no
+  player embedado do portal (não só no youtube.com).
+
+**Files:**
+- Nenhum arquivo do portal (ação de produção de conteúdo no YouTube
+  Studio) — só `task-master.md` registra o lembrete até lá.
+
+**Test strategy:**
+Manual, após a publicação: abrir `/video` no portal, ativar legendas no
+player embedado, confirmar sincronismo com o áudio em pelo menos 3
+trechos do vídeo.
+
+**Acceptance criteria:**
+- [ ] (bloqueado até existir vídeo real) Legenda em português revisada
+      por humano, anexada ao vídeo no YouTube.
+- [ ] Legenda visível e sincronizada no player embedado do portal.
+
+**Source:** `plano-adequacao-design-instrucional.md`, seção 5 (P0);
+aprovado pelo usuário em 2026-10-18, com a ressalva de validação só após
+vídeos reais existirem
+
+---
+
+### Task 36
+| Field | Value |
+|---|---|
+| **ID** | 36 |
+| **Title** | Transcrição textual completa do(s) vídeo(s) em seção expansível na tela |
+| **Status** | `blocked` |
+| **Priority** | `medium` |
+| **Complexity** | 3 |
+| **Dependencies** | `[29, 30]` |
+| **Phase** | 9 — Adequação a design instrucional (D2L) |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Aprovado em 2026-10-18 (prática 5). Publica a locução integral do vídeo
+como texto acessível diretamente na página `/video`, dentro de uma seção
+colapsada por padrão ("Ler transcrição do vídeo") — ajuda tanto
+acessibilidade (leitura em vez de áudio) quanto digestibilidade (Ctrl+F,
+revisão rápida sem reassistir). O conteúdo-fonte já existe na coluna
+"Locução Integral do Instrutor" de `roteiro_audiovisual_completo_v2.md`.
+
+**Details:**
+- Depende da Task 29 (capítulos) e, principalmente, da Task 30 (se o
+  vídeo for dividido em partes, a transcrição deve ser organizada por
+  vídeo, não como um bloco único) — por isso `blocked` até a estrutura
+  final do vídeo estar decidida.
+- `components/journey/ModuleVideoStep.tsx`: adicionar um `Accordion`/
+  `Disclosure` do HeroUI (mesmo padrão de `FaqAccordion`, Task 24) abaixo
+  do player/skeleton, com a transcrição completa — colapsado por padrão
+  para não competir visualmente com o vídeo (mesmo cuidado de espaço já
+  aplicado à Task 22/23 na avaliação).
+- Conteúdo da transcrição: adaptar a coluna de locução do roteiro v2 para
+  texto corrido legível (remover marcações de tempo/indicações visuais
+  destinadas à produção, manter só a fala).
+
+**Files:**
+- `components/journey/ModuleVideoStep.tsx`
+- Novo arquivo de conteúdo para a transcrição (ex.
+  `content/video-transcript.ts`, formato a definir)
+
+**Test strategy:**
+Playwright: seção de transcrição começa colapsada, expande ao clicar,
+texto corresponde ao roteiro final; axe-core sem violações na página de
+vídeo com a seção expandida e colapsada.
+
+**Acceptance criteria:**
+- [ ] Transcrição completa disponível na tela de vídeo, numa seção
+      expansível colapsada por padrão.
+- [ ] Texto organizado por vídeo, caso a Task 30 tenha dividido o
+      conteúdo em múltiplas partes.
+
+**Source:** `plano-adequacao-design-instrucional.md`, seção 5 (P1);
+aprovado pelo usuário em 2026-10-18
+
+---
+
+### Task 37
+| Field | Value |
+|---|---|
+| **ID** | 37 |
+| **Title** | Avaliar um "flip card" na página inicial |
+| **Status** | `pending` |
+| **Priority** | `low` |
+| **Complexity** | 2 |
+| **Dependencies** | `[24]` |
+| **Phase** | 9 — Adequação a design instrucional (D2L) |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Aprovado em 2026-10-18 (prática 6 — "Engage the Learner's Senses"). O
+artigo cita *flip cards* como um dos recursos de engajamento junto com
+*accordions*/*tabs* (já usados — Tasks 24, 26). Esta task é
+explicitamente uma **avaliação**, não uma implementação garantida: decidir
+em qual seção da home (ex. "Objetivos do curso" ou "O que você será
+capaz de fazer ao final") um cartão com verso/frente (pergunta-gancho no
+frente, conceito-chave no verso) agrega valor, sem forçar o padrão em
+toda a página.
+
+**Details:**
+- Protótipo de 1–2 cartões com `transform: rotateY()`/CSS (sem lib nova)
+  numa única seção de `CourseSections.tsx` (Task 24), com fallback
+  acessível (o conteúdo do verso também deve ser alcançável via teclado/
+  leitor de tela, não só por hover/clique visual — cuidado explícito de
+  acessibilidade, dado o padrão já estabelecido nas Tasks 14/18/19).
+- Se o protótipo não agregar clareza (ex. escapar do fluxo de leitura
+  linear da página), reverter e manter os `Card`s estáticos atuais — esta
+  task aceita "não implementar" como resultado válido, desde que a
+  avaliação fique registrada.
+
+**Files:**
+- `components/public/CourseSections.tsx`
+- Possível novo `components/ui/FlipCard.tsx`, só se o protótipo for
+  aprovado
+
+**Test strategy:**
+Revisão manual de UX do protótipo; axe-core + navegação por teclado
+confirmando que o conteúdo do verso é acessível sem depender de hover.
+
+**Acceptance criteria:**
+- [ ] Protótipo avaliado em pelo menos uma seção da home.
+- [ ] Decisão registrada (adotar ou manter os cartões estáticos atuais),
+      com justificativa.
+- [ ] Se adotado, acessível via teclado/leitor de tela sem depender de
+      hover.
+
+**Source:** `plano-adequacao-design-instrucional.md`, seção 6 (P2);
+aprovado pelo usuário em 2026-10-18
+
+---
+
+### Task 38
+| Field | Value |
+|---|---|
+| **ID** | 38 |
+| **Title** | Link de feedback pós-curso no relatório final |
+| **Status** | `pending` |
+| **Priority** | `medium` |
+| **Complexity** | 1 |
+| **Dependencies** | `[13]` |
+| **Phase** | 9 — Adequação a design instrucional (D2L) |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Aprovado em 2026-10-18 (prática 7 — "Iteration and Reiteration"). A
+lacuna mais sistêmica identificada no plano: até agora nenhuma melhoria
+veio de dados de alunos reais. Primeiro passo, de custo mínimo e
+compatível com a arquitetura 100% client-side (PRD seção 10): um link
+para um formulário externo simples (ex. Google Forms) no relatório
+final, perguntando nota de satisfação, se alguma pergunta pareceu
+confusa, e comentário livre.
+
+**Details:**
+- `components/journey/FinalReport.tsx` (Task 26): adicionar um `Button`/
+  link "Avalie o curso" próximo ao `RestartJourneyModal`, apontando para
+  um formulário externo (URL a definir pelo usuário — não exige nenhum
+  backend novo no portal).
+- Não implementar telemetria agregada nem coleta automática de respostas
+  do quiz nesta task — isso é a Tarefa 38 (não aprovada) do plano
+  original, que exigiria introduzir server-side pela primeira vez no
+  portal e foi deliberadamente deixada de fora desta rodada de aprovação.
+
+**Files:**
+- `components/journey/FinalReport.tsx`
+
+**Test strategy:**
+Revisão manual: link visível no relatório final, abre o formulário
+externo numa nova aba; axe-core sem violações.
+
+**Acceptance criteria:**
+- [ ] Link de feedback pós-curso visível no relatório final.
+- [ ] Nenhuma infraestrutura de backend introduzida só para isso.
+
+**Source:** `plano-adequacao-design-instrucional.md`, seção 7 (P1);
+aprovado pelo usuário em 2026-10-18
+
+---
+
 ## Resumo
 
 ### Tasks por fase
@@ -1563,19 +2146,20 @@ mesclada antes desta revisão; PRD seção 4, seção 5
 | 6 — Acessibilidade estendida | 18, 19, 22, 23 | 18 depende de 6,9,11; 19 depende de 18; 22 depende de 18,19; 23 depende de 22 |
 | 7 — Conteúdo pedagógico definitivo | 20, 21 | 20 depende de 9,10,12; 21 depende de 13,20 |
 | 8 — Página inicial completa | 24, 25, 26, 27 | 24 depende de 16; 25 depende de 20,22; 26 depende de 20,21,25; 27 depende de 18,24,26 |
+| 9 — Adequação a design instrucional (D2L) | 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38 | 28 depende de 27; 29 sem dependências; 30 depende de 29; 31 depende de 9,20; 32 depende de 9; 33 depende de 13,24; 34 depende de 28,29,30,31,32,33; 35 depende de 17 (bloqueio real: vídeo gravado); 36 depende de 29,30; 37 depende de 24; 38 depende de 13 |
 
 ### Tasks por prioridade
 | Prioridade | IDs |
 |---|---|
-| high | 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 15, 20 |
-| medium | 11, 14, 16, 17, 18, 19, 21, 22, 24, 25, 26 |
-| low | 23, 27 |
+| high | 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 15, 20, 29, 35 |
+| medium | 11, 14, 16, 17, 18, 19, 21, 22, 24, 25, 26, 30, 31, 33, 34, 36, 38 |
+| low | 23, 27, 28, 32, 37 |
 
 ### Pronto para iniciar (dependências vazias)
 - Task 1: Inicializar projeto Next.js (App Router) + TypeScript + Tailwind + NextUI + config Vercel — `done`
 
 ### Status atual (2026-10-18)
-**Todas as 27 tasks estão `done`.** MVP implementado, testado (build,
+**Tasks 1–27 estão `done`.** MVP implementado, testado (build,
 lint, testes end-to-end com Playwright, auditoria de acessibilidade com
 axe-core: 0 violações em todas as combinações de tema/contraste/tamanho de
 fonte × tela, incluindo os 3 níveis de feedback do quiz e o drawer de
@@ -1604,20 +2188,53 @@ espaços reservados para ilustrações futuras (Task 27). Este
 mesclado e implantado antes da revisão; o `git pull` trouxe 11 commits
 que não existiam na sessão anterior.
 
+**Tasks 28–38 (2026-10-18):** `pending`/`blocked`, recém-adicionadas a
+partir de `plano-adequacao-design-instrucional.md` — revisão do portal
+contra a seção "7 Best Practices" do artigo da D2L sobre design
+instrucional. Das 7 práticas do artigo, o usuário aprovou 11 ações
+específicas (uma por bullet de cada prática relevante); **nenhuma foi
+implementada ainda**. Ordem de execução recomendada, respeitando
+dependências:
+1. **Sem bloqueio, podem começar já:** Task 29 (segmentar roteiro em
+   capítulos — só edição de documento), Task 28 (guia de estilo), Task
+   31 (Questão 3 antes/depois), Task 32 (exercício prático opcional),
+   Task 33 (canal de contato), Task 37 (avaliar flip card), Task 38
+   (link de feedback pós-curso).
+2. **Depende da Task 29:** Task 30 (dividir vídeo em partes) — decisão
+   de arquitetura maior, avaliar custo/benefício antes de iniciar dado
+   que ainda não há vídeo real para validar.
+3. **Depende das Tasks 29 e 30:** Task 36 (transcrição por vídeo).
+4. **Depende de 28, 29, 30, 31, 32 e 33 (nesta ordem):** Task 34 (revisão
+   final de todas as perguntas) — deliberadamente a última do grupo, por
+   pedido do usuário.
+5. **Bloqueada por algo fora do task-master (gravação do vídeo real, não
+   por outra task):** Task 35 (legendas em português) — fica registrada
+   e só é retomada quando houver `youtubeVideoId` real.
+
+**Não aprovado nesta rodada** (fica só registrado em
+`plano-adequacao-design-instrucional.md`, sem task correspondente): um
+guia de estilo cobrindo múltiplos módulos futuros, telemetria agregada
+de erros por pergunta (exigiria introduzir server-side por decisão
+arquitetural própria) e um ciclo formal de revisão periódica deste
+documento.
+
 Repositório no GitHub: https://github.com/caiocoisa/ead-portal-educacional
 (privado).
 
 Próximos passos ficam no backlog de extensão futura — PRD.md, seção 9
 (CMS/área administrativa, múltiplos módulos, i18n, exportação do
 relatório, acompanhamento de múltiplos alunos — item de tema light/dark
-já implementado na Task 18, removido do backlog). Além disso:
+já implementado na Task 18, removido do backlog) — e nas Tasks 28–38
+descritas acima. Além disso:
 - Antes de ir ao ar, substituir `content/module.ts` → `youtubeVideoId`
   (hoje `null`, mostrando o skeleton da Task 17) pelo ID real do vídeo do
-  módulo — usar **`roteiro_audiovisual_completo_v2.md`** para a gravação
-  (revisão de 2026-09-27: adiciona o Bloco 4B, cobrindo a auditoria de
-  viabilidade técnica/logística da Questão 3 de `banco-questoes.md`, que a
-  v1 do roteiro não demonstrava; ver changelog no próprio arquivo). A v1
-  (`roteiro_audiovisual_completo.md`) fica só como histórico.
+  módulo — usar **`roteiro_audiovisual_completo_v2.md`** para a gravação,
+  já com os capítulos da Task 29 incorporados (revisão de 2026-09-27:
+  adiciona o Bloco 4B, cobrindo a auditoria de viabilidade
+  técnica/logística da Questão 3 de `banco-questoes.md`, que a v1 do
+  roteiro não demonstrava; ver changelog no próprio arquivo). A v1
+  (`roteiro_audiovisual_completo.md`) fica só como histórico. Ao publicar,
+  não esquecer a Task 35 (legendas).
 - Produzir as ilustrações reservadas pela Task 27
   (`components/ui/ImagePlaceholder.tsx`): `public/img/hero.svg` (560×280),
   `public/img/objetivos.svg` (480×360) e `public/img/jornada.svg`

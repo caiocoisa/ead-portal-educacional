@@ -449,6 +449,36 @@ Next.js) só para isso.
 **Fora de escopo mesmo na v2 do login:** 2FA, SSO corporativo (já decidido
 como fora de escopo na seção 6), múltiplos perfis de permissão.
 
+### 9.2 Adequação a design instrucional (Tasks 28–38)
+
+Revisão feita em 2026-10-18 contra a seção "7 Best Practices for
+Developing an Instructional Design Strategy" do artigo "The Ultimate
+Guide to Instructional Design" (D2L). O detalhamento completo (prática
+por prática, lacunas encontradas, ações propostas) está em
+`plano-adequacao-design-instrucional.md`; o usuário aprovou 11 ações,
+já registradas em `task-master.md` como Tasks 28–38 (Fase 9), ainda não
+implementadas. Resumo por prática:
+
+1. **Consistency Is Key** — documentar um guia de estilo curto a partir
+   da paleta/tipografia/ícones já definidos (Task 28).
+2. **Immersive Multimedia Experience** — segmentar o roteiro do vídeo em
+   capítulos (Task 29), avaliar dividir o vídeo único em partes menores
+   (Task 30), reformular a Questão 3 como comparação "antes/depois"
+   (Task 31), e um exercício prático opcional de escrita de comando para
+   IA (Task 32).
+3. **Opportunities for Connection** — canal de contato assíncrono visível
+   na home e no relatório final (Task 33).
+4. **Make Content Digestible** — revisão de todos os enunciados do banco
+   de questões, incluindo separação visual entre contexto e pergunta,
+   feita só depois das Tasks 28–33 (Task 34).
+5. **Make It Accessible** — legendas em português no vídeo real (Task 35,
+   bloqueada até o vídeo existir) e transcrição textual completa em
+   seção expansível na tela de vídeo (Task 36).
+6. **Engage the Learner's Senses** — avaliar um *flip card* na página
+   inicial (Task 37).
+7. **Iteration and Reiteration** — link de feedback pós-curso no
+   relatório final (Task 38).
+
 ---
 
 ## 10. Stack (definida)
