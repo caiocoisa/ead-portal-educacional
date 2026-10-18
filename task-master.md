@@ -1615,7 +1615,7 @@ código — sem nenhuma informação inventada.
 |---|---|
 | **ID** | 29 |
 | **Title** | Segmentar o roteiro v2 do vídeo em capítulos nomeados |
-| **Status** | `pending` |
+| **Status** | `done` |
 | **Priority** | `high` |
 | **Complexity** | 2 |
 | **Dependencies** | `[]` |
@@ -1652,10 +1652,19 @@ sem sobreposição nem lacuna de tempo; timestamps coerentes com a duração
 total (~30min) já documentada.
 
 **Acceptance criteria:**
-- [ ] Lista de capítulos (título + timestamp) cobrindo o roteiro
+- [x] Lista de capítulos (título + timestamp) cobrindo o roteiro
       completo, pronta para uso no YouTube Studio.
-- [ ] Nenhuma mudança de conteúdo pedagógico do roteiro — só marcação de
+- [x] Nenhuma mudança de conteúdo pedagógico do roteiro — só marcação de
       capítulos.
+
+**Implementado em:** nova seção "Capítulos para o YouTube (chapters)"
+em `roteiro_audiovisual_completo_v2.md`, logo após a Ficha
+Técnica/Mapeamento de Artefatos e antes do Roteiro Audiovisual
+Detalhado. Contém um bloco de texto pronto para colar na descrição do
+vídeo no YouTube Studio (6 capítulos, 00:00 a 26:30) e uma tabela de
+rastreabilidade capítulo → bloco do roteiro → faixa de tempo, cobrindo
+os 30 minutos completos sem sobreposição nem lacuna. Nenhum conteúdo
+pedagógico do roteiro foi alterado.
 
 **Source:** `plano-adequacao-design-instrucional.md`, seção 2 (P0);
 aprovado pelo usuário em 2026-10-18
@@ -1667,7 +1676,7 @@ aprovado pelo usuário em 2026-10-18
 |---|---|
 | **ID** | 30 |
 | **Title** | Dividir o vídeo único em múltiplos vídeos curtos (um por momento pedagógico) |
-| **Status** | `blocked` |
+| **Status** | `pending` |
 | **Priority** | `medium` |
 | **Complexity** | 7 |
 | **Dependencies** | `[29]` |
@@ -2204,21 +2213,25 @@ que não existiam na sessão anterior.
 `plano-adequacao-design-instrucional.md` — revisão do portal contra a
 seção "7 Best Practices" do artigo da D2L sobre design instrucional. Das
 7 práticas do artigo, o usuário aprovou 11 ações específicas (uma por
-bullet de cada prática relevante). **Task 28 já está `done`**
-(guia de estilo, ver `docs/guia-de-estilo.md`); as demais (29–38)
-continuam `pending`/`blocked`. Ordem de execução recomendada para o
-restante, respeitando dependências:
-1. **Sem bloqueio, podem começar já:** Task 29 (segmentar roteiro em
-   capítulos — só edição de documento), Task 31 (Questão 3 antes/depois),
+bullet de cada prática relevante). **Tasks 28 e 29 já estão `done`**
+(28: guia de estilo, ver `docs/guia-de-estilo.md`; 29: capítulos do
+roteiro v2 marcados em `roteiro_audiovisual_completo_v2.md`, seção
+"Capítulos para o YouTube"); as demais (30–38) continuam
+`pending`/`blocked`. Ordem de execução recomendada para o restante,
+respeitando dependências:
+1. **Sem bloqueio, podem começar já:** Task 31 (Questão 3 antes/depois),
    Task 32 (exercício prático opcional), Task 33 (canal de contato),
    Task 37 (avaliar flip card), Task 38 (link de feedback pós-curso).
-2. **Depende da Task 29:** Task 30 (dividir vídeo em partes) — decisão
-   de arquitetura maior, avaliar custo/benefício antes de iniciar dado
-   que ainda não há vídeo real para validar.
-3. **Depende das Tasks 29 e 30:** Task 36 (transcrição por vídeo).
-4. **Depende de 28, 29, 30, 31, 32 e 33 (nesta ordem):** Task 34 (revisão
-   final de todas as perguntas) — deliberadamente a última do grupo, por
-   pedido do usuário.
+2. **Dependência de Task formalmente satisfeita (Task 29 concluída),
+   mas com decisão de arquitetura própria pendente de confirmação do
+   usuário antes de iniciar:** Task 30 (dividir vídeo em partes) — muda
+   o modelo de dados (`ModuleContent`/`UserProgress`) sem ainda existir
+   vídeo real para validar a divisão; ver nota na própria Task 30.
+3. **Depende das Tasks 29 (concluída) e 30:** Task 36 (transcrição por
+   vídeo) — ainda bloqueada pela Task 30.
+4. **Depende de 28 (concluída), 29 (concluída), 30, 31, 32 e 33 (nesta
+   ordem):** Task 34 (revisão final de todas as perguntas) —
+   deliberadamente a última do grupo, por pedido do usuário.
 5. **Bloqueada por algo fora do task-master (gravação do vídeo real, não
    por outra task):** Task 35 (legendas em português) — fica registrada
    e só é retomada quando houver `youtubeVideoId` real.

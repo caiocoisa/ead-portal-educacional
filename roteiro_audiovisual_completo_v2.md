@@ -50,6 +50,37 @@ Durante a exibição do vídeo, o instrutor utilizará imagens e gráficos sobre
 
 * **Artefato Estático 8 (novo):** Infográfico-síntese "As quatro lentes para auditar sugestões de IA": (1) Alinhamento Construtivo e Coerência Didática, (2) Formulação de Instruções Estruturadas, (3) Curadoria Humana e Intervenção Corretiva, (4) Papel do Educador no Design Instrucional.
 
+## Capítulos para o YouTube (chapters)
+
+> **Adicionado nesta revisão (2026-10-18), Task 29:** marcação de
+> capítulos para o momento da publicação do vídeo. Não altera nenhum
+> conteúdo pedagógico — apenas nomeia os pontos de navegação que já
+> correspondem aos blocos abaixo. Requisitos nativos do YouTube (mínimo
+> de 3 capítulos, primeiro capítulo em 00:00, cada capítulo com pelo
+> menos 10s) estão satisfeitos. Basta colar a lista a seguir na
+> descrição do vídeo no YouTube Studio no momento da publicação:
+
+```
+00:00 Introdução ao desafio da educação a distância
+05:00 Arquitetura de comandos em inteligência artificial
+10:00 Construção prática e estudo de caso
+17:00 Auditoria de alinhamento pedagógico
+22:00 Auditoria de viabilidade técnica e de acesso
+26:30 Síntese e orientações para a avaliação nativa
+```
+
+| Capítulo | Timestamp de início | Bloco do roteiro | Cobertura |
+|---|---|---|---|
+| Introdução ao desafio da educação a distância | 00:00 | Bloco 1 | 00:00–05:00 |
+| Arquitetura de comandos em inteligência artificial | 05:00 | Bloco 2 | 05:00–10:00 |
+| Construção prática e estudo de caso | 10:00 | Bloco 3 | 10:00–17:00 |
+| Auditoria de alinhamento pedagógico | 17:00 | Bloco 4A | 17:00–22:00 |
+| Auditoria de viabilidade técnica e de acesso | 22:00 | Bloco 4B | 22:00–26:30 |
+| Síntese e orientações para a avaliação nativa | 26:30 | Bloco 5 | 26:30–30:00 |
+
+A lista cobre o roteiro completo (00:00 a 30:00) sem sobreposição nem
+lacuna entre capítulos.
+
 ## Roteiro Audiovisual Detalhado
 
 ### Bloco 1: Introdução ao Desafio da Educação a Distância
