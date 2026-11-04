@@ -345,6 +345,13 @@ ação deste plano bloqueia o estado atual do portal, que já está no ar.
 
 ## Próximos passos (atualizado em 2026-10-18)
 
+> **Atualização (2026-11-04):** as Tasks **28 e 29 estão concluídas**.
+> As Tasks 30, 34 e 36 aguardam o vídeo final (decisão D5 em aberto,
+> `plano-evolucao-v2.md`, seção 10.2). A parte de conteúdo da Task 34
+> se sobrepõe ao banco v2 (Task 47); como as duas se dividem será
+> definido junto com a D5. A evolução do portal, que parte deste plano, está
+> em `plano-evolucao-v2.md`. A lista a seguir é o registro de 2026-10-18.
+
 O usuário revisou este plano e aprovou 11 das ações propostas — já
 promovidas para `task-master.md` como **Tasks 28–38** (ver tabela de
 mapeamento no início deste documento). Status na promoção:

@@ -1,5 +1,11 @@
 # Banco de Questões para a Avaliação Interativa Nativa
 
+> **Atenção (2026-11-04):** a fonte usada pelo portal é
+> `content/module.ts`. Este arquivo diverge dela no retorno "Erro
+> Distante" das 4 questões e ainda cita "Bloco 4", que o roteiro v2
+> dividiu em 4A e 4B. Ver `docs/matriz-rastreabilidade.md` (D-01); a
+> decisão de arquivá-lo ou gerá-lo a partir do `module.ts` fica na Task 47.
+
 ## Diretrizes de Implementação para o Desenvolvedor
 
 Este documento contém o banco de dados das questões formatado para a implementação nativa na aplicação web. Cada questão contempla o cenário, a pergunta, quatro alternativas de resposta, a chave de resposta correta e os textos de retorno pedagógico imediato categorizados por nível de proximidade com a resposta certa.
