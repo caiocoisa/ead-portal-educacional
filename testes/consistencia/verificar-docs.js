@@ -175,6 +175,7 @@ const HISTORICOS = {
   "next.config.js": "o arquivo é next.config.ts", "components/public/IdentificationModal.tsx": "substituído por WelcomeHero (Task 16)",
   "components/journey/JourneyNavbar.tsx": "substituído por JourneyLayout e ProgressIndicator"
 };
+const RAMOS_GIT = new Set(["docs/evolucao-v2"]); // nomes de branch citados nos documentos, não caminhos
 const planejados = [], historicos = [];
 for (const doc of documentos) {
   const ausentes = new Set();
@@ -186,6 +187,7 @@ for (const doc of documentos) {
     if (bare && !p.includes("/")) {
       if (porNome[p] || existe(p)) continue; // existe em alguma pasta
     } else if (existe(p)) continue;
+    if (RAMOS_GIT.has(p)) continue;
     ausentes.add(p);
   }
   for (const p of ausentes) {
