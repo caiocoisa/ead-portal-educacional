@@ -3412,9 +3412,10 @@ requisitos obrigatórios R1 (ebook) e R2 (redesign) registrados.
 correção do roteiro (D-08 e D-09, Task 39) e os pontos de aprovação A
 (direção de arte), B (protótipos) e C (plataforma do ebook).
 
-**Implantação:** `main` local e remoto no mesmo commit (`d991bfd`); tudo
-o que foi produzido na evolução v2 está **sem commit**. Documentação
-conferida por `node testes/consistencia/verificar-docs.js`.
+**Implantação:** `main` local e remoto no mesmo commit (`d991bfd`); a
+evolução v2 está no Pull Request #5 (branch `docs/evolucao-v2`), ainda
+não mesclada. Documentação conferida por
+`node testes/consistencia/verificar-docs.js`.
 
 ### Status atual (2026-10-18)
 **Tasks 1–27 estão `done`.** MVP implementado, testado (build,
