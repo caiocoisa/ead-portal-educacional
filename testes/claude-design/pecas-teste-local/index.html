@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Peças de teste do Claude Design (versão local)</title>
+<style>
+:root{--brand:#0b2545;--gold:#c9a227;--green:#157347;--bg:#f5f7fa;--muted:#3f4a5c;--soft:#e8eef7;--cream:#fdf3d0;--mint:#e6f4ec}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--brand)}
+a{color:var(--brand)}
+a:hover{color:var(--green)}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid var(--brand);outline-offset:3px}
+.aviso{background:var(--brand);color:#fff;padding:12px 24px;font-size:15px;line-height:1.45}
+.aviso strong{color:#fff}
+.aviso a{color:#fff}
+nav{padding:12px 24px;display:flex;gap:20px;flex-wrap:wrap;border-bottom:2px solid var(--brand);background:#fff}
+section.peca{max-width:1280px;margin:0 auto;padding:32px 24px 8px}
+h1{margin:0;font-size:36px;line-height:1.15}
+h2.titulo-peca{margin:0 0 4px;font-size:30px;line-height:1.15}
+p.sub{margin:0 0 20px;font-size:16px;line-height:1.4;color:var(--muted)}
+.hq{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px}
+.hq figure{margin:0;display:flex;flex-direction:column;min-height:300px;border:3px solid var(--brand);border-radius:12px;overflow:hidden}
+.hq figcaption{padding:8px 12px;font-size:14px;line-height:1.35;background:var(--brand);color:#fff}
+.hq .corpo{display:flex;flex:1;align-items:center;gap:8px;padding:8px 12px}
+.hq .fala{flex:1;padding:12px 14px;border-radius:14px;font-size:15px;line-height:1.4;border:2px solid var(--brand)}
+.mapa{display:flex;gap:24px;flex-wrap:wrap}
+.mapa .nos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;width:min(100%,400px);align-content:start}
+.no{display:flex;flex-direction:column;align-items:flex-start;gap:6px;min-height:120px;padding:16px;border-radius:14px;cursor:pointer;text-align:left;border:3px solid var(--brand);background:#fff;color:var(--brand);font-family:inherit}
+.no[aria-pressed="true"]{background:var(--brand);color:#fff}
+.no .n{font-size:14px;font-weight:600}
+.no .t{font-size:22px;font-weight:700;line-height:1.2}
+.detalhe{flex:1;min-width:280px;padding:24px 28px;border-radius:14px;background:#fff;border:3px solid var(--brand);display:flex;flex-direction:column;gap:14px}
+.detalhe h3{margin:0;font-size:26px;line-height:1.2}
+.detalhe h4{margin:0 0 4px;font-size:14px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.detalhe p{margin:0;font-size:17px;line-height:1.45}
+.detalhe .falha{padding:12px 14px;border-radius:10px;background:var(--cream);border:2px solid var(--brand)}
+.detalhe .falha h4{color:var(--brand)}
+.ebook{display:flex;gap:32px;flex-wrap:wrap;justify-content:center;padding:40px;background:#dfe5ee;border-radius:12px}
+.pagina{width:380px;min-height:540px;padding:40px 32px;background:#fff;color:var(--brand);display:flex;flex-direction:column;gap:14px;box-shadow:0 8px 24px rgba(11,37,69,.15)}
+.capa{background:var(--brand);color:#fff;justify-content:space-between;box-shadow:0 8px 24px rgba(11,37,69,.25)}
+.capa h2{margin:0;font-size:38px;line-height:1.1}
+.capa .filete{width:64px;height:6px;background:var(--gold)}
+.capa p{margin:0;font-size:18px;line-height:1.4;color:#dfe7f3}
+.capa p.rodape{font-size:14px}
+.pagina h3{margin:0;font-size:28px}
+.sumario{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:14px;font-size:17px;line-height:1.35}
+.sumario li{display:flex;justify-content:space-between;gap:12px;border-bottom:1px dotted #52525b;padding-bottom:6px}
+.rotulo{margin:0;font-size:13px;font-weight:700;letter-spacing:.08em;color:var(--green)}
+.obj{padding:10px 12px;border-radius:8px;background:var(--soft);font-size:15px;line-height:1.4}
+.fluxo{display:flex;gap:6px;align-items:center;flex-wrap:wrap;font-size:13px;font-weight:600}
+.fluxo span.chip{padding:6px 8px;border-radius:6px;background:var(--brand);color:#fff}
+details{padding:10px 12px;border-radius:8px;border:2px solid var(--brand);font-size:15px;line-height:1.45}
+summary{cursor:pointer;font-weight:700}
+footer{max-width:1280px;margin:0 auto;padding:24px;color:var(--muted);font-size:14px}
+</style>
+</head>
+<body>
+<div class="aviso" role="note"><strong>Versão local de verificação.</strong> Porta fiel do <em>conteúdo</em> das três peças criadas no Claude Design (Task 44), em HTML simples. Não é a renderização nativa da ferramenta; serve para avaliar o visual e a interação sem depender do link.</div>
+<nav aria-label="Peças">
+<a href="#peca-a">A — HQ</a>
+<a href="#peca-b">B — Mapa interativo</a>
+<a href="#peca-c">C — Ebook</a>
+</nav>
+
+<section class="peca" id="peca-a" aria-labelledby="ta">
+<h1 id="ta">Prof.ª Marina audita a IA</h1>
+<p class="sub">Peça de teste A (conteúdo fictício): seis painéis com a mesma personagem, para verificar consistência visual, texto vivo e acessibilidade.</p>
+<div class="hq" id="hq"></div>
+</section>
+
+<section class="peca" id="peca-b" aria-labelledby="tb">
+<h2 class="titulo-peca" id="tb">Mapa do alinhamento pedagógico</h2>
+<p class="sub">Peça de teste B (conteúdo fictício): escolha um elemento para ver o conceito, um exemplo e a falha típica que uma IA comete.</p>
+<div class="mapa">
+<div class="nos" id="nos" role="group" aria-label="Elementos do alinhamento"></div>
+<section class="detalhe" id="detalhe" aria-live="polite"></section>
+</div>
+</section>
+
+<section class="peca" id="peca-c" aria-labelledby="tc">
+<h2 class="titulo-peca" id="tc">Ebook: capa, sumário e capítulo</h2>
+<p class="sub">Peça de teste C (conteúdo fictício): os elementos essenciais do requisito R1, com um elemento interativo no capítulo.</p>
+<div class="ebook">
+<article class="pagina capa" aria-label="Capa">
+<div style="display:flex;flex-direction:column;gap:16px">
+<div class="filete"></div>
+<h2>Auditando a IA no planejamento a distância</h2>
+<p>Guia de bolso para educadores</p>
+</div>
+<p class="rodape">[AUTORIA] · Peça de teste fictícia</p>
+</article>
+<article class="pagina" aria-label="Sumário">
+<h3>Sumário</h3>
+<ol class="sumario">
+<li><a href="#cap1">1. O que é alinhamento pedagógico?</a><span>5</span></li>
+<li><a href="#cap1">2. Como pedir bem à IA</a><span>12</span></li>
+<li><a href="#cap1">3. Auditar a sugestão recebida</a><span>19</span></li>
+<li><a href="#cap1">4. O papel do educador</a><span>27</span></li>
+</ol>
+</article>
+<article class="pagina" id="cap1" aria-label="Capítulo 1">
+<p class="rotulo">CAPÍTULO 1</p>
+<h3 style="font-size:26px;line-height:1.15">O que é alinhamento pedagógico?</h3>
+<div class="obj"><strong>Ao final, você será capaz de</strong> reconhecer quando a avaliação não mede o objetivo da aula.</div>
+<p style="margin:0;font-size:15px;line-height:1.5">Um curso alinhado liga quatro elementos. Quando um deles destoa, o aluno aprende uma coisa e é cobrado em outra.</p>
+<div class="fluxo"><span class="chip">Público</span><span aria-hidden="true">→</span><span class="chip">Objetivos</span><span aria-hidden="true">→</span><span class="chip">Atividades</span><span aria-hidden="true">→</span><span class="chip">Avaliação</span></div>
+<details>
+<summary>Autoverificação: qual é a falha?</summary>
+<p style="margin:8px 0 0">O objetivo pede calcular médias, mas a prova pede decorar datas. A avaliação não mede o objetivo.</p>
+</details>
+</article>
+</div>
+</section>
+
+<footer>Conteúdo fictício. Fonte: <code>testes/claude-design/pecas-teste/project/*.dc.html</code>.</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  // ---------- Peça A: HQ ----------
+  var down = { arm: "M30 134 L24 168", hx: 24, hy: 168 };
+  var think = { arm: "M32 140 C14 120 34 104 52 98", hx: 54, hy: 96 };
+  var point = { arm: "M28 136 C8 124 10 102 16 92", hx: 16, hy: 90 };
+  var smile = { mouth: "M50 86 Q60 96 70 86", lb1: 58, lb2: 58, rb1: 58, rb2: 58 };
+  var worry = { mouth: "M52 90 Q60 84 68 90", lb1: 60, lb2: 55, rb1: 55, rb2: 60 };
+  var ponder = { mouth: "M52 88 L68 88", lb1: 54, lb2: 56, rb1: 58, rb2: 58 };
+  var human = { boxBg: "#ffffff", boxFg: "#0b2545" };
+  var ai = { boxBg: "#0b2545", boxFg: "#ffffff" };
+  function mix() { return Object.assign.apply(null, [{}].concat([].slice.call(arguments))); }
+
+  var panels = [
+    mix({ n: 1, bg: "#e8eef7", caption: "Marina prepara uma aula de Estatística básica.", text: "Hoje vou pedir ajuda à IA para montar o plano de aula.", alt: "Marina, professora de óculos dourados e blazer azul-marinho, sorri com os braços ao lado do corpo." }, down, smile, human),
+    mix({ n: 2, bg: "#fdf3d0", caption: "Ela escreve um comando com papel, contexto, tarefa e formato.", text: "Aja como designer instrucional. Crie um plano de aula assíncrono sobre médias para adultos iniciantes, com objetivos e avaliação.", alt: "Marina sorri e levanta uma das mãos, explicando o comando que escreveu." }, point, smile, human),
+    mix({ n: 3, bg: "#e6f4ec", caption: "A IA responde em poucos segundos.", text: "Sugestão da IA: uma prova de múltipla escolha sobre a história da Estatística.", alt: "Marina lê a resposta da IA com as sobrancelhas franzidas e a boca contraída." }, down, worry, ai),
+    mix({ n: 4, bg: "#e8eef7", caption: "Marina confere a proposta com o objetivo da aula.", text: "O objetivo é calcular médias. Essa prova mede memória, não cálculo.", alt: "Marina leva a mão ao queixo, pensativa, com uma sobrancelha levantada." }, think, ponder, human),
+    mix({ n: 5, bg: "#fdf3d0", caption: "Ela pede um ajuste.", text: "Troque a prova por três problemas curtos com dados reais, que dê para resolver no celular.", alt: "Marina sorri e levanta a mão, pedindo um ajuste à IA." }, point, smile, human),
+    mix({ n: 6, bg: "#e6f4ec", caption: "A decisão final é da educadora.", text: "A IA propõe; eu valido, adapto e decido.", alt: "Marina sorri, confiante, com os braços ao lado do corpo." }, down, smile, human)
+  ];
+
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+
+  function personagem(p) {
+    return '<svg viewBox="0 0 120 170" width="110" height="156" role="img" aria-label="' + esc(p.alt) + '">' +
+      '<path d="M26 170 C26 128 40 112 60 112 C80 112 94 128 94 170 Z" fill="#0b2545"/>' +
+      '<path d="' + p.arm + '" fill="none" stroke="#0b2545" stroke-width="14" stroke-linecap="round"/>' +
+      '<circle cx="' + p.hx + '" cy="' + p.hy + '" r="7" fill="#b9825a"/>' +
+      '<path d="M48 114 L60 138 L72 114 Z" fill="#ffffff"/>' +
+      '<rect x="53" y="96" width="14" height="20" fill="#b9825a"/>' +
+      '<circle cx="60" cy="70" r="30" fill="#b9825a"/>' +
+      '<path d="M28 68 C26 36 50 28 62 28 C84 28 96 46 92 70 C86 54 74 48 60 48 C46 48 34 56 28 68 Z" fill="#2b1d16"/>' +
+      '<circle cx="49" cy="70" r="3" fill="#2b1d16"/><circle cx="71" cy="70" r="3" fill="#2b1d16"/>' +
+      '<circle cx="49" cy="70" r="10" fill="none" stroke="#c9a227" stroke-width="2.5"/>' +
+      '<circle cx="71" cy="70" r="10" fill="none" stroke="#c9a227" stroke-width="2.5"/>' +
+      '<line x1="59" y1="70" x2="61" y2="70" stroke="#c9a227" stroke-width="2.5"/>' +
+      '<line x1="42" y1="' + p.lb1 + '" x2="56" y2="' + p.lb2 + '" stroke="#2b1d16" stroke-width="2.5" stroke-linecap="round"/>' +
+      '<line x1="64" y1="' + p.rb1 + '" x2="78" y2="' + p.rb2 + '" stroke="#2b1d16" stroke-width="2.5" stroke-linecap="round"/>' +
+      '<path d="' + p.mouth + '" fill="none" stroke="#2b1d16" stroke-width="2.5" stroke-linecap="round"/>' +
+      '</svg>';
+  }
+
+  document.getElementById("hq").innerHTML = panels.map(function (p) {
+    return '<figure style="background:' + p.bg + '">' +
+      '<figcaption><strong>' + p.n + '.</strong> ' + esc(p.caption) + '</figcaption>' +
+      '<div class="corpo">' + personagem(p) +
+      '<div class="fala" style="background:' + p.boxBg + ';color:' + p.boxFg + '">' + esc(p.text) + '</div></div>' +
+      '</figure>';
+  }).join("");
+
+  // ---------- Peça B: mapa interativo ----------
+  var dados = [
+    { titulo: "Público", conceito: "Quem aprende: perfil, tempo disponível e dispositivo de acesso.", exemplo: "Adultos que estudam à noite, pelo celular.", falha: "Sugere uma atividade que exige um computador potente." },
+    { titulo: "Objetivos", conceito: "O que o aluno deverá ser capaz de fazer ao final.", exemplo: "Calcular a média de um conjunto de dados.", falha: 'Lista objetivos vagos, como "entender Estatística".' },
+    { titulo: "Atividades", conceito: "A prática que leva o aluno até o objetivo.", exemplo: "Resolver três problemas curtos com dados reais.", falha: "Propõe leitura longa, sem nenhuma prática." },
+    { titulo: "Avaliação", conceito: "A evidência de que o objetivo foi atingido.", exemplo: "Um mini-problema de cálculo, com gabarito comentado.", falha: "Sugere uma prova de memorização que não mede o objetivo." }
+  ];
+  var sel = 0;
+  var nos = document.getElementById("nos");
+  var detalhe = document.getElementById("detalhe");
+
+  function desenharMapa() {
+    nos.innerHTML = dados.map(function (d, i) {
+      return '<button type="button" class="no" data-i="' + i + '" aria-pressed="' + (i === sel) + '">' +
+        '<span class="n">Elemento ' + (i + 1) + '</span><span class="t">' + esc(d.titulo) + '</span></button>';
+    }).join("");
+    var d = dados[sel];
+    detalhe.innerHTML = '<h3>' + esc(d.titulo) + '</h3>' +
+      '<div><h4>Conceito</h4><p>' + esc(d.conceito) + '</p></div>' +
+      '<div><h4>Exemplo</h4><p>' + esc(d.exemplo) + '</p></div>' +
+      '<div class="falha"><h4>Falha típica da IA</h4><p>' + esc(d.falha) + '</p></div>';
+  }
+  nos.addEventListener("click", function (e) {
+    var b = e.target.closest("button[data-i]");
+    if (!b) return;
+    sel = Number(b.getAttribute("data-i"));
+    desenharMapa();
+    nos.querySelector('button[data-i="' + sel + '"]').focus();
+  });
+  desenharMapa();
+})();
+</script>
+</body>
+</html>

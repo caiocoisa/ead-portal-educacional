@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Peça C — Ebook de teste</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+a{color:#0b2545}
+a:hover{color:#157347}
+summary{cursor:pointer}
+summary:focus-visible,a:focus-visible{outline:3px solid #0b2545;outline-offset:3px}
+</style>
+</helmet>
+<div style="width:1280px;height:720px;box-sizing:border-box;padding:40px;background:#dfe5ee;display:flex;gap:32px;justify-content:center;align-items:flex-start">
+<article aria-label="Capa" style="width:380px;height:540px;box-sizing:border-box;padding:40px 32px;background:#0b2545;color:#ffffff;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 8px 24px rgba(11,37,69,0.25)">
+<div style="display:flex;flex-direction:column;gap:16px">
+<div style="width:64px;height:6px;background:#c9a227"></div>
+<h1 style="margin:0;font-size:38px;line-height:1.1">Auditando a IA no planejamento a distância</h1>
+<p style="margin:0;font-size:18px;line-height:1.4;color:#dfe7f3">Guia de bolso para educadores</p>
+</div>
+<p style="margin:0;font-size:14px;color:#dfe7f3">[AUTORIA] · Peça de teste fictícia</p>
+</article>
+<article aria-label="Sumário" style="width:380px;height:540px;box-sizing:border-box;padding:40px 32px;background:#ffffff;color:#0b2545;display:flex;flex-direction:column;gap:20px;box-shadow:0 8px 24px rgba(11,37,69,0.15)">
+<h2 style="margin:0;font-size:28px">Sumário</h2>
+<ol style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:14px;font-size:17px;line-height:1.35">
+<sc-for list="{{chapters}}" as="c" hint-placeholder-count="4">
+<li style="display:flex;justify-content:space-between;gap:12px;border-bottom:1px dotted #52525b;padding-bottom:6px"><a href="{{c.href}}">{{c.title}}</a><span>{{c.page}}</span></li>
+</sc-for>
+</ol>
+</article>
+<article aria-label="Capítulo 1" id="cap1" style="width:380px;height:540px;box-sizing:border-box;padding:40px 32px;background:#ffffff;color:#0b2545;display:flex;flex-direction:column;gap:14px;box-shadow:0 8px 24px rgba(11,37,69,0.15)">
+<p style="margin:0;font-size:13px;font-weight:700;letter-spacing:0.08em;color:#157347">CAPÍTULO 1</p>
+<h2 style="margin:0;font-size:26px;line-height:1.15">O que é alinhamento pedagógico?</h2>
+<div style="padding:10px 12px;border-radius:8px;background:#e8eef7;font-size:15px;line-height:1.4"><strong>Ao final, você será capaz de</strong> reconhecer quando a avaliação não mede o objetivo da aula.</div>
+<p style="margin:0;font-size:15px;line-height:1.5">Um curso alinhado liga quatro elementos. Quando um deles destoa, o aluno aprende uma coisa e é cobrado em outra.</p>
+<div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;font-size:13px;font-weight:600">
+<span style="padding:6px 8px;border-radius:6px;background:#0b2545;color:#ffffff">Público</span><span aria-hidden="true">→</span>
+<span style="padding:6px 8px;border-radius:6px;background:#0b2545;color:#ffffff">Objetivos</span><span aria-hidden="true">→</span>
+<span style="padding:6px 8px;border-radius:6px;background:#0b2545;color:#ffffff">Atividades</span><span aria-hidden="true">→</span>
+<span style="padding:6px 8px;border-radius:6px;background:#0b2545;color:#ffffff">Avaliação</span>
+</div>
+<details style="padding:10px 12px;border-radius:8px;border:2px solid #0b2545;font-size:15px;line-height:1.45">
+<summary style="font-weight:700">Autoverificação: qual é a falha?</summary>
+<p style="margin:8px 0 0 0">O objetivo pede calcular médias, mas a prova pede decorar datas. A avaliação não mede o objetivo.</p>
+</details>
+</article>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":720}}'>
+class Component extends DCLogic {
+renderVals() {
+return {
+chapters: [
+{ title: '1. O que é alinhamento pedagógico?', page: '5', href: '#cap1' },
+{ title: '2. Como pedir bem à IA', page: '12', href: '#cap1' },
+{ title: '3. Auditar a sugestão recebida', page: '19', href: '#cap1' },
+{ title: '4. O papel do educador', page: '27', href: '#cap1' }
+]
+};
+}
+}
+</script>
+</body>
+</html>
