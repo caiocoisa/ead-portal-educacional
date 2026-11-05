@@ -639,12 +639,16 @@ Figma usar e se há limite de créditos.
 ## 12. Próximo passo
 
 1. As Tasks 39–64 estão no `task-master.md` e o PRD tem a seção 9.3.
-   **Concluídas:** 39 e 40.
-2. **Em andamento:** a Task 44 (testes do Claude Design; CD-01, 03, 04, 05
-   e 15 registrados, variante V6 indicada) e a Task 64 (prompts prontos,
-   aguardando as imagens da Etapa 1, geradas por você).
-3. **Sem dependência pendente:** 41, 43, 45, 57, 58 e 42 (desbloqueada),
-   e, entre as tasks da Fase 9, 31, 32, 33, 37 e 38.
+   **Concluídas:** 39, 40, 42 e 45.
+2. **Em andamento:** a Task 41 (benchmark de concorrentes: matriz
+   incompleta), a Task 43 (engenharia reversa: fichas e templates
+   entregues, falta evidência de quadrinho e ebook), a Task 44 (testes do
+   Claude Design; CD-01, 03, 04, 05 e 15 registrados, variante V6
+   indicada), a Task 57 (referências visuais: entregues sem ver a
+   aparência) e a Task 64 (prompts prontos, aguardando as imagens da
+   Etapa 1, geradas por você).
+3. **Sem dependência pendente:** 58, e, entre
+   as tasks da Fase 9, 31, 32, 33, 37 e 38.
 4. **Decisões suas pendentes:** D5 (Tasks 30, 34 e 36); a correção do
    roteiro (D-08 e D-09, da Task 39); e, quando chegar a hora, os pontos
    de aprovação A (direção de arte), B (protótipos) e C (plataforma do

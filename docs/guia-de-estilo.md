@@ -45,11 +45,13 @@ escuro, onde o marinho perde contraste contra o fundo:
 |---|---|---|---|
 | `--accent` | `#0b2545` | `#3f74b8` | 15,4:1 (claro, com `--accent-foreground` branco) / 4,8:1 (escuro) |
 | `--accent-foreground` | `#ffffff` | (herdado) | — |
+| `--accent-hover` | (padrão do HeroUI) | `#305fa3` | Fundo do botão primário no hover. O padrão do HeroUI clareia (no escuro, `#5282c0` com branco = 3,95:1, reprovado); aqui escurece levemente (6,4:1) |
 | `--success` | `#157347` | `#4ade9b` | 5,9:1 (claro) / 8,9:1 (escuro, com `--success-foreground` escuro) |
 | `--success-foreground` | `#ffffff` | `#062b1b` | — |
 | `--warning` | `#c9a227` (= `--gold`) | (herdado) | 6,4:1 com `--warning-foreground` marinho |
 | `--warning-foreground` | `#0b2545` (= `--brand`) | (herdado) | — |
-| `--danger` | `#b91c1c` | (herdado) | ajustado na Task 18 para atingir AA (o padrão do HeroUI não atingia) |
+| `--danger` | `#b91c1c` | `#b91c1c` (o valor do tema claro vaza para o escuro) | Para **fundos e bordas** (botão de perigo: branco sobre ele, 6,5:1). Ajustado na Task 18 para atingir AA |
+| `--danger-text` | `#b91c1c` | `#f87171` | Para **texto** vermelho. No tema escuro, `#b91c1c` sobre `#28181b` mede só 2,6:1 (reprovado); `#f87171` mede 6,1:1. Não use `--danger` como cor de texto |
 | `--background` | `#f5f7fa` | (padrão do HeroUI) | só o tema claro foi ajustado |
 | `--muted` | `#52525b` | (padrão do HeroUI) | o padrão do HeroUI no tema claro só atinge 4,43:1 — abaixo de AA |
 
@@ -191,7 +193,6 @@ HeroUI.
 | `Spinner` | Estado de carregamento (`JourneyLoading`) |
 | `Switch` | Alto contraste (liga/desliga) |
 | `Tabs` | "Resumo" / "Gabarito comentado" no relatório final |
-| `toast` / `Toast` | Feedback de confirmação de resposta (sucesso/atenção/erro) |
 | `Tooltip` | Dica de ação ("Início", tópico de cada pergunta no navegador) |
 | `useTheme()` | Hook nativo de tema claro/escuro/sistema |
 | `useIsomorphicLayoutEffect()` | Hook nativo usado por `usePersistentAttribute` (preferências de tema, fonte e contraste) |
@@ -204,6 +205,29 @@ HeroUI.
   solto para abrir, `<Button slot="close">` para fechar. `Drawer.Trigger`
   é a exceção que **pode** envolver classes de botão diretamente (já é
   um `<button>` real).
+- **Tooltip sem botão aninhado:** `Tooltip.Trigger` é um `div role="button"`;
+  não coloque um `Button` dentro dele (o axe-core acusa `nested-interactive`,
+  WCAG 4.1.2). Para um `Button` do HeroUI, coloque-o **direto** dentro de
+  `<Tooltip>`. Para um `<button>` nativo, use `<Tooltip.Trigger<"button">
+  render={(props) => <button {...props} />} />`. Tooltip só deve ser a
+  única forma de dar uma informação se ela também existir em texto
+  (`aria-label`).
+- **Retorno de ações sem toast:** o resultado da confirmação de resposta
+  aparece no alerta da própria tela, dentro de uma região `role="status"`
+  (`aria-live="polite"`) **sempre presente**, que o leitor de tela anuncia.
+  O toast foi removido em 2026-11-05: cobria o botão de avançar, o React
+  Aria pausa o fechamento dele enquanto o mouse está por cima, duplicava o
+  alerta e o botão de fechar estava em inglês. Se algum dia um toast
+  voltar, ele não pode ficar sobre a área de ação.
+- **Rótulo no nome:** quando um controle tem texto visível **e** `aria-label`,
+  o `aria-label` precisa **conter** o texto visível (WCAG 2.5.3; axe
+  `label-content-name-mismatch`). Quem usa comando de voz ("clicar em
+  Pendente") só aciona o que consegue ler. Derive os dois da mesma constante.
+  Dois cuidados que o axe-core exige: ele compara **por palavras** e
+  **descarta o que está entre parênteses** (não escreva "Fonte grande (A+)";
+  use "A+, fonte grande"); e elementos de texto adjacentes precisam de um
+  **espaço real** entre eles (`{" "}`), senão "Pergunta 1" + "Pendente" vira
+  a palavra única `1pendente`.
 - **Preferências de acessibilidade sempre aplicadas:** qualquer hook que
   aplique um atributo `data-*` no `<html>` (tema, fonte, contraste) deve
   rodar num componente sempre montado (`AccessibilityInitializer`), nunca
