@@ -40,6 +40,11 @@ const SCREENS: Screen[] = [
     path: "/ebook",
     ready: (p) => p.frameLocator("iframe").getByRole("button", { name: /Próxima/ }),
   },
+  {
+    name: "mapa",
+    path: "/mapa",
+    ready: (p) => p.getByRole("heading", { level: 1, name: "Mapa do alinhamento" }),
+  },
 ];
 
 // Falsos positivos conhecidos do axe-core. Cada item é estreito (regra + elemento)
@@ -137,6 +142,20 @@ for (const theme of THEMES) {
         await aguardarPreferencias(page, theme, contrast, "normal");
         await page.getByRole("tab", { name: "Gabarito comentado" }).click();
         await page.getByRole("button", { name: /Pergunta 1/ }).click();
+        await auditar(page);
+      });
+
+      test("mapa com um elemento selecionado e a visão em lista", async ({ page }) => {
+        await seedState(page, { preferences });
+        await page.goto("/mapa");
+        await aguardarPreferencias(page, theme, contrast, "normal");
+        await page.getByRole("button", { name: /^Objetivos/ }).click();
+        await expect(page.getByRole("region", { name: "Detalhe do elemento" }).getByRole("heading", { level: 2, name: "Objetivos" })).toBeVisible();
+        await auditar(page);
+        await page.getByRole("button", { name: "Percurso guiado" }).click();
+        await auditar(page);
+        await page.getByRole("button", { name: "Lista", exact: true }).click();
+        await expect(page.getByRole("article")).toHaveCount(4);
         await auditar(page);
       });
 
