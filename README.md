@@ -26,6 +26,14 @@ sem monetização, antes de publicar em produção (ver `PRD.md`, seção 3.2.1)
 - `npm run build` — build de produção
 - `npm run start` — serve o build de produção
 - `npm run lint` — checagem de lint
+- `npm test` — testes unitários (Vitest): correção do quiz, retorno pedagógico, integridade do banco de questões e repositório de progresso
+- `npm run test:e2e` — testes de ponta a ponta (Playwright) do percurso do aluno, contra o build de produção
+- `npm run test:a11y` — auditoria de acessibilidade (axe-core, WCAG 2.2 AA) em todas as telas e nas 12 combinações de tema × contraste × tamanho de fonte
+- `npm run docs:check` — verifica a consistência da documentação (grafo de tasks, tabelas-resumo, citações)
+
+Na primeira vez, instale o navegador dos testes: `npx playwright install chromium`.
+Os testes E2E e de acessibilidade rodam com **um processo por vez** (ver
+`playwright.config.ts`) e fazem o build antes de subir o servidor.
 
 ## Deploy
 

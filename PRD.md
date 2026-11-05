@@ -185,8 +185,11 @@ Regras do quiz:
   imediato** é exibido, categorizado por proximidade da resposta
   escolhida: acerto, erro próximo (uma alternativa específica, plausível
   mas incorreta) ou erro distante (demais alternativas) — conteúdo
-  definido em `banco-questoes.md`. Um toast reforça o resultado
-  (sucesso/atenção/erro) no momento da confirmação.
+  definido em `banco-questoes.md` e implementado em `content/module.ts`.
+  O resultado é anunciado a leitores de tela por uma região `status`
+  sempre presente. **Não há toast:** foi removido em 2026-11-05, porque
+  cobria o botão de avançar e duplicava o alerta (atritos UX-15, UX-18
+  e UX-19 em `docs/revisao-fluxo-ux.md`).
 - **Navegação livre entre perguntas (Task 25):** um menu de navegação
   lateral (`QuestionNavigator`, vira uma faixa horizontal em telas
   pequenas) lista todas as perguntas com seu status (pendente/correta/
@@ -243,7 +246,7 @@ Estrutura mínima necessária para sustentar o fluxo:
 
 - **Design system:** componentes visuais do **NextUI/HeroUI**, usados de
   forma consistente — botões, cards, inputs, navegação, diálogos, feedback
-  (toasts, tooltips) e tipografia, com tema **light/dark** (implementado
+  (tooltips) e tipografia, com tema **light/dark** (implementado
   na Task 18, ver seção 5.1) e paleta própria marinho/dourado/verde/branco
   (Task 27, ver seção 5).
 - **Iconografia:** ícones do pacote **`lucide-react`** em todos os pontos

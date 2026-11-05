@@ -3,10 +3,13 @@
 import { Button } from "@heroui/react";
 import { useFontSize } from "@/lib/preferences/useFontSize";
 
+// O `aria-label` começa pelo texto visível (A, A+, A++): WCAG 2.5.3, para quem
+// aciona o controle por comando de voz. Não ponha o texto visível entre
+// parênteses: o axe-core descarta trechos entre parênteses ao comparar.
 const OPTIONS = [
-  { value: "normal", label: "A", ariaLabel: "Fonte normal" },
-  { value: "large", label: "A+", ariaLabel: "Fonte grande" },
-  { value: "extra-large", label: "A++", ariaLabel: "Fonte extra grande" },
+  { value: "normal", label: "A", ariaLabel: "A, fonte normal" },
+  { value: "large", label: "A+", ariaLabel: "A+, fonte grande" },
+  { value: "extra-large", label: "A++", ariaLabel: "A++, fonte extra grande" },
 ] as const;
 
 export function FontSizeControl() {

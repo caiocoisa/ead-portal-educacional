@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Toast } from "@heroui/react";
 import { Geist, Geist_Mono } from "next/font/google";
 import { AccessibilityInitializer } from "@/components/accessibility/AccessibilityInitializer";
 import "./globals.css";
@@ -28,7 +27,6 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <body className="min-h-full flex flex-col bg-(--color-background) text-(--color-foreground)">
         <AccessibilityInitializer />
-        <Toast.Provider placement="bottom end" />
         {children}
       </body>
     </html>

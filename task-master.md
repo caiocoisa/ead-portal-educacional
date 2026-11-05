@@ -1493,6 +1493,7 @@ confirmar que `JourneyLoading` aparece brevemente antes do redirecionamento
 - [x] Alternativa correta é destacada visualmente após a confirmação, em
       toda pergunta.
 - [x] Toast reflete o nível do feedback (sucesso/atenção/erro).
+      *(Atualização de 2026-11-05: o toast foi removido; ver Task 45.)*
 - [x] Relatório final mostra desempenho por competência (aba Resumo) e o
       gabarito comentado por pergunta (aba Gabarito comentado).
 - [x] Estado de carregamento visível enquanto o progresso salvo é
@@ -2291,7 +2292,7 @@ não tem `node_modules`): itens "a verificar" vão para a Task 55.
 |---|---|
 | **ID** | 41 |
 | **Title** | Benchmark de concorrentes de EaD (pesquisa na web) |
-| **Status** | `pending` |
+| **Status** | `in-progress` |
 | **Priority** | `medium` |
 | **Complexity** | 4 |
 | **Dependencies** | `[]` |
@@ -2323,6 +2324,19 @@ Revisão: toda afirmação sobre um concorrente tem fonte e data.
 - [ ] Critérios de seleção e de análise declarados antes dos resultados.
 - [ ] Matriz comparativa com fonte verificável em cada célula.
 
+**Andamento (2026-11-04):** entregue `pesquisa/benchmark-concorrentes.md`,
+com critérios declarados antes da coleta, 9 plataformas e cada afirmação
+marcada por confiança (**O** página oficial lida; **R** resumo de busca
+sobre página oficial; **N** notícia ou blog). Achados: regra de aprovação
+explícita e **tentativas ilimitadas** são comuns (Coursera, Skillshop);
+Fundação Bradesco publica "todos os módulos e nota ≥ 70%" e emite
+certificados **de conclusão e de participação**; Skillshop permite **pular
+módulos** pela verificação prévia. **Pendente para concluir:** a maior
+parte das células está em **R** ou **N**; faltam as páginas oficiais da
+Escola Virtual.Gov, Sebrae, Coursera, Khan Academy e Udemy (bloquearam ou
+renderizam por JavaScript), a Descomplica e a observação de uma página de
+curso real. Precisa de navegador conectado ou capturas de tela.
+
 **Source:** `plano-evolucao-v2.md`, frente C
 
 ---
@@ -2332,7 +2346,7 @@ Revisão: toda afirmação sobre um concorrente tem fonte e data.
 |---|---|
 | **ID** | 42 |
 | **Title** | Auditoria instrucional (Gagné, Merrill, Bloom, Kirkpatrick) |
-| **Status** | `pending` |
+| **Status** | `done` |
 | **Priority** | `medium` |
 | **Complexity** | 3 |
 | **Dependencies** | `[39, 40]` |
@@ -2357,8 +2371,20 @@ sem repetir os 7 critérios já revisados.
 Revisão manual contra a matriz da Task 39 e o percurso da Task 40.
 
 **Acceptance criteria:**
-- [ ] Cada referencial aplicado com lacunas e propostas.
-- [ ] Nenhuma repetição dos 7 critérios D2L.
+- [x] Cada referencial aplicado com lacunas e propostas.
+- [x] Nenhuma repetição dos 7 critérios D2L.
+
+**Implementado em:** `pesquisa/auditoria-instrucional.md` (novo). Gagné:
+1 de 9 eventos atende, 6 parciais, 2 não atendem (3, recordação, e 9,
+transferência). Merrill: 1 de 5 atende; faltam **ativação** e
+**integração**. Bloom: **os objetivos O3 e O4 pedem aplicar, analisar,
+avaliar e criar, mas a avaliação mede lembrar e compreender.** Kirkpatrick:
+só o Nível 2 existe (fraco); **o Nível 4 (resultado educacional) não está
+definido em nenhum documento**, e a página oficial recomenda começar por
+ele. 8 lacunas (I-01 a I-08) com proposta e task de decisão; várias
+**ampliam o escopo das Tasks 46, 47 e 48**. As classificações são
+julgamento do autor; o vídeo ainda não existe. Pendente: revisão do
+usuário.
 
 **Source:** `plano-evolucao-v2.md`, frente C
 
@@ -2369,7 +2395,7 @@ Revisão manual contra a matriz da Task 39 e o percurso da Task 40.
 |---|---|
 | **ID** | 43 |
 | **Title** | Engenharia reversa de roteiros: ebook, quadrinho e mapa interativo (pesquisa na web) |
-| **Status** | `pending` |
+| **Status** | `in-progress` |
 | **Priority** | `high` |
 | **Complexity** | 5 |
 | **Dependencies** | `[]` |
@@ -2405,6 +2431,16 @@ Cada decisão de estrutura aponta para ao menos um exemplo observado.
 **Acceptance criteria:**
 - [ ] Um template e uma checklist por mídia.
 - [ ] Esqueleto validado contra o roteiro do vídeo.
+
+**Andamento (2026-11-04):** entregues `pesquisa/engenharia-reversa/mapa.md`,
+`quadrinho.md` e `ebook.md` (fichas com fonte, data e o que **não** foi
+observado) e `templates/roteiro-{mapa,quadrinho,ebook}.md` (com checklist e
+validação contra o roteiro v2: o esqueleto cabe nas três mídias).
+**Evidência desigual:** mapa com 4 fontes boas; quadrinho com 4, mas sem ler
+páginas reais e sem as dez regras do artigo da PLOS; ebook com apenas
+fontes de fornecedores (3 páginas falharam). **Pendente para concluir:**
+exemplos reais de quadrinho e de ebook, de preferência indicados pelo
+usuário, e a revisão dele sobre os esqueletos.
 
 **Source:** `plano-evolucao-v2.md`, frente D; decisão D3
 
@@ -2474,7 +2510,7 @@ dependem de `npm install` e da Task 45.
 |---|---|
 | **ID** | 45 |
 | **Title** | Infraestrutura de testes reproduzível (Playwright, axe-core e testes unitários) |
-| **Status** | `pending` |
+| **Status** | `done` |
 | **Priority** | `high` |
 | **Complexity** | 5 |
 | **Dependencies** | `[]` |
@@ -2511,8 +2547,39 @@ seguintes tenham rede de segurança.
 Os scripts rodam do zero em máquina limpa e passam contra o `main`.
 
 **Acceptance criteria:**
-- [ ] Scripts de teste documentados e funcionando.
-- [ ] Linha de base verde antes de qualquer task de código da Fase 13.
+- [x] Scripts de teste documentados e funcionando.
+- [x] Linha de base verde antes de qualquer task de código da Fase 13.
+
+**Implementado em (2026-11-05):** `vitest.config.mts`, `playwright.config.ts`,
+`tests/helpers/progress.ts`, `tests/unit/` (4 arquivos, **46 testes**),
+`tests/e2e/jornada.spec.ts` (11 testes e 2 `fixme`) e `tests/a11y/axe.spec.ts`
+(**60 casos**: 4 telas × 12 combinações de tema, contraste e fonte, mais 12
+estados interativos). Scripts `test`, `test:watch`, `test:e2e`, `test:a11y` e
+`docs:check`. `devDependencies`: Vitest 4.1.12 (a 5.x exige `@types/node` 22 ou
+superior e o projeto fixa a 20), jsdom, Playwright 1.64.1 e `@axe-core/playwright`
+4.14.0. Ajustes em `.gitignore` e `eslint.config.mjs` (ignora `testes/`, scripts
+CommonJS de evidência que quebravam o `npm run lint` na branch do PR #5).
+`workers: 1`, porque em paralelo a máquina estourou o tempo.
+
+**Linha de base verde:** `lint`, tipos e `build` passam; unitários 46/46; E2E 11
+passam e 2 `fixme` (UX-01 e UX-04); acessibilidade 60/60.
+
+**A auditoria encontrou defeitos reais no produto, corrigidos nesta task** (o
+registro anterior de "0 violações" não alcançava as Tasks 24–27, feitas direto
+no GitHub): (1) `nested-interactive`: `Tooltip.Trigger` envolvendo `Button` no
+cabeçalho e no menu de perguntas (WCAG 4.1.2); (2) `label-content-name-mismatch`
+no menu de perguntas e nos botões de fonte (WCAG 2.5.3); (3) contraste do texto
+vermelho no tema escuro, 2,6:1, com o novo token `--danger-text`; (4) contraste do
+hover do botão primário no tema escuro, 3,95:1, com o novo `--accent-hover`.
+**Falso positivo conhecido do axe-core 4.14, filtrado de forma estreita e
+anotada:** `aria-allowed-attr` no `Meter`, porque o React Aria usa
+`role="meter progressbar"` e o axe não reconhece a lista de papéis (provado com
+um experimento isolado). **Atritos descobertos pelo E2E e resolvidos por decisão
+do usuário (2026-11-05):** UX-18 (o toast cobria o botão de avançar e pausava o
+fechamento no hover), UX-19 (botão "Close" do toast em inglês) e UX-15 (toast
+duplicando o alerta), todos resolvidos **removendo o toast de confirmação**; o
+retorno da resposta passa a ser anunciado por uma região `status`, com testes
+(`docs/revisao-fluxo-ux.md`).
 
 **Source:** `plano-evolucao-v2.md`, frente F e seção 11
 
@@ -2851,6 +2918,9 @@ Corrige os atritos U1–U3 do plano, conforme o fluxo-alvo aprovado.
 - Trocar o avanço automático a 90% por cartão de transição, com a opção
   de ver os materiais complementares ou ir à avaliação. O limiar de 90%
   de um vídeo de 30 min cai aos 27:00, dentro da síntese final (UX-03).
+- **Achado da Task 45 (UX-18), já resolvido em 2026-11-05:** o toast de
+  confirmação cobria o botão de avançar; foi removido, e o retorno da
+  resposta fica no alerta da tela, numa região `status`. Nada a fazer aqui.
 - **Achados da Task 40 acrescentados ao escopo:** retomar a avaliação de
   onde parou, com as respostas salvas (UX-04); controles do player com
   avançar, voltar, velocidade, legendas e capítulos (UX-11); separar
@@ -2990,7 +3060,7 @@ Revisão: nenhuma afirmação dos documentos contradiz o código.
 |---|---|
 | **ID** | 57 |
 | **Title** | Referências visuais e de UX do mercado (pesquisa na web, requisito R2) |
-| **Status** | `pending` |
+| **Status** | `in-progress` |
 | **Priority** | `high` |
 | **Complexity** | 4 |
 | **Dependencies** | `[]` |
@@ -3027,6 +3097,16 @@ tela ou componente do portal que ele inspira.
 - [ ] Critérios declarados antes dos resultados.
 - [ ] Referências por categoria, com fonte e observação de acessibilidade.
 - [ ] Nenhum conteúdo de terceiros reproduzido.
+
+**Andamento (2026-11-04):** entregue `pesquisa/referencias-visuais.md`, com
+critérios declarados antes da coleta e 8 referências (Microsoft Learn,
+GOV.UK, Able Player, Duolingo, Khan Academy, gov.br). **A pesquisa registra
+estrutura e padrões, não a aparência:** a extração foi em texto e **nenhuma
+tela renderizada foi vista**. Sem cobertura: sobreposições, estados de
+carregamento e a linguagem visual (cor, tipografia, formas). Khan Academy
+e gov.br não carregaram. **Pendente para concluir:** o usuário indicar 3 a
+5 interfaces que admira e fornecer capturas de tela ou um navegador
+conectado, para ver a aparência.
 
 **Source:** `plano-evolucao-v2.md`, frente H (7.1); requisito R2
 
@@ -3279,6 +3359,8 @@ reservados por ilustrações finais.
   decorativa (`alt=""`) ou informativa (`alt` descritivo).
 - Apresentação dos enunciados das questões coerente com o novo visual.
 - Somente aparência: mudanças de comportamento ficam na Task 53.
+- **Achado da Task 45 (UX-19), já resolvido em 2026-11-05:** o botão de
+  fechar do toast estava em inglês; deixou de existir com a remoção do toast.
 - **Achado da auditoria (2026-11-04):** a produção exibe aos alunos o
   rótulo de desenvolvimento dos espaços de imagem (ex. "Ilustração dos
   objetivos · `public/img/objetivos.svg · 480×360`"). Esta task os
@@ -3392,16 +3474,16 @@ CD-04 e CD-05
 | low | 23, 27, 28, 32, 37, 56 |
 
 ### Pronto para iniciar (dependências concluídas), em 2026-11-04
-- **Em andamento:** 44 (testes do Claude Design), 64 (avaliação de IAs de imagem).
-- **Prontas, sem dependência pendente:** 31, 32, 33, 37, 38 (tasks da Fase 9); 41, 43, 45, 57, 58 (pesquisa e infraestrutura); 42 (desbloqueada pelas Tasks 39 e 40).
+- **Em andamento:** 41 (benchmark de concorrentes; matriz incompleta), 43 (engenharia reversa; falta evidência de quadrinho e ebook), 44 (testes do Claude Design), 57 (referências visuais; falta ver a aparência), 64 (avaliação de IAs de imagem).
+- **Prontas, sem dependência pendente:** 31, 32, 33, 37, 38 (tasks da Fase 9); 58 (plataformas de ebook).
 - **Dependência concluída, mas com decisão adiada (D5):** 30.
 - **Bloqueada por dependência externa:** 35 (precisa do vídeo gravado).
-- **Concluídas na Fase 9 e na evolução v2:** 28, 29, 39, 40.
+- **Concluídas na Fase 9 e na evolução v2:** 28, 29, 39, 40, 42, 45.
 
 ### Estado consolidado (2026-11-04)
 
-**64 tasks:** 31 `done` (1–29, 39, 40), 2 `in-progress` (44, 64), 12
-`pending` (30, 31, 32, 33, 37, 38, 41, 42, 43, 45, 57, 58) e 19 `blocked`
+**64 tasks:** 33 `done` (1–29, 39, 40, 42, 45), 5 `in-progress` (41, 43, 44,
+57, 64), 7 `pending` (30, 31, 32, 33, 37, 38, 58) e 19 `blocked`
 (34, 35, 36, 46–56, 59–63).
 
 **Decisões:** D0 (Design interno ao Claude), D1 (hub opcional), D2 (banco
