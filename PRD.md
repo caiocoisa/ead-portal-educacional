@@ -504,12 +504,30 @@ descrito abaixo. Decisões tomadas:
   incorpora o leitor `public/ebook/leitor.html` (18 páginas, com as cenas
   da Marina) por `iframe`, com o PDF para download e a abertura em tela
   cheia. Fica **fora da jornada**: não usa o guarda de etapas e nunca
-  altera o progresso salvo. Entradas: cabeçalho da página inicial, convite
-  na tela de boas-vindas e cabeçalho da jornada. O leitor usa a mesma fonte
-  do portal (Arial), respeita o alto contraste e o tamanho de fonte salvos
-  e reflui em uma coluna em telas pequenas ou baixas. O requisito R1 só se
-  completa com a publicação em FlipHTML5 ou Genially (Tasks 58 e 61), a
-  revisão por educadores (Task 50) e o redesenho (R2, Tasks 59 e 49).
+  altera o progresso salvo. Entradas: menu superior das páginas públicas,
+  cartão em destaque na tela principal e cabeçalho da jornada. O leitor usa
+  a mesma fonte do portal (Arial), respeita o alto contraste e o tamanho de
+  fonte salvos e reflui em uma coluna em telas pequenas ou baixas. O
+  requisito R1 só se completa com a publicação em FlipHTML5 ou Genially
+  (Tasks 58 e 61), a revisão por educadores (Task 50) e o redesenho (R2,
+  Tasks 59 e 49).
+- **Mapa interativo no portal (2026-11-05), segundo artefato.** A rota
+  pública `/mapa` ("Mapa do alinhamento") é um componente **nativo** do
+  portal (não um `iframe`): quatro elementos (público, objetivos,
+  atividades e avaliação) que abrem conceito, exemplo, falha típica da IA,
+  pergunta de auditoria e comando de ajuste, com percurso guiado opcional,
+  navegação por setas, visão em lista (única em telas pequenas) e conexões
+  descritas em texto. Também fica **fora da jornada**. O caso de exemplo é
+  um curso de horta em casa. Roteiro em `conteudo/mapa/roteiro.md`; as
+  ilustrações dos nós ainda não existem (cada nó mostra um ícone).
+- **E-book e mapa são hoje os destaques da tela principal (2026-11-05).**
+  Dois cartões grandes ("Ler o e-book" e "Explorar o mapa interativo")
+  ficam logo abaixo da descrição, e o menu superior de todas as páginas
+  públicas traz os dois links, com a página atual marcada. Para dar lugar
+  aos cartões, saiu da primeira dobra a grade de quatro frases
+  informativas, que repetia a lista de etapas e a seção "Como funciona". O
+  campo de nome deixou de receber foco automático, que rolava a tela e
+  escondia os cartões no celular.
 - **Três mídias no primeiro ciclo:** mapa interativo, quadrinho e ebook,
   no mesmo tema da videoaula, com cenários novos (nunca os das questões).
 - **Banco de questões híbrido:** as 4 questões atuais como núcleo, mais

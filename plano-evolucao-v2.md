@@ -660,12 +660,20 @@ Figma usar e se há limite de créditos.
    `public/ebook/ebook-planejar-com-ia.pdf` para importar no FlipHTML5 ou
    no Genially. **Está no portal:** a rota pública `/ebook` incorpora o
    leitor, fora da jornada (não altera o progresso), com entradas na página
-   inicial e no cabeçalho da jornada. Usa a mesma fonte do portal (Arial).
+   inicial (cartão em destaque e menu superior) e no cabeçalho da jornada.
+   Usa a mesma fonte do portal (Arial).
    Pendências: revisão por educadores (Task 50), redesenho via Claude Design
    (R2, Tasks 59 e 49), publicação em plataforma (Tasks 58 e 61) e a
    correção do D-08 no vídeo, que ainda chama a viabilidade de "segunda
    lente". O hub `/materiais` da Task 52 vai absorver a rota.
-6. **Pendência a analisar (UX-20):** o ebook em `/ebook` usa mal o espaço
+6. **Mapa interativo (2026-11-05), segundo artefato:** roteiro
+   `conteudo/mapa/roteiro.md` e rota `/mapa`, nativa no portal (não é
+   `iframe`), com percurso guiado, lista alternativa e caso de exemplo de
+   horta em casa. E-book e mapa são os destaques da tela principal e do
+   menu superior. Faltam as ilustrações dos nós (seção 5.4 de
+   `docs/prompts-ilustracao.md`), a revisão (Task 50) e o redesenho (R2).
+   O quadrinho é o terceiro artefato.
+7. **Pendência a analisar (UX-20):** o ebook em `/ebook` usa mal o espaço
    vertical (cabeçalho do portal, linha de título, barra e rodapé do
    leitor; sobram ~50% da janela em um notebook) e obriga a rolar. Medições
    e direções possíveis em `docs/revisao-fluxo-ux.md`; sem decisão.

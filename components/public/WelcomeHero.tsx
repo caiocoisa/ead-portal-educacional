@@ -13,7 +13,15 @@ import {
   Label,
   TextField,
 } from "@heroui/react";
-import { ArrowDown, BookOpen, Bot, ChartColumn, ClipboardList, Clapperboard } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowRight,
+  BookOpen,
+  ChartColumn,
+  ClipboardList,
+  Clapperboard,
+  Network,
+} from "lucide-react";
 import { userProgressRepository } from "@/services/user-progress";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
 import { JourneyLoading } from "@/components/journey/JourneyLoading";
@@ -25,12 +33,22 @@ const STEP_ROUTES = {
   relatorio: "/relatorio",
 } as const;
 
-const FEATURES = [
-  { icon: Clapperboard, label: "Assista a um vídeo sobre planejamento pedagógico para EaD" },
-  { icon: Bot, label: "Veja um exemplo de aula de Computação com apoio de IA" },
-  { icon: ClipboardList, label: "Pratique como pedir, analisar e melhorar sugestões da IA" },
-  { icon: ChartColumn, label: "Veja seu resultado em um relatório final" },
-];
+/** Materiais de estudo em destaque na tela principal (hoje, os dois principais pontos de acesso). */
+const MATERIALS = [
+  {
+    href: "/ebook",
+    icon: BookOpen,
+    title: "Ler o e-book",
+    description: "Guia de bolso em 18 páginas para planejar com IA sem perder a didática.",
+  },
+  {
+    href: "/mapa",
+    icon: Network,
+    title: "Explorar o mapa interativo",
+    description:
+      "Veja como público, objetivos, atividades e avaliação se conectam e onde a IA costuma errar.",
+  },
+] as const;
 
 export function WelcomeHero() {
   const router = useRouter();
@@ -79,35 +97,46 @@ export function WelcomeHero() {
         </div>
         <h1 className="text-3xl font-bold md:text-4xl">{moduleContent.title}</h1>
         <p className="text-(--muted)">{moduleContent.description}</p>
-        <ul className="grid gap-2 sm:grid-cols-2">
-          {FEATURES.map((feature) => (
-            <li
-              key={feature.label}
-              className="flex items-start gap-3 rounded-xl border border-(--border) bg-(--surface) p-3 text-sm"
-            >
-              <span
-                aria-hidden="true"
-                className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-(--brand) text-(--gold)"
-              >
-                <feature.icon className="size-5" />
-              </span>
-              {feature.label}
-            </li>
-          ))}
-        </ul>
-        <div className="flex flex-col gap-2">
-          <a
-            href="#objetivos-title"
-            className="flex items-center gap-1 text-sm font-medium underline"
+        <section aria-labelledby="materiais-title" className="flex flex-col gap-2">
+          <h2
+            id="materiais-title"
+            className="text-sm font-semibold tracking-wide text-(--muted) uppercase"
           >
-            Conheça os objetivos, o público e os pré-requisitos
-            <ArrowDown aria-hidden="true" className="size-4" />
-          </a>
-          <Link href="/ebook" className="flex items-center gap-1 text-sm font-medium underline">
-            <BookOpen aria-hidden="true" className="size-4" />
-            Leia o guia em e-book
-          </Link>
-        </div>
+            Materiais de estudo
+          </h2>
+          <ul className="grid gap-3 sm:grid-cols-2">
+            {MATERIALS.map((material) => (
+              <li key={material.href}>
+                <Link
+                  href={material.href}
+                  className="group flex h-full items-start gap-3 rounded-xl border-2 border-(--brand) bg-(--surface) p-4 transition-colors hover:bg-(--surface-secondary) focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-(--focus)"
+                >
+                  <span
+                    aria-hidden="true"
+                    className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-(--brand) text-(--gold)"
+                  >
+                    <material.icon className="size-6" />
+                  </span>
+                  <span className="flex flex-col gap-0.5">
+                    <span className="font-semibold">{material.title}</span>
+                    <span className="text-sm text-(--muted)">{material.description}</span>
+                  </span>
+                  <ArrowRight
+                    aria-hidden="true"
+                    className="mt-1 ml-auto size-5 shrink-0 transition-transform group-hover:translate-x-1"
+                  />
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+        <a
+          href="#objetivos-title"
+          className="flex items-center gap-1 text-sm font-medium underline"
+        >
+          Conheça os objetivos, o público e os pré-requisitos
+          <ArrowDown aria-hidden="true" className="size-4" />
+        </a>
       </div>
 
       <div className="flex flex-col gap-4">
@@ -163,7 +192,7 @@ export function WelcomeHero() {
               fullWidth
             >
               <Label>Como podemos te chamar?</Label>
-              <Input placeholder="Seu nome" autoFocus />
+              <Input placeholder="Seu nome" />
               {error ? <FieldError>{error}</FieldError> : null}
             </TextField>
             <Button type="submit" fullWidth>

@@ -24,10 +24,16 @@ test.describe("e-book no portal", () => {
     await expect(page.getByLabel("Como podemos te chamar?")).toBeVisible();
   });
 
-  test("a página inicial também convida ao e-book no corpo da tela", async ({ page }) => {
+  test("a página inicial destaca o e-book em um cartão da tela principal", async ({ page }) => {
     await page.goto("/");
-    await page.getByRole("link", { name: /Leia o guia em e-book/ }).click();
+    await page.getByRole("link", { name: /Ler o e-book/ }).click();
     await expect(page).toHaveURL(/\/ebook$/);
+  });
+
+  test("no e-book, o item do menu superior da página atual é marcado com aria-current", async ({ page }) => {
+    await page.goto("/ebook");
+    await expect(page.getByRole("link", { name: "E-book", exact: true })).toHaveAttribute("aria-current", "page");
+    await expect(page.getByRole("link", { name: "Mapa interativo", exact: true })).not.toHaveAttribute("aria-current", "page");
   });
 
   test("quem está na jornada abre o e-book e volta à mesma etapa, sem perder o progresso", async ({ page }) => {

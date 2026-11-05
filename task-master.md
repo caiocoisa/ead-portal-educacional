@@ -2709,8 +2709,13 @@ Escreve os roteiros usando os templates da Task 43, com cenários novos
 - **Ebook (versão definitiva, 2026-11-05):** adiantado sem liberar esta
   task: `conteudo/ebook/roteiro.md`, `public/ebook/leitor.html` e
   `public/ebook/ebook-planejar-com-ia.pdf`, publicados no portal pela rota
-  `/ebook`. O restante desta task (mapa, quadrinho, revisão por educadores
-  e matriz definitiva) continua `blocked`.
+  `/ebook`. O restante desta task (quadrinho, revisão por educadores e
+  matriz definitiva) continua `blocked`.
+- **Mapa interativo (2026-11-05):** também adiantado sem liberar esta task:
+  `conteudo/mapa/roteiro.md`, `content/mapa.ts` e o componente
+  `components/materials/ConceptMap.tsx`, publicados na rota `/mapa`. Faltam
+  as ilustrações dos quatro nós (prompts em `docs/prompts-ilustracao.md`,
+  seção 5.4) e a revisão por educadores (Task 50).
 
 **Files:**
 - `conteudo/{mapa,quadrinho,ebook}/` (novos)
@@ -3532,6 +3537,17 @@ celular e janela baixa). **Ainda não** está publicado em FlipHTML5 ou
 Genially; as Tasks 48 a 50 (revisão por educadores), 52 (hub), 58 (escolha
 da plataforma), 59 e 49 (redesenho via Claude Design) e 61 (publicação)
 seguem como estavam.
+
+**Mapa interativo (2026-11-05), segundo artefato:** está **no portal**, na
+rota pública `/mapa`, como componente nativo (`components/materials/`), e
+**e-book e mapa são os destaques da tela principal** (dois cartões) e
+itens do menu superior das páginas públicas; a jornada também traz os dois
+links. Verificado por testes de ponta a ponta (`tests/e2e/mapa.spec.ts`) e
+pela matriz de axe-core em tema, contraste e fonte, inclusive com
+elemento selecionado, percurso guiado e lista. **Faltam** as ilustrações
+dos quatro nós (cada nó mostra um ícone), a revisão por educadores (Task
+50), o redesenho (R2) e a reorganização no hub (Task 52). O terceiro
+artefato, o quadrinho, segue sem roteiro.
 
 **Outras entregas de 2026-11-05:** ícone da aba do navegador próprio
 (`app/icon.svg`, `app/apple-icon.png`, `app/favicon.ico`; `npm run icones`),

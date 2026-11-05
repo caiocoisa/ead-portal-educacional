@@ -121,6 +121,12 @@ Acrescente a expressão da última coluna ao prompt (por exemplo,
 
 ### 5.1 Mapa interativo: 4 elementos, proporção 1:1
 
+> **Substituída pela seção 5.4 (2026-11-05).** Estes prompts usam o estilo
+> A da Marina. Como o mapa foi feito sem personagem e as ilustrações da
+> página inicial já têm um estilo aprovado (vetor plano geométrico, azul-
+> marinho e dourado), os quatro nós passaram a usar esse estilo. Mantida
+> aqui só como histórico.
+
 Fundo liso `#f5f7fa`, elemento centralizado, para ser recortado depois.
 
 ```text
@@ -182,6 +188,33 @@ são as três etapas reais: vídeo, avaliação e relatório.
 `testes/imagens-ia/` (confira que a extensão não ficou duplicada). Eu otimizo, coloco em `public/img/`, escrevo o texto alternativo
 a partir do que a imagem mostrar e ligo no lugar do espaço reservado. Anote
 as tentativas no `registro.md`.
+
+### 5.4 Mapa interativo: os quatro nós, no estilo da página inicial (1:1)
+
+O mapa (`/mapa`) já funciona com ícones no lugar das imagens. Estas quatro
+ilustrações entram em cada nó (público, objetivos, atividades e avaliação).
+Usam o **mesmo estilo e as mesmas regras** da seção 5.3 (`[ESTILO-PAGINA]` e
+`[REGRAS-PAGINA]`), sem personagem. Se a ferramenta aceita imagem de
+referência, anexe `public/img/hero.jpg`.
+
+Peça **1:1** (1200×1200). Se vier em outra proporção, não é problema: desde
+que o elemento esteja **centralizado, com margem**, eu recorto em quadrado.
+As imagens são **conceituais, e não do caso da horta**, para valerem em
+qualquer exemplo que o mapa venha a ter.
+
+Cole `[ESTILO-PAGINA]` e `[REGRAS-PAGINA]` da seção 5.3 no fim de cada
+prompt. Nomes dos arquivos na pasta `testes/imagens-ia/`:
+
+| Arquivo | Nó | Prompt |
+|---|---|---|
+| `M1-publico.png` | Público | `Three simple geometric adult figures of different heights standing side by side, each holding a smartphone, with a small crescent moon and two stars above them to suggest evening study. One single centered subject on a plain off-white background, generous empty margin around it. [ESTILO-PAGINA]. [REGRAS-PAGINA]` |
+| `M1-objetivos.png` | Objetivos | `A stylized mountain peak with a small gold flag at the summit and one thick winding path line leading up to it, with a few small dots along the path. One single centered subject on a plain off-white background, generous empty margin around it. [ESTILO-PAGINA]. [REGRAS-PAGINA]` |
+| `M1-atividades.png` | Atividades | `Hands-on learning: an open notebook, a pencil and a smartphone showing an abstract interface made of simple colored blocks, arranged together. One single centered subject on a plain off-white background, generous empty margin around it. [ESTILO-PAGINA]. [REGRAS-PAGINA]` |
+| `M1-avaliacao.png` | Avaliação | `A clipboard with a checklist made of simple tick marks and empty lines, with a magnifying glass resting over one of the ticks. One single centered subject on a plain off-white background, generous empty margin around it. [ESTILO-PAGINA]. [REGRAS-PAGINA]` |
+
+Quando chegarem, eu otimizo, coloco numa subpasta `mapa` dentro de
+`public/img/` e informo o arquivo de cada nó em `content/mapa.ts`. As imagens são decorativas (o
+botão do nó já tem o texto), então não precisam de texto alternativo.
 
 ---
 
