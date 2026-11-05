@@ -11,7 +11,10 @@
     "test:watch": "vitest",
     "test:e2e": "playwright test e2e",
     "test:a11y": "playwright test a11y",
-    "docs:check": "node testes/consistencia/verificar-docs.js"
+    "docs:check": "node testes/consistencia/verificar-docs.js",
+    "icones": "node scripts/gerar-icones.mjs",
+    "ebook:arte": "node scripts/preparar-arte-ebook.mjs",
+    "ebook:verificar": "node testes/ebook/verificar-ebook.js"
   },
   "dependencies": {
     "@heroui/react": "^3.2.6",

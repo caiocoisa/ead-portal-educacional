@@ -105,7 +105,7 @@ export function WelcomeHero() {
           </a>
           <Link href="/ebook" className="flex items-center gap-1 text-sm font-medium underline">
             <BookOpen aria-hidden="true" className="size-4" />
-            Leia o guia em e-book (edição preliminar)
+            Leia o guia em e-book
           </Link>
         </div>
       </div>
@@ -113,8 +113,11 @@ export function WelcomeHero() {
       <div className="flex flex-col gap-4">
       <ImagePlaceholder
         label="Ilustração principal"
-        hint="public/img/hero.svg · 560×280"
-        className="aspect-[2/1] max-h-[24dvh] w-full"
+        hint="public/img/hero.jpg · 1456×720"
+        src="/img/hero.jpg"
+        alt="Ilustração em azul-marinho e dourado: um livro aberto, um cérebro de circuitos que representa a inteligência artificial e um notebook com a figura de uma pessoa, ligados por linhas e nós."
+        priority
+        className="aspect-[2/1] max-h-[24dvh] w-full border border-(--border)"
       />
       <ol
         aria-label="Etapas da jornada"

@@ -84,10 +84,11 @@ relatório) em produção, com o menor custo de implementação possível.
 >
 > Conteúdo centralizado em `content/landing.ts`; seções em
 > `components/public/CourseSections.tsx` e
-> `components/public/FaqAccordion.tsx`. Ilustrações (hero, objetivos,
-> jornada) ainda não produzidas — a página reserva o espaço com
+> `components/public/FaqAccordion.tsx`. A ilustração principal (hero) já
+> está na página (`public/img/hero.jpg`); as de objetivos e de jornada
+> ainda não foram produzidas — a página reserva o espaço com
 > `components/ui/ImagePlaceholder.tsx`, indicando caminho/tamanho sugerido
-> (ex. `public/img/hero.svg · 560×280`) até as imagens definitivas
+> (ex. `public/img/objetivos.svg · 480×360`) até as imagens definitivas
 > existirem.
 
 ### 3.2 Jornada do módulo (área restrita)
@@ -492,22 +493,23 @@ Planejada em 2026-11-04; o detalhamento está em
 `plano-evolucao-v2.md` e as tasks estão no `task-master.md` (Fases
 10–14). As Tasks 39 e 40 (diagnóstico) estão concluídas
 (`docs/matriz-rastreabilidade.md` e `docs/revisao-fluxo-ux.md`); as
-demais não foram implementadas, com a exceção da versão preliminar do
-ebook, descrita abaixo. Decisões tomadas:
+demais não foram implementadas, com a exceção do ebook (primeira versão),
+descrito abaixo. Decisões tomadas:
 
 - **Materiais complementares como hub opcional** (`/materiais`), sem
   bloquear a jornada vídeo → avaliação → relatório. Entradas: cartão de
   transição ao fim do vídeo, item no cabeçalho e link em cada competência
   "Vale revisar" do relatório (remediação dirigida).
-- **Ebook preliminar no portal (2026-11-05).** Antes do hub, a rota
-  pública `/ebook` incorpora o leitor `public/ebook/leitor.html` (18
-  páginas) por `iframe`, com o PDF para download e a abertura em tela
+- **Ebook no portal (2026-11-05).** Antes do hub, a rota pública `/ebook`
+  incorpora o leitor `public/ebook/leitor.html` (18 páginas, com as cenas
+  da Marina) por `iframe`, com o PDF para download e a abertura em tela
   cheia. Fica **fora da jornada**: não usa o guarda de etapas e nunca
   altera o progresso salvo. Entradas: cabeçalho da página inicial, convite
-  na tela de boas-vindas e cabeçalho da jornada. O leitor respeita o alto
-  contraste e o tamanho de fonte do portal, e reflui em uma coluna em telas
-  pequenas ou baixas. É uma edição preliminar: o ebook final (Tasks 48 a
-  50, 59 e 61) ainda cumpre o R1, com publicação em FlipHTML5 ou Genially.
+  na tela de boas-vindas e cabeçalho da jornada. O leitor usa a mesma fonte
+  do portal (Arial), respeita o alto contraste e o tamanho de fonte salvos
+  e reflui em uma coluna em telas pequenas ou baixas. O requisito R1 só se
+  completa com a publicação em FlipHTML5 ou Genially (Tasks 58 e 61), a
+  revisão por educadores (Task 50) e o redesenho (R2, Tasks 59 e 49).
 - **Três mídias no primeiro ciclo:** mapa interativo, quadrinho e ebook,
   no mesmo tema da videoaula, com cenários novos (nunca os das questões).
 - **Banco de questões híbrido:** as 4 questões atuais como núcleo, mais

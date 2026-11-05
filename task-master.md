@@ -2706,12 +2706,11 @@ Escreve os roteiros usando os templates da Task 43, com cenários novos
   interativo por capítulo** e **linguagem clara** para o público-alvo
   (frases curtas, termo técnico definido no primeiro uso, glossário).
 - Matriz de cobertura peça × competência × questão.
-- **Versão preliminar do ebook (2026-11-05):** adiantada para uma
-  apresentação, sem liberar esta task: `conteudo/ebook/roteiro.md`,
-  `public/ebook/leitor.html` e `public/ebook/ebook-preliminar.pdf`,
-  publicados no portal pela rota `/ebook`. O
-  restante desta task (mapa, quadrinho, revisão e matriz definitiva)
-  continua `blocked`.
+- **Ebook (versão definitiva, 2026-11-05):** adiantado sem liberar esta
+  task: `conteudo/ebook/roteiro.md`, `public/ebook/leitor.html` e
+  `public/ebook/ebook-planejar-com-ia.pdf`, publicados no portal pela rota
+  `/ebook`. O restante desta task (mapa, quadrinho, revisão por educadores
+  e matriz definitiva) continua `blocked`.
 
 **Files:**
 - `conteudo/{mapa,quadrinho,ebook}/` (novos)
@@ -3516,13 +3515,22 @@ passam. Os testes de ponta a ponta e de acessibilidade (`npm run test:e2e`,
 depois. O deploy de produção na Vercel disparado pelo PR #7 ainda não foi
 conferido.
 
-**Ebook preliminar (2026-11-05):** existe uma versão preliminar de 18
-páginas, para apresentação, em `conteudo/ebook/` (roteiro, leitor HTML e
-PDF). Verificada por `node testes/ebook/verificar-ebook.js` (sem estouro de
-conteúdo, sem violação de axe-core, quatro interações e leitura em celular).
-**Não** está publicada em plataforma nem incorporada ao portal; as Tasks 48
-a 50 (roteiro final e revisão), 52 (incorporação), 58 (escolha da
-plataforma) e 61 (publicação) seguem como estavam.
+**Ebook (2026-11-05):** o ebook de 18 páginas está **no portal**, na rota
+pública `/ebook` (leitor incorporado, PDF para download e tela cheia), com
+roteiro em `conteudo/ebook/`, leitor e PDF em `public/ebook/`. Verificado
+por `npm run ebook:verificar` (sem estouro de conteúdo, sem violação de
+axe-core em desktop, alto contraste e fonte ampliada, quatro interações,
+celular e janela baixa). **Ainda não** está publicado em FlipHTML5 ou
+Genially; as Tasks 48 a 50 (revisão por educadores), 52 (hub), 58 (escolha
+da plataforma), 59 e 49 (redesenho via Claude Design) e 61 (publicação)
+seguem como estavam.
+
+**Outras entregas de 2026-11-05:** ícone da aba do navegador próprio
+(`app/icon.svg`, `app/apple-icon.png`, `app/favicon.ico`; `npm run icones`),
+ilustração principal da página inicial (`public/img/hero.jpg`) e remoção
+das marcas de "edição preliminar" do portal. **Achado:** o portal renderiza
+Arial, e não a Geist declarada em `app/layout.tsx` (ver
+`docs/guia-de-estilo.md`, seção 2).
 
 ### Status atual (2026-10-18)
 **Tasks 1–27 estão `done`.** MVP implementado, testado (build,
@@ -3655,7 +3663,8 @@ descritas acima. Além disso:
   (`roteiro_audiovisual_completo.md`) fica só como histórico. Ao publicar,
   não esquecer a Task 35 (legendas).
 - Produzir as ilustrações reservadas pela Task 27
-  (`components/ui/ImagePlaceholder.tsx`): `public/img/hero.svg` (560×280),
-  `public/img/objetivos.svg` (480×360) e `public/img/jornada.svg`
-  (480×360) — até lá, a página inicial mostra o espaço reservado com
-  rótulo/dica em vez da imagem final.
+  (`components/ui/ImagePlaceholder.tsx`): `public/img/objetivos.svg`
+  (480×360) e `public/img/jornada.svg` (480×360) — até lá, a página
+  inicial mostra o espaço reservado com rótulo/dica nessas duas posições.
+  **A ilustração principal já foi entregue** (`public/img/hero.jpg`,
+  1456×720, 2026-11-05).
