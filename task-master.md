@@ -2706,6 +2706,12 @@ Escreve os roteiros usando os templates da Task 43, com cenários novos
   interativo por capítulo** e **linguagem clara** para o público-alvo
   (frases curtas, termo técnico definido no primeiro uso, glossário).
 - Matriz de cobertura peça × competência × questão.
+- **Versão preliminar do ebook (2026-11-05):** adiantada para uma
+  apresentação, sem liberar esta task: `conteudo/ebook/roteiro.md`,
+  `public/ebook/leitor.html` e `public/ebook/ebook-preliminar.pdf`,
+  publicados no portal pela rota `/ebook`. O
+  restante desta task (mapa, quadrinho, revisão e matriz definitiva)
+  continua `blocked`.
 
 **Files:**
 - `conteudo/{mapa,quadrinho,ebook}/` (novos)
@@ -3480,7 +3486,7 @@ CD-04 e CD-05
 - **Bloqueada por dependência externa:** 35 (precisa do vídeo gravado).
 - **Concluídas na Fase 9 e na evolução v2:** 28, 29, 39, 40, 42, 45.
 
-### Estado consolidado (2026-11-04)
+### Estado consolidado (2026-11-05)
 
 **64 tasks:** 33 `done` (1–29, 39, 40, 42, 45), 5 `in-progress` (41, 43, 44,
 57, 64), 7 `pending` (30, 31, 32, 33, 37, 38, 58) e 19 `blocked`
@@ -3494,10 +3500,29 @@ requisitos obrigatórios R1 (ebook) e R2 (redesign) registrados.
 correção do roteiro (D-08 e D-09, Task 39) e os pontos de aprovação A
 (direção de arte), B (protótipos) e C (plataforma do ebook).
 
-**Implantação:** `main` local e remoto no mesmo commit (`d991bfd`); a
-evolução v2 está no Pull Request #5 (branch `docs/evolucao-v2`), ainda
-não mesclada. Documentação conferida por
-`node testes/consistencia/verificar-docs.js`.
+**Implantação (atualizada em 2026-11-05):** a evolução v2 está na `main`,
+por três Pull Requests mesclados com merge commit:
+
+| PR | Conteúdo | Observação |
+|---|---|---|
+| #5 | Documentação da evolução v2 (plano, pesquisas, templates, decisões) | Mesclado na `main` |
+| #6 | Correções de acessibilidade e infraestrutura de testes (Task 45) | Mesclado por engano na branch do PR #5 (`docs/evolucao-v2`), e não na `main`, porque o GitHub não troca a base do PR sozinho quando a branch de origem não é apagada |
+| #7 | Leva à `main` o conteúdo do PR #6 | Mesclado; é o PR que corrige o desvio do #6 |
+
+`main` local e remota no mesmo commit após o PR #7. Na `main`, `npm run lint`,
+`npm test` (46 testes) e `node testes/consistencia/verificar-docs.js`
+passam. Os testes de ponta a ponta e de acessibilidade (`npm run test:e2e`,
+`npm run test:a11y`) passaram na branch antes do merge, sem mudança de código
+depois. O deploy de produção na Vercel disparado pelo PR #7 ainda não foi
+conferido.
+
+**Ebook preliminar (2026-11-05):** existe uma versão preliminar de 18
+páginas, para apresentação, em `conteudo/ebook/` (roteiro, leitor HTML e
+PDF). Verificada por `node testes/ebook/verificar-ebook.js` (sem estouro de
+conteúdo, sem violação de axe-core, quatro interações e leitura em celular).
+**Não** está publicada em plataforma nem incorporada ao portal; as Tasks 48
+a 50 (roteiro final e revisão), 52 (incorporação), 58 (escolha da
+plataforma) e 61 (publicação) seguem como estavam.
 
 ### Status atual (2026-10-18)
 **Tasks 1–27 estão `done`.** MVP implementado, testado (build,

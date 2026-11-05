@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   Button,
@@ -12,7 +13,7 @@ import {
   Label,
   TextField,
 } from "@heroui/react";
-import { ArrowDown, Bot, ChartColumn, ClipboardList, Clapperboard } from "lucide-react";
+import { ArrowDown, BookOpen, Bot, ChartColumn, ClipboardList, Clapperboard } from "lucide-react";
 import { userProgressRepository } from "@/services/user-progress";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
 import { JourneyLoading } from "@/components/journey/JourneyLoading";
@@ -94,13 +95,19 @@ export function WelcomeHero() {
             </li>
           ))}
         </ul>
-        <a
-          href="#objetivos-title"
-          className="flex items-center gap-1 text-sm font-medium underline"
-        >
-          Conheça os objetivos, o público e os pré-requisitos
-          <ArrowDown aria-hidden="true" className="size-4" />
-        </a>
+        <div className="flex flex-col gap-2">
+          <a
+            href="#objetivos-title"
+            className="flex items-center gap-1 text-sm font-medium underline"
+          >
+            Conheça os objetivos, o público e os pré-requisitos
+            <ArrowDown aria-hidden="true" className="size-4" />
+          </a>
+          <Link href="/ebook" className="flex items-center gap-1 text-sm font-medium underline">
+            <BookOpen aria-hidden="true" className="size-4" />
+            Leia o guia em e-book (edição preliminar)
+          </Link>
+        </div>
       </div>
 
       <div className="flex flex-col gap-4">
