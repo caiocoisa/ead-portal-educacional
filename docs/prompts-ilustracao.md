@@ -152,17 +152,23 @@ claro, sem personagem), e não o estilo A da Marina. Se a ferramenta aceita
 **imagem de referência**, anexe `public/img/hero.jpg` em cada geração.
 
 Gere em 1600×1200 (o portal exibe em ~480×360, então sobra resolução).
-Cole o bloco abaixo no lugar de `[ESTILO-PAGINA]`, junto com o `[REGRAS]`
-da seção 2:
+Cole os dois blocos abaixo nos lugares de `[ESTILO-PAGINA]` e
+`[REGRAS-PAGINA]`. As regras são uma variante do `[REGRAS]` da seção 2, sem
+a proibição de balões: a imagem de objetivos usa um **ícone** de balão de
+conversa (sem texto), e a ferramenta poderia omiti-lo.
 
 ```text
 Flat geometric vector illustration in the style of a minimal educational infographic: bold simple shapes, thick connector lines with rounded corners, solid flat colors, no gradients, no shading, no outlines on the shapes, high-quality professional finish. Color palette: deep navy blue (#0b2545) and warm gold (#c9a227) as the main colors, with very small touches of emerald green (#157347). Plain off-white background (#f5f7fa). Centered, balanced composition with a generous empty margin on all sides.
 ```
 
+```text
+No text, no letters, no numbers, no captions, no logos, no watermarks, no signature. Clean, uncluttered composition, nothing cut off at the edges. Original artwork only: do not imitate any existing brand or artist.
+```
+
 | Arquivo | Onde entra | Prompt |
 |---|---|---|
-| `P1-objetivos.png` | Seção "Objetivos do curso" | `A large bullseye target in the center, made of concentric navy and gold rings, with one gold arrow stuck in its exact center. Four small circular badges around it, one in each corner, each joined to the target by a thick rounded connector line: top-left, interlocking puzzle pieces; top-right, three horizontal bars of equal length perfectly aligned one above the other; bottom-left, a speech bubble containing a small four-point sparkle and three short abstract lines; bottom-right, a magnifying glass over a document with simple tick marks. Symmetric composition. [ESTILO-PAGINA]. [REGRAS]` |
-| `P1-jornada.png` | Seção "Como funciona" | `One thick rounded path line rising from the bottom-left corner to the top-right corner, passing through three round stations of increasing size, each containing one simple icon: a laptop screen with a large play triangle; a clipboard with three tick marks and empty lines; a bar chart with three rising bars and a small ribbon medal. Small arrows along the path show the direction of travel, small dots between the stations mark progress, and a small gold flag stands at the end of the path. [ESTILO-PAGINA]. [REGRAS]` |
+| `P1-objetivos.png` | Seção "Objetivos do curso" | `A large bullseye target in the center, made of concentric navy and gold rings, with one gold arrow stuck in its exact center. Four small circular badges around it, one in each corner, each joined to the target by a thick rounded connector line: top-left, interlocking puzzle pieces; top-right, three horizontal bars of equal length perfectly aligned one above the other; bottom-left, a rounded chat-bubble icon containing a small four-point sparkle and three short abstract lines (icon only, no text); bottom-right, a magnifying glass over a document with simple tick marks. Symmetric composition. [ESTILO-PAGINA]. [REGRAS-PAGINA]` |
+| `P1-jornada.png` | Seção "Como funciona" | `One thick rounded path line rising from the bottom-left corner to the top-right corner, passing through three round stations of increasing size, each containing one simple icon: a laptop screen with a large play triangle; a clipboard with three tick marks and empty lines; a bar chart with three rising bars and a small ribbon medal. Small arrows along the path show the direction of travel, small dots between the stations mark progress, and a small gold flag stands at the end of the path. [ESTILO-PAGINA]. [REGRAS-PAGINA]` |
 
 **Por que cada imagem tem esses elementos.** Os quatro emblemas da imagem
 de objetivos correspondem, na ordem, aos quatro objetivos do curso
