@@ -2604,6 +2604,11 @@ referencial instrucional) e registra a decisão do modelo de jornada.
 **Details:**
 - Matriz com impacto, esforço e dependência por lacuna.
 - ADR do modelo: hub opcional (D1), banco híbrido (D2), três mídias (D3).
+- **Reavaliar o fluxo do usuário com os novos artefatos (UX-21,
+  `docs/revisao-fluxo-ux.md`) antes de registrar o ADR:** o e-book e o mapa
+  já existem como rotas públicas separadas, fora da jornada (o quadrinho
+  virá), o que coloca em questão a D1 (hub opcional) e o fluxo-alvo da
+  seção 4 do documento. Esta task só registra o ADR depois dessa análise.
 - Registrar que a D5 segue em aberto até o vídeo final.
 
 **Files:**
@@ -3566,6 +3571,21 @@ todos esses tamanhos. **Não há decisão tomada**: as direções (cabeçalhos
 unificados, barra única, modo leitura, páginas em paisagem ou espelhadas)
 estão em `docs/revisao-fluxo-ux.md` (UX-20) e se resolvem nas Tasks 52 e
 63, conferindo também o FlipHTML5 (Task 58).
+
+**Pendência a analisar (2026-11-05): UX-21, reavaliar o fluxo do usuário
+com os novos artefatos.** A jornada foi desenhada como um percurso linear
+(vídeo, avaliação, relatório) com materiais em um hub opcional (D1). Entraram
+o e-book e o mapa como rotas públicas separadas, fora da jornada (o
+quadrinho será a terceira), e o percurso não diz quando cada uma serve. Fatos
+do estado atual: a tela principal destaca os materiais porque o vídeo ainda
+não existe; quem já tem progresso é redirecionado e nunca vê os cartões;
+nada registra que um material foi visto nem o liga ao relatório; o menu
+cresce a cada artefato. **Não há decisão tomada**: as perguntas (papel de
+cada artefato no percurso, jornada linear ou trilha, descoberta por quem tem
+progresso, hierarquia da tela principal, hub ou rotas separadas, registro de
+material visto) estão em `docs/revisao-fluxo-ux.md` (UX-21) e devem ser
+respondidas **antes do ADR da Task 46**, com protótipos e teste de
+usabilidade (Task 55).
 
 ### Status atual (2026-10-18)
 **Tasks 1–27 estão `done`.** MVP implementado, testado (build,
