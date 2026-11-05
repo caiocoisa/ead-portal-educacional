@@ -23,6 +23,7 @@ dizendo para que serve. Se preferir, posso traduzi-los.
 | **1 — Estilo** | A ficha da personagem Marina, uma vez em cada um dos 3 estilos | 3 | Você escolhe **um** estilo (e o resultado já serve ao caso IM-02) |
 | **2 — Cenas** | As 6 cenas da HQ, no estilo escolhido, usando a ficha como referência | 6 | Avalio consistência e acabamento (IM-01, 03, 05) |
 | **3 — Elementos** | 4 elementos do mapa e 3 do ebook (capa e 2 ilustrações de capítulo) | 7 | Avalio coerência de estilo e uso em tamanho reduzido (IM-06) |
+| **Página inicial** (seção 5.3, fora da avaliação) | Ilustrações de objetivos e de jornada, no estilo da imagem principal | 2 | Avalio a coerência com `hero.jpg` e ligo no portal |
 
 Total mínimo: **16 imagens**, mais as tentativas extras que você achar
 necessárias. Anote quantas tentativas cada imagem exigiu: isso entra na
@@ -140,6 +141,47 @@ Fundo liso `#f5f7fa`, elemento centralizado, para ser recortado depois.
 | `E3-ebook-capa.png` | **3:4** (retrato) | `Book cover illustration with no title text. [MARINA] stands at the center holding a tablet, and a translucent magnifying lens in front of the tablet reveals clean geometric shapes. Deep navy background with gold accents. Leave the top third empty for the title and a small band at the bottom empty for the author. [ESTILO ESCOLHIDO]. [PALETA]. [REGRAS]` |
 | `E3-ebook-cap1.png` | **4:3** | `Four interlocking puzzle pieces in navy, gold, green and light blue, forming a square, centered on a plain pale background (#f5f7fa), a minimal metaphor for alignment between audience, objectives, activities and assessment. [ESTILO ESCOLHIDO]. [PALETA]. [REGRAS]` |
 | `E3-ebook-cap3.png` | **4:3** | `[MARINA] reviews a printed lesson plan at a desk and checks the items with a green pencil, a laptop beside her, calm and focused mood. Soft mint-green background (#e6f4ec). Leave the right side empty. [ESTILO ESCOLHIDO]. [PALETA]. [REGRAS]` |
+
+### 5.3 Página inicial: objetivos e jornada (2 imagens, proporção 4:3)
+
+A ilustração principal da página inicial (`public/img/hero.jpg`) já está
+no ar. Faltam as duas dos espaços reservados "Objetivos do curso" e "Como
+funciona". Para as três parecerem **da mesma família**, estas usam o estilo
+da imagem principal (vetor plano geométrico, azul-marinho e dourado, fundo
+claro, sem personagem), e não o estilo A da Marina. Se a ferramenta aceita
+**imagem de referência**, anexe `public/img/hero.jpg` em cada geração.
+
+Gere em 1600×1200 (o portal exibe em ~480×360, então sobra resolução).
+Cole os dois blocos abaixo nos lugares de `[ESTILO-PAGINA]` e
+`[REGRAS-PAGINA]`. As regras são uma variante do `[REGRAS]` da seção 2, sem
+a proibição de balões: a imagem de objetivos usa um **ícone** de balão de
+conversa (sem texto), e a ferramenta poderia omiti-lo.
+
+```text
+Flat geometric vector illustration in the style of a minimal educational infographic: bold simple shapes, thick connector lines with rounded corners, solid flat colors, no gradients, no shading, no outlines on the shapes, high-quality professional finish. Color palette: deep navy blue (#0b2545) and warm gold (#c9a227) as the main colors, with very small touches of emerald green (#157347). Plain off-white background (#f5f7fa). Centered, balanced composition with a generous empty margin on all sides.
+```
+
+```text
+No text, no letters, no numbers, no captions, no logos, no watermarks, no signature. Clean, uncluttered composition, nothing cut off at the edges. Original artwork only: do not imitate any existing brand or artist.
+```
+
+| Arquivo | Onde entra | Prompt |
+|---|---|---|
+| `P1-objetivos.png` | Seção "Objetivos do curso" | `A large bullseye target in the center, made of concentric navy and gold rings, with one gold arrow stuck in its exact center. Four small circular badges around it, one in each corner, each joined to the target by a thick rounded connector line: top-left, interlocking puzzle pieces; top-right, three horizontal bars of equal length perfectly aligned one above the other; bottom-left, a rounded chat-bubble icon containing a small four-point sparkle and three short abstract lines (icon only, no text); bottom-right, a magnifying glass over a document with simple tick marks. Symmetric composition. [ESTILO-PAGINA]. [REGRAS-PAGINA]` |
+| `P1-jornada.png` | Seção "Como funciona" | `One thick rounded path line rising from the bottom-left corner to the top-right corner, passing through three round stations of increasing size, each containing one simple icon: a laptop screen with a large play triangle; a clipboard with three tick marks and empty lines; a bar chart with three rising bars and a small ribbon medal. Small arrows along the path show the direction of travel, small dots between the stations mark progress, and a small gold flag stands at the end of the path. [ESTILO-PAGINA]. [REGRAS-PAGINA]` |
+
+**Por que cada imagem tem esses elementos.** Os quatro emblemas da imagem
+de objetivos correspondem, na ordem, aos quatro objetivos do curso
+(`content/landing.ts`, `courseObjectives`): articular os elementos do
+planejamento (quebra-cabeça), reconhecer o alinhamento (barras alinhadas),
+estruturar comandos para a IA (balão com brilho) e analisar criticamente as
+sugestões (lupa sobre o documento). As três estações da imagem de jornada
+são as três etapas reais: vídeo, avaliação e relatório.
+
+**Como entregar:** salve `P1-objetivos.png` e `P1-jornada.png` na pasta
+`testes/imagens-ia/` (confira que a extensão não ficou duplicada). Eu otimizo, coloco em `public/img/`, escrevo o texto alternativo
+a partir do que a imagem mostrar e ligo no lugar do espaço reservado. Anote
+as tentativas no `registro.md`.
 
 ---
 
