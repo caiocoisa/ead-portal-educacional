@@ -653,5 +653,11 @@ Figma usar e se há limite de créditos.
    roteiro (D-08 e D-09, da Task 39); e, quando chegar a hora, os pontos
    de aprovação A (direção de arte), B (protótipos) e C (plataforma do
    ebook).
-5. **Pré-requisito técnico:** `npm install` (o clone não tem
-   `node_modules`) antes da Task 45.
+5. **Versão preliminar do ebook (2026-11-05):** produzida para
+   apresentação, antes de a Task 48 ser liberada: roteiro
+   `conteudo/ebook/roteiro.md`, leitor em
+   `conteudo/ebook/preliminar/index.html` (18 páginas, um elemento
+   interativo por capítulo) e PDF `ebook-preliminar.pdf` para importar no
+   FlipHTML5 ou no Genially. Não substitui as Tasks 48 a 50 nem o redesign
+   (Tasks 59 e 49): usa a arte geométrica provisória até as ilustrações da
+   Marina existirem, e adota provisoriamente a correção do D-08.

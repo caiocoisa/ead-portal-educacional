@@ -11,12 +11,18 @@
 | `claude-design/pecas-teste/` | Fontes (`.dc.html`) do artefato "Design" de teste | 44 |
 | `claude-design/pecas-teste-local/` | Versão em HTML puro das mesmas peças | 44 |
 | `imagens-ia/registro-modelo.md` | Modelo de registro da ferramenta de imagem; as imagens entregues vão em `imagens-ia/<ferramenta>/` | 64 |
+| `ebook/verificar-ebook.js` | Confere o e-book preliminar (`conteudo/ebook/preliminar/index.html`): estouro de conteúdo, axe-core, interações, celular e exportação do PDF | 48 (versão preliminar) |
 
 ## Como rodar
 
 ```bash
 node testes/consistencia/verificar-docs.js
 node testes/rastreabilidade/trace.js
+node testes/ebook/verificar-ebook.js
 ```
+
+O `verificar-ebook.js` é a única exceção à regra de somente leitura: ele
+**regrava** `conteudo/ebook/preliminar/ebook-preliminar.pdf`. Com
+`--capturas <pasta>` salva uma imagem de cada página.
 
 Nada nesta pasta é publicado no portal.

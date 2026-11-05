@@ -2706,6 +2706,11 @@ Escreve os roteiros usando os templates da Task 43, com cenários novos
   interativo por capítulo** e **linguagem clara** para o público-alvo
   (frases curtas, termo técnico definido no primeiro uso, glossário).
 - Matriz de cobertura peça × competência × questão.
+- **Versão preliminar do ebook (2026-11-05):** adiantada para uma
+  apresentação, sem liberar esta task: `conteudo/ebook/roteiro.md`,
+  `conteudo/ebook/preliminar/index.html` e `ebook-preliminar.pdf`. O
+  restante desta task (mapa, quadrinho, revisão e matriz definitiva)
+  continua `blocked`.
 
 **Files:**
 - `conteudo/{mapa,quadrinho,ebook}/` (novos)
@@ -3509,6 +3514,14 @@ passam. Os testes de ponta a ponta e de acessibilidade (`npm run test:e2e`,
 `npm run test:a11y`) passaram na branch antes do merge, sem mudança de código
 depois. O deploy de produção na Vercel disparado pelo PR #7 ainda não foi
 conferido.
+
+**Ebook preliminar (2026-11-05):** existe uma versão preliminar de 18
+páginas, para apresentação, em `conteudo/ebook/` (roteiro, leitor HTML e
+PDF). Verificada por `node testes/ebook/verificar-ebook.js` (sem estouro de
+conteúdo, sem violação de axe-core, quatro interações e leitura em celular).
+**Não** está publicada em plataforma nem incorporada ao portal; as Tasks 48
+a 50 (roteiro final e revisão), 52 (incorporação), 58 (escolha da
+plataforma) e 61 (publicação) seguem como estavam.
 
 ### Status atual (2026-10-18)
 **Tasks 1–27 estão `done`.** MVP implementado, testado (build,

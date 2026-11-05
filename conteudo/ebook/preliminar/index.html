@@ -1,0 +1,800 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Planejar com IA sem perder a didática</title>
+<meta name="description" content="Guia de bolso para educadores na educação a distância. Edição preliminar.">
+<style>
+:root{
+  --navy:#0b2545; --navy-2:#13315c; --gold:#c9a227; --gold-soft:#f6edc6; --green:#157347; --mint:#e6f4ec;
+  --sky:#8da9c4; --paper:#ffffff; --ink:#14213a; --muted:#46506a; --line:#d5dbe6; --bad:#b91c1c; --bad-soft:#fbeaea;
+  --serif:Georgia,"Times New Roman",serif; --sans:"Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:radial-gradient(120% 100% at 50% 0%,#17335c 0%,#0b2545 60%,#071a31 100%);color:#fff;font-family:var(--sans)}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+
+/* ---------- moldura do leitor ---------- */
+.reader{min-height:100%;display:flex;flex-direction:column;align-items:center}
+.topbar{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 20px;font-size:14px}
+.topbar strong{font-family:var(--serif);font-weight:700;letter-spacing:.2px}
+.topbar .tag{color:var(--gold);font-size:12px;border:1px solid var(--gold);border-radius:999px;padding:2px 10px}
+.btn{font:600 14px var(--sans);color:#fff;background:transparent;border:1px solid rgba(255,255,255,.55);border-radius:8px;padding:8px 14px;cursor:pointer;min-height:40px}
+.btn:hover{background:rgba(255,255,255,.12)}
+.btn[disabled]{opacity:.4;cursor:default}
+.stage{position:relative;width:calc(720px*var(--s,1));height:calc(960px*var(--s,1));flex:none;box-shadow:0 18px 50px rgba(0,0,0,.45);border-radius:4px}
+.sheet{width:720px;height:960px;transform:scale(var(--s,1));transform-origin:top left}
+.nav{display:flex;align-items:center;gap:14px;padding:12px 16px 18px;font-size:14px}
+.nav .pos{min-width:190px;text-align:center}
+.progress{width:100%;height:4px;background:rgba(255,255,255,.18)}
+.progress i{display:block;height:100%;width:0;background:var(--gold);transition:width .25s}
+
+/* ---------- a página ---------- */
+.page{position:absolute;inset:0;width:720px;height:960px;background:var(--paper);color:var(--ink);overflow:hidden;
+  display:flex;flex-direction:column;border-radius:4px;font:15px/1.5 var(--sans)}
+.page[hidden]{display:none}
+.runhead{display:flex;justify-content:space-between;padding:26px 52px 0;font-size:12px;letter-spacing:.8px;text-transform:uppercase;color:var(--muted)}
+.runhead b{color:var(--green)}
+.body{flex:1;min-height:0;padding:14px 52px 0;overflow:hidden}
+.folio{display:flex;justify-content:space-between;padding:0 52px 22px;font-size:12px;color:var(--muted);border-top:1px solid var(--line);margin:0 52px;padding:10px 0 22px}
+h1,h2,h3{font-family:var(--serif);color:var(--navy);margin:0}
+h2{font-size:29px;line-height:1.15;margin:6px 0 12px}
+h3{font-size:17px;margin:14px 0 6px}
+p{margin:0 0 9px}
+ul,ol{margin:0 0 10px;padding-left:20px}
+li{margin:0 0 4px}
+.kicker{display:inline-block;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#fff;background:var(--navy);border-radius:4px;padding:3px 9px}
+.foco{background:var(--gold-soft);border-left:5px solid var(--gold);padding:11px 14px;margin:0 0 12px;font-family:var(--serif);font-size:18px;line-height:1.3;color:var(--navy)}
+.termo{background:var(--mint);border-radius:6px;padding:8px 12px;font-size:14px;margin:0 0 10px}
+.regra{background:var(--navy);color:#fff;border-radius:8px;padding:14px 16px;font-family:var(--serif);font-size:17px;line-height:1.35}
+.regra small{display:block;font:600 11px var(--sans);letter-spacing:1px;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+.duas{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:center}
+.quatro{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cartao{border:1px solid var(--line);border-top:4px solid var(--navy);border-radius:6px;padding:9px 12px;font-size:14px}
+.cartao b{display:block;font-family:var(--serif);font-size:16px;color:var(--navy)}
+.c-papel{border-top-color:var(--navy)} .c-contexto{border-top-color:var(--gold)} .c-tarefa{border-top-color:var(--green)} .c-formato{border-top-color:var(--sky)}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin:0 0 10px}
+th,td{border:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+th{background:var(--navy);color:#fff;font-weight:600}
+td.sim{color:var(--green);font-weight:700} td.nao{color:var(--bad);font-weight:700}
+.caixa{border:1px dashed var(--navy);border-radius:6px;padding:10px 12px;font-size:14px;background:#f8fafc}
+.caixa code{font:13.5px/1.45 Consolas,"Courier New",monospace;color:var(--navy);white-space:pre-wrap}
+.antes{background:var(--bad-soft);border-left:5px solid var(--bad)} .depois{background:var(--mint);border-left:5px solid var(--green)}
+.antes,.depois{padding:9px 12px;margin:0 0 9px;font-size:14px;border-radius:0 6px 6px 0}
+.antes b,.depois b{display:block;font-size:12px;letter-spacing:.8px;text-transform:uppercase}
+.tag{font-weight:700;border-radius:3px;padding:0 4px;color:#fff;font-size:12px}
+.t-papel{background:var(--navy)} .t-contexto{background:#7a6212} .t-tarefa{background:var(--green)} .t-formato{background:#3b5a7a}
+.sintese{border-top:3px solid var(--gold);padding-top:8px;margin-top:10px;font-family:var(--serif);font-size:16px;color:var(--navy)}
+.check{list-style:none;padding:0;margin:0 0 6px}
+.check li{display:flex;gap:9px;align-items:flex-start;font-size:14.5px}
+.check input{width:20px;height:20px;margin:1px 0 0;accent-color:var(--green);flex:none}
+
+/* ---------- elementos interativos ---------- */
+.painel{border:2px solid var(--navy);border-radius:10px;padding:11px 14px;margin:0 0 10px;background:#fff}
+.painel > .rot{display:inline-block;font:700 11px var(--sans);letter-spacing:1px;text-transform:uppercase;color:#fff;background:var(--green);border-radius:4px;padding:2px 8px;margin-bottom:6px}
+.painel h3{margin:0 0 6px;font-size:18px}
+.reveal{display:block;width:100%;text-align:left;font:600 14px var(--sans);color:var(--navy);background:#f1f5fa;border:1px solid var(--line);border-radius:6px;padding:8px 12px;margin:0 0 6px;cursor:pointer;min-height:40px}
+.reveal[aria-expanded="true"]{background:var(--gold-soft);border-color:var(--gold)}
+.reveal::after{content:"+";float:right;font-weight:700}
+.reveal[aria-expanded="true"]::after{content:"−"}
+.resp{margin:-2px 0 8px;padding:7px 12px;background:#fff;border-left:4px solid var(--gold);font-size:14px}
+.campo{display:block;margin:0 0 7px;font-size:13px;font-weight:600;color:var(--navy)}
+.campo textarea{display:block;width:100%;min-height:44px;margin-top:2px;font:14px/1.4 var(--sans);color:var(--ink);border:1px solid #8a94a8;border-radius:5px;padding:6px 8px;resize:none}
+.saida{margin:6px 0;padding:9px 12px;background:var(--navy);color:#fff;border-radius:6px;font:13.5px/1.45 Consolas,"Courier New",monospace;min-height:64px;white-space:pre-wrap}
+.linha{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn-d{font:600 13px var(--sans);color:var(--navy);background:#fff;border:2px solid var(--navy);border-radius:6px;padding:6px 12px;cursor:pointer;min-height:36px}
+.btn-d:hover{background:#eef3fa}
+.btn-d[aria-pressed="true"]{background:var(--navy);color:#fff}
+.item{margin:0 0 8px;padding:7px 10px;border:1px solid var(--line);border-radius:6px;font-size:14px}
+.item .trecho{margin:0 0 5px}
+.fb{margin:6px 0 0;padding:5px 9px;border-radius:4px;font-size:13px}
+.fb:empty{display:none}
+.fb.ok{background:var(--mint);border-left:4px solid var(--green)} .fb.no{background:var(--bad-soft);border-left:4px solid var(--bad)}
+.placar{font-weight:700;color:var(--navy);font-size:14px}
+.so-impressao{display:none}
+
+/* ---------- arte (encaixe da ilustração) ---------- */
+.arte{margin:0;position:relative;border-radius:8px;overflow:hidden;background:#f5f7fa}
+.arte svg,.arte img{display:block;width:100%;height:auto}
+.arte img{position:absolute;inset:0;height:100%;object-fit:cover}
+.arte.tem svg{visibility:hidden}
+
+/* ---------- capa ---------- */
+.capa{background:linear-gradient(170deg,#0b2545 0%,#13315c 70%,#0b2545 100%);color:#fff}
+.capa .body{padding:0;display:flex;flex-direction:column}
+.capa-topo{padding:64px 56px 0}
+.capa .kicker{background:var(--gold);color:var(--navy)}
+.capa .serie{margin:22px 0 10px;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:#cdd9ea}
+.capa h1{color:#fff;font-size:50px;line-height:1.05;margin:0 0 12px}
+.capa .sub{font-family:var(--serif);font-size:21px;color:var(--gold);margin:0 0 14px;line-height:1.3}
+.capa .promessa{font-size:15px;color:#e5ecf6;max-width:520px}
+.capa .arte{margin:18px 56px 0;background:transparent;flex:1;min-height:0;display:flex}
+.capa .arte svg{height:100%;object-fit:contain}
+.capa-base{padding:12px 56px 34px;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#cdd9ea;border-top:1px solid rgba(255,255,255,.18);margin:0 56px;padding:12px 0 30px}
+
+/* ---------- sumário ---------- */
+.toc{list-style:none;padding:0;margin:0}
+.toc li{margin:0}
+.toc a{display:flex;align-items:baseline;gap:8px;text-decoration:none;color:var(--ink);padding:7px 4px;border-bottom:1px dotted #9aa5b8;font-size:15px;min-height:36px}
+.toc a:hover{background:var(--gold-soft)}
+.toc a span.n{margin-left:auto;font-weight:700;color:var(--navy)}
+.toc .cap a{font-family:var(--serif);font-size:19px;font-weight:700;color:var(--navy);margin-top:8px;border-bottom:2px solid var(--navy)}
+.toc .sub a{padding-left:22px;font-size:14px;color:var(--muted)}
+
+/* ---------- glossário ---------- */
+.gloss{columns:2;column-gap:26px;font-size:13.5px}
+.gloss dt{font-weight:700;color:var(--navy);break-after:avoid}
+.gloss dd{margin:0 0 8px;break-inside:avoid}
+
+/* ---------- celular: leitura fluida ---------- */
+.fluid .topbar{flex-wrap:wrap;padding:10px 16px}
+.fluid .nav{flex-wrap:wrap;justify-content:center;width:100%;padding:12px 16px 20px}
+.fluid .nav .pos{order:-1;flex:1 1 100%;min-width:0}
+.fluid .stage{width:100%;height:auto;box-shadow:none;border-radius:0}
+.fluid .sheet{width:100%;height:auto;transform:none}
+.fluid .page{position:static;width:100%;height:auto;min-height:70vh;border-radius:0;font-size:16px}
+.fluid .body,.fluid .runhead{padding-left:20px;padding-right:20px}
+.fluid .folio{margin:0 20px}
+.fluid .duas,.fluid .quatro{grid-template-columns:1fr}
+.fluid .capa h1{font-size:38px}
+.fluid .capa .arte{min-height:220px}
+.fluid .gloss{columns:1}
+.fluid .body{overflow:visible}
+
+@media (prefers-reduced-motion:reduce){.progress i{transition:none}}
+
+/* ---------- impressão / PDF ---------- */
+@page{size:720px 960px;margin:0}
+@media print{
+  html,body{height:auto;background:#fff}
+  .topbar,.nav,.progress{display:none !important}
+  .reader{display:block}
+  .stage{width:auto !important;height:auto !important;box-shadow:none;border-radius:0}
+  .sheet{transform:none !important;width:720px;height:auto}
+  .page,.page[hidden]{display:flex !important;position:relative !important;width:720px;height:960px;break-after:page;page-break-after:always;border-radius:0}
+  .page:last-child{break-after:auto}
+  .so-tela,.acoes,.check input,.btn-d,.reveal::after{display:none !important}
+  .so-impressao{display:block !important}
+  .placar,#m-conta,#m-msg{display:none !important}
+  .resp[hidden]{display:block !important}
+  .reveal{background:#f1f5fa;cursor:default}
+  .check li::before{content:"☐";font-size:18px;line-height:1.1;color:var(--navy)}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}
+</style>
+</head>
+<body>
+<div class="reader">
+  <div class="topbar">
+    <strong>Planejar com IA sem perder a didática</strong>
+    <span class="tag">Edição preliminar</span>
+    <button class="btn" type="button" id="btn-toc">Sumário</button>
+  </div>
+  <div class="progress" aria-hidden="true"><i id="barra"></i></div>
+
+  <main class="stage" id="stage" aria-label="Livro">
+  <div class="sheet" id="sheet">
+
+<!-- ============ 1. CAPA ============ -->
+<section class="page capa" id="p1" data-titulo="Capa" aria-labelledby="t1" hidden>
+  <div class="body">
+    <div class="capa-topo">
+      <span class="kicker">Edição preliminar</span>
+      <p class="serie">Minicurso · Planejamento pedagógico para EaD com apoio de IA</p>
+      <h1 id="t1" tabindex="-1">Planejar com IA sem perder a didática</h1>
+      <p class="sub">Guia de bolso para educadores na educação a distância</p>
+      <p class="promessa">Em quatro capítulos curtos, você aprende a pedir, auditar e decidir, e a manter o aluno no centro do plano.</p>
+    </div>
+    <figure class="arte" data-arquivo="E3-ebook-capa.png" data-alt="Ilustração da capa: a professora Marina segura um tablet e uma lente revela formas geométricas limpas, sobre fundo azul-marinho com detalhes dourados.">
+      <svg viewBox="0 0 400 300" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
+        <g transform="translate(120 40)">
+          <rect x="0" y="0" width="80" height="80" rx="14" fill="#c9a227"/>
+          <rect x="88" y="0" width="80" height="80" rx="14" fill="#8da9c4"/>
+          <rect x="0" y="88" width="80" height="80" rx="14" fill="#157347"/>
+          <rect x="88" y="88" width="80" height="80" rx="14" fill="#ffffff" opacity=".92"/>
+          <circle cx="84" cy="84" r="20" fill="#0b2545" stroke="#c9a227" stroke-width="4"/>
+        </g>
+        <g transform="translate(250 150)" fill="none" stroke="#c9a227" stroke-width="9" stroke-linecap="round">
+          <circle cx="0" cy="0" r="46" fill="rgba(255,255,255,.12)"/><line x1="33" y1="33" x2="78" y2="78"/>
+        </g>
+      </svg>
+      <img alt="" hidden>
+    </figure>
+  </div>
+  <div class="capa-base">Autoria e identidade visual em elaboração</div>
+</section>
+
+<!-- ============ 2. COMO USAR ============ -->
+<section class="page" id="p2" data-titulo="Como usar este guia" aria-labelledby="t2" hidden>
+  <div class="runhead"><span>Antes de começar</span><span></span></div>
+  <div class="body">
+    <h2 id="t2" tabindex="-1">Como usar este guia</h2>
+    <h3>Para quem é</h3>
+    <p>Para educadores, licenciandos e designers instrucionais que querem planejar cursos a distância com apoio de inteligência artificial (IA), mesmo sem experiência com a ferramenta.</p>
+    <h3>O que você vai conseguir fazer</h3>
+    <ul>
+      <li><b>Pedir</b> um plano de aula à IA usando quatro pilares: Papel, Contexto, Tarefa e Formato.</li>
+      <li><b>Auditar</b> a resposta com quatro lentes, antes de usá-la.</li>
+      <li><b>Decidir</b> o que fica, o que muda e o que só você decide.</li>
+    </ul>
+    <h3>As quatro lentes</h3>
+    <div class="quatro">
+      <div class="cartao c-papel"><b>1. Alinhamento</b>Objetivo, atividade e avaliação contam a mesma história? <i>Capítulo 1</i></div>
+      <div class="cartao c-contexto"><b>2. Instruções</b>O pedido à IA foi claro e completo? <i>Capítulo 2</i></div>
+      <div class="cartao c-tarefa"><b>3. Curadoria</b>A resposta cabe na realidade do aluno? <i>Capítulo 3</i></div>
+      <div class="cartao c-formato"><b>4. Papel do educador</b>O que é rascunho e o que é decisão sua? <i>Capítulo 4</i></div>
+    </div>
+    <h3>Como está organizado</h3>
+    <p>Cada capítulo tem <b>três páginas</b>: abrir e entender, ver um exemplo e praticar, e interagir e conferir. Todo capítulo termina com uma lista de verificação.</p>
+    <h3 class="so-tela">Como navegar</h3>
+    <p class="so-tela">Use as setas do teclado, os botões <b>Anterior</b> e <b>Próxima</b>, ou deslize o dedo na tela. O botão <b>Sumário</b> leva a qualquer capítulo.</p>
+    <div class="termo">Este guia reforça o vídeo do minicurso e treina o mesmo olhar da avaliação interativa, <b>com casos novos</b>.</div>
+  </div>
+  <div class="folio"><span>Planejar com IA sem perder a didática</span><span class="n"></span></div>
+</section>
+
+<!-- ============ 3. SUMÁRIO ============ -->
+<section class="page" id="p3" data-titulo="Sumário" aria-labelledby="t3" hidden>
+  <div class="runhead"><span>Sumário</span><span></span></div>
+  <div class="body">
+    <h2 id="t3" tabindex="-1">Sumário</h2>
+    <nav aria-label="Sumário">
+    <ol class="toc">
+      <li><a href="#p2" data-goto="2">Como usar este guia <span class="n">2</span></a></li>
+      <li class="cap"><a href="#p4" data-goto="4">1. Alinhamento: tudo aponta para o mesmo lugar <span class="n">4</span></a></li>
+      <li class="sub"><a href="#p5" data-goto="5">Exemplo e prática <span class="n">5</span></a></li>
+      <li class="sub"><a href="#p6" data-goto="6">Interagir e conferir <span class="n">6</span></a></li>
+      <li class="cap"><a href="#p7" data-goto="7">2. Como pedir bem à IA <span class="n">7</span></a></li>
+      <li class="sub"><a href="#p8" data-goto="8">Exemplo e prática <span class="n">8</span></a></li>
+      <li class="sub"><a href="#p9" data-goto="9">Monte o seu comando <span class="n">9</span></a></li>
+      <li class="cap"><a href="#p10" data-goto="10">3. Auditar a sugestão da IA <span class="n">10</span></a></li>
+      <li class="sub"><a href="#p11" data-goto="11">Exemplo e prática <span class="n">11</span></a></li>
+      <li class="sub"><a href="#p12" data-goto="12">Caça às falhas <span class="n">12</span></a></li>
+      <li class="cap"><a href="#p13" data-goto="13">4. O papel do educador <span class="n">13</span></a></li>
+      <li class="sub"><a href="#p14" data-goto="14">Exemplo e prática <span class="n">14</span></a></li>
+      <li class="sub"><a href="#p15" data-goto="15">Quem faz o quê <span class="n">15</span></a></li>
+      <li><a href="#p16" data-goto="16">Glossário <span class="n">16</span></a></li>
+      <li><a href="#p17" data-goto="17">Cartão de referência <span class="n">17</span></a></li>
+    </ol>
+    </nav>
+  </div>
+  <div class="folio"><span>Planejar com IA sem perder a didática</span><span class="n"></span></div>
+</section>
+
+<!-- ============ CAPÍTULO 1 ============ -->
+<section class="page" id="p4" data-titulo="Capítulo 1: Alinhamento" aria-labelledby="t4" hidden>
+  <div class="runhead"><span><b>Capítulo 1</b> · Alinhamento</span><span>Lente 1</span></div>
+  <div class="body">
+    <h2 id="t4" tabindex="-1">Alinhamento: tudo aponta para o mesmo lugar</h2>
+    <p class="foco">Se o plano de aula pudesse falar, ele saberia dizer por que cada atividade existe?</p>
+    <p><b>Alinhamento pedagógico</b> é a coerência entre quatro elementos: quem é o <b>público</b>, o que ele deve aprender (o <b>objetivo</b>), o que ele faz para aprender (as <b>atividades</b>) e como você confere que aprendeu (a <b>avaliação</b>).</p>
+    <p>Quando um deles aponta para outro lugar, a pessoa estuda uma coisa e é cobrada em outra. Isso vale para o seu plano e, principalmente, para o plano que a IA escreve por você.</p>
+    <div class="termo"><b>Objetivo de aprendizagem:</b> o que a pessoa será capaz de <i>fazer</i> ao final.</div>
+    <div class="duas">
+      <figure class="arte" data-arquivo="E3-ebook-cap1.png" data-alt="Quatro peças de quebra-cabeça em azul-marinho, dourado, verde e azul-claro, encaixadas em um quadrado.">
+        <svg viewBox="0 0 200 150" aria-hidden="true" focusable="false"><rect width="200" height="150" fill="#f5f7fa"/>
+          <g transform="translate(46 11)"><rect width="52" height="52" rx="10" fill="#0b2545"/><rect x="56" width="52" height="52" rx="10" fill="#c9a227"/><rect y="56" width="52" height="52" rx="10" fill="#157347"/><rect x="56" y="56" width="52" height="52" rx="10" fill="#8da9c4"/><circle cx="54" cy="54" r="11" fill="#fff" stroke="#0b2545" stroke-width="3"/></g></svg>
+        <img alt="" hidden>
+      </figure>
+      <div class="regra"><small>Regra de ouro</small>A avaliação mede o que o objetivo promete. A atividade treina o que a avaliação mede.</div>
+    </div>
+  </div>
+  <div class="folio"><span>Planejar com IA sem perder a didática</span><span class="n"></span></div>
+</section>
+
+<section class="page" id="p5" data-titulo="Capítulo 1: exemplo e prática" aria-labelledby="t5" hidden>
+  <div class="runhead"><span><b>Capítulo 1</b> · Alinhamento</span><span>Exemplo e prática</span></div>
+  <div class="body">
+    <h2 id="t5" tabindex="-1">Exemplo: o plano que parecia bom</h2>
+    <p>Curso a distância de <b>Educação Financeira</b> para jovens adultos que estudam pelo celular. O objetivo da semana: <i>“comparar duas propostas de empréstimo e escolher a mais vantajosa”</i>. A IA devolveu um plano. Vamos auditar elemento por elemento.</p>
+    <table>
+      <thead><tr><th>Elemento</th><th>O que a IA propôs</th><th>Pergunta de auditoria</th><th>Resultado</th></tr></thead>
+      <tbody>
+        <tr><td>Público</td><td>Texto curto, lido na tela</td><td>Cabe no celular?</td><td class="sim">Alinhado</td></tr>
+        <tr><td>Objetivo</td><td>Comparar propostas</td><td>Dá para ver a pessoa fazendo isso?</td><td class="sim">Alinhado</td></tr>
+        <tr><td>Atividade</td><td>Ler um texto sobre juros</td><td>Treina o ato de comparar?</td><td class="nao">Não: só lê</td></tr>
+        <tr><td>Avaliação</td><td>Prova de definições (o que é taxa, o que é prazo)</td><td>Mede o ato de comparar?</td><td class="nao">Não: mede lembrar termos</td></tr>
+      </tbody>
+    </table>
+    <h3>Prática: três passos para alinhar</h3>
+    <ol>
+      <li><b>Escreva o objetivo com um verbo que dá para observar</b>: comparar, montar, explicar, escolher.</li>
+      <li><b>Pergunte à atividade:</b> “isso faz a pessoa praticar esse verbo?”</li>
+      <li><b>Pergunte à avaliação:</b> “isso mede esse verbo, e não outra coisa?”</li>
+    </ol>
+    <div class="caixa"><b>No exemplo,</b> o ajuste é pedir à IA uma atividade em que a pessoa compara duas propostas reais e uma avaliação em que ela justifica a escolha.</div>
+  </div>
+  <div class="folio"><span>Planejar com IA sem perder a didática</span><span class="n"></span></div>
+</section>
+
+<section class="page" id="p6" data-titulo="Capítulo 1: interagir e conferir" aria-labelledby="t6" hidden>
+  <div class="runhead"><span><b>Capítulo 1</b> · Alinhamento</span><span>Interagir e conferir</span></div>
+  <div class="body">
+    <h2 id="t6" tabindex="-1">A pergunta-chave de cada elemento</h2>
+    <div class="painel">
+      <span class="rot">Interativo</span>
+      <h3>Toque em cada elemento</h3>
+      <button type="button" class="reveal" data-reveal="r1" aria-expanded="false">Público</button>
+      <div class="resp" id="r1" hidden>Isso funciona para quem vai estudar? Pense no tempo, no aparelho e no nível da pessoa.</div>
+      <button type="button" class="reveal" data-reveal="r2" aria-expanded="false">Objetivos</button>
+      <div class="resp" id="r2" hidden>Dá para ver a pessoa fazendo isso? Qual é o verbo observável?</div>
+      <button type="button" class="reveal" data-reveal="r3" aria-expanded="false">Atividades</button>
+      <div class="resp" id="r3" hidden>Elas treinam exatamente esse verbo, e não um assunto parecido?</div>
+      <button type="button" class="reveal" data-reveal="r4" aria-expanded="false">Avaliação</button>
+      <div class="resp" id="r4" hidden>Ela mede esse verbo? Alguém que só decorou conseguiria passar?</div>
+    </div>
+    <h3>Lista de verificação</h3>
+    <ul class="check">
+      <li><input type="checkbox" id="c1a"><label for="c1a">Escrevi o objetivo com um verbo observável.</label></li>
+      <li><input type="checkbox" id="c1b"><label for="c1b">Cada atividade treina esse objetivo.</label></li>
+      <li><input type="checkbox" id="c1c"><label for="c1c">A avaliação mede esse objetivo.</label></li>
+      <li><input type="checkbox" id="c1d"><label for="c1d">O plano cabe no dia a dia do público.</label></li>
+    </ul>
+    <p class="sintese">Em uma frase: alinhar é fazer objetivo, atividade e avaliação contarem a mesma história.</p>
+  </div>
+  <div class="folio"><span>Planejar com IA sem perder a didática</span><span class="n"></span></div>
+</section>
+
+<!-- ============ CAPÍTULO 2 ============ -->
+<section class="page" id="p7" data-titulo="Capítulo 2: Como pedir bem à IA" aria-labelledby="t7" hidden>
+  <div class="runhead"><span><b>Capítulo 2</b> · Instruções</span><span>Lente 2</span></div>
+  <div class="body">
+    <h2 id="t7" tabindex="-1">Como pedir bem à IA</h2>
+    <p class="foco">Por que a IA, às vezes, devolve um plano genérico?</p>
+    <p>A <b>IA generativa</b> é uma ferramenta que escreve textos a partir do que você pede. O seu pedido se chama <b>comando</b> (em inglês, <i>prompt</i>).</p>
+    <p>A IA não conhece os seus alunos. <b>Tudo o que você não escreve, ela generaliza ou inventa.</b> Por isso, um bom comando tem quatro pilares:</p>
+    <div class="quatro">
+      <div class="cartao c-papel"><b>Papel</b>Quem a IA deve ser. <i>“Aja como designer instrucional especialista em…”</i></div>
+      <div class="cartao c-contexto"><b>Contexto</b>Para quem e em que situação. <i>“Curso a distância, adultos, pelo celular…”</i></div>
+      <div class="cartao c-tarefa"><b>Tarefa</b>O que fazer, de forma exata. <i>“Planeje uma semana sobre…”</i></div>
+      <div class="cartao c-formato"><b>Formato</b>Como entregar a resposta. <i>“Em uma tabela com…”</i></div>
+    </div>
+    <div class="termo" style="margin-top:12px"><b>Dica:</b> pense no comando como um bilhete para uma colega que nunca viu a sua turma. O que ela precisaria saber para acertar de primeira?</div>
+  </div>
+  <div class="folio"><span>Planejar com IA sem perder a didática</span><span class="n"></span></div>
+</section>
+
+<section class="page" id="p8" data-titulo="Capítulo 2: exemplo e prática" aria-labelledby="t8" hidden>
+  <div class="runhead"><span><b>Capítulo 2</b> · Instruções</span><span>Exemplo e prática</span></div>
+  <div class="body">
+    <h2 id="t8" tabindex="-1">Exemplo: antes e depois</h2>
+    <p>Curso de <b>Inglês instrumental para técnicos de enfermagem</b>: a distância, sem horário fixo, nível básico, estudo pelo celular à noite.</p>
+    <div class="antes"><b>Antes</b>“Faça uma aula de inglês.”<br><i>Tende a render uma aula genérica, sem público e sem formato definidos.</i></div>
+    <div class="depois"><b>Depois</b>
+      <span class="tag t-papel">Papel</span> Aja como designer instrucional especialista em ensino de línguas.
+      <span class="tag t-contexto">Contexto</span> O curso é a distância, sem horário fixo, para técnicos de enfermagem adultos, nível básico, que estudam pelo celular à noite.
+      <span class="tag t-tarefa">Tarefa</span> Planeje uma semana sobre vocabulário de atendimento ao paciente.
+      <span class="tag t-formato">Formato</span> Entregue uma tabela com objetivo, atividade, avaliação e tempo estimado.</div>
+    <h3>Prática: modelo para copiar</h3>
+    <div class="caixa"><code>Aja como [papel].
+O curso é [modalidade e ritmo], para [público], [nível], que estuda [onde e como].
+Planeje [tarefa exata].
+Entregue [formato da resposta].</code></div>
+    <p style="margin-top:10px"><b>Dica sobre o formato:</b> se a resposta vier longa ou confusa, peça uma tabela, passos numerados ou um limite de palavras.</p>
+  </div>
+  <div class="folio"><span>Planejar com IA sem perder a didática</span><span class="n"></span></div>
+</section>
+
+<section class="page" id="p9" data-titulo="Capítulo 2: monte o seu comando" aria-labelledby="t9" hidden>
+  <div class="runhead"><span><b>Capítulo 2</b> · Instruções</span><span>Interagir e conferir</span></div>
+  <div class="body">
+    <h2 id="t9" tabindex="-1">Monte o seu comando</h2>
+    <div class="painel so-tela">
+      <span class="rot">Interativo</span>
+      <label class="campo" for="m-papel">Papel<textarea id="m-papel" rows="1" placeholder="designer instrucional especialista em…"></textarea></label>
+      <label class="campo" for="m-contexto">Contexto<textarea id="m-contexto" rows="2" placeholder="curso, público, nível, onde e como estudam…"></textarea></label>
+      <label class="campo" for="m-tarefa">Tarefa<textarea id="m-tarefa" rows="2" placeholder="o que a IA deve fazer, de forma exata…"></textarea></label>
+      <label class="campo" for="m-formato">Formato<textarea id="m-formato" rows="1" placeholder="tabela, passos numerados, limite de palavras…"></textarea></label>
+      <div class="linha">
+        <button type="button" class="btn-d" id="m-exemplo">Preencher com exemplo</button>
+        <button type="button" class="btn-d" id="m-copiar">Copiar comando</button>
+        <button type="button" class="btn-d" id="m-limpar">Limpar</button>
+        <span class="placar" id="m-conta" aria-live="polite">Pilares preenchidos: 0 de 4</span>
+      </div>
+      <div class="saida" id="m-saida" aria-label="Comando montado">O seu comando aparece aqui.</div>
+      <p class="fb" id="m-msg" aria-live="polite"></p>
+    </div>
+    <div class="painel so-impressao">
+      <span class="rot">Para preencher</span>
+      <p><b>Papel:</b> ____________________________________________</p>
+      <p><b>Contexto:</b> _________________________________________</p>
+      <p><b>Tarefa:</b> ___________________________________________</p>
+      <p><b>Formato:</b> __________________________________________</p>
+    </div>
+    <div class="caixa so-impressao" style="margin-bottom:10px"><b>Exemplo preenchido</b><br><code>Aja como designer instrucional especialista em ensino de línguas.
+Contexto: O curso é a distância, sem horário fixo, para técnicos de enfermagem adultos, nível básico, que estudam pelo celular à noite.
+Tarefa: Planeje uma semana sobre vocabulário de atendimento ao paciente.
+Formato: Entregue uma tabela com objetivo, atividade, avaliação e tempo estimado.</code></div>
+    <h3>Lista de verificação</h3>
+    <ul class="check">
+      <li><input type="checkbox" id="c2a"><label for="c2a">Defini o papel da IA.</label></li>
+      <li><input type="checkbox" id="c2b"><label for="c2b">Descrevi o público e a modalidade do curso.</label></li>
+      <li><input type="checkbox" id="c2c"><label for="c2c">Pedi uma tarefa específica.</label></li>
+      <li><input type="checkbox" id="c2d"><label for="c2d">Escolhi o formato da resposta.</label></li>
+    </ul>
+    <p class="sintese">Quem escreve melhor o pedido audita menos depois. Mas audita sempre.</p>
+  </div>
+  <div class="folio"><span>Planejar com IA sem perder a didática</span><span class="n"></span></div>
+</section>
+
+<!-- ============ CAPÍTULO 3 ============ -->
+<section class="page" id="p10" data-titulo="Capítulo 3: Auditar a sugestão da IA" aria-labelledby="t10" hidden>
+  <div class="runhead"><span><b>Capítulo 3</b> · Curadoria</span><span>Lente 3</span></div>
+  <div class="body">
+    <h2 id="t10" tabindex="-1">Auditar a sugestão da IA</h2>
+    <p class="foco">A resposta chegou. E agora?</p>
+    <p><b>Curadoria</b> é o trabalho de ler, conferir e corrigir antes de usar. Ela tem duas perguntas principais:</p>
+    <ol>
+      <li><b>Está alinhada?</b> Objetivo, atividade e avaliação batem (capítulo 1).</li>
+      <li><b>É viável para este público?</b> Cabe no tempo, no aparelho, na internet e no bolso das pessoas?</li>
+    </ol>
+    <p>A IA não sabe se o seu aluno só tem o celular, ou se ele só estuda depois das 22 h. <b>Quem sabe é você.</b></p>
+    <div class="duas">
+      <figure class="arte" data-arquivo="E3-ebook-cap3.png" data-alt="A professora Marina confere um plano de aula impresso e marca os itens com um lápis verde, com um notebook ao lado.">
+        <svg viewBox="0 0 200 150" aria-hidden="true" focusable="false"><rect width="200" height="150" fill="#e6f4ec"/>
+          <rect x="38" y="16" width="84" height="118" rx="6" fill="#fff" stroke="#0b2545" stroke-width="3"/>
+          <g fill="#157347"><rect x="50" y="34" width="10" height="10" rx="2"/><rect x="50" y="62" width="10" height="10" rx="2"/><rect x="50" y="90" width="10" height="10" rx="2"/></g>
+          <g stroke="#8da9c4" stroke-width="5" stroke-linecap="round"><line x1="68" y1="39" x2="108" y2="39"/><line x1="68" y1="67" x2="108" y2="67"/><line x1="68" y1="95" x2="100" y2="95"/></g>
+          <g fill="none" stroke="#c9a227" stroke-width="7" stroke-linecap="round"><circle cx="138" cy="86" r="22" fill="rgba(255,255,255,.6)"/><line x1="154" y1="102" x2="176" y2="124"/></g></svg>
+        <img alt="" hidden>
+      </figure>
+      <div>
+        <div class="termo"><b>Síncrono:</b> todos ao mesmo tempo, ao vivo.</div>
+        <div class="termo"><b>Assíncrono:</b> cada pessoa no seu horário.</div>
+      </div>
+    </div>
+  </div>
+  <div class="folio"><span>Planejar com IA sem perder a didática</span><span class="n"></span></div>
+</section>
+
+<section class="page" id="p11" data-titulo="Capítulo 3: exemplo e prática" aria-labelledby="t11" hidden>
+  <div class="runhead"><span><b>Capítulo 3</b> · Curadoria</span><span>Exemplo e prática</span></div>
+  <div class="body">
+    <h2 id="t11" tabindex="-1">Exemplo: o plano que não cabia no celular</h2>
+    <p>Curso de <b>Educação Ambiental</b>, assíncrono, para moradores de uma região rural. Quase todos estudam pelo celular, com <b>internet instável e pacote de dados limitado</b>. A IA devolveu um plano. Na próxima página, você audita os trechos.</p>
+    <h3>Quando a resposta é “não”, faça isto</h3>
+    <table>
+      <thead><tr><th>Pergunta de auditoria</th><th>Se a resposta é não</th></tr></thead>
+      <tbody>
+        <tr><td>O objetivo está claro e dá para observar?</td><td>Reescreva o objetivo e peça um novo plano.</td></tr>
+        <tr><td>Atividade e avaliação batem com o objetivo?</td><td>Peça a troca do trecho que está fora.</td></tr>
+        <tr><td>Cabe no tempo das pessoas?</td><td>Peça uma versão assíncrona e mais curta.</td></tr>
+        <tr><td>Cabe no aparelho e na internet?</td><td>Peça arquivos leves, texto ou áudio.</td></tr>
+      </tbody>
+    </table>
+    <h3>Prática: o comando de ajuste</h3>
+    <div class="caixa"><code>Mantenha [o que está bom].
+Troque [o que não serve] por [alternativa],
+compatível com [a restrição do público].</code></div>
+    <p style="margin-top:10px"><b>Exemplo:</b> “Mantenha o objetivo. Troque a aula ao vivo por uma atividade que cada pessoa faça no seu horário, só com o celular, e peça arquivos leves.”</p>
+  </div>
+  <div class="folio"><span>Planejar com IA sem perder a didática</span><span class="n"></span></div>
+</section>
+
+<section class="page" id="p12" data-titulo="Capítulo 3: caça às falhas" aria-labelledby="t12" hidden>
+  <div class="runhead"><span><b>Capítulo 3</b> · Curadoria</span><span>Interagir e conferir</span></div>
+  <div class="body">
+    <h2 id="t12" tabindex="-1">Caça às falhas</h2>
+    <div class="painel">
+      <span class="rot">Interativo</span>
+      <p style="margin-bottom:6px"><b>Para cada trecho do plano da IA, decida: manter ou ajustar?</b></p>
+      <ul style="list-style:none;padding:0;margin:0">
+        <li class="item" data-grupo="falhas" data-correta="manter" data-fb="O objetivo é claro, observável e parte da realidade das pessoas.">
+          <p class="trecho" id="f1"><b>Objetivo:</b> identificar três fontes de contaminação da água no bairro.</p>
+          <div class="acoes" role="group" aria-label="Sua decisão sobre o trecho Objetivo"><button type="button" class="btn-d" data-escolha="manter" aria-pressed="false">Manter</button> <button type="button" class="btn-d" data-escolha="ajustar" aria-pressed="false">Ajustar</button></div>
+          <p class="fb" aria-live="polite"></p></li>
+        <li class="item" data-grupo="falhas" data-correta="ajustar" data-fb="Aula ao vivo, com câmera aberta, não cabe em quem tem internet instável e horários variados. Peça uma versão assíncrona.">
+          <p class="trecho" id="f2"><b>Atividade:</b> aula ao vivo toda terça, 90 minutos, com câmera aberta.</p>
+          <div class="acoes" role="group" aria-label="Sua decisão sobre o trecho Atividade"><button type="button" class="btn-d" data-escolha="manter" aria-pressed="false">Manter</button> <button type="button" class="btn-d" data-escolha="ajustar" aria-pressed="false">Ajustar</button></div>
+          <p class="fb" aria-live="polite"></p></li>
+        <li class="item" data-grupo="falhas" data-correta="ajustar" data-fb="Arquivos pesados consomem o pacote de dados. Peça material leve: texto, imagens pequenas ou áudio.">
+          <p class="trecho" id="f3"><b>Material:</b> vídeos em alta definição de 600 MB cada.</p>
+          <div class="acoes" role="group" aria-label="Sua decisão sobre o trecho Material"><button type="button" class="btn-d" data-escolha="manter" aria-pressed="false">Manter</button> <button type="button" class="btn-d" data-escolha="ajustar" aria-pressed="false">Ajustar</button></div>
+          <p class="fb" aria-live="polite"></p></li>
+        <li class="item" data-grupo="falhas" data-correta="ajustar" data-fb="A prova de história não mede o objetivo, que é identificar fontes de contaminação. Falha de alinhamento.">
+          <p class="trecho" id="f4"><b>Avaliação:</b> prova de múltipla escolha sobre a história do saneamento no Brasil.</p>
+          <div class="acoes" role="group" aria-label="Sua decisão sobre o trecho Avaliação"><button type="button" class="btn-d" data-escolha="manter" aria-pressed="false">Manter</button> <button type="button" class="btn-d" data-escolha="ajustar" aria-pressed="false">Ajustar</button></div>
+          <p class="fb" aria-live="polite"></p></li>
+      </ul>
+      <p class="placar" data-placar="falhas" aria-live="polite">Acertos: 0 de 4</p>
+    </div>
+    <h3>Lista de verificação</h3>
+    <ul class="check">
+      <li><input type="checkbox" id="c3a"><label for="c3a">O objetivo está claro.</label></li>
+      <li><input type="checkbox" id="c3b"><label for="c3b">Atividade e avaliação batem com ele.</label></li>
+      <li><input type="checkbox" id="c3c"><label for="c3c">Cabe no tempo e no aparelho do aluno.</label></li>
+      <li><input type="checkbox" id="c3d"><label for="c3d">Pedi o ajuste do que não serve.</label></li>
+    </ul>
+    <p class="sintese">A IA propõe. Você confere a pedagogia e a realidade.</p>
+  </div>
+  <div class="folio"><span>Planejar com IA sem perder a didática</span><span class="n"></span></div>
+</section>
+
+<!-- ============ CAPÍTULO 4 ============ -->
+<section class="page" id="p13" data-titulo="Capítulo 4: O papel do educador" aria-labelledby="t13" hidden>
+  <div class="runhead"><span><b>Capítulo 4</b> · Papel do educador</span><span>Lente 4</span></div>
+  <div class="body">
+    <h2 id="t13" tabindex="-1">O papel do educador</h2>
+    <p class="foco">O que a IA pode rascunhar, e o que só você pode decidir?</p>
+    <p><b>Design instrucional</b> é planejar a experiência de aprendizagem de ponta a ponta: do objetivo à avaliação.</p>
+    <p>A IA acelera a redação e a organização. Mas o julgamento pedagógico, o conhecimento do aluno e a responsabilidade pelo curso <b>continuam com o educador</b>.</p>
+    <h3>O que só você faz</h3>
+    <div class="quatro">
+      <div class="cartao c-papel"><b>Conferir</b>Os conceitos e os dados estão corretos?</div>
+      <div class="cartao c-contexto"><b>Adequar</b>A linguagem e o tom servem a esta turma?</div>
+      <div class="cartao c-tarefa"><b>Conhecer</b>Isto cabe na realidade das pessoas?</div>
+      <div class="cartao c-formato"><b>Responder</b>Você assume o que será publicado.</div>
+    </div>
+    <div class="regra" style="margin-top:14px"><small>Para guardar</small>A IA é uma assistente rápida. O curso continua sendo seu.</div>
+  </div>
+  <div class="folio"><span>Planejar com IA sem perder a didática</span><span class="n"></span></div>
+</section>
+
+<section class="page" id="p14" data-titulo="Capítulo 4: exemplo e prática" aria-labelledby="t14" hidden>
+  <div class="runhead"><span><b>Capítulo 4</b> · Papel do educador</span><span>Exemplo e prática</span></div>
+  <div class="body">
+    <h2 id="t14" tabindex="-1">Exemplo: uma semana de planejamento</h2>
+    <p>Veja como educador e IA se alternam ao planejar uma semana de um curso a distância.</p>
+    <table>
+      <thead><tr><th>Passo</th><th>Quem</th><th>O que acontece</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td><b>Você</b></td><td>Define o público e o objetivo da semana.</td></tr>
+        <tr><td>2</td><td>IA</td><td>Rascunha o plano, a partir do seu comando estruturado.</td></tr>
+        <tr><td>3</td><td><b>Você</b></td><td>Audita com as quatro lentes: alinhamento, instruções, viabilidade e papel.</td></tr>
+        <tr><td>4</td><td>IA</td><td>Ajusta o que você pediu no comando de ajuste.</td></tr>
+        <tr><td>5</td><td><b>Você</b></td><td>Decide, revisa a linguagem e publica.</td></tr>
+      </tbody>
+    </table>
+    <h3>Prática: pedir, auditar, decidir</h3>
+    <div class="quatro" style="grid-template-columns:repeat(3,1fr)">
+      <div class="cartao c-papel"><b>Pedir</b>Comando com Papel, Contexto, Tarefa e Formato.</div>
+      <div class="cartao c-contexto"><b>Auditar</b>Está alinhado? Cabe na realidade do aluno?</div>
+      <div class="cartao c-tarefa"><b>Decidir</b>O que fica, o que muda e o que você refaz.</div>
+    </div>
+    <p style="margin-top:12px">Repita o ciclo quantas vezes precisar. <b>A última palavra é sempre sua.</b></p>
+  </div>
+  <div class="folio"><span>Planejar com IA sem perder a didática</span><span class="n"></span></div>
+</section>
+
+<section class="page" id="p15" data-titulo="Capítulo 4: quem faz o quê" aria-labelledby="t15" hidden>
+  <div class="runhead"><span><b>Capítulo 4</b> · Papel do educador</span><span>Interagir e conferir</span></div>
+  <div class="body">
+    <h2 id="t15" tabindex="-1">Quem faz o quê</h2>
+    <div class="painel">
+      <span class="rot">Interativo</span>
+      <p style="margin-bottom:6px"><b>Classifique cada tarefa:</b></p>
+      <ul style="list-style:none;padding:0;margin:0">
+        <li class="item" data-grupo="papel" data-correta="ia" data-fb="Gerar ideias é um bom uso da IA. Você escolhe quais aproveitar.">
+          <p class="trecho" id="q1">Sugerir três ideias de atividade para o tema da semana.</p>
+          <div class="acoes" role="group" aria-label="Classifique a tarefa 1"><button type="button" class="btn-d" data-escolha="ia" aria-pressed="false">A IA pode rascunhar</button> <button type="button" class="btn-d" data-escolha="educador" aria-pressed="false">Decisão do educador</button></div>
+          <p class="fb" aria-live="polite"></p></li>
+        <li class="item" data-grupo="papel" data-correta="ia" data-fb="Organizar em tabela é trabalho de estrutura, bom para a IA. Você revisa o resultado.">
+          <p class="trecho" id="q2">Organizar o roteiro de estudo em uma tabela.</p>
+          <div class="acoes" role="group" aria-label="Classifique a tarefa 2"><button type="button" class="btn-d" data-escolha="ia" aria-pressed="false">A IA pode rascunhar</button> <button type="button" class="btn-d" data-escolha="educador" aria-pressed="false">Decisão do educador</button></div>
+          <p class="fb" aria-live="polite"></p></li>
+        <li class="item" data-grupo="papel" data-correta="educador" data-fb="Só você conhece a turma. A IA não sabe se a atividade é realista para as pessoas.">
+          <p class="trecho" id="q3">Decidir se a atividade é realista para os seus alunos.</p>
+          <div class="acoes" role="group" aria-label="Classifique a tarefa 3"><button type="button" class="btn-d" data-escolha="ia" aria-pressed="false">A IA pode rascunhar</button> <button type="button" class="btn-d" data-escolha="educador" aria-pressed="false">Decisão do educador</button></div>
+          <p class="fb" aria-live="polite"></p></li>
+        <li class="item" data-grupo="papel" data-correta="educador" data-fb="A IA pode errar com segurança. Conferir conceitos e dados é responsabilidade sua.">
+          <p class="trecho" id="q4">Conferir se os conceitos e os dados estão corretos.</p>
+          <div class="acoes" role="group" aria-label="Classifique a tarefa 4"><button type="button" class="btn-d" data-escolha="ia" aria-pressed="false">A IA pode rascunhar</button> <button type="button" class="btn-d" data-escolha="educador" aria-pressed="false">Decisão do educador</button></div>
+          <p class="fb" aria-live="polite"></p></li>
+        <li class="item" data-grupo="papel" data-correta="ia" data-fb="Um primeiro texto de boas-vindas é um bom rascunho. Você ajusta o tom para a sua turma.">
+          <p class="trecho" id="q5">Escrever uma primeira versão do texto de boas-vindas.</p>
+          <div class="acoes" role="group" aria-label="Classifique a tarefa 5"><button type="button" class="btn-d" data-escolha="ia" aria-pressed="false">A IA pode rascunhar</button> <button type="button" class="btn-d" data-escolha="educador" aria-pressed="false">Decisão do educador</button></div>
+          <p class="fb" aria-live="polite"></p></li>
+        <li class="item" data-grupo="papel" data-correta="educador" data-fb="Quem publica responde pelo curso. Essa responsabilidade não se delega.">
+          <p class="trecho" id="q6">Assumir a responsabilidade pelo que será publicado.</p>
+          <div class="acoes" role="group" aria-label="Classifique a tarefa 6"><button type="button" class="btn-d" data-escolha="ia" aria-pressed="false">A IA pode rascunhar</button> <button type="button" class="btn-d" data-escolha="educador" aria-pressed="false">Decisão do educador</button></div>
+          <p class="fb" aria-live="polite"></p></li>
+      </ul>
+      <p class="placar" data-placar="papel" aria-live="polite">Acertos: 0 de 6</p>
+    </div>
+    <ul class="check">
+      <li><input type="checkbox" id="c4a"><label for="c4a">Sei o que posso pedir à IA.</label></li>
+      <li><input type="checkbox" id="c4b"><label for="c4b">Sei o que preciso conferir sempre.</label></li>
+    </ul>
+    <p class="sintese">Próximo passo: faça a <b>Avaliação Interativa</b> no menu do portal.</p>
+  </div>
+  <div class="folio"><span>Planejar com IA sem perder a didática</span><span class="n"></span></div>
+</section>
+
+<!-- ============ GLOSSÁRIO ============ -->
+<section class="page" id="p16" data-titulo="Glossário" aria-labelledby="t16" hidden>
+  <div class="runhead"><span>Glossário</span><span></span></div>
+  <div class="body">
+    <h2 id="t16" tabindex="-1">Glossário</h2>
+    <dl class="gloss">
+      <dt>Alinhamento pedagógico</dt><dd>Coerência entre público, objetivo, atividades e avaliação.</dd>
+      <dt>Assíncrono</dt><dd>Cada pessoa estuda no seu horário, sem encontro ao vivo.</dd>
+      <dt>Avaliação formativa</dt><dd>Avaliação feita durante o estudo, para ajudar a aprender e a corrigir o rumo.</dd>
+      <dt>Comando (prompt)</dt><dd>O pedido escrito que você faz à IA.</dd>
+      <dt>Contexto</dt><dd>As informações sobre o público e a situação que a IA precisa conhecer.</dd>
+      <dt>Curadoria</dt><dd>Ler, conferir e corrigir o que a IA sugeriu, antes de usar.</dd>
+      <dt>Design instrucional</dt><dd>Planejar a experiência de aprendizagem de ponta a ponta.</dd>
+      <dt>EaD</dt><dd>Educação a distância: o estudo acontece fora da sala de aula, em geral pela internet.</dd>
+      <dt>IA generativa</dt><dd>Ferramenta que escreve textos e cria conteúdos a partir do que se pede.</dd>
+      <dt>Objetivo de aprendizagem</dt><dd>O que a pessoa será capaz de fazer ao final.</dd>
+      <dt>Síncrono</dt><dd>Todos participam ao mesmo tempo, ao vivo.</dd>
+      <dt>Viabilidade</dt><dd>Se a proposta cabe no tempo, no aparelho, na internet e no bolso do público.</dd>
+    </dl>
+  </div>
+  <div class="folio"><span>Planejar com IA sem perder a didática</span><span class="n"></span></div>
+</section>
+
+<!-- ============ CARTÃO DE REFERÊNCIA ============ -->
+<section class="page" id="p17" data-titulo="Cartão de referência" aria-labelledby="t17" hidden>
+  <div class="runhead"><span>Cartão de referência</span><span>Para imprimir</span></div>
+  <div class="body">
+    <h2 id="t17" tabindex="-1">Cartão de referência</h2>
+    <h3>As quatro lentes</h3>
+    <table>
+      <tbody>
+        <tr><td><b>1. Alinhamento</b></td><td>Objetivo, atividade e avaliação contam a mesma história?</td></tr>
+        <tr><td><b>2. Instruções</b></td><td>O comando tem Papel, Contexto, Tarefa e Formato?</td></tr>
+        <tr><td><b>3. Curadoria</b></td><td>Cabe no tempo, no aparelho e na internet do aluno?</td></tr>
+        <tr><td><b>4. Papel do educador</b></td><td>Conferi, adequei e assumo o que vou publicar?</td></tr>
+      </tbody>
+    </table>
+    <h3>O comando em quatro linhas</h3>
+    <div class="caixa"><code>Aja como [papel].
+O curso é [modalidade], para [público], que estuda [como].
+Planeje [tarefa exata].
+Entregue [formato].</code></div>
+    <h3>O comando de ajuste</h3>
+    <div class="caixa"><code>Mantenha [o que está bom].
+Troque [o que não serve] por [alternativa],
+compatível com [a restrição do público].</code></div>
+    <h3>Ciclo de trabalho</h3>
+    <p><b>Pedir → Auditar → Decidir.</b> A última palavra é sempre do educador.</p>
+  </div>
+  <div class="folio"><span>Planejar com IA sem perder a didática</span><span class="n"></span></div>
+</section>
+
+<!-- ============ CONTRACAPA ============ -->
+<section class="page capa" id="p18" data-titulo="Contracapa" aria-labelledby="t18" hidden>
+  <div class="body">
+    <div class="capa-topo" style="padding-top:150px">
+      <span class="kicker">Edição preliminar</span>
+      <h2 id="t18" tabindex="-1" style="color:#fff;font-size:34px;margin:22px 0 14px">Agora é a sua vez</h2>
+      <p class="promessa">Faça a <b>Avaliação Interativa</b> no menu do portal e teste o seu olhar de auditoria em casos reais.</p>
+      <p class="promessa" style="margin-top:34px;font-size:13px">Minicurso <i>Planejamento pedagógico para EaD com apoio de IA</i>.<br>Este guia tem duas faces: a versão interativa e a versão acessível, em HTML e PDF.<br>Edição preliminar de 5 de novembro de 2026. Autoria e identidade visual em elaboração.</p>
+    </div>
+  </div>
+</section>
+
+  </div>
+  </main>
+
+  <div class="nav">
+    <button class="btn" type="button" id="btn-prev">‹ Anterior</button>
+    <span class="pos" id="pos" aria-live="polite"></span>
+    <button class="btn" type="button" id="btn-next">Próxima ›</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  var pages=[].slice.call(document.querySelectorAll('.page')), N=pages.length, cur=0;
+  var stage=document.getElementById('stage'), pos=document.getElementById('pos'), barra=document.getElementById('barra');
+  var prev=document.getElementById('btn-prev'), next=document.getElementById('btn-next');
+
+  // numeração de página
+  pages.forEach(function(p,i){var n=p.querySelector('.folio .n'); if(n) n.textContent=String(i+1);});
+
+  function fit(){
+    var fluid=window.matchMedia('(max-width: 760px)').matches;
+    document.documentElement.classList.toggle('fluid',fluid);
+    if(fluid){stage.style.removeProperty('--s');return;}
+    var availW=window.innerWidth-40, availH=window.innerHeight-150;
+    var s=Math.max(.4,Math.min(availW/720,availH/960,1.25));
+    stage.style.setProperty('--s',s.toFixed(4));
+  }
+
+  function go(n,focus){
+    n=Math.max(0,Math.min(N-1,n)); cur=n;
+    pages.forEach(function(p,i){p.hidden=(i!==n);});
+    pos.textContent='Página '+(n+1)+' de '+N+' · '+pages[n].getAttribute('data-titulo');
+    barra.style.width=((n+1)/N*100)+'%';
+    prev.disabled=(n===0); next.disabled=(n===N-1);
+    try{history.replaceState(null,'','#p'+(n+1));}catch(e){}
+    if(document.documentElement.classList.contains('fluid')) window.scrollTo(0,0);
+    if(focus){var h=pages[n].querySelector('[tabindex="-1"]'); if(h) h.focus({preventScroll:true});}
+  }
+
+  prev.addEventListener('click',function(){go(cur-1,true);});
+  next.addEventListener('click',function(){go(cur+1,true);});
+  document.getElementById('btn-toc').addEventListener('click',function(){go(2,true);});
+  document.querySelectorAll('[data-goto]').forEach(function(a){
+    a.addEventListener('click',function(e){e.preventDefault();go(parseInt(a.getAttribute('data-goto'),10)-1,true);});
+  });
+  document.addEventListener('keydown',function(e){
+    var t=e.target.tagName; if(t==='TEXTAREA'||t==='INPUT'||t==='SELECT') return;
+    if(e.key==='ArrowRight'||e.key==='PageDown'){go(cur+1,true);}
+    else if(e.key==='ArrowLeft'||e.key==='PageUp'){go(cur-1,true);}
+    else if(e.key==='Home'){go(0,true);} else if(e.key==='End'){go(N-1,true);}
+  });
+  var x0=null;
+  stage.addEventListener('touchstart',function(e){x0=e.touches[0].clientX;},{passive:true});
+  stage.addEventListener('touchend',function(e){
+    if(x0===null) return; var dx=e.changedTouches[0].clientX-x0; x0=null;
+    if(Math.abs(dx)>70){go(cur+(dx<0?1:-1),true);}
+  },{passive:true});
+  window.addEventListener('resize',fit);
+  // Impressão sempre no leiaute de página inteira, mesmo a partir do celular.
+  window.addEventListener('beforeprint',function(){document.documentElement.classList.remove('fluid');});
+  window.addEventListener('afterprint',fit);
+
+  // arte: usa a imagem se ela existir em arte/, senão mantém a arte provisória
+  document.querySelectorAll('.arte[data-arquivo]').forEach(function(f){
+    var img=f.querySelector('img'), probe=new Image();
+    probe.onload=function(){img.src=probe.src;img.alt=f.getAttribute('data-alt')||'';img.hidden=false;f.classList.add('tem');};
+    probe.src='arte/'+f.getAttribute('data-arquivo');
+  });
+
+  // cartões que revelam
+  document.querySelectorAll('[data-reveal]').forEach(function(b){
+    b.addEventListener('click',function(){
+      var r=document.getElementById(b.getAttribute('data-reveal')), open=b.getAttribute('aria-expanded')==='true';
+      b.setAttribute('aria-expanded',String(!open)); r.hidden=open;
+    });
+  });
+
+  // itens com resposta (caça às falhas e quem faz o quê)
+  var grupos={};
+  document.querySelectorAll('.item[data-grupo]').forEach(function(it){
+    var g=it.getAttribute('data-grupo'); (grupos[g]=grupos[g]||[]).push(it);
+    var correta=it.getAttribute('data-correta'), fb=it.querySelector('.fb');
+    var rot=it.querySelector('[data-escolha="'+correta+'"]').textContent;
+    var imp=document.createElement('p'); imp.className='so-impressao';
+    imp.innerHTML='<b>Resposta: '+rot+'.</b> '+it.getAttribute('data-fb'); it.appendChild(imp);
+    it.querySelectorAll('[data-escolha]').forEach(function(b){
+      b.addEventListener('click',function(){
+        it.querySelectorAll('[data-escolha]').forEach(function(o){o.setAttribute('aria-pressed',String(o===b));});
+        var ok=b.getAttribute('data-escolha')===correta; it.setAttribute('data-ok',ok?'1':'0');
+        fb.className='fb '+(ok?'ok':'no'); fb.textContent=(ok?'Certo. ':'Releia. ')+it.getAttribute('data-fb');
+        var certos=grupos[g].filter(function(x){return x.getAttribute('data-ok')==='1';}).length;
+        document.querySelector('[data-placar="'+g+'"]').textContent='Acertos: '+certos+' de '+grupos[g].length;
+      });
+    });
+  });
+
+  // montador de comando
+  var campos=['papel','contexto','tarefa','formato'].map(function(k){return document.getElementById('m-'+k);});
+  var saida=document.getElementById('m-saida'), conta=document.getElementById('m-conta'), msg=document.getElementById('m-msg');
+  function monta(){
+    var v=campos.map(function(c){return c.value.trim();}), n=v.filter(Boolean).length, t=[];
+    if(v[0]) t.push('Aja como '+v[0].replace(/[.\s]+$/,'')+'.');
+    if(v[1]) t.push('Contexto: '+v[1].replace(/[.\s]+$/,'')+'.');
+    if(v[2]) t.push('Tarefa: '+v[2].replace(/[.\s]+$/,'')+'.');
+    if(v[3]) t.push('Formato: '+v[3].replace(/[.\s]+$/,'')+'.');
+    saida.textContent=t.length?t.join('\n'):'O seu comando aparece aqui.';
+    conta.textContent='Pilares preenchidos: '+n+' de 4'+(n===4?' ✓':'');
+  }
+  campos.forEach(function(c){c.addEventListener('input',monta);});
+  function aviso(t,ok){msg.className='fb '+(ok?'ok':'no');msg.textContent=t;}
+  document.getElementById('m-exemplo').addEventListener('click',function(){
+    campos[0].value='designer instrucional especialista em ensino de línguas';
+    campos[1].value='O curso é a distância, sem horário fixo, para técnicos de enfermagem adultos, nível básico, que estudam pelo celular à noite';
+    campos[2].value='Planeje uma semana sobre vocabulário de atendimento ao paciente';
+    campos[3].value='Entregue uma tabela com objetivo, atividade, avaliação e tempo estimado';
+    monta(); msg.className='fb'; msg.textContent='';
+  });
+  document.getElementById('m-limpar').addEventListener('click',function(){campos.forEach(function(c){c.value='';});monta();msg.className='fb';msg.textContent='';});
+  document.getElementById('m-copiar').addEventListener('click',function(){
+    if(!campos.some(function(c){return c.value.trim();})){aviso('Preencha ao menos um campo antes de copiar.',false);return;}
+    var texto=saida.textContent;
+    function manual(){var r=document.createRange();r.selectNodeContents(saida);var s=window.getSelection();s.removeAllRanges();s.addRange(r);aviso('Não foi possível copiar sozinho. O texto está selecionado: use Ctrl+C.',false);}
+    try{ if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(texto).then(function(){aviso('Comando copiado.',true);},manual);} else {manual();} }catch(e){manual();}
+  });
+
+  fit();
+  var h=parseInt((location.hash||'').replace('#p',''),10);
+  go(isNaN(h)?0:h-1,false);
+})();
+</script>
+</body>
+</html>
