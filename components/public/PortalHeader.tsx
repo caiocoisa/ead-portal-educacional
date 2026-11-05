@@ -30,7 +30,7 @@ export function PortalHeader({ variant = "home" }: PortalHeaderProps) {
         ) : (
           <Link href="/ebook" className={LINK_CLASS}>
             <BookOpen aria-hidden="true" className="size-4" />
-            E-book (edição preliminar)
+            E-book
           </Link>
         )}
       </nav>

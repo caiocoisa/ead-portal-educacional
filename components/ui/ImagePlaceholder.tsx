@@ -14,6 +14,8 @@ interface ImagePlaceholderProps {
   src?: string;
   /** Texto alternativo; use "" para imagens meramente decorativas. */
   alt?: string;
+  /** Carrega a imagem com prioridade (use só na imagem principal do topo da página). */
+  priority?: boolean;
 }
 
 export function ImagePlaceholder({
@@ -22,11 +24,19 @@ export function ImagePlaceholder({
   className = "",
   src,
   alt = "",
+  priority = false,
 }: ImagePlaceholderProps) {
   if (src) {
     return (
       <div className={`relative overflow-hidden rounded-xl ${className}`}>
-        <Image src={src} alt={alt} fill sizes="(min-width: 768px) 50vw, 100vw" className="object-contain" />
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          priority={priority}
+          sizes="(min-width: 768px) 50vw, 100vw"
+          className="object-contain"
+        />
       </div>
     );
   }

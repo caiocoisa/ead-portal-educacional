@@ -3,13 +3,13 @@ import { Download, ExternalLink } from "lucide-react";
 import { PortalHeader } from "@/components/public/PortalHeader";
 
 export const metadata: Metadata = {
-  title: "E-book (edição preliminar) | Planejamento Pedagógico para EaD com Apoio de IA",
+  title: "E-book: Planejar com IA sem perder a didática | Planejamento Pedagógico para EaD com Apoio de IA",
   description:
-    "Planejar com IA sem perder a didática: guia de bolso em e-book para educadores na educação a distância. Edição preliminar.",
+    "Planejar com IA sem perder a didática: guia de bolso em e-book para educadores na educação a distância.",
 };
 
 const LEITOR = "/ebook/leitor.html";
-const PDF = "/ebook/ebook-preliminar.pdf";
+const PDF = "/ebook/ebook-planejar-com-ia.pdf";
 
 const ACTION_CLASS =
   "inline-flex items-center gap-2 rounded-full border border-(--brand) px-4 py-1.5 text-sm font-medium hover:bg-(--surface-secondary)";
@@ -27,7 +27,7 @@ export default function EbookPage() {
           <div className="flex flex-col">
             <h1 className="text-xl font-bold">Planejar com IA sem perder a didática</h1>
             <p className="text-sm text-(--muted)">
-              Guia de bolso em e-book · edição preliminar · 18 páginas
+              Guia de bolso em e-book · 18 páginas
             </p>
           </div>
           <ul className="flex flex-wrap gap-2">

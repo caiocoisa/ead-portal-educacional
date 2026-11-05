@@ -1,4 +1,4 @@
-/* Verifica o leitor do e-book preliminar (public/ebook/leitor.html), servido pelo
+/* Verifica o leitor do e-book (public/ebook/leitor.html), servido pelo
  * portal em /ebook.
  *
  * Uso:  node testes/ebook/verificar-ebook.js [--capturas <pasta>]
@@ -16,7 +16,9 @@ const AxeBuilder = require("@axe-core/playwright").default;
 
 const RAIZ = path.resolve(__dirname, "..", "..");
 const HTML = path.join(RAIZ, "public", "ebook", "leitor.html");
-const PDF = path.join(RAIZ, "public", "ebook", "ebook-preliminar.pdf");
+const PDF = path.join(RAIZ, "public", "ebook", "ebook-planejar-com-ia.pdf");
+// Espaço em branco máximo tolerado no fim da área útil de cada página (px, em 720x960).
+const VAZIO_MAX = Number(process.env.VAZIO_MAX || 120);
 const URL = pathToFileURL(HTML).href;
 const idx = process.argv.indexOf("--capturas");
 const CAPTURAS = idx > -1 ? process.argv[idx + 1] : null;
@@ -53,21 +55,30 @@ const ruim = (m) => { falhas.push(m); console.log("  FALHA  " + m); };
     await c.addInitScript((p) => { for (const k in p) window.localStorage.setItem(k, p[k]); }, modo.prefs);
     const pg = await c.newPage();
     const antes = falhas.length;
+    const medidas = [];
     for (let i = 1; i <= total; i++) {
       await pg.goto(URL + "#p" + i);
       await pg.reload();
       const info = await pg.evaluate(() => {
         const p = document.querySelector(".page:not([hidden])");
         const b = p.querySelector(".body");
-        return { fluido: document.documentElement.classList.contains("fluid"), sobra: b ? b.scrollHeight - b.clientHeight : 0 };
+        const ultimo = b && b.lastElementChild;
+        // Espaço livre entre o último bloco e o fim da área útil (coordenadas de layout, sem escala).
+        const vazio = ultimo ? (b.offsetTop + b.clientHeight) - (ultimo.offsetTop + ultimo.offsetHeight) : 0;
+        return { id: p.id, capa: p.classList.contains("capa"), fluido: document.documentElement.classList.contains("fluid"), sobra: b ? b.scrollHeight - b.clientHeight : 0, vazio };
       });
       if (info.fluido !== modo.fluido) ruim(`${modo.nome} p${i}: modo fluido=${info.fluido}, esperado ${modo.fluido}`);
       if (modo.medeEstouro && info.sobra > 1) ruim(`${modo.nome} p${i}: conteúdo estoura ${info.sobra}px`);
+      if (modo.medeEstouro && modo.prefs["ead-portal:contrast"] === undefined) {
+        medidas.push(`p${i}:${info.vazio}`);
+        if (!info.capa && info.vazio > VAZIO_MAX) ruim(`p${i}: ${info.vazio}px de espaço em branco no fim da página (máximo ${VAZIO_MAX}px)`);
+      }
       const r = await new AxeBuilder({ page: pg }).withTags(TAGS).analyze();
       r.violations.forEach((v) => ruim(`${modo.nome} p${i}: axe ${v.id} (${v.nodes.length}) ${v.help}`));
       if (CAPTURAS && modo.medeEstouro && modo.prefs["ead-portal:contrast"] === undefined) await pg.locator("#stage").screenshot({ path: path.join(CAPTURAS, `p${String(i).padStart(2, "0")}.png`) });
       if (CAPTURAS && modo.prefs["ead-portal:contrast"] === "high" && (i === 6 || i === 12)) await pg.screenshot({ path: path.join(CAPTURAS, `contraste-p${i}.png`) });
     }
+    if (medidas.length && modo.medeEstouro && modo.prefs["ead-portal:contrast"] === undefined) console.log("  espaço livre no fim de cada página (px): " + medidas.join("  "));
     if (falhas.length === antes) ok(`${modo.nome}: sem estouro e sem violação de axe-core`);
     await c.close();
   }

@@ -3,7 +3,7 @@ import { STORAGE, seedState } from "../helpers/progress";
 
 const TITULO = "Planejar com IA sem perder a didática";
 
-test.describe("e-book preliminar no portal", () => {
+test.describe("e-book no portal", () => {
   test("abre sem identificação, sem ser redirecionado, e mostra o leitor", async ({ page }) => {
     await page.goto("/ebook");
     await expect(page).toHaveURL(/\/ebook$/);
@@ -17,7 +17,7 @@ test.describe("e-book preliminar no portal", () => {
 
   test("a página inicial leva ao e-book e o cabeçalho do e-book volta ao curso", async ({ page }) => {
     await page.goto("/");
-    await page.getByRole("link", { name: "E-book (edição preliminar)", exact: true }).click();
+    await page.getByRole("link", { name: "E-book", exact: true }).click();
     await expect(page).toHaveURL(/\/ebook$/);
     await page.getByRole("link", { name: "Voltar ao curso" }).click();
     await expect(page).toHaveURL("/");
@@ -76,8 +76,8 @@ test.describe("e-book preliminar no portal", () => {
   test("o PDF e o leitor em tela cheia estão publicados e acessíveis por link", async ({ page, request }) => {
     await page.goto("/ebook");
     const pdf = page.getByRole("link", { name: "Baixar em PDF" });
-    await expect(pdf).toHaveAttribute("href", "/ebook/ebook-preliminar.pdf");
-    const resposta = await request.get("/ebook/ebook-preliminar.pdf");
+    await expect(pdf).toHaveAttribute("href", "/ebook/ebook-planejar-com-ia.pdf");
+    const resposta = await request.get("/ebook/ebook-planejar-com-ia.pdf");
     expect(resposta.status()).toBe(200);
     expect(resposta.headers()["content-type"]).toContain("pdf");
 

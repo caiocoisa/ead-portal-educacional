@@ -1,23 +1,25 @@
 # Roteiro do e-book: Planejar com IA sem perder a didática
 
-> **Edição preliminar (2026-11-05).** Roteiro v0 do e-book, escrito a partir
-> de `templates/roteiro-ebook.md` para atender ao requisito **R1** (capa,
+> **Versão definitiva do e-book (2026-11-05).** Roteiro escrito a partir de
+> `templates/roteiro-ebook.md` para atender ao requisito **R1** (capa,
 > sumário e capítulos em ordem lógica, design profissional, interatividade e
-> linguagem clara). Foi produzido antes de a Task 48 ser liberada, para
-> permitir uma apresentação; **não substitui** a revisão prevista nas Tasks
-> 48 a 50. A peça publicada é `public/ebook/leitor.html`, servida pelo
+> linguagem clara). Foi produzido antes de a Task 48 ser liberada; as
+> revisões previstas nas Tasks 48 a 50 (revisão por educadores) ainda se
+> aplicam. A peça publicada é `public/ebook/leitor.html`, servida pelo
 > portal em `/ebook` (leitor incorporado por `iframe`) e em
-> `/ebook/leitor.html` (tela cheia).
+> `/ebook/leitor.html` (tela cheia). Tipografia: Arial, a mesma pilha de
+> fontes que o portal renderiza. Ilustrações: as cenas da Marina (Task 64,
+> estilo A), otimizadas por `npm run ebook:arte`.
 
 ## Pendências que afetam este roteiro
 
 | Item | Situação neste roteiro | Quem decide |
 |---|---|---|
-| **D-08** (numeração das lentes) | Adotada a correção recomendada: lente 1 alinhamento, lente 2 instruções estruturadas, lente 3 curadoria (inclui a viabilidade técnica e de acesso), lente 4 papel do educador. **Provisório**, até o vídeo ser corrigido | Você |
+| **D-08** (numeração das lentes) | Adotada a correção recomendada: lente 1 alinhamento, lente 2 instruções estruturadas, lente 3 curadoria (inclui a viabilidade técnica e de acesso), lente 4 papel do educador. **O vídeo atual ainda diz "segunda lente" para a viabilidade (Bloco 4B)**: corrigir o roteiro do vídeo antes de gravar | Você |
 | **D-09** ("conteúdos" entre os elementos) | O e-book ensina os **quatro** elementos que o vídeo ensina hoje (público, objetivos, atividades, avaliação). Se a decisão for incluir "conteúdos", o capítulo 1 e o cartão de referência mudam | Você |
-| Autoria e identidade visual | A capa diz "autoria e identidade visual em elaboração" | Você; Tasks 59 e 49 |
-| Ilustrações da Marina | Três encaixes prontos (`E3-ebook-capa`, `E3-ebook-cap1`, `E3-ebook-cap3`); até existirem, vale a arte geométrica provisória | Você (geração); Claude (prompts) |
-| Plataforma de publicação | Preparado o PDF para importação; a escolha entre FlipHTML5 e Genially é da Task 58 | Você (ponto C) |
+| Autoria | A capa e a contracapa citam apenas o portal e o minicurso, sem nome de autor | Você |
+| Revisão de linguagem clara | Falta a revisão por 2 ou 3 educadores do perfil-alvo (Task 50) | Você |
+| Plataforma de publicação | O PDF está pronto para importação; a escolha entre FlipHTML5 e Genially é da Task 58 | Você (ponto C) |
 
 ## 1. Ficha
 
@@ -32,10 +34,14 @@
 
 ## 2. Capa
 
-Título, subtítulo, promessa em uma linha, faixa "Edição preliminar" e faixa
-de autoria. A arte da capa não leva texto: o texto é HTML. Encaixe da
-ilustração: `arte/E3-ebook-capa.png` (3:4), com o terço superior livre para o
-título e uma faixa inferior livre para a autoria.
+Marca do portal (o mesmo livro do ícone da aba), série do minicurso, título,
+subtítulo e, abaixo, a Marina (cena 2, `E2-cena-02`) em moldura dourada; faixa
+inferior com o portal e o lema "Pedir · Auditar · Decidir". A arte não leva
+texto: todo o texto é HTML. Cenas usadas no livro: capa (2), abertura do
+capítulo 1 (4), do capítulo 2 (1), do capítulo 3 (3, com a 5 no exemplo) e do
+capítulo 4 (6); contracapa com o retrato (`E1-estilo-A`). Em cada abertura, a
+pergunta-foco do capítulo é o **balão de fala** da Marina, em HTML, sobre a
+área livre que o prompt da cena reservou.
 
 ## 3. Sumário
 
@@ -106,9 +112,9 @@ deriva do roteiro audiovisual v2 e do banco de questões.
 
 ## 7. Duas faces
 
-- **Interativa:** `public/ebook/leitor.html` (página a página, com os quatro elementos interativos), e o PDF `public/ebook/ebook-preliminar.pdf` para importar na plataforma. Elementos interativos viram versões impressas estáticas no PDF (modelo em branco, respostas à vista).
+- **Interativa:** `public/ebook/leitor.html` (página a página, com os quatro elementos interativos), e o PDF `public/ebook/ebook-planejar-com-ia.pdf` para importar na plataforma. Elementos interativos viram versões impressas estáticas no PDF (modelo em branco, respostas à vista).
 - **Acessível:** o próprio HTML é navegável por teclado e leitor de tela, respeita o alto contraste e o tamanho de fonte do portal, e reflui em uma coluna em telas pequenas, baixas ou com a fonte ampliada. O PDF é a versão para impressão e download.
-- **Ilustrações:** quando existirem, `E3-ebook-capa.png`, `E3-ebook-cap1.png` e `E3-ebook-cap3.png` vão em `public/ebook/arte/` e entram sozinhas.
+- **Ilustrações:** as imagens otimizadas ficam em `public/ebook/arte/` (WebP, ~25 KB cada) e são geradas a partir de `testes/imagens-ia/` por `npm run ebook:arte`. Os prompts de capa e de ilustração de capítulo da etapa 3 (`E3-ebook-*`) não foram necessários: as cenas da etapa 2 cobrem o livro.
 
 ## 8. Matriz de cobertura: capítulo × competência × questão
 
@@ -127,5 +133,6 @@ deriva do roteiro audiovisual v2 e do banco de questões.
 - [x] Nenhum capítulo reproduz o cenário ou as alternativas de uma questão.
 - [x] Vocabulário igual ao do vídeo (com a ressalva do D-08).
 - [ ] Revisão de linguagem clara por educadores (Task 50).
-- [ ] Design profissional final (Tasks 59 e 49, via Claude Design).
+- [x] Design profissional: faixa de capítulo, cenas da Marina com balão de fala, caixas de dica, tipografia do portal e páginas sem estouro nem vazio excessivo (`npm run ebook:verificar`).
+- [ ] Redesenho completo via Claude Design (R2, Tasks 59 e 49): o e-book atual segue a paleta e a fonte do portal de hoje e será revisto quando o design system v2 existir.
 - [ ] Publicação na plataforma (Task 61, depois da escolha na Task 58) e incorporação ao portal (Task 52).

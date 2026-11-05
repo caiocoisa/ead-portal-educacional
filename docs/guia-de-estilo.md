@@ -98,6 +98,13 @@ em toda a interface sem exceção pontual.
   `app/globals.css`), com `--font-geist-sans`/`--font-geist-mono`
   carregadas via `next/font` em `app/layout.tsx` e expostas como
   `--font-sans`/`--font-mono` no bloco `@theme inline`.
+  **Na prática, o portal renderiza Arial** (verificado em 2026-11-05 no
+  estilo computado da produção: corpo, títulos, parágrafos e botões em
+  `Arial, Helvetica, sans-serif`, sem nenhuma fonte web carregada): a regra
+  `font-family: Arial` do `body` vence e a Geist é baixada sem ser usada.
+  O e-book (`public/ebook/leitor.html`) usa a mesma pilha, para ficar
+  consistente com o portal. Se a intenção for adotar a Geist de fato, é
+  uma decisão de design a tomar (afeta todas as telas).
 - **Escala de tamanho de fonte (Task 19):** controlada pelo atributo
   `data-font-size` no `<html>`, 3 níveis:
 
@@ -241,10 +248,17 @@ HeroUI.
 - **Espaço reservado para imagens ainda não produzidas:**
   `components/ui/ImagePlaceholder.tsx` — borda tracejada em `--gold`,
   ícone `ImageIcon`, rótulo do que a imagem deve mostrar e uma dica de
-  caminho/tamanho sugerido (ex. `public/img/hero.svg · 560×280`). `alt`
-  vazio (`""`) por padrão — decorativo até a imagem real existir; ao
+  caminho/tamanho sugerido (ex. `public/img/objetivos.svg · 480×360`).
+  `alt` vazio (`""`) por padrão — decorativo até a imagem real existir; ao
   adicionar a imagem definitiva, decidir e documentar se o `alt` deve
-  virar descritivo (depende do conteúdo real da imagem).
+  virar descritivo (depende do conteúdo real da imagem). Com a propriedade
+  `src` o componente exibe a imagem (`next/image`); `priority` marca a
+  imagem principal do topo. **Já preenchido:** a ilustração principal da
+  página inicial (`public/img/hero.jpg`, 1456×720, `alt` descritivo,
+  2026-11-05). Faltam as de objetivos e de jornada.
+- **Ícone da aba do navegador:** `app/icon.svg`, `app/apple-icon.png` e
+  `app/favicon.ico`, gerados por `npm run icones` (livro aberto dourado
+  sobre azul-marinho, com um ponto verde que lembra a IA).
 - **Cabeçalho da jornada (`JourneyLayout`):** fundo `--brand`, texto
   branco, borda inferior de 4px em `--gold` — visualmente distinto do
   resto da interface, para ancorar a identidade do portal em toda tela
