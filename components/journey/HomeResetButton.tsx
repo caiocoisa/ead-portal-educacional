@@ -16,17 +16,18 @@ export function HomeResetButton() {
 
   return (
     <>
+      {/* O `Button` já é focável: vai direto dentro do `Tooltip`. Envolvê-lo em
+          `Tooltip.Trigger` (um `div role="button"`) aninha dois botões, o que o
+          axe-core acusa como `nested-interactive`. */}
       <Tooltip delay={300}>
-        <Tooltip.Trigger>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="text-white hover:bg-white/10"
-            onPress={() => setIsOpen(true)}
-          >
-            Início
-          </Button>
-        </Tooltip.Trigger>
+        <Button
+          variant="ghost"
+          size="sm"
+          className="text-white hover:bg-white/10"
+          onPress={() => setIsOpen(true)}
+        >
+          Início
+        </Button>
         <Tooltip.Content>Volta à tela de boas-vindas e apaga o progresso</Tooltip.Content>
       </Tooltip>
       <AlertDialog.Root isOpen={isOpen} onOpenChange={setIsOpen}>

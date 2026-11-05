@@ -1,8 +1,8 @@
 # testes/: evidências e verificadores
 
 > Esta pasta **não contém testes automatizados do código**. Os testes do
-> portal (Playwright, axe-core e unitários) serão criados na Task 45, em
-> `tests/`.
+> portal (Vitest, Playwright e axe-core) estão em `tests/` (Task 45) e rodam
+> com `npm test`, `npm run test:e2e` e `npm run test:a11y`.
 
 | Pasta | Conteúdo | Task |
 |---|---|---|
