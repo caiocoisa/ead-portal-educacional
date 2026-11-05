@@ -51,7 +51,7 @@ export function OptionsRadioGroup({
               </span>
             ) : null}
             {isRevealed && index === value && index !== correctIndex ? (
-              <span className="ml-auto flex items-center gap-1 text-sm font-medium text-(--danger)">
+              <span className="ml-auto flex items-center gap-1 text-sm font-medium text-(--danger-text)">
                 <X aria-hidden="true" className="size-4" /> Sua resposta
               </span>
             ) : null}

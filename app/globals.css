@@ -18,6 +18,10 @@
   --warning: #c9a227;
   --warning-foreground: #0b2545;
   --danger: #b91c1c;
+  /* `--danger` serve de fundo (botão de perigo, texto branco por cima: 6,5:1) e
+     precisa ficar escuro. Para TEXTO vermelho usa-se `--danger-text`, que no tema
+     escuro é mais claro (o `#b91c1c` sobre o fundo escuro mede só 2,6:1). */
+  --danger-text: #b91c1c;
 }
 
 /* No tema escuro o marinho some contra o fundo: o acento vira um azul
@@ -27,6 +31,11 @@
   --accent: #3f74b8;
   --success: #4ade9b;
   --success-foreground: #062b1b;
+  --danger-text: #f87171; /* 6,1:1 sobre o fundo da opção errada (#28181b) */
+  /* O hover padrão do HeroUI clareia o botão (#5282c0, 3,95:1 com texto branco:
+     reprovado). Como o azul base já está perto do limite, o hover fica um pouco
+     MAIS ESCURO: 6,4:1 com texto branco. */
+  --accent-hover: #305fa3;
 }
 
 :root[data-theme="light"] {

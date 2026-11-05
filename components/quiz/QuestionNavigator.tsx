@@ -59,20 +59,22 @@ export function QuestionNavigator({
           const isCurrent = index === currentIndex;
           const isAnswered = answeredIds.has(question.id);
           const isCorrect = correctIds.has(question.id);
-          const statusLabel = !isAnswered
-            ? "não respondida"
-            : isCorrect
-              ? "correta"
-              : "incorreta";
+          // Mesmo texto no chip visível e no `aria-label`: o nome acessível precisa
+          // conter o texto visível (WCAG 2.5.3, regra `label-content-name-mismatch`).
+          const statusText = !isAnswered ? "Pendente" : isCorrect ? "Correta" : "Revisar";
           return (
             <li key={question.id} className="shrink-0">
               <Tooltip delay={300}>
-              <Tooltip.Trigger>
+              {/* `render` faz do próprio <button> o gatilho do tooltip, em vez de
+                  aninhá-lo num `div role="button"` (`nested-interactive` no axe-core). */}
+              <Tooltip.Trigger<"button">
+                render={(triggerProps) => (
               <button
+                {...triggerProps}
                 type="button"
                 onClick={() => onNavigate(index)}
                 aria-current={isCurrent ? "step" : undefined}
-                aria-label={`Pergunta ${index + 1}, ${statusLabel}`}
+                aria-label={`Pergunta ${index + 1} ${statusText}`}
                 className={`flex w-full items-center gap-2 rounded-lg border px-3 py-2 text-left text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 ${
                   isCurrent
                     ? "border-(--accent) bg-(--accent) text-(--accent-foreground)"
@@ -80,15 +82,16 @@ export function QuestionNavigator({
                 }`}
               >
                 <span className="font-medium">Pergunta {index + 1}</span>
+                {/* Espaço real entre o texto e o chip: sem ele o texto visível vira
+                    "Pergunta 1Pendente" e não casa com o `aria-label`. */}
+                {" "}
                 <Chip
                   size="sm"
                   variant={isCurrent ? "primary" : "soft"}
                   color={!isAnswered ? "default" : isCorrect ? "success" : "danger"}
                   className="ml-auto hidden lg:inline-flex"
                 >
-                  <Chip.Label>
-                    {!isAnswered ? "Pendente" : isCorrect ? "Correta" : "Revisar"}
-                  </Chip.Label>
+                  <Chip.Label>{statusText}</Chip.Label>
                 </Chip>
                 <span aria-hidden="true" className="lg:hidden">
                   {!isAnswered ? (
@@ -100,7 +103,8 @@ export function QuestionNavigator({
                   )}
                 </span>
               </button>
-              </Tooltip.Trigger>
+                )}
+              />
               <Tooltip.Content>{question.topic}</Tooltip.Content>
               </Tooltip>
             </li>
