@@ -12,6 +12,13 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Saídas dos testes.
+    "playwright-report/**",
+    "test-results/**",
+    "coverage/**",
+    // `testes/` guarda evidências e scripts Node em CommonJS (verificadores de
+    // documentação e rastreabilidade), não código do produto.
+    "testes/**",
   ]),
 ]);
 
