@@ -5,7 +5,9 @@
 > sumário e capítulos em ordem lógica, design profissional, interatividade e
 > linguagem clara). Foi produzido antes de a Task 48 ser liberada, para
 > permitir uma apresentação; **não substitui** a revisão prevista nas Tasks
-> 48 a 50. A peça publicada é `conteudo/ebook/preliminar/index.html`.
+> 48 a 50. A peça publicada é `public/ebook/leitor.html`, servida pelo
+> portal em `/ebook` (leitor incorporado por `iframe`) e em
+> `/ebook/leitor.html` (tela cheia).
 
 ## Pendências que afetam este roteiro
 
@@ -104,8 +106,9 @@ deriva do roteiro audiovisual v2 e do banco de questões.
 
 ## 7. Duas faces
 
-- **Interativa:** `preliminar/index.html` (página a página, com os quatro elementos interativos), e o PDF para importar na plataforma. Elementos interativos viram versões impressas estáticas no PDF (modelo em branco, respostas à vista).
-- **Acessível:** o próprio HTML é navegável por teclado e leitor de tela. O PDF é a versão para impressão.
+- **Interativa:** `public/ebook/leitor.html` (página a página, com os quatro elementos interativos), e o PDF `public/ebook/ebook-preliminar.pdf` para importar na plataforma. Elementos interativos viram versões impressas estáticas no PDF (modelo em branco, respostas à vista).
+- **Acessível:** o próprio HTML é navegável por teclado e leitor de tela, respeita o alto contraste e o tamanho de fonte do portal, e reflui em uma coluna em telas pequenas, baixas ou com a fonte ampliada. O PDF é a versão para impressão e download.
+- **Ilustrações:** quando existirem, `E3-ebook-capa.png`, `E3-ebook-cap1.png` e `E3-ebook-cap3.png` vão em `public/ebook/arte/` e entram sozinhas.
 
 ## 8. Matriz de cobertura: capítulo × competência × questão
 

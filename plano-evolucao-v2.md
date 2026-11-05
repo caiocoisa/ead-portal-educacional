@@ -655,9 +655,12 @@ Figma usar e se há limite de créditos.
    ebook).
 5. **Versão preliminar do ebook (2026-11-05):** produzida para
    apresentação, antes de a Task 48 ser liberada: roteiro
-   `conteudo/ebook/roteiro.md`, leitor em
-   `conteudo/ebook/preliminar/index.html` (18 páginas, um elemento
-   interativo por capítulo) e PDF `ebook-preliminar.pdf` para importar no
-   FlipHTML5 ou no Genially. Não substitui as Tasks 48 a 50 nem o redesign
-   (Tasks 59 e 49): usa a arte geométrica provisória até as ilustrações da
-   Marina existirem, e adota provisoriamente a correção do D-08.
+   `conteudo/ebook/roteiro.md`, leitor em `public/ebook/leitor.html` (18
+   páginas, um elemento interativo por capítulo) e PDF
+   `public/ebook/ebook-preliminar.pdf` para importar no FlipHTML5 ou no
+   Genially. **Está no portal:** a rota pública `/ebook` incorpora o leitor,
+   fora da jornada (não altera o progresso), com entradas na página
+   inicial e no cabeçalho da jornada. Não substitui as Tasks 48 a 50 nem o
+   redesign (Tasks 59 e 49): usa a arte geométrica provisória até as
+   ilustrações da Marina existirem, e adota provisoriamente a correção do
+   D-08. O hub `/materiais` da Task 52 vai absorver essa rota.

@@ -1,10 +1,12 @@
-/* Verifica o e-book preliminar (conteudo/ebook/preliminar/index.html).
+/* Verifica o leitor do e-book preliminar (public/ebook/leitor.html), servido pelo
+ * portal em /ebook.
  *
  * Uso:  node testes/ebook/verificar-ebook.js [--capturas <pasta>]
  *
- * Confere, para cada uma das páginas: estouro de conteúdo, violações de axe-core
- * (WCAG 2.2 AA), as quatro interações, a leitura em tela de celular e exporta o PDF.
- * Não altera nada além do PDF em conteudo/ebook/preliminar/.
+ * Confere, para cada uma das 18 páginas: estouro de conteúdo e violações de axe-core
+ * (WCAG 2.2 AA) em três modos (desktop, alto contraste e fonte ampliada), as quatro
+ * interações, a navegação, a leitura em celular e as preferências do portal; por fim
+ * regrava o PDF em public/ebook/. Não altera mais nada.
  */
 const path = require("path");
 const fs = require("fs");
@@ -13,8 +15,8 @@ const { chromium } = require("@playwright/test");
 const AxeBuilder = require("@axe-core/playwright").default;
 
 const RAIZ = path.resolve(__dirname, "..", "..");
-const HTML = path.join(RAIZ, "conteudo", "ebook", "preliminar", "index.html");
-const PDF = path.join(RAIZ, "conteudo", "ebook", "preliminar", "ebook-preliminar.pdf");
+const HTML = path.join(RAIZ, "public", "ebook", "leitor.html");
+const PDF = path.join(RAIZ, "public", "ebook", "ebook-preliminar.pdf");
 const URL = pathToFileURL(HTML).href;
 const idx = process.argv.indexOf("--capturas");
 const CAPTURAS = idx > -1 ? process.argv[idx + 1] : null;
@@ -38,24 +40,37 @@ const ruim = (m) => { falhas.push(m); console.log("  FALHA  " + m); };
   console.log(`\n[1] Páginas: ${total}`);
   total === 18 ? ok("18 páginas") : ruim(`esperado 18 páginas, encontrado ${total}`);
 
-  console.log("\n[2] Estouro de conteúdo e axe-core por página (desktop, 720x960 escalado)");
   if (CAPTURAS) fs.mkdirSync(CAPTURAS, { recursive: true });
-  for (let i = 1; i <= total; i++) {
-    await page.evaluate((n) => { location.hash = "#p" + n; }, i);
-    await page.reload();
-    const info = await page.evaluate(() => {
-      const p = document.querySelector(".page:not([hidden])");
-      const b = p.querySelector(".body");
-      return { id: p.id, sobra: b ? b.scrollHeight - b.clientHeight : 0 };
-    });
-    if (info.sobra > 1) ruim(`p${i}: conteúdo estoura ${info.sobra}px além da área útil`);
-    const r = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"]).analyze();
-    if (r.violations.length) {
-      r.violations.forEach((v) => ruim(`p${i}: axe ${v.id} (${v.nodes.length}) ${v.help}`));
+  const TAGS = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"];
+  const MODOS = [
+    { nome: "desktop (página inteira)", prefs: {}, viewport: { width: 1400, height: 1100 }, medeEstouro: true, fluido: false },
+    { nome: "alto contraste", prefs: { "ead-portal:contrast": "high" }, viewport: { width: 1400, height: 1100 }, medeEstouro: true, fluido: false },
+    { nome: "fonte ampliada (fluido)", prefs: { "ead-portal:font-size": "extra-large" }, viewport: { width: 1400, height: 900 }, medeEstouro: false, fluido: true },
+  ];
+  for (const modo of MODOS) {
+    console.log(`\n[2] Estouro e axe-core em 18 páginas: ${modo.nome}`);
+    const c = await browser.newContext({ viewport: modo.viewport });
+    await c.addInitScript((p) => { for (const k in p) window.localStorage.setItem(k, p[k]); }, modo.prefs);
+    const pg = await c.newPage();
+    const antes = falhas.length;
+    for (let i = 1; i <= total; i++) {
+      await pg.goto(URL + "#p" + i);
+      await pg.reload();
+      const info = await pg.evaluate(() => {
+        const p = document.querySelector(".page:not([hidden])");
+        const b = p.querySelector(".body");
+        return { fluido: document.documentElement.classList.contains("fluid"), sobra: b ? b.scrollHeight - b.clientHeight : 0 };
+      });
+      if (info.fluido !== modo.fluido) ruim(`${modo.nome} p${i}: modo fluido=${info.fluido}, esperado ${modo.fluido}`);
+      if (modo.medeEstouro && info.sobra > 1) ruim(`${modo.nome} p${i}: conteúdo estoura ${info.sobra}px`);
+      const r = await new AxeBuilder({ page: pg }).withTags(TAGS).analyze();
+      r.violations.forEach((v) => ruim(`${modo.nome} p${i}: axe ${v.id} (${v.nodes.length}) ${v.help}`));
+      if (CAPTURAS && modo.medeEstouro && modo.prefs["ead-portal:contrast"] === undefined) await pg.locator("#stage").screenshot({ path: path.join(CAPTURAS, `p${String(i).padStart(2, "0")}.png`) });
+      if (CAPTURAS && modo.prefs["ead-portal:contrast"] === "high" && (i === 6 || i === 12)) await pg.screenshot({ path: path.join(CAPTURAS, `contraste-p${i}.png`) });
     }
-    if (CAPTURAS) await page.locator("#stage").screenshot({ path: path.join(CAPTURAS, `p${String(i).padStart(2, "0")}.png`) });
+    if (falhas.length === antes) ok(`${modo.nome}: sem estouro e sem violação de axe-core`);
+    await c.close();
   }
-  if (!falhas.length) ok("nenhum estouro e nenhuma violação de axe-core em 18 páginas");
 
   console.log("\n[3] Interações");
   const ir = async (n) => { await page.goto(URL + "#p" + n); await page.reload(); };
@@ -111,6 +126,18 @@ const ruim = (m) => { falhas.push(m); console.log("  FALHA  " + m); };
     if (CAPTURAS && (n === 6 || n === 12)) await mp.screenshot({ path: path.join(CAPTURAS, `celular-p${n}.png`) });
   }
   await m.close();
+
+  console.log("\n[5b] Janela baixa (1100x520, como o leitor dentro do portal num notebook)");
+  const b2 = await browser.newContext({ viewport: { width: 1100, height: 520 } });
+  const bp = await b2.newPage();
+  await bp.goto(URL + "#p6"); await bp.reload();
+  (await bp.evaluate(() => document.documentElement.classList.contains("fluid"))) ? ok("cai na leitura fluida (a página inteira ficaria ilegível)") : ruim("janela baixa não entrou em modo fluido");
+  const navVisivel = await bp.getByRole("button", { name: /Próxima/ }).isVisible();
+  const caixa = await bp.getByRole("button", { name: /Próxima/ }).boundingBox();
+  navVisivel && caixa && caixa.y + caixa.height <= 520 ? ok("barra de navegação fixa e visível sem rolar") : ruim("barra de navegação fora da janela");
+  const hz = await bp.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  hz > 1 ? ruim(`rolagem horizontal de ${hz}px`) : ok("sem rolagem horizontal");
+  await b2.close();
 
   console.log("\n[6] PDF");
   const pp = await ctx.newPage();

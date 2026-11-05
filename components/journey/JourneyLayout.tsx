@@ -1,6 +1,8 @@
 import type { ReactNode } from "react";
+import Link from "next/link";
 import type { JourneyStep } from "@/types/progress";
 import { Avatar } from "@heroui/react";
+import { BookOpen } from "lucide-react";
 import { AccessibilityControls } from "@/components/accessibility/AccessibilityControls";
 import { HomeResetButton } from "./HomeResetButton";
 import { ProgressIndicator } from "./ProgressIndicator";
@@ -26,7 +28,17 @@ export function JourneyLayout({ userName, step, children }: JourneyLayoutProps) 
           <span className="font-semibold">Olá, {userName}!</span>
         </div>
         <ProgressIndicator step={step} />
-        <HomeResetButton />
+        <div className="flex items-center gap-1">
+          {/* Fora da jornada: abrir o e-book não altera o progresso salvo. */}
+          <Link
+            href="/ebook"
+            className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium text-white hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+          >
+            <BookOpen aria-hidden="true" className="size-4" />
+            E-book
+          </Link>
+          <HomeResetButton />
+        </div>
       </header>
       <AccessibilityControls />
       <main className="flex min-h-0 flex-1 justify-center p-4 sm:p-6">

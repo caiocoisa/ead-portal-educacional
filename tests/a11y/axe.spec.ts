@@ -34,6 +34,12 @@ const SCREENS: Screen[] = [
     ready: (p) => p.getByRole("button", { name: "Confirmar resposta" }),
   },
   { name: "relatório", path: "/relatorio", step: "relatorio", ready: (p) => p.getByText("Relatório final") },
+  // O axe analisa também o leitor incorporado (iframe de mesma origem), na capa.
+  {
+    name: "e-book",
+    path: "/ebook",
+    ready: (p) => p.frameLocator("iframe").getByRole("button", { name: /Próxima/ }),
+  },
 ];
 
 // Falsos positivos conhecidos do axe-core. Cada item é estreito (regra + elemento)

@@ -2708,7 +2708,8 @@ Escreve os roteiros usando os templates da Task 43, com cenários novos
 - Matriz de cobertura peça × competência × questão.
 - **Versão preliminar do ebook (2026-11-05):** adiantada para uma
   apresentação, sem liberar esta task: `conteudo/ebook/roteiro.md`,
-  `conteudo/ebook/preliminar/index.html` e `ebook-preliminar.pdf`. O
+  `public/ebook/leitor.html` e `public/ebook/ebook-preliminar.pdf`,
+  publicados no portal pela rota `/ebook`. O
   restante desta task (mapa, quadrinho, revisão e matriz definitiva)
   continua `blocked`.
 

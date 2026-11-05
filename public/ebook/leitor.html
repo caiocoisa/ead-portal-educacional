@@ -14,7 +14,12 @@
 *{box-sizing:border-box}
 html,body{margin:0;height:100%}
 body{background:radial-gradient(120% 100% at 50% 0%,#17335c 0%,#0b2545 60%,#071a31 100%);color:#fff;font-family:var(--sans)}
-:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+/* Foco em dois tons (anel branco + contorno azul-marinho): visível tanto sobre a página
+   branca quanto sobre a moldura azul-marinho do leitor. */
+:focus-visible{outline:3px solid var(--navy);outline-offset:2px;box-shadow:0 0 0 2px #fff}
+/* Alto contraste do portal (ead-portal:contrast): tudo em preto sobre branco. */
+:root[data-contrast="high"]{--navy:#000;--ink:#000;--muted:#000;--line:#000;--green:#0b5d36;--gold-soft:#fff;--mint:#fff;--bad-soft:#fff;--bad:#8a1111}
+:root[data-contrast="high"] .cartao,:root[data-contrast="high"] .caixa,:root[data-contrast="high"] .foco,:root[data-contrast="high"] .termo,:root[data-contrast="high"] .item{border:2px solid #000}
 
 /* ---------- moldura do leitor ---------- */
 .reader{min-height:100%;display:flex;flex-direction:column;align-items:center}
@@ -129,15 +134,19 @@ td.sim{color:var(--green);font-weight:700} td.nao{color:var(--bad);font-weight:7
 .gloss dd{margin:0 0 8px;break-inside:avoid}
 
 /* ---------- celular: leitura fluida ---------- */
+/* Modo fluido: celular, janela baixa ou tamanho de fonte ampliado no portal. O texto
+   reflui em uma coluna de leitura em vez de encolher a página inteira. */
 .fluid .topbar{flex-wrap:wrap;padding:10px 16px}
-.fluid .nav{flex-wrap:wrap;justify-content:center;width:100%;padding:12px 16px 20px}
-.fluid .nav .pos{order:-1;flex:1 1 100%;min-width:0}
+.fluid .nav{flex-wrap:wrap;justify-content:center;width:100%;padding:10px 16px 14px;position:sticky;bottom:0;z-index:5;background:var(--navy)}
+.fluid .nav .pos{order:-1;flex:1 1 100%;min-width:0;text-align:center}
 .fluid .stage{width:100%;height:auto;box-shadow:none;border-radius:0}
 .fluid .sheet{width:100%;height:auto;transform:none}
-.fluid .page{position:static;width:100%;height:auto;min-height:70vh;border-radius:0;font-size:16px}
+.fluid .page{position:static;width:100%;max-width:760px;margin:0 auto;height:auto;min-height:70vh;border-radius:0;font-size:16px}
+html[data-font-size="large"] .fluid .page{font-size:18px}
+html[data-font-size="extra-large"] .fluid .page{font-size:20px}
 .fluid .body,.fluid .runhead{padding-left:20px;padding-right:20px}
 .fluid .folio{margin:0 20px}
-.fluid .duas,.fluid .quatro{grid-template-columns:1fr}
+@media (max-width:560px){.duas,.quatro{grid-template-columns:1fr}}
 .fluid .capa h1{font-size:38px}
 .fluid .capa .arte{min-height:220px}
 .fluid .gloss{columns:1}
@@ -685,12 +694,21 @@ compatível com [a restrição do público].</code></div>
   // numeração de página
   pages.forEach(function(p,i){var n=p.querySelector('.folio .n'); if(n) n.textContent=String(i+1);});
 
+  // Preferências de acessibilidade do portal (mesma origem, mesmas chaves do localStorage).
+  function pref(chave,padrao){try{return window.localStorage.getItem(chave)||padrao;}catch(e){return padrao;}}
+  function aplicaPrefs(){
+    var r=document.documentElement;
+    r.setAttribute('data-font-size',pref('ead-portal:font-size','normal'));
+    r.setAttribute('data-contrast',pref('ead-portal:contrast','normal'));
+  }
+
   function fit(){
-    var fluid=window.matchMedia('(max-width: 760px)').matches;
-    document.documentElement.classList.toggle('fluid',fluid);
-    if(fluid){stage.style.removeProperty('--s');return;}
     var availW=window.innerWidth-40, availH=window.innerHeight-150;
-    var s=Math.max(.4,Math.min(availW/720,availH/960,1.25));
+    var s=Math.min(availW/720,availH/960,1.25);
+    // Página inteira só quando ainda fica legível (>= 72% do tamanho real); senão, leitura fluida.
+    var fluido=window.innerWidth<=760||s<.72||pref('ead-portal:font-size','normal')!=='normal';
+    document.documentElement.classList.toggle('fluid',fluido);
+    if(fluido){stage.style.removeProperty('--s');return;}
     stage.style.setProperty('--s',s.toFixed(4));
   }
 
@@ -724,6 +742,8 @@ compatível com [a restrição do público].</code></div>
     if(Math.abs(dx)>70){go(cur+(dx<0?1:-1),true);}
   },{passive:true});
   window.addEventListener('resize',fit);
+  // O menu de acessibilidade do portal altera o localStorage fora deste documento.
+  window.addEventListener('storage',function(){aplicaPrefs();fit();});
   // Impressão sempre no leiaute de página inteira, mesmo a partir do celular.
   window.addEventListener('beforeprint',function(){document.documentElement.classList.remove('fluid');});
   window.addEventListener('afterprint',fit);
@@ -791,6 +811,7 @@ compatível com [a restrição do público].</code></div>
     try{ if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(texto).then(function(){aviso('Comando copiado.',true);},manual);} else {manual();} }catch(e){manual();}
   });
 
+  aplicaPrefs();
   fit();
   var h=parseInt((location.hash||'').replace('#p',''),10);
   go(isNaN(h)?0:h-1,false);
