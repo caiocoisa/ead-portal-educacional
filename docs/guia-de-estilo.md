@@ -248,14 +248,21 @@ HeroUI.
 - **Espaço reservado para imagens ainda não produzidas:**
   `components/ui/ImagePlaceholder.tsx` — borda tracejada em `--gold`,
   ícone `ImageIcon`, rótulo do que a imagem deve mostrar e uma dica de
-  caminho/tamanho sugerido (ex. `public/img/objetivos.svg · 480×360`).
+  caminho/tamanho sugerido (ex. `public/img/jornada.jpg · 1456×720`).
   `alt` vazio (`""`) por padrão — decorativo até a imagem real existir; ao
   adicionar a imagem definitiva, decidir e documentar se o `alt` deve
   virar descritivo (depende do conteúdo real da imagem). Com a propriedade
   `src` o componente exibe a imagem (`next/image`); `priority` marca a
-  imagem principal do topo. **Já preenchido:** a ilustração principal da
+  imagem principal do topo. **Já preenchidos:** a ilustração principal da
   página inicial (`public/img/hero.jpg`, 1456×720, `alt` descritivo,
-  2026-11-05). Faltam as de objetivos e de jornada.
+  2026-11-05) e a dos objetivos (`public/img/objetivos.jpg`, 1456×720,
+  proporção 2:1, `alt` descritivo, 2026-11-05). A ferramenta de imagem
+  ignorou a proporção 4:3 pedida no prompt, então o encaixe dos objetivos
+  passou a `aspect-[2/1]`. **A ilustração da jornada ainda não existe e o
+  espaço reservado foi removido da página** (2026-11-05): a seção "Como
+  funciona" mostra só os três cartões, em fileira. Quando a imagem for
+  gerada (prompt `P1-jornada.png` em `docs/prompts-ilustracao.md`, seção
+  5.3), voltar a incluí-la como `aside` da seção, em 2:1.
 - **Ícone da aba do navegador:** `app/icon.svg`, `app/apple-icon.png` e
   `app/favicon.ico`, gerados por `npm run icones` (livro aberto dourado
   sobre azul-marinho, com um ponto verde que lembra a IA).

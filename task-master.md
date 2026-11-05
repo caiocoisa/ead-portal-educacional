@@ -3370,7 +3370,10 @@ reservados por ilustrações finais.
   rótulo de desenvolvimento dos espaços de imagem (ex. "Ilustração dos
   objetivos · `public/img/objetivos.svg · 480×360`"). Esta task os
   elimina; se a produção das ilustrações demorar, avaliar esconder antes
-  só a dica de caminho em produção.
+  só a dica de caminho em produção. **Resolvido em 2026-11-05:** as
+  ilustrações principal e de objetivos foram entregues e o espaço
+  reservado da jornada foi removido, então a página inicial já não exibe
+  nenhum rótulo de desenvolvimento.
 
 **Files:**
 - `components/public/*`, `components/journey/*`, `components/quiz/*`
@@ -3663,8 +3666,10 @@ descritas acima. Além disso:
   (`roteiro_audiovisual_completo.md`) fica só como histórico. Ao publicar,
   não esquecer a Task 35 (legendas).
 - Produzir as ilustrações reservadas pela Task 27
-  (`components/ui/ImagePlaceholder.tsx`): `public/img/objetivos.svg`
-  (480×360) e `public/img/jornada.svg` (480×360) — até lá, a página
-  inicial mostra o espaço reservado com rótulo/dica nessas duas posições.
-  **A ilustração principal já foi entregue** (`public/img/hero.jpg`,
-  1456×720, 2026-11-05).
+  (`components/ui/ImagePlaceholder.tsx`): resta a da **jornada**; o espaço
+  reservado dela foi **removido** da página em 2026-11-05 (a seção "Como
+  funciona" mostra só os três cartões) e será reincluído quando a imagem
+  for gerada (prompt `P1-jornada.png`, `docs/prompts-ilustracao.md`).
+  **Já entregues em 2026-11-05:** a ilustração principal
+  (`public/img/hero.jpg`, 1456×720) e a dos objetivos
+  (`public/img/objetivos.jpg`, 1456×720, proporção 2:1).

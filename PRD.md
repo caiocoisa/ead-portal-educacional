@@ -84,12 +84,12 @@ relatório) em produção, com o menor custo de implementação possível.
 >
 > Conteúdo centralizado em `content/landing.ts`; seções em
 > `components/public/CourseSections.tsx` e
-> `components/public/FaqAccordion.tsx`. A ilustração principal (hero) já
-> está na página (`public/img/hero.jpg`); as de objetivos e de jornada
-> ainda não foram produzidas — a página reserva o espaço com
-> `components/ui/ImagePlaceholder.tsx`, indicando caminho/tamanho sugerido
-> (ex. `public/img/objetivos.svg · 480×360`) até as imagens definitivas
-> existirem.
+> `components/public/FaqAccordion.tsx`. A ilustração principal (hero) e a
+> dos objetivos já estão na página (`public/img/hero.jpg` e
+> `public/img/objetivos.jpg`). A ilustração da jornada ainda não foi
+> produzida e o espaço reservado foi **removido** da página: a seção "Como
+> funciona" mostra só os três cartões das etapas. Quando a imagem existir,
+> será incluída pelo `components/ui/ImagePlaceholder.tsx`.
 
 ### 3.2 Jornada do módulo (área restrita)
 

@@ -100,8 +100,10 @@ export function CourseSections() {
         aside={
           <ImagePlaceholder
             label="Ilustração dos objetivos"
-            hint="public/img/objetivos.svg · 480×360"
-            className="aspect-[4/3] w-full"
+            hint="public/img/objetivos.jpg · 1456×720"
+            src="/img/objetivos.jpg"
+            alt="Ilustração em azul-marinho e dourado: um alvo com uma flecha no centro, ligado por linhas a quatro emblemas, que são peças de quebra-cabeça, barras alinhadas, um balão de conversa com um brilho e um documento com marcas de verificação sob uma lupa."
+            className="aspect-[2/1] w-full border border-(--border)"
           />
         }
       >
@@ -132,15 +134,8 @@ export function CourseSections() {
         id="como-funciona"
         title="Como funciona"
         subtitle="Uma jornada linear em três etapas."
-        aside={
-          <ImagePlaceholder
-            label="Ilustração da jornada"
-            hint="public/img/jornada.svg · 480×360"
-            className="aspect-[4/3] w-full"
-          />
-        }
       >
-        <CardGrid items={journeySteps} columns="grid-cols-1" />
+        <CardGrid items={journeySteps} columns="sm:grid-cols-3" />
       </Section>
 
       <Section id="formato" title="Formato e recursos">
