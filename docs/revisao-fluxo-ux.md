@@ -16,15 +16,17 @@
 
 **O fluxo funciona de ponta a ponta, mas trata o aluno como um
 percurso de via única: erra e não consegue voltar, perde respostas se
-recarregar, e só rever o conteúdo exige apagar o progresso.** São 19
+recarregar, e só rever o conteúdo exige apagar o progresso.** São 20
 atritos, dos quais 3 são de severidade 4. (UX-18 e UX-19 foram acrescentados
 em 2026-11-05, descobertos pelos testes E2E da Task 45. **UX-15, UX-18 e
-UX-19 foram resolvidos no mesmo dia**, removendo o toast de confirmação.)
+UX-19 foram resolvidos no mesmo dia**, removendo o toast de confirmação.
+UX-20, sobre o espaço vertical do e-book no portal, foi apontado pelo
+usuário no mesmo dia e está **aberto, para análise**.)
 
 | Severidade | Atritos |
 |---|---|
 | **4** | UX-01 (sem volta ao vídeo), UX-04 (respostas só em memória), UX-13 (o vídeo ainda não existe) |
-| **3** | UX-02, UX-03, UX-05, UX-06, UX-07, UX-09, UX-11, UX-18 |
+| **3** | UX-02, UX-03, UX-05, UX-06, UX-07, UX-09, UX-11, UX-18, UX-20 |
 | **2** | UX-08, UX-10, UX-12, UX-16, UX-17, UX-19 |
 | **1** | UX-14, UX-15 |
 
@@ -66,6 +68,7 @@ UX-19 foram resolvidos no mesmo dia**, removendo o toast de confirmação.)
 | **UX-17** | **A FAQ não diz quanto tempo leva.** "Você segue no seu ritmo" não informa a duração prevista (o roteiro tem 30 min de vídeo) | `landing.ts:112-115` | Visibilidade do estado | 2 | Informar a duração estimada de cada etapa na home e no cabeçalho | 63 |
 | **UX-18** | **O toast de confirmação cobre o botão de avançar.** Depois da animação de entrada, o toast (posição "bottom end") fica sobre o **centro** de "Próxima pergunta" e de "Ver relatório final", em todas as perguntas. Como o React Aria **pausa o fechamento automático enquanto o ponteiro está sobre o toast**, quem mantém o mouse perto do botão fica com ele coberto até fechar o toast à mão. Medido com `elementFromPoint` e reproduzido no E2E (a ação travou por 90 s) | `app/layout.tsx:31` (`placement="bottom end"`); `ModuleAssessmentStep.tsx:55-57` | Prevenção de erros; controle e liberdade | 3 | **Resolvido em 2026-11-05:** o toast foi removido (o alerta na tela, em região `status`, mostra o resultado); testes em `tests/e2e/jornada.spec.ts` | 53, 63 |
 | **UX-19** | **O botão de fechar do toast está em inglês** ("Close") numa interface em português | nome acessível do botão, visto no E2E | Correspondência com o mundo real | 2 | **Resolvido em 2026-11-05:** deixou de existir com a remoção do toast | 63 |
+| **UX-20** | **O e-book tem pouco espaço vertical no portal e obriga a rolar.** Três faixas somam altura antes da página: o **cabeçalho do portal** (76 px), a **linha de título e ações** da página `/ebook` (48 px, mais ~44 px de margens) e, dentro do leitor, a **barra superior** (64 px) e o **rodapé de navegação** (94 px). Medido na produção em 2026-11-05, na abertura do capítulo 1: janela 1366×657 → **329 px** (50%) para a página; 1536×730 → 402 px (55%); 1920×969 → 641 px (66%). Como a página (retrato 3:4, 720×960) não cabe, o leitor cai no **modo fluido** em **todos** esses tamanhos (inclusive 1920×969) e a página de ~917 px rola dentro do `iframe`, que já está dentro de uma página com rolagem própria. *Apontado pelo usuário* | `app/ebook/page.tsx` (linha de título e `iframe`); `components/public/PortalHeader.tsx`; `public/ebook/leitor.html` (`.topbar`, `.nav` e o limiar de 72% de escala em `fit()`) | Design estético e minimalista; flexibilidade e eficiência | 3 | **A analisar, sem decisão.** Direções: (a) unificar os dois cabeçalhos na rota `/ebook` (título e ações no cabeçalho do portal, ou cabeçalho compacto); (b) fundir a barra superior e o rodapé do leitor em uma barra fina, ou levar "Anterior" e "Próxima" para as bordas da página; (c) rever o limiar do modo fluido; (d) um **modo leitura** dentro do portal (cabeçalhos ocultos, em um clique), já que "Abrir em tela cheia" hoje abre outra aba; (e) formato **paisagem ou páginas espelhadas** para telas largas, porque o retrato 3:4 é desfavorável em monitores horizontais (a raiz do problema, e o que os leitores de flipbook fazem); (f) conferir o mesmo ponto no FlipHTML5 antes de decidir (Task 58) | 52, 63, 58, 55 |
 
 **O que está bem resolvido** (para não mexer sem necessidade): indicador
 de progresso acessível (`ProgressIndicator.tsx`), menu de perguntas com
@@ -126,8 +129,10 @@ Cabeçalho (todas as etapas após o nome):
 | **53** Ajustes de fluxo | UX-01, UX-02, UX-03, UX-04, UX-09, UX-10, UX-11, UX-12 |
 | **54** Remediação dirigida | UX-05, UX-06, UX-07, UX-08 |
 | **47** Banco v2 | UX-05, UX-08, UX-14 |
-| **63** Novo visual | UX-07, UX-09, UX-16, UX-17 |
-| **55** Usabilidade | UX-16 e a confirmação de UX-03 e UX-11 |
+| **63** Novo visual | UX-07, UX-09, UX-16, UX-17, UX-20 |
+| **52** Hub e leitores | UX-20 (o leitor do e-book muda de lugar no hub) |
+| **58** Plataformas de e-book | UX-20 (conferir o espaço vertical no FlipHTML5) |
+| **55** Usabilidade | UX-16, UX-20 e a confirmação de UX-03 e UX-11 |
 | **29 / 35** | UX-11 (capítulos e legendas dependem de controles) |
 
 > **Sugestão de ajuste de escopo:** a Task 53 hoje cobre "rever o vídeo,
