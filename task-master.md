@@ -2880,6 +2880,11 @@ leitura, com acessibilidade no nível do restante do portal.
   `next.config.ts` se a incorporação exigir. Ao lado, a **versão
   acessível**: capítulos em HTML pesquisável e legível em leitor de tela,
   com download em PDF.
+- **Analisar o UX-20** (`docs/revisao-fluxo-ux.md`): o leitor do ebook, já
+  no ar em `/ebook`, deixa pouco espaço vertical para a página (dois
+  cabeçalhos mais o rodapé de navegação; 329 px de 657 em um notebook) e
+  obriga a rolar. A solução é a desta task, quando a rota virar
+  `/materiais/[id]`.
 - Item no cabeçalho da jornada; registro de material visto no
   `UserProgress` v2.
 - Seguir a variante da Task 44 (incorporar HTML interativo só se passar
@@ -3531,6 +3536,17 @@ ilustração principal da página inicial (`public/img/hero.jpg`) e remoção
 das marcas de "edição preliminar" do portal. **Achado:** o portal renderiza
 Arial, e não a Geist declarada em `app/layout.tsx` (ver
 `docs/guia-de-estilo.md`, seção 2).
+
+**Pendência a analisar (2026-11-05): UX-20, espaço vertical do ebook no
+portal.** A visualização em `/ebook` é ruim: o cabeçalho do portal, a linha
+de título da página e, dentro do leitor, a barra superior e o rodapé de
+navegação consomem altura, e a página precisa rolar. Medido na produção:
+sobram 329 px de uma janela de 657 px (50%) em um notebook, 402 px de 730
+(55%) e 641 px de 969 (66%) em desktop, e o leitor cai no modo fluido em
+todos esses tamanhos. **Não há decisão tomada**: as direções (cabeçalhos
+unificados, barra única, modo leitura, páginas em paisagem ou espelhadas)
+estão em `docs/revisao-fluxo-ux.md` (UX-20) e se resolvem nas Tasks 52 e
+63, conferindo também o FlipHTML5 (Task 58).
 
 ### Status atual (2026-10-18)
 **Tasks 1–27 estão `done`.** MVP implementado, testado (build,

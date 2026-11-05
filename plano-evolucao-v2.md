@@ -665,3 +665,7 @@ Figma usar e se há limite de créditos.
    (R2, Tasks 59 e 49), publicação em plataforma (Tasks 58 e 61) e a
    correção do D-08 no vídeo, que ainda chama a viabilidade de "segunda
    lente". O hub `/materiais` da Task 52 vai absorver a rota.
+6. **Pendência a analisar (UX-20):** o ebook em `/ebook` usa mal o espaço
+   vertical (cabeçalho do portal, linha de título, barra e rodapé do
+   leitor; sobram ~50% da janela em um notebook) e obriga a rolar. Medições
+   e direções possíveis em `docs/revisao-fluxo-ux.md`; sem decisão.
