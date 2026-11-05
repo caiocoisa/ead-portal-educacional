@@ -1,6 +1,11 @@
 # Guia de Estilo — Portal de Planejamento Pedagógico para EaD
 
 > Gerado em: 2026-10-18 (Task 28, `task-master.md`)
+> **Aviso (2026-11-04):** este guia descreve o design **atual**. O
+> requisito R2 (`plano-evolucao-v2.md`) reelabora cores, fontes, formatos
+> e componentes via Claude Design; as Tasks 59 (design system v2), 62 e
+> 63 o substituem, e a Task 56 o aposenta em favor de
+> `docs/design-system-v2.md`. Até lá, vale o que está aqui e no código.
 > Extraído de `app/globals.css`, `package.json` e dos componentes em
 > produção — documentação pura, nenhuma decisão nova. Se este guia um dia
 > divergir do código, **o código é a fonte da verdade**; atualize este
@@ -189,6 +194,7 @@ HeroUI.
 | `toast` / `Toast` | Feedback de confirmação de resposta (sucesso/atenção/erro) |
 | `Tooltip` | Dica de ação ("Início", tópico de cada pergunta no navegador) |
 | `useTheme()` | Hook nativo de tema claro/escuro/sistema |
+| `useIsomorphicLayoutEffect()` | Hook nativo usado por `usePersistentAttribute` (preferências de tema, fonte e contraste) |
 
 ### Padrões conhecidos a repetir
 

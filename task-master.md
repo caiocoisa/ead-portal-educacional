@@ -1,9 +1,9 @@
 # Task Master — Portal de Planejamento Pedagógico para EaD com Apoio de IA (MVP)
 
-> Gerado em: 2026-09-27 · Revisado em: 2026-10-18
+> Gerado em: 2026-09-27 · Revisado em: 2026-11-04
 > Baseado em: `PRD.md` (raiz do repositório, versão MVP de escopo reduzido)
-> Total de tasks: 38 (15 do MVP + 12 de refinamento pós-deploy + 11 de
-> adequação a design instrucional)
+> Total de tasks: 64 (15 do MVP + 12 de refinamento pós-deploy + 11 de
+> adequação a design instrucional + 26 de evolução v2)
 
 ## Visão geral
 
@@ -13,23 +13,42 @@ repositório de serviço. Escopo reduzido ao **core**: o aluno informa o
 nome, assiste a **um único vídeo** (YouTube), responde a uma avaliação e
 recebe um **relatório final**, podendo reiniciar a jornada. Conteúdo
 (vídeo + quiz) é definido em um arquivo de seed no código — **sem** área
-administrativa, sem múltiplos módulos, sem i18n e sem alternância de tema
-nesta v1 (ver PRD seção 9 para o backlog futuro).
+administrativa, sem múltiplos módulos e sem i18n na v1 (a alternância de
+tema foi acrescentada depois, na Task 18; ver PRD seção 9 para o backlog
+futuro).
 
-O repositório está vazio (nenhum código implementado) — todas as tasks
-partem do zero.
+**Estado em 2026-11-04:** as Tasks 1–29 estão implementadas e o portal
+está em produção (ver "Infraestrutura existente" e "Status atual" no fim
+deste documento). As Tasks 1–15 partiram de um repositório vazio
+(histórico); as demais evoluem o que já existe.
 
 **Fora de escopo (não gerar tasks):** área administrativa, múltiplos
-módulos em sequência, i18n, alternância de tema, exportação/certificação
-do relatório, acompanhamento de múltiplos alunos (PRD seção 9).
+módulos em sequência, i18n, exportação/certificação do relatório,
+acompanhamento de múltiplos alunos (PRD seção 9). A alternância de tema,
+antes listada aqui, foi implementada na Task 18.
 
 ---
 
 ## Infraestrutura existente (já implementada) ✅
 
-Nenhuma. O diretório do projeto contém apenas `PRD.md` e este
-`task-master.md`; não há `package.json`, código-fonte ou configuração
-prévia. Todas as 15 tasks abaixo partem de um repositório vazio.
+Situação em 2026-11-04. A versão original deste documento dizia
+"nenhuma": as Tasks 1–15 partiram de um repositório vazio.
+
+- **Stack (declarada no `package.json`):** Next.js 16.3.6 (App Router),
+  React 19.2.8, `@heroui/react` ^3.2.6, Tailwind 4, `lucide-react`
+  ^1.48.0, TypeScript 5.
+- **Scripts:** `dev`, `build`, `start` e `lint`. **Não há** script de
+  teste, nem Playwright, axe-core ou testes unitários como dependências:
+  as auditorias das Tasks 1–27 foram avulsas (ver Task 45).
+- **Implantação:** Vercel, `https://ead-portal-educacional.vercel.app/`.
+  Conferida em 2026-11-04: o conteúdo publicado corresponde a
+  `content/landing.ts`, e o `main` local e o remoto estão no mesmo commit.
+- **Persistência:** `localStorage`, via `services/user-progress`.
+- **Neste clone o `node_modules` não está instalado:** rodar
+  `npm install` antes de qualquer task de código ou de testes.
+- **Verificador da documentação:** `node testes/consistencia/verificar-docs.js`
+  confere o grafo de tasks, as tabelas-resumo, o plano e as citações
+  arquivo:linha.
 
 ---
 
@@ -38,9 +57,16 @@ prévia. Todas as 15 tasks abaixo partem de um repositório vazio.
 - Uma task só pode começar quando TODAS as suas `dependencies` estiverem `done`.
 - Tasks com `dependencies: []` podem começar imediatamente.
 - Status possíveis: `pending` | `in-progress` | `done` | `blocked` | `deferred`.
+- `in-progress` marca uma task com execução parcial registrada (ex.:
+  Tasks 44 e 64). Um `blocked` pode decorrer de uma dependência externa
+  documentada, mesmo com as dependências formais concluídas (ex.: Task 35,
+  que espera o vídeo gravado).
 - Atribuição inicial: `dependencies == []` → `pending`; caso contrário → `blocked`.
 - Todas as tasks pertencem ao único repositório do projeto:
-  `ead-portal-educacional` (`/home/caio-silva/repos/ead-portal-educacional`).
+  `ead-portal-educacional` (clone local em
+  `C:\Users\caio.silva\caiosilvadossantos\ead-portal-educacional`; remoto
+  no GitHub, `caiocoisa/ead-portal-educacional`; substitui o caminho Linux
+  da versão original).
 
 ---
 
@@ -1596,8 +1622,9 @@ código em produção.
 **Implementado em:** `docs/guia-de-estilo.md` (novo) — paleta completa
 (tokens de marca `--brand`/`--gold` + remapeamentos do HeroUI com razões
 de contraste, incluindo as variantes de tema escuro e alto contraste),
-tipografia (fonte + 3 níveis de `data-font-size`), catálogo vivo dos 20
-ícones `lucide-react` em uso e dos ~19 componentes HeroUI em uso (com os
+tipografia (fonte + 3 níveis de `data-font-size`), catálogo vivo dos 21
+ícones `lucide-react` em uso e dos 23 componentes HeroUI em uso, em 19
+linhas agrupadas (com os
 dois padrões de implementação já conhecidos: interativo aninhado e
 preferências sempre aplicadas), convenções de layout
 (`ImagePlaceholder`, cabeçalho da jornada) e instrução de como manter o
@@ -2153,6 +2180,1189 @@ aprovado pelo usuário em 2026-10-18
 
 ---
 
+### Task 39
+| Field | Value |
+|---|---|
+| **ID** | 39 |
+| **Title** | Matriz de rastreabilidade banco de questões × roteiro do vídeo |
+| **Status** | `done` |
+| **Priority** | `high` |
+| **Complexity** | 3 |
+| **Dependencies** | `[]` |
+| **Phase** | 10 — Evolução v2: diagnóstico e pesquisa |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Frente A de `plano-evolucao-v2.md`. Verifica, questão a questão, se o que
+o banco cobra foi de fato ensinado no roteiro v2, e em que nível
+cognitivo.
+
+**Details:**
+- Matriz: objetivo de aprendizagem → trecho do roteiro (bloco +
+  timestamp) → questão → alternativa correta → feedback, com o nível de
+  Bloom de cada item.
+- Partir dos achados C1–C6 do plano (fontes divergentes, terminologia da
+  Questão 1 só ensinada no Bloco 5, Questão 2 idêntica ao Bloco 3,
+  cenários repetidos, termos soltos na Questão 4, uma pergunta por
+  competência) e acrescentar o que surgir.
+- Classificar cada divergência como bloqueante, ajustar ou aceitável.
+- Propor a fonte única de verdade do banco.
+- Análise apenas: nenhuma alteração em `content/module.ts` ou no roteiro.
+
+**Files:**
+- `docs/matriz-rastreabilidade.md` (novo)
+
+**Test strategy:**
+Revisão por amostragem: sortear 3 linhas da matriz e conferir manualmente
+cada trecho citado do roteiro.
+
+**Acceptance criteria:**
+- [x] Toda questão aparece na matriz, com trecho do vídeo que a sustenta
+      ou a lacuna registrada.
+- [x] Cada divergência tem classificação e proposta.
+
+**Implementado em:** `docs/matriz-rastreabilidade.md` (novo) e
+`testes/rastreabilidade/trace.js` (script de rastreamento reutilizável).
+10 divergências (D-01 a D-10) classificadas: 1 **bloqueante para a
+gravação** (D-08: numeração contraditória das "lentes" entre os Blocos 4B
+e 5), 8 a ajustar e 1 aceitável. Achados novos em relação ao plano:
+alternativa correta mais longa em 3 de 4 questões (D-07); a home promete
+cinco elementos de planejamento, o vídeo ensina quatro (D-09). Pendente: a
+revisão do usuário sobre a classificação e a proposta de fonte única.
+
+**Source:** `plano-evolucao-v2.md`, frente A; decisão D2
+
+---
+
+### Task 40
+| Field | Value |
+|---|---|
+| **ID** | 40 |
+| **Title** | Percurso e revisão heurística do fluxo de experiência do usuário |
+| **Status** | `done` |
+| **Priority** | `medium` |
+| **Complexity** | 3 |
+| **Dependencies** | `[]` |
+| **Phase** | 10 — Evolução v2: diagnóstico e pesquisa |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Frente B. Mapeia o percurso completo (home → vídeo → avaliação →
+relatório → reinício) e revisa com heurísticas de usabilidade, partindo
+dos atritos já verificados no código.
+
+**Details:**
+- Base: U1 (sem volta ao vídeo, `useJourneyGuard.ts:38`), U2 ("Concluir"
+  burla o bloqueio, `ModuleVideoStep.tsx:57`), U3 (avanço automático a
+  90%), U4 (relatório sem prescrição), U5 (modelo linear), U6 (vídeo
+  inexistente).
+- Revisão heurística (Nielsen) com severidade por atrito.
+- Protótipo de baixa fidelidade do fluxo-alvo, coerente com a decisão D1
+  (hub opcional, cartão de transição ao fim do vídeo, remediação nos
+  "Vale revisar").
+- O teste de usabilidade com pessoas fica na Task 55.
+
+**Files:**
+- `docs/revisao-fluxo-ux.md` (novo)
+
+**Test strategy:**
+Revisão manual: cada atrito aponta para um arquivo e linha ou para uma
+tela reproduzível.
+
+**Acceptance criteria:**
+- [x] Cada atrito tem severidade, evidência e proposta.
+- [x] Fluxo-alvo desenhado e consistente com D1.
+
+**Implementado em:** `docs/revisao-fluxo-ux.md` (novo). 17 atritos com
+arquivo e linha, 3 de severidade 4: sem volta ao vídeo (UX-01), respostas
+da avaliação só em memória (UX-04) e vídeo inexistente (UX-13). Achados
+novos: o avanço automático a 90% dispara aos 27:00, dentro da síntese
+final do vídeo (UX-03); "Início" apaga todo o progresso e a home some para
+quem já tem progresso (UX-09); o player só tem Play e Pause, sem
+capítulos nem legendas (UX-11). **A aplicação não foi executada** (o clone
+não tem `node_modules`): itens "a verificar" vão para a Task 55.
+
+**Source:** `plano-evolucao-v2.md`, frente B; decisão D1
+
+---
+
+### Task 41
+| Field | Value |
+|---|---|
+| **ID** | 41 |
+| **Title** | Benchmark de concorrentes de EaD (pesquisa na web) |
+| **Status** | `pending` |
+| **Priority** | `medium` |
+| **Complexity** | 4 |
+| **Dependencies** | `[]` |
+| **Phase** | 10 — Evolução v2: diagnóstico e pesquisa |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Frente C. Observa como plataformas de cursos curtos e de formação
+estruturam a experiência, para identificar práticas que o portal não tem.
+
+**Details:**
+- Definir os critérios **antes** da coleta. Candidatos a validar:
+  Coursera, Khan Academy, Google Skillshop, Fundação Bradesco/EVG,
+  Sebrae, Escola Virtual.Gov/ENAP, Alura, Udemy, Descomplica.
+- Dimensões: onboarding, estrutura do módulo, duração e fragmentação do
+  vídeo, materiais complementares, avaliação e feedback, remediação,
+  gamificação e certificado, acessibilidade, comunidade, retomada de
+  progresso.
+- Registrar só o que se observa, com link e data de acesso. Não copiar
+  conteúdo de terceiros.
+
+**Files:**
+- `pesquisa/benchmark-concorrentes.md` (novo)
+
+**Test strategy:**
+Revisão: toda afirmação sobre um concorrente tem fonte e data.
+
+**Acceptance criteria:**
+- [ ] Critérios de seleção e de análise declarados antes dos resultados.
+- [ ] Matriz comparativa com fonte verificável em cada célula.
+
+**Source:** `plano-evolucao-v2.md`, frente C
+
+---
+
+### Task 42
+| Field | Value |
+|---|---|
+| **ID** | 42 |
+| **Title** | Auditoria instrucional (Gagné, Merrill, Bloom, Kirkpatrick) |
+| **Status** | `pending` |
+| **Priority** | `medium` |
+| **Complexity** | 3 |
+| **Dependencies** | `[39, 40]` |
+| **Phase** | 10 — Evolução v2: diagnóstico e pesquisa |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Frente C. Aplica referenciais que o plano D2L (Tasks 28–38) não cobriu,
+sem repetir os 7 critérios já revisados.
+
+**Details:**
+- Eventos de instrução de Gagné, princípios de Merrill (tarefa centrada
+  em problema, ativação, demonstração, aplicação, integração), taxonomia
+  de Bloom e níveis de Kirkpatrick.
+- Foco no que falta: ativação de conhecimento prévio, prática guiada,
+  transferência.
+
+**Files:**
+- `pesquisa/auditoria-instrucional.md` (novo)
+
+**Test strategy:**
+Revisão manual contra a matriz da Task 39 e o percurso da Task 40.
+
+**Acceptance criteria:**
+- [ ] Cada referencial aplicado com lacunas e propostas.
+- [ ] Nenhuma repetição dos 7 critérios D2L.
+
+**Source:** `plano-evolucao-v2.md`, frente C
+
+---
+
+### Task 43
+| Field | Value |
+|---|---|
+| **ID** | 43 |
+| **Title** | Engenharia reversa de roteiros: ebook, quadrinho e mapa interativo (pesquisa na web) |
+| **Status** | `pending` |
+| **Priority** | `high` |
+| **Complexity** | 5 |
+| **Dependencies** | `[]` |
+| **Phase** | 10 — Evolução v2: diagnóstico e pesquisa |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Frente D, decisão D3 (três mídias). Desmonta bons exemplos de cada mídia
+para extrair um esqueleto reutilizável de roteiro e um padrão de
+storytelling.
+
+**Details:**
+- Para cada mídia, selecionar 4–6 exemplos com critério explícito.
+  Pontos de partida a validar: tipos de conteúdo do H5P, explicadores
+  interativos e StoryMaps (mapa); HQs educativas de não ficção
+  (quadrinho); guias de bolso e ebooks de método e **ebooks interativos
+  publicados em FlipHTML5 e Genially** (ebook; requisito R1), observando
+  também o **design visual**: capa, sumário clicável, abertura de
+  capítulo e elementos interativos.
+- Ficha padrão por exemplo: promessa e público, estrutura com contagens,
+  ritmo, recurso de storytelling, mecanismo de engajamento, fecho, o que
+  funciona e o que não serve ao nosso caso.
+- Destilar esqueleto, limites de tamanho, regras de tom e checklist de
+  qualidade; validar reaplicando ao roteiro do vídeo.
+
+**Files:**
+- `pesquisa/engenharia-reversa/{mapa,quadrinho,ebook}.md` (novos)
+- `templates/roteiro-{mapa,quadrinho,ebook}.md` (novos)
+
+**Test strategy:**
+Cada decisão de estrutura aponta para ao menos um exemplo observado.
+
+**Acceptance criteria:**
+- [ ] Um template e uma checklist por mídia.
+- [ ] Esqueleto validado contra o roteiro do vídeo.
+
+**Source:** `plano-evolucao-v2.md`, frente D; decisão D3
+
+---
+
+### Task 44
+| Field | Value |
+|---|---|
+| **ID** | 44 |
+| **Title** | Testes de capacidade do Claude Design (decisão D4 e requisito R2) |
+| **Status** | `in-progress` |
+| **Priority** | `high` |
+| **Complexity** | 4 |
+| **Dependencies** | `[]` |
+| **Phase** | 10 — Evolução v2: diagnóstico e pesquisa |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Executa o plano de testes `docs/plano-testes-claude-design.md` para
+descobrir formatos de exportação, fidelidade à identidade visual,
+consistência de personagem, interatividade, acessibilidade e direitos de
+uso, **antes** do brief das peças (Task 49).
+
+**Details:**
+- **Ferramenta (decisão D0):** o Design interno ao Claude (tipos de
+  artefato "Design" e "Design System"). O Claude Design avulso fecha em
+  14/12/2026 e não é usado.
+- 15 casos (CD-01 a CD-15), alguns executados por você na ferramenta
+  ([U]) e outros por inspeção dos arquivos e scripts do projeto ([C]).
+  Os casos CD-12 a CD-15 verificam o que o requisito R2 exige da
+  ferramenta: tokens exportáveis, protótipo multi-tela com navegação e
+  sobreposições, três explorações distintas e representação de elementos
+  externos incorporados.
+- **Se os casos CD-12 a CD-15 falharem, parar e consultar o usuário**
+  antes de trocar de ferramenta (R2 exige o Claude Design).
+- Peças de teste com conteúdo fictício, guardadas em
+  `testes/claude-design/` (fora do portal).
+- Ao fim, preencher a tabela de resultados e escolher uma das variantes
+  V1–V5.
+
+**Files:**
+- `docs/plano-testes-claude-design.md` (resultados)
+- `testes/claude-design/` (peças de teste)
+
+**Test strategy:**
+O próprio plano de testes; CD-11 usa `npm run build` e `npm run lint`.
+
+**Acceptance criteria:**
+- [ ] Os 15 casos executados e registrados com evidência.
+- [ ] Variante adotada e justificativa registradas.
+
+**Andamento (2026-11-04):** registrados CD-01 (parcial), CD-03, CD-04,
+CD-05 e CD-15, com a variante **V6** indicada (Claude Design para layout,
+interação e composição; ilustração por IA de imagem, ver Task 64). Peças
+de teste em `testes/claude-design/pecas-teste/` (fontes do artefato
+privado) e `testes/claude-design/pecas-teste-local/` (versão em HTML
+puro, usada na avaliação, porque o link do artefato não abriu para o
+usuário). Pendentes: CD-02 e CD-06 a CD-14; CD-06, CD-07, CD-09 e CD-11
+dependem de `npm install` e da Task 45.
+
+**Source:** `plano-evolucao-v2.md`, frente E; decisão D4
+
+---
+
+### Task 45
+| Field | Value |
+|---|---|
+| **ID** | 45 |
+| **Title** | Infraestrutura de testes reproduzível (Playwright, axe-core e testes unitários) |
+| **Status** | `pending` |
+| **Priority** | `high` |
+| **Complexity** | 5 |
+| **Dependencies** | `[]` |
+| **Phase** | 10 — Evolução v2: diagnóstico e pesquisa |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+O `package.json` hoje só tem `dev`, `build`, `start` e `lint`; as
+auditorias de Playwright e axe-core citadas nas Tasks 1–27 foram
+avulsas. Esta task as torna reproduzíveis, para que as tasks de código
+seguintes tenham rede de segurança.
+
+**Details:**
+- Adicionar Playwright e `@axe-core/playwright` como dependências de
+  desenvolvimento; testes unitários para `lib/` e para o repositório de
+  progresso.
+- Scripts no `package.json` (ex. `test`, `test:e2e`, `test:a11y`).
+- Teste de base da jornada atual (home → vídeo → avaliação →
+  relatório → reinício) e auditoria axe nas combinações de tema ×
+  contraste × tamanho de fonte.
+- **Pré-requisito:** `npm install` (o clone não tem `node_modules`).
+- Registrar no `package.json` o script `docs:check`
+  (`node testes/consistencia/verificar-docs.js`). A pasta `testes/`
+  guarda evidências e verificadores de documentação e pesquisa; `tests/`
+  fica para os testes automatizados do código.
+- Antes de qualquer código, ler o guia relevante em
+  `node_modules/next/dist/docs/` (`AGENTS.md`).
+
+**Files:**
+- `package.json`, `package-lock.json`
+- Configuração de testes e `tests/` (novos)
+
+**Test strategy:**
+Os scripts rodam do zero em máquina limpa e passam contra o `main`.
+
+**Acceptance criteria:**
+- [ ] Scripts de teste documentados e funcionando.
+- [ ] Linha de base verde antes de qualquer task de código da Fase 13.
+
+**Source:** `plano-evolucao-v2.md`, frente F e seção 11
+
+---
+
+### Task 46
+| Field | Value |
+|---|---|
+| **ID** | 46 |
+| **Title** | Síntese, matriz de lacunas e ADR do modelo de jornada |
+| **Status** | `blocked` |
+| **Priority** | `high` |
+| **Complexity** | 3 |
+| **Dependencies** | `[39, 40, 41, 42, 43]` |
+| **Phase** | 11 — Evolução v2: decisão |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Consolida o diagnóstico em uma matriz de lacunas (portal × concorrentes ×
+referencial instrucional) e registra a decisão do modelo de jornada.
+
+**Details:**
+- Matriz com impacto, esforço e dependência por lacuna.
+- ADR do modelo: hub opcional (D1), banco híbrido (D2), três mídias (D3).
+- Registrar que a D5 segue em aberto até o vídeo final.
+
+**Files:**
+- `docs/adr-modelo-de-jornada.md` (novo)
+
+**Test strategy:**
+Revisão: cada lacuna aponta para uma task ou para uma justificativa de
+descarte.
+
+**Acceptance criteria:**
+- [ ] Matriz de lacunas priorizada.
+- [ ] ADR registrado e aprovado.
+
+**Source:** `plano-evolucao-v2.md`, seção 10; decisões D1–D3
+
+---
+
+### Task 47
+| Field | Value |
+|---|---|
+| **ID** | 47 |
+| **Title** | Banco de questões v2: itens-núcleo e variantes com cenário novo |
+| **Status** | `blocked` |
+| **Priority** | `high` |
+| **Complexity** | 5 |
+| **Dependencies** | `[46, 31, 32, 33]` |
+| **Phase** | 11 — Evolução v2: decisão |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Decisão D2 (opção C). Mantém as 4 questões atuais como núcleo e acrescenta
+variantes em outra disciplina e outro público, chegando a 8–12 itens, com
+2–3 por competência. Depende das Tasks 31–33 para preservar a ordem pedida
+na aprovação da Task 34.
+
+**Details:**
+- Definir `content/module.ts` como fonte única; `banco-questoes.md` é
+  gerado a partir dele ou aposentado.
+- Corrigir lacunas de **ensino** apontadas pela Task 39 no roteiro v2
+  (ex. introduzir "coerência didática" já nos Blocos 1 e 4A).
+- Manter rastreabilidade por trecho do roteiro em cada item, para
+  localizar rapidamente o que mudar quando o vídeo final existir (campo
+  `source`, ex. `{ block: "B4A", at: "17:00", lens: 1 }`).
+- **Achados da Task 39 a tratar aqui:** unificar a numeração das lentes
+  no roteiro antes de gravar (D-08, bloqueante); escolher um termo entre
+  "alinhamento pedagógico" e "alinhamento construtivo" (D-02); decidir
+  se o vídeo passa a ensinar "conteúdos" ou se a home passa a prometer
+  quatro elementos (D-09); igualar o tamanho das alternativas e criar
+  distratores a partir de equívocos reais (D-07); glossário único das
+  quatro competências (D-10).
+- Decidir aqui se as variantes entram na primeira passada ou só no
+  "refazer as erradas".
+- **Pendente (D5):** a divisão entre esta task e a parte de apresentação
+  da Task 34 será definida quando o vídeo final existir.
+
+**Files:**
+- `content/module.ts`, `types/quiz.ts`
+- `roteiro_audiovisual_completo_v2.md`, `banco-questoes.md`
+
+**Test strategy:**
+Revisão contra a matriz da Task 39; testes unitários de `gradeQuiz` e
+`resolveFeedback` com os novos itens.
+
+**Acceptance criteria:**
+- [ ] 2–3 itens por competência, com núcleo preservado.
+- [ ] Nenhum termo da alternativa correta é inédito para o aluno.
+- [ ] Todo item tem trecho de roteiro vinculado.
+
+**Source:** `plano-evolucao-v2.md`, frente A; decisão D2
+
+---
+
+### Task 48
+| Field | Value |
+|---|---|
+| **ID** | 48 |
+| **Title** | Roteiros das três mídias (mapa, quadrinho e ebook) |
+| **Status** | `blocked` |
+| **Priority** | `high` |
+| **Complexity** | 5 |
+| **Dependencies** | `[43, 46, 47]` |
+| **Phase** | 12 — Evolução v2: produção de conteúdo |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Escreve os roteiros usando os templates da Task 43, com cenários novos
+(nunca os das questões) e mapeados às competências do banco v2.
+
+**Details:**
+- **Mapa interativo:** os 4 vértices do alinhamento; cada nó traz conceito,
+  exemplo e a falha típica que a IA comete.
+- **Quadrinho:** uma professora audita duas sugestões da IA em outra
+  disciplina; bifurcações de decisão.
+- **Ebook (guia de bolso), requisito R1:** fórmula
+  Papel-Contexto-Tarefa-Formato, as 4 lentes, checklist e modelos de
+  comando; cartão de referência derivado dos artefatos estáticos 1, 2 e 8
+  do vídeo. O roteiro define obrigatoriamente **capa, sumário e capítulos
+  estruturados** em ordem lógica, cada capítulo com abertura (objetivo),
+  desenvolvimento e fecho (síntese ou checklist), **pelo menos um elemento
+  interativo por capítulo** e **linguagem clara** para o público-alvo
+  (frases curtas, termo técnico definido no primeiro uso, glossário).
+- Matriz de cobertura peça × competência × questão.
+
+**Files:**
+- `conteudo/{mapa,quadrinho,ebook}/` (novos)
+
+**Test strategy:**
+Checklist de qualidade da Task 43 aplicada a cada roteiro.
+
+**Acceptance criteria:**
+- [ ] Cada roteiro com objetivo, competências e questões cobertas.
+- [ ] Nenhum cenário repete o de uma questão.
+
+**Source:** `plano-evolucao-v2.md`, frente E; decisão D3
+
+---
+
+### Task 49
+| Field | Value |
+|---|---|
+| **ID** | 49 |
+| **Title** | Brief e produção das peças no Claude Design |
+| **Status** | `blocked` |
+| **Priority** | `high` |
+| **Complexity** | 6 |
+| **Dependencies** | `[44, 48, 58, 59, 64]` |
+| **Phase** | 12 — Evolução v2: produção de conteúdo |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Produz as peças visuais conforme a variante escolhida na Task 44.
+
+**Details:**
+- Brief por peça: objetivo, público, **design system v2 (Task 59)**,
+  formato de saída, restrições de acessibilidade. Nenhuma peça é
+  produzida antes do design system v2.
+- Produção em duas camadas (resultado da Task 44): **ilustrações**
+  (personagem e cenas da HQ, arte dos nós do mapa, capa e ilustrações de
+  capítulo do ebook) pela IA de imagem escolhida na Task 64, sempre sem
+  texto na imagem; **composição, texto, balões, diagramas e
+  diagramação** no Claude Design, em HTML vivo.
+- **Ebook (R1):** uma página por prancheta, exportada em PDF e lida
+  página a página na plataforma (virada de página), nunca todas as
+  páginas de uma vez; capa, sumário e capítulos com design profissional
+  e envolvente, nos formatos exigidos pela plataforma escolhida na Task 58.
+- Exportar no formato definido pela variante (Task 44), com alt-text e
+  roteiro textual por painel.
+
+**Files:**
+- `conteudo/{mapa,quadrinho,ebook}/arte/` (novos)
+
+**Test strategy:**
+Cada peça passa pelos testes CD-02, CD-03 e CD-09 do plano de testes.
+
+**Acceptance criteria:**
+- [ ] Peças finais exportadas no formato decidido.
+- [ ] Ficha por peça (objetivo, questões cobertas, alt-text).
+
+**Source:** `plano-evolucao-v2.md`, frente E; decisão D4
+
+---
+
+### Task 50
+| Field | Value |
+|---|---|
+| **ID** | 50 |
+| **Title** | Revisão pedagógica e de acessibilidade das peças |
+| **Status** | `blocked` |
+| **Priority** | `medium` |
+| **Complexity** | 3 |
+| **Dependencies** | `[49]` |
+| **Phase** | 12 — Evolução v2: produção de conteúdo |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Garante que as peças reforçam o vídeo sem comprometer a avaliação e que
+são acessíveis antes de entrarem no portal.
+
+**Details:**
+- Pedagógica: nenhuma peça revela a resposta de uma questão; terminologia
+  idêntica à do vídeo.
+- Acessibilidade: texto alternativo em toda imagem, roteiro textual de
+  cada painel, contraste AA, ordem de leitura.
+- **Ebook (R1):** revisão de linguagem clara por 2–3 educadores do
+  perfil-alvo; conferência da checklist (capa, sumário navegável,
+  capítulos coerentes, elemento interativo por capítulo, design
+  profissional).
+
+**Files:**
+- `conteudo/*/revisao.md` (novos)
+
+**Test strategy:**
+Revisão por pessoa que não produziu a peça.
+
+**Acceptance criteria:**
+- [ ] Checklist pedagógica e de acessibilidade preenchida por peça.
+
+**Source:** `plano-evolucao-v2.md`, frente E
+
+---
+
+### Task 51
+| Field | Value |
+|---|---|
+| **ID** | 51 |
+| **Title** | `UserProgress` v2 com esquema versionado e migração do `localStorage` |
+| **Status** | `blocked` |
+| **Priority** | `high` |
+| **Complexity** | 7 |
+| **Dependencies** | `[45, 46]` |
+| **Phase** | 13 — Evolução v2: implementação |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Redesenha o modelo de progresso para suportar materiais complementares e
+já nascer preparado para uma lista de vídeos (a decisão D5 fica em aberto,
+mas assim qualquer desfecho exige uma única migração).
+
+**Details:**
+- Esquema com número de versão; listas de vídeos (hoje, um item) e de
+  materiais vistos; `currentStep` preservado.
+- Migração do formato antigo com valores padrão; nenhuma perda de
+  progresso de quem já está no meio da jornada.
+- **Achados da Task 40:** guardar também as **respostas confirmadas da
+  avaliação** (UX-04, hoje só em memória) e a **posição do vídeo**
+  (UX-12, o player já aceita `initialTime`).
+- Ler o guia relevante em `node_modules/next/dist/docs/` antes de codar.
+
+**Files:**
+- `types/progress.ts`, `services/user-progress/*`
+
+**Test strategy:**
+Fixtures de `localStorage` no formato antigo (TP-01), testes unitários e
+E2E sobre a infraestrutura da Task 45.
+
+**Acceptance criteria:**
+- [ ] Aluno com progresso antigo retoma da mesma etapa.
+- [ ] Testes de migração passam; build e lint limpos.
+
+**Source:** `plano-evolucao-v2.md`, frente F; decisões D1 e D5
+
+---
+
+### Task 52
+| Field | Value |
+|---|---|
+| **ID** | 52 |
+| **Title** | Hub `/materiais` e componentes de leitura (HQ, mapa e ebook incorporado) |
+| **Status** | `blocked` |
+| **Priority** | `high` |
+| **Complexity** | 8 |
+| **Dependencies** | `[44, 50, 51, 61, 62]` |
+| **Phase** | 13 — Evolução v2: implementação |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Decisão D1 (hub opcional). Cria a área de materiais e os componentes de
+leitura, com acessibilidade no nível do restante do portal.
+
+**Details:**
+- Rotas `/materiais` e `/materiais/[id]`; conteúdo em arquivos de seed,
+  no padrão de `content/`.
+- Leitor de quadrinho (teclado, alt-text, roteiro textual); mapa
+  interativo (nós focáveis, painel de detalhe, alternativa em lista para
+  leitor de tela).
+- **Ebook (R1):** incorpora a versão interativa publicada na plataforma
+  escolhida (Task 61), com moldura, proporção e `title` acessível do
+  design system v2, e ajusta cabeçalhos e política de conteúdo em
+  `next.config.ts` se a incorporação exigir. Ao lado, a **versão
+  acessível**: capítulos em HTML pesquisável e legível em leitor de tela,
+  com download em PDF.
+- Item no cabeçalho da jornada; registro de material visto no
+  `UserProgress` v2.
+- Seguir a variante da Task 44 (incorporar HTML interativo só se passar
+  nos testes CD-06 e CD-07).
+
+**Files:**
+- `app/materiais/**`, `components/materials/*`, `content/materials.ts`
+
+**Test strategy:**
+TP-03 (teclado e leitor de tela) e axe nas combinações de tema,
+contraste e fonte.
+
+**Acceptance criteria:**
+- [ ] Hub funcional em mobile e desktop, por teclado e leitor de tela.
+- [ ] Jornada antiga intacta para quem já tinha progresso.
+
+**Source:** `plano-evolucao-v2.md`, frente F; decisões D1, D3 e D4
+
+---
+
+### Task 53
+| Field | Value |
+|---|---|
+| **ID** | 53 |
+| **Title** | Ajustes de fluxo: rever o vídeo, "Concluir" e cartão de transição |
+| **Status** | `blocked` |
+| **Priority** | `medium` |
+| **Complexity** | 5 |
+| **Dependencies** | `[46, 51, 63]` |
+| **Phase** | 13 — Evolução v2: implementação |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Corrige os atritos U1–U3 do plano, conforme o fluxo-alvo aprovado.
+
+**Details:**
+- Relaxar `useJourneyGuard` para permitir rever etapas já liberadas, sem
+  perder o progresso.
+- Tornar o "Concluir" honesto (ex. "Já assisti — ir para a avaliação") ou
+  condicional.
+- Trocar o avanço automático a 90% por cartão de transição, com a opção
+  de ver os materiais complementares ou ir à avaliação. O limiar de 90%
+  de um vídeo de 30 min cai aos 27:00, dentro da síntese final (UX-03).
+- **Achados da Task 40 acrescentados ao escopo:** retomar a avaliação de
+  onde parou, com as respostas salvas (UX-04); controles do player com
+  avançar, voltar, velocidade, legendas e capítulos (UX-11); separar
+  "Início" de "Apagar meus dados" e manter a home acessível a quem já tem
+  progresso (UX-09 e UX-10); retomar o vídeo da posição salva (UX-12).
+
+**Files:**
+- `lib/journey/useJourneyGuard.ts`
+- `components/journey/ModuleVideoStep.tsx`, `components/journey/ModuleAssessmentStep.tsx`
+- `components/video/VideoPlayer.tsx`, `components/journey/HomeResetButton.tsx`
+- `components/public/WelcomeHero.tsx`
+
+**Test strategy:**
+TP-02: quem está na avaliação abre `/video` e volta sem perda.
+
+**Acceptance criteria:**
+- [ ] Rever o vídeo a qualquer momento após liberado.
+- [ ] Sem avanço automático sem confirmação.
+
+**Source:** `plano-evolucao-v2.md`, frente B; decisão D1
+
+---
+
+### Task 54
+| Field | Value |
+|---|---|
+| **ID** | 54 |
+| **Title** | Remediação dirigida no relatório e no gabarito |
+| **Status** | `blocked` |
+| **Priority** | `medium` |
+| **Complexity** | 4 |
+| **Dependencies** | `[47, 52]` |
+| **Phase** | 13 — Evolução v2: implementação |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Cada competência marcada como "Vale revisar" aponta para o material que
+a cobre.
+
+**Details:**
+- Mapeamento competência → materiais em `content/`.
+- Link e recomendação em `FinalReport.tsx` e no gabarito comentado;
+  opção "refazer as erradas", conforme decidido na Task 47.
+- **Achados da Task 40:** o gabarito deve mostrar enunciado, resposta do
+  aluno, resposta correta e feedback (UX-07, hoje só mostra o feedback);
+  reinício parcial só da avaliação, sem apagar o vídeo (UX-05).
+
+**Files:**
+- `components/journey/FinalReport.tsx`, `components/quiz/AnswerFeedback.tsx`
+- `content/materials.ts`
+
+**Test strategy:**
+TP-04: errar uma questão e seguir o link até o material correto.
+
+**Acceptance criteria:**
+- [ ] Todo "Vale revisar" leva ao material da competência.
+
+**Source:** `plano-evolucao-v2.md`, frente F; decisão D1
+
+---
+
+### Task 55
+| Field | Value |
+|---|---|
+| **ID** | 55 |
+| **Title** | Validação final: E2E, axe e teste de usabilidade com 3–5 pessoas |
+| **Status** | `blocked` |
+| **Priority** | `high` |
+| **Complexity** | 5 |
+| **Dependencies** | `[52, 53, 54, 62, 63]` |
+| **Phase** | 14 — Evolução v2: validação |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Confirma que a evolução funciona de ponta a ponta e que o público-alvo
+consegue usá-la.
+
+**Details:**
+- E2E e axe-core em todas as combinações de tema × contraste × fonte ×
+  tela (TP-05); build e lint (TP-06).
+- **Revisão visual (R2):** comparar o produto implementado com os
+  protótipos aprovados (Task 60) em todas as telas e temas; verificar o
+  ebook incorporado e sua versão acessível.
+- Teste de usabilidade com 3–5 educadores: fazer o módulo e dizer o que
+  fariam depois de errar uma pergunta.
+
+**Files:**
+- `tests/`, `docs/revisao-fluxo-ux.md` (resultados)
+
+**Test strategy:**
+Scripts da Task 45; observação e registro das sessões.
+
+**Acceptance criteria:**
+- [ ] Zero violações axe; build e lint limpos.
+- [ ] Problemas graves da sessão de usabilidade tratados ou registrados.
+
+**Source:** `plano-evolucao-v2.md`, seção 8
+
+---
+
+### Task 56
+| Field | Value |
+|---|---|
+| **ID** | 56 |
+| **Title** | Atualizar PRD, task-master e guia de estilo |
+| **Status** | `blocked` |
+| **Priority** | `low` |
+| **Complexity** | 2 |
+| **Dependencies** | `[55]` |
+| **Phase** | 14 — Evolução v2: validação |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Fecha o ciclo documentando o que foi entregue.
+
+**Details:**
+- PRD (seções 3, 4, 5, 9 e 9.3), `task-master.md`, status do
+  `plano-evolucao-v2.md` e **`docs/guia-de-estilo.md` substituído pelo
+  design system v2** (`docs/design-system-v2.md`), já que R2 reelabora
+  cores, fontes e componentes.
+
+**Files:**
+- `PRD.md`, `task-master.md`, `docs/guia-de-estilo.md`, `plano-evolucao-v2.md`
+
+**Test strategy:**
+Revisão: nenhuma afirmação dos documentos contradiz o código.
+
+**Acceptance criteria:**
+- [ ] Documentação coerente com o que está em produção.
+
+**Source:** `plano-evolucao-v2.md`, seção 12
+
+---
+
+### Task 57
+| Field | Value |
+|---|---|
+| **ID** | 57 |
+| **Title** | Referências visuais e de UX do mercado (pesquisa na web, requisito R2) |
+| **Status** | `pending` |
+| **Priority** | `high` |
+| **Complexity** | 4 |
+| **Dependencies** | `[]` |
+| **Phase** | 10 — Evolução v2: diagnóstico e pesquisa |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Frente H. O requisito R2 pede que todo o layout seja reelaborado a
+partir das **melhores referências do mercado**. Esta task reúne e analisa
+essas referências antes da direção de arte (Task 59).
+
+**Details:**
+- Declarar os critérios de seleção **antes** da coleta: plataformas de
+  ensino e produtos digitais reconhecidos por design moderno e
+  profissional, com ênfase em público adulto e em uso no celular.
+- Analisar por categoria: tela inicial e apresentação do curso,
+  navegação, vídeo e player, avaliação e feedback, relatório e
+  progresso, materiais complementares, ebook, sobreposições (drawer,
+  modal, toast) e estados de carregamento.
+- Para cada referência: o padrão observado, por que funciona, o que a
+  acessibilidade permite ou impede, link e data de acesso.
+- Extrair **padrões, não identidade**: nenhuma marca, arte ou texto de
+  terceiros é copiado, para o produto ser autêntico.
+- Montar um moodboard organizado por categoria.
+
+**Files:**
+- `pesquisa/referencias-visuais.md` (novo)
+
+**Test strategy:**
+Revisão: toda referência tem fonte e data; cada padrão aponta para uma
+tela ou componente do portal que ele inspira.
+
+**Acceptance criteria:**
+- [ ] Critérios declarados antes dos resultados.
+- [ ] Referências por categoria, com fonte e observação de acessibilidade.
+- [ ] Nenhum conteúdo de terceiros reproduzido.
+
+**Source:** `plano-evolucao-v2.md`, frente H (7.1); requisito R2
+
+---
+
+### Task 58
+| Field | Value |
+|---|---|
+| **ID** | 58 |
+| **Title** | Avaliação das plataformas de ebook: FlipHTML5 × Genially (requisito R1) |
+| **Status** | `pending` |
+| **Priority** | `high` |
+| **Complexity** | 5 |
+| **Dependencies** | `[]` |
+| **Phase** | 10 — Evolução v2: diagnóstico e pesquisa |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+O requisito R1 exige a publicação do ebook em plataforma interativa como
+FlipHTML5 ou Genially. Esta task executa `docs/plano-testes-plataformas-ebook.md`
+para escolher uma delas com evidência e descobrir como incorporá-la ao
+portal sem comprometer acessibilidade, privacidade e aparência.
+
+**Details:**
+- 10 casos (PL-01 a PL-10): plano e custo, incorporação, acessibilidade,
+  interatividade, fidelidade ao design, desempenho em celular, privacidade
+  (LGPD), portabilidade e termos, convivência com os temas do portal e
+  atualização.
+- Ações suas: criar as contas, publicar o ebook de teste fictício e ler
+  os termos e planos; o restante é executado por Claude.
+- **Ponto de aprovação C:** você escolhe a plataforma e aprova o custo do
+  plano.
+- Princípio fixo, qualquer que seja o resultado: ebook com **duas
+  faces** — versão interativa na plataforma (cumpre R1) e versão acessível
+  (HTML ou PDF) no portal.
+
+**Files:**
+- `docs/plano-testes-plataformas-ebook.md` (resultados)
+- `testes/plataformas-ebook/` (evidências)
+
+**Test strategy:**
+O próprio plano de testes; PL-02 usa `npm run build` e `npm run lint`
+sobre a página de teste com o embed.
+
+**Acceptance criteria:**
+- [ ] Os 10 casos executados nas duas plataformas, com evidência.
+- [ ] Plataforma escolhida, com justificativa e custo aprovados por você.
+- [ ] Requisitos de incorporação registrados para a Task 52.
+
+**Source:** `plano-evolucao-v2.md`, seção 7.1 e requisito R1
+
+---
+
+### Task 59
+| Field | Value |
+|---|---|
+| **ID** | 59 |
+| **Title** | Direção de arte e design system v2 no Claude Design (requisito R2) |
+| **Status** | `blocked` |
+| **Priority** | `high` |
+| **Complexity** | 8 |
+| **Dependencies** | `[44, 46, 57]` |
+| **Phase** | 11 — Evolução v2: decisão |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Reelabora, no Claude Design, **todos os itens do layout**: cores, fontes,
+formatos dos elementos, navegações, incorporação de elementos externos e
+exibição e sobreposição de componentes, para um produto coerente,
+atrativo, profissional, moderno e autêntico.
+
+**Details:**
+- Ferramenta: tipos "Design" e "Design System" do Claude (decisão D0).
+- Produzir **três explorações** de direção de arte, claramente distintas,
+  a partir das referências da Task 57 e do estado atual do portal.
+  **Ponto de aprovação A:** você escolhe uma e decide se a paleta
+  marinho e dourado (Task 27) é mantida, evoluída ou substituída.
+- Fechar o design system v2 na direção escolhida: tokens (cores, tipografia,
+  raios, sombras, espaçamento, movimento), componentes, navegação,
+  sobreposições (drawer, modal, toast, tooltip, acordeão, abas) e regras
+  de incorporação (player, ebook).
+- Cobrir tema claro, escuro, alto contraste e os três tamanhos de fonte;
+  **verificar contraste AA de todos os pares** antes da aprovação.
+- Exportar os tokens em formato legível por código (conforme CD-12).
+
+**Files:**
+- `docs/design-system-v2.md` (novo), tokens exportados, explorações
+
+**Test strategy:**
+Verificação automática de contraste dos pares de cor; revisão da
+consistência entre explorações e tokens.
+
+**Acceptance criteria:**
+- [ ] Ponto de aprovação A concedido por você.
+- [ ] Design system v2 documentado, com contraste AA em todos os temas.
+- [ ] Tokens exportados e coerentes entre temas.
+
+**Source:** `plano-evolucao-v2.md`, frente H (7.1); requisito R2
+
+---
+
+### Task 60
+| Field | Value |
+|---|---|
+| **ID** | 60 |
+| **Title** | Protótipos das telas no Claude Design (requisito R2) |
+| **Status** | `blocked` |
+| **Priority** | `high` |
+| **Complexity** | 6 |
+| **Dependencies** | `[59]` |
+| **Phase** | 11 — Evolução v2: decisão |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Protótipos navegáveis de todas as telas, no design system v2, para
+aprovação antes de qualquer código.
+
+**Details:**
+- Telas: home com as seções do curso, vídeo, avaliação (menu lateral e
+  feedback), relatório, hub de materiais, leitores de HQ e mapa, ebook
+  incorporado, drawer de acessibilidade, modal de reinício, toasts e
+  estados de carregamento.
+- Nos temas claro, escuro e alto contraste, em celular e desktop.
+- Incluir as ilustrações hoje reservadas por `ImagePlaceholder` (hero,
+  objetivos e jornada).
+- **Ponto de aprovação B:** você aprova telas, navegação e
+  sobreposições para irem ao código.
+
+**Files:**
+- `docs/prototipos.md` e exportações (novos)
+
+**Test strategy:**
+Revisão de consistência entre telas e tokens; checagem de contraste
+nas telas.
+
+**Acceptance criteria:**
+- [ ] Todas as telas listadas prototipadas nos três temas.
+- [ ] Ponto de aprovação B concedido por você.
+
+**Source:** `plano-evolucao-v2.md`, frente H (7.1); requisito R2
+
+---
+
+### Task 61
+| Field | Value |
+|---|---|
+| **ID** | 61 |
+| **Title** | Publicação do ebook na plataforma escolhida (requisito R1) |
+| **Status** | `blocked` |
+| **Priority** | `high` |
+| **Complexity** | 4 |
+| **Dependencies** | `[50, 58]` |
+| **Phase** | 12 — Evolução v2: produção de conteúdo |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Publica o ebook final em FlipHTML5 ou Genially (a escolhida na Task 58),
+cumprindo a obrigatoriedade do requisito R1.
+
+**Details:**
+- Publicar o ebook revisado (Task 50) e configurar o necessário para a
+  incorporação (domínios permitidos, privacidade, proporção).
+- Ações suas: conta e plano na plataforma. **Credenciais nunca entram no
+  repositório.**
+- Testar o ebook publicado em celular e por teclado; registrar o link
+  público e o código de incorporação.
+- Gerar a **versão acessível** (HTML e PDF) para o portal.
+
+**Files:**
+- `conteudo/ebook/publicacao.md` (link, configuração e checklist)
+
+**Test strategy:**
+Abrir o link público em desktop e celular; PL-02, PL-03 e PL-07
+repetidos sobre o ebook final.
+
+**Acceptance criteria:**
+- [ ] Ebook publicado e acessível por link público.
+- [ ] Código de incorporação validado em uma página de teste.
+- [ ] Versão acessível (HTML e PDF) pronta.
+
+**Source:** `plano-evolucao-v2.md`, requisito R1
+
+---
+
+### Task 62
+| Field | Value |
+|---|---|
+| **ID** | 62 |
+| **Title** | Design system v2 em código: tokens, tema, tipografia, navegação e sobreposições (requisito R2) |
+| **Status** | `blocked` |
+| **Priority** | `high` |
+| **Complexity** | 7 |
+| **Dependencies** | `[45, 60]` |
+| **Phase** | 13 — Evolução v2: implementação |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Implementa as **fundações** do design system v2, aprovadas nos pontos A
+e B, sem alterar o comportamento da jornada.
+
+**Details:**
+- Tokens e temas (claro, escuro, alto contraste) em `app/globals.css`,
+  sobre o HeroUI; tipografia (`next/font`); componentes-base; estrutura
+  de navegação; padrão de sobreposições e de incorporação.
+- Preservar as preferências de acessibilidade existentes (tema, tamanho de
+  fonte, alto contraste, drawer).
+- Antes de qualquer código, ler o guia relevante em
+  `node_modules/next/dist/docs/` (`AGENTS.md`).
+
+**Files:**
+- `app/globals.css`, `app/layout.tsx`, `components/ui/*`
+- `components/journey/JourneyLayout.tsx`, `components/public/PortalHeader.tsx`
+
+**Test strategy:**
+axe-core em todas as combinações (TP-05) e comparação com os protótipos,
+sobre a infraestrutura da Task 45.
+
+**Acceptance criteria:**
+- [ ] Tokens do design system v2 aplicados nos três temas.
+- [ ] Zero violações axe; build e lint limpos.
+- [ ] Preferências de acessibilidade intactas.
+
+**Source:** `plano-evolucao-v2.md`, frente H (7.1); requisito R2
+
+---
+
+### Task 63
+| Field | Value |
+|---|---|
+| **ID** | 63 |
+| **Title** | Novo visual nas telas existentes e ilustrações (requisito R2) |
+| **Status** | `blocked` |
+| **Priority** | `high` |
+| **Complexity** | 8 |
+| **Dependencies** | `[62, 64]` |
+| **Phase** | 13 — Evolução v2: implementação |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Aplica o novo visual às telas que já existem e substitui os espaços
+reservados por ilustrações finais.
+
+**Details:**
+- Telas: home (`CourseSections`, `FaqAccordion`, `WelcomeHero`), etapa de
+  vídeo (incluindo a moldura do player), avaliação, relatório, modais,
+  toasts e drawer de acessibilidade.
+- Ilustrações (hero, objetivos e jornada), geradas pela IA de imagem
+  escolhida na Task 64 e compostas conforme o design system v2,
+  substituem `ImagePlaceholder`; decidir e documentar, para cada uma, se é
+  decorativa (`alt=""`) ou informativa (`alt` descritivo).
+- Apresentação dos enunciados das questões coerente com o novo visual.
+- Somente aparência: mudanças de comportamento ficam na Task 53.
+- **Achado da auditoria (2026-11-04):** a produção exibe aos alunos o
+  rótulo de desenvolvimento dos espaços de imagem (ex. "Ilustração dos
+  objetivos · `public/img/objetivos.svg · 480×360`"). Esta task os
+  elimina; se a produção das ilustrações demorar, avaliar esconder antes
+  só a dica de caminho em produção.
+
+**Files:**
+- `components/public/*`, `components/journey/*`, `components/quiz/*`
+- `components/ui/ImagePlaceholder.tsx`, `public/img/*`
+
+**Test strategy:**
+E2E de base (Task 45) sem regressão de comportamento; axe nas
+combinações; comparação visual com os protótipos.
+
+**Acceptance criteria:**
+- [ ] Telas correspondem aos protótipos aprovados.
+- [ ] Nenhuma regressão de comportamento nem de acessibilidade.
+
+**Source:** `plano-evolucao-v2.md`, frente H (7.1); requisito R2
+
+---
+
+### Task 64
+| Field | Value |
+|---|---|
+| **ID** | 64 |
+| **Title** | Avaliação de IAs de geração de imagem para as ilustrações (personagem, quadrinho, mapa e ebook) |
+| **Status** | `in-progress` |
+| **Priority** | `high` |
+| **Complexity** | 5 |
+| **Dependencies** | `[]` |
+| **Phase** | 10 — Evolução v2: diagnóstico e pesquisa |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+A avaliação visual das peças de teste da Task 44 (2026-11-04) mostrou que
+o Claude Design, usado com HTML e SVG desenhado em código, produz uma
+personagem consistente mas com acabamento "muito aquém do nível
+profissional", e um mapa com layout limitado. Esta task avalia IAs de
+geração de imagem para as ilustrações, mantendo o Claude Design para
+layout, interação e composição.
+
+**Details:**
+- Executar a Parte 2 do plano de testes
+  (`docs/plano-testes-claude-design.md`, seção 8): casos IM-01 a IM-10,
+  com os mesmos prompts e a mesma rubrica para todas as ferramentas.
+- **Decisão D7 (2026-11-04):** o **usuário gera as imagens manualmente**,
+  na IA de imagem de sua preferência, e informa o diretório. Claude
+  elabora os prompts (`docs/prompts-ilustracao.md`), recebe o diretório
+  (`testes/imagens-ia/<ferramenta>/`) e avalia com a rubrica IM-01 a IM-10.
+  Claude **não gera imagens** nem gasta créditos pagos.
+- Protocolo em 3 etapas: ficha da personagem em 3 estilos (o usuário
+  escolhe), 6 cenas da HQ e 7 elementos (4 do mapa, 3 do ebook): mínimo
+  de 16 imagens.
+- Regra de produção: arte **sem texto dentro da imagem**; texto, balões,
+  legendas, ícones e diagramas sempre em HTML ou SVG vivo.
+- O julgamento de "nível profissional" é do usuário.
+
+**Files:**
+- `docs/prompts-ilustracao.md` (prompts, novo)
+- `testes/imagens-ia/registro-modelo.md` (modelo de registro, novo)
+- `docs/plano-testes-claude-design.md` (resultados da seção 8)
+- `testes/imagens-ia/<ferramenta>/` (imagens entregues pelo usuário, fora do portal)
+
+**Test strategy:**
+O próprio plano de testes (IM-01 a IM-10), com rubrica de 1 a 5 e
+avaliadores humanos para IM-01 e IM-02.
+
+**Acceptance criteria:**
+- [ ] Pelo menos duas ferramentas comparadas com os mesmos prompts.
+- [ ] Ferramenta escolhida, com justificativa, custo e direitos de uso
+      registrados e aprovados pelo usuário.
+
+**Andamento (2026-11-04):** os prompts estão prontos em
+`docs/prompts-ilustracao.md` (16 imagens em 3 etapas) e o modelo de
+registro em `testes/imagens-ia/registro-modelo.md`. Aguardando o usuário
+gerar a **Etapa 1** (ficha da personagem em 3 estilos) e informar o
+diretório.
+
+**Source:** `plano-evolucao-v2.md`, seção 10.4; resultado dos casos
+CD-04 e CD-05
+
+---
+
 ## Resumo
 
 ### Tasks por fase
@@ -2168,16 +3378,44 @@ aprovado pelo usuário em 2026-10-18
 | 7 — Conteúdo pedagógico definitivo | 20, 21 | 20 depende de 9,10,12; 21 depende de 13,20 |
 | 8 — Página inicial completa | 24, 25, 26, 27 | 24 depende de 16; 25 depende de 20,22; 26 depende de 20,21,25; 27 depende de 18,24,26 |
 | 9 — Adequação a design instrucional (D2L) | 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38 | 28 depende de 27; 29 sem dependências; 30 depende de 29; 31 depende de 9,20; 32 depende de 9; 33 depende de 13,24; 34 depende de 28,29,30,31,32,33; 35 depende de 17 (bloqueio real: vídeo gravado); 36 depende de 29,30; 37 depende de 24; 38 depende de 13 |
+| 10 — Evolução v2: diagnóstico e pesquisa | 39, 40, 41, 42, 43, 44, 45, 57, 58, 64 | 39, 40, 41, 43, 44, 45, 57, 58 e 64 sem dependências; 42 depende de 39,40 |
+| 11 — Evolução v2: decisão | 46, 47, 59, 60 | 46 depende de 39–43; 47 depende de 46,31,32,33; 59 depende de 44,46,57; 60 depende de 59 |
+| 12 — Evolução v2: produção de conteúdo | 48, 49, 50, 61 | 48 depende de 43,46,47; 49 depende de 44,48,58,59,64; 50 depende de 49; 61 depende de 50,58 |
+| 13 — Evolução v2: implementação | 51, 52, 53, 54, 62, 63 | 51 depende de 45,46; 62 depende de 45,60; 63 depende de 62,64; 52 depende de 44,50,51,61,62; 53 depende de 46,51,63; 54 depende de 47,52 |
+| 14 — Evolução v2: validação | 55, 56 | 55 depende de 52,53,54,62,63; 56 depende de 55 |
 
 ### Tasks por prioridade
 | Prioridade | IDs |
 |---|---|
-| high | 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 15, 20, 29, 35 |
-| medium | 11, 14, 16, 17, 18, 19, 21, 22, 24, 25, 26, 30, 31, 33, 34, 36, 38 |
-| low | 23, 27, 28, 32, 37 |
+| high | 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 15, 20, 29, 35, 39, 43, 44, 45, 46, 47, 48, 49, 51, 52, 55, 57, 58, 59, 60, 61, 62, 63, 64 |
+| medium | 11, 14, 16, 17, 18, 19, 21, 22, 24, 25, 26, 30, 31, 33, 34, 36, 38, 40, 41, 42, 50, 53, 54 |
+| low | 23, 27, 28, 32, 37, 56 |
 
-### Pronto para iniciar (dependências vazias)
-- Task 1: Inicializar projeto Next.js (App Router) + TypeScript + Tailwind + NextUI + config Vercel — `done`
+### Pronto para iniciar (dependências concluídas), em 2026-11-04
+- **Em andamento:** 44 (testes do Claude Design), 64 (avaliação de IAs de imagem).
+- **Prontas, sem dependência pendente:** 31, 32, 33, 37, 38 (tasks da Fase 9); 41, 43, 45, 57, 58 (pesquisa e infraestrutura); 42 (desbloqueada pelas Tasks 39 e 40).
+- **Dependência concluída, mas com decisão adiada (D5):** 30.
+- **Bloqueada por dependência externa:** 35 (precisa do vídeo gravado).
+- **Concluídas na Fase 9 e na evolução v2:** 28, 29, 39, 40.
+
+### Estado consolidado (2026-11-04)
+
+**64 tasks:** 31 `done` (1–29, 39, 40), 2 `in-progress` (44, 64), 12
+`pending` (30, 31, 32, 33, 37, 38, 41, 42, 43, 45, 57, 58) e 19 `blocked`
+(34, 35, 36, 46–56, 59–63).
+
+**Decisões:** D0 (Design interno ao Claude), D1 (hub opcional), D2 (banco
+híbrido), D3 (três mídias), D4 (plano de testes do Claude Design), D6
+(ilustração não é layout) e D7 (o usuário gera as imagens) tomadas;
+requisitos obrigatórios R1 (ebook) e R2 (redesign) registrados.
+**Em aberto:** D5 (Tasks 30, 34 e 36, dependem do vídeo final), a
+correção do roteiro (D-08 e D-09, Task 39) e os pontos de aprovação A
+(direção de arte), B (protótipos) e C (plataforma do ebook).
+
+**Implantação:** `main` local e remoto no mesmo commit (`d991bfd`); a
+evolução v2 está no Pull Request #5 (branch `docs/evolucao-v2`), ainda
+não mesclada. Documentação conferida por
+`node testes/consistencia/verificar-docs.js`.
 
 ### Status atual (2026-10-18)
 **Tasks 1–27 estão `done`.** MVP implementado, testado (build,
@@ -2242,6 +3480,55 @@ guia de estilo cobrindo múltiplos módulos futuros, telemetria agregada
 de erros por pergunta (exigiria introduzir server-side por decisão
 arquitetural própria) e um ciclo formal de revisão periódica deste
 documento.
+
+**Evolução v2, promoção inicial (2026-11-04):** promovidas a partir de
+`plano-evolucao-v2.md` (evolução do portal: coerência do banco de
+questões, revisão do fluxo, benchmark e engenharia reversa de mídias,
+materiais complementares e novas seções). Decisões tomadas: **D1** hub
+opcional de materiais; **D2** banco híbrido (núcleo + variantes com
+cenário novo); **D3** três mídias no primeiro ciclo (mapa, quadrinho,
+ebook); **D4** plano de testes do Claude Design antes de fixar o formato
+das peças (`docs/plano-testes-claude-design.md`, Task 44). **D5 em
+aberto:** as Tasks 30, 34 e 36 permanecem inalteradas até existir o vídeo
+final. A ordem e o caminho crítico foram revistos pelos requisitos R1 e
+R2 (parágrafo seguinte). Achado: o projeto não tem
+Playwright nem axe-core como dependências (a Task 45 cria a
+infraestrutura).
+
+**Requisitos obrigatórios R1 e R2 (2026-11-04):**
+- **R1 — ebook:** visualmente atrativo, bem organizado e interativo, em
+  linguagem clara para o público-alvo, com capa, sumário e capítulos
+  estruturados, design profissional e **publicação obrigatória em
+  FlipHTML5 ou Genially**. Tasks 43, 48, 49, 50, 52, 58 e 61.
+- **R2 — redesign completo via Claude Design:** cores, fontes, formatos,
+  navegações, incorporação de elementos externos, exibição e sobreposição
+  de componentes, a partir das melhores referências do mercado. Tasks 57,
+  59, 60, 62 e 63; Task 44 ampliada para 15 casos. Dois pontos de
+  aprovação seus (A: direção de arte; B: protótipos) antes de qualquer
+  código; um terceiro (C) escolhe a plataforma do ebook.
+- **Efeito na ordem:** nenhuma peça nova é produzida antes do design
+  system v2 (Task 59), e as Tasks 52 e 53 esperam o novo visual (Tasks 62
+  e 63). Podem começar já: 39, 40, 41, 43, 44, 45, 57 e 58.
+
+**Tasks 39 e 40 concluídas (2026-11-04):** `docs/matriz-rastreabilidade.md`
+(10 divergências entre banco e roteiro; **a numeração das "lentes" se
+contradiz entre os Blocos 4B e 5 e precisa ser corrigida antes de
+gravar**) e `docs/revisao-fluxo-ux.md` (17 atritos; os mais graves são a
+falta de volta ao vídeo e as respostas da avaliação que se perdem ao
+recarregar). Task 42 desbloqueada. Os achados foram acrescentados ao
+escopo das Tasks 47, 51, 53 e 54. O clone não tem `node_modules`: rodar
+`npm install` é pré-requisito da Task 45.
+
+**Resultado parcial da Task 44 e Task 64 (2026-11-04):** as peças de
+teste foram avaliadas pelo usuário: a personagem da HQ é consistente, mas
+o acabamento está "muito aquém do nível profissional"; o mapa navega por
+teclado, mas o layout é limitado; o ebook não deve exibir todas as páginas
+de uma vez. Conclusão: o Claude Design cuida de layout, interação e
+composição (texto sempre em HTML), e as ilustrações passam a vir de uma IA
+de imagem a avaliar na **Task 64** (nova; Tasks 49 e 63 dependem dela).
+D6 confirmada (ilustração não é "layout" no sentido do R2). D7: o usuário
+gera as imagens manualmente; Claude elabora os prompts
+(`docs/prompts-ilustracao.md`) e avalia o diretório entregue.
 
 Repositório no GitHub: https://github.com/caiocoisa/ead-portal-educacional
 (privado).

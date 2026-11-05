@@ -4,7 +4,8 @@
 **Autor:** Engenharia de Requisitos (Claude Code)
 **Data:** 2026-09-27 (tema/objetivo pedagógico definidos em 2026-09-27;
 revisado em 2026-10-18 para refletir as Tasks 24–27, mescladas
-diretamente no GitHub via PRs #1–#4)
+diretamente no GitHub via PRs #1–#4; e em 2026-11-04 para registrar a
+evolução v2, seções 9.2 e 9.3)
 
 ---
 
@@ -162,6 +163,8 @@ Question {
     //   a serem exibidos como conversa antes das alternativas)
   options: string[]       // alternativas, sempre em texto
   correctOptionIndex: number
+  feedback: QuestionFeedback  // retorno pedagógico: acerto, erro próximo
+                              // (uma alternativa) e erro distante (demais)
 }
 
 ChatMessage {
@@ -456,8 +459,9 @@ Developing an Instructional Design Strategy" do artigo "The Ultimate
 Guide to Instructional Design" (D2L). O detalhamento completo (prática
 por prática, lacunas encontradas, ações propostas) está em
 `plano-adequacao-design-instrucional.md`; o usuário aprovou 11 ações,
-já registradas em `task-master.md` como Tasks 28–38 (Fase 9), ainda não
-implementadas. Resumo por prática:
+já registradas em `task-master.md` como Tasks 28–38 (Fase 9). As Tasks 28
+e 29 estão concluídas; as demais seguem conforme o `task-master.md`
+(Tasks 30, 34 e 36 aguardam o vídeo final). Resumo por prática:
 
 1. **Consistency Is Key** — documentar um guia de estilo curto a partir
    da paleta/tipografia/ícones já definidos (Task 28).
@@ -479,6 +483,63 @@ implementadas. Resumo por prática:
 7. **Iteration and Reiteration** — link de feedback pós-curso no
    relatório final (Task 38).
 
+### 9.3 Evolução v2: materiais complementares e revisão do fluxo (Tasks 39–64)
+
+Planejada em 2026-11-04; o detalhamento está em
+`plano-evolucao-v2.md` e as tasks estão no `task-master.md` (Fases
+10–14). As Tasks 39 e 40 (diagnóstico) estão concluídas
+(`docs/matriz-rastreabilidade.md` e `docs/revisao-fluxo-ux.md`); as
+demais não foram implementadas. Decisões tomadas:
+
+- **Materiais complementares como hub opcional** (`/materiais`), sem
+  bloquear a jornada vídeo → avaliação → relatório. Entradas: cartão de
+  transição ao fim do vídeo, item no cabeçalho e link em cada competência
+  "Vale revisar" do relatório (remediação dirigida).
+- **Três mídias no primeiro ciclo:** mapa interativo, quadrinho e ebook,
+  no mesmo tema da videoaula, com cenários novos (nunca os das questões).
+- **Banco de questões híbrido:** as 4 questões atuais como núcleo, mais
+  variantes em outro cenário, chegando a 8–12 itens (2–3 por competência).
+  `content/module.ts` passa a ser a fonte única de verdade.
+- **Fluxo:** rever o vídeo a qualquer momento após liberado; "Concluir"
+  honesto; cartão de transição no lugar do avanço automático.
+- **Modelo de dados:** `UserProgress` v2 com esquema versionado, migração
+  do `localStorage` e listas de vídeos e de materiais.
+- **Layout, composição e protótipos** no Claude Design (tipos de
+  artefato "Design" e "Design System"; o Claude Design avulso fecha em
+  14/12/2026 e não é usado), precedidos de um plano de testes
+  (`docs/plano-testes-claude-design.md`). **Ilustrações** geradas pelo
+  usuário, manualmente, em uma IA de imagem de sua escolha, a partir de
+  prompts elaborados por Claude (`docs/prompts-ilustracao.md`), sempre
+  sem texto dentro da imagem. Pesquisas na web para benchmark de
+  concorrentes e engenharia reversa de roteiros de ebook, quadrinho e
+  mapa.
+- **Infraestrutura de testes** (Playwright, axe-core, unitários) como
+  dependências e scripts do projeto, hoje inexistentes.
+
+**Requisitos obrigatórios adicionais (2026-11-04):**
+
+- **R1 — Ebook profissional e interativo.** Visualmente atrativo, bem
+  organizado e interativo, em linguagem clara e adequada ao público-alvo,
+  com **capa, sumário e capítulos estruturados** de forma coerente e
+  lógica, e design profissional e envolvente. **A publicação em
+  plataforma interativa (FlipHTML5 ou Genially) é obrigatória.** O
+  portal incorpora a versão publicada e mantém ao lado uma versão
+  acessível (HTML e PDF), para preservar o compromisso WCAG 2.1 AA da
+  seção 4.
+- **R2 — Redesign completo via Claude Design.** Cores, fontes, formatos
+  dos elementos, navegações, incorporação de elementos externos e
+  exibição e sobreposição de componentes são reelaborados a partir das
+  melhores referências do mercado, para um produto coerente, atrativo,
+  profissional, moderno e autêntico. Passa por dois pontos de aprovação
+  (direção de arte e protótipos) antes do código. A paleta marinho e
+  dourado da seção 5 é ponto de partida, não restrição; as exigências de
+  acessibilidade das seções 4 e 5.1 permanecem. Esta mudança substituirá
+  as diretrizes visuais da seção 5 ao fim da Task 56.
+
+**Em aberto:** a decisão sobre dividir o vídeo em partes (Task 30), a
+revisão de apresentação dos enunciados (Task 34) e a transcrição (Task 36)
+depende do vídeo final, ainda não produzido.
+
 ---
 
 ## 10. Stack (definida)
@@ -498,5 +559,6 @@ implementadas. Resumo por prática:
 
 ---
 
-**Próximo passo:** implementação conforme `task-master.md`, com deploy na
-Vercel assim que o core (vídeo → avaliação → relatório) estiver funcional.
+**Estado e próximo passo:** o core (vídeo → avaliação → relatório) está
+implantado na Vercel. A evolução segue o `task-master.md` e o
+`plano-evolucao-v2.md`; o vídeo definitivo ainda não foi gravado.

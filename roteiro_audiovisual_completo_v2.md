@@ -1,5 +1,13 @@
 # Roteiro Audiovisual Educacional — Versão 2
 
+> **Pendências conhecidas (Task 39, 2026-11-04), a resolver antes de
+> gravar:** (D-08) a numeração das "lentes" se contradiz: o Bloco 4B chama
+> a viabilidade técnica de "segunda lente", e o Bloco 5 lista como
+> segunda a formulação de instruções; (D-09) a home promete cinco
+> elementos de planejamento, mas a fala do Bloco 1 ensina quatro (falta
+> "conteúdos"). Ver `docs/matriz-rastreabilidade.md`. O conteúdo abaixo
+> não foi alterado.
+
 > **Nota desta revisão:** a v1 (`roteiro_audiovisual_completo.md`) cobria bem
 > 3 das 4 dimensões avaliadas em `banco-questoes.md`, mas não demonstrava a
 > Questão 3 (auditoria de viabilidade técnica/logística) — o aluno era
