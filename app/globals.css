@@ -48,6 +48,14 @@
   --muted: #52525b;
 }
 
+/* Telas largas (1500 px): a partir daqui a primeira tela ganha a ilustração e as réguas laterais
+   entram (docs/plano-implementacao-fluxo-v3.md, seção 4.6). Breakpoint nomeado (`wide:`) e em
+   `rem`, a mesma unidade dos demais: o Tailwind não compara `px` com `rem` e põe um em `px` ANTES
+   de `sm` e `md` no CSS, o que faz `md:` vencer em telas largas. */
+@theme {
+  --breakpoint-wide: 93.75rem;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

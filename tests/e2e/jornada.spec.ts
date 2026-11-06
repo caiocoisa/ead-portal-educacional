@@ -52,7 +52,10 @@ test.describe("fluxo livre", () => {
   test("o vídeo aparece desativado, sem link, na primeira tela e no cabeçalho", async ({ page }) => {
     await page.goto("/");
     await expect(trilha(page).getByRole("link", { name: /Vídeo/ })).toHaveCount(0);
-    await expect(trilha(page).getByText("Em breve")).toBeVisible();
+    await expect(trilha(page).getByRole("button", { name: "Em breve" })).toBeDisabled();
+    await expect(trilha(page).getByRole("listitem").filter({ hasText: "Vídeo" })).toContainText(
+      "Ainda não publicado"
+    );
 
     await page.goto("/avaliacao");
     await expect(navegacaoDaTrilha(page).getByRole("button", { name: /Vídeo/ })).toBeDisabled();
@@ -82,6 +85,107 @@ test.describe("fluxo livre", () => {
     await navegacaoDaTrilha(page).getByRole("link", { name: /E-book/ }).click();
     await expect(page).toHaveURL(/\/ebook$/);
     expect(await stored(page, STORAGE.progress)).toMatchObject({ mapa: { elementsSeen: ["publico"] } });
+  });
+});
+
+test.describe("hidratação", () => {
+  // Uma falha de hidratação (o HTML do servidor diferente do primeiro desenho do navegador) não
+  // derruba a tela, mas o React a registra como erro da página: este teste a transforma em falha.
+  test("as páginas carregam sem erro mesmo com progresso salvo", async ({ page }) => {
+    const erros: string[] = [];
+    page.on("pageerror", (erro) => erros.push(`${page.url()}: ${erro.message.slice(0, 160)}`));
+    await seedState(page, {
+      progress: { ebookPages: ALL_EBOOK_PAGES, mapElements: ["publico", "objetivos"], answers: { q1: 0 }, reportOpened: true },
+    });
+    for (const rota of ["/", "/video", "/ebook", "/mapa", "/avaliacao", "/relatorio", "/quadrinho"]) {
+      await page.goto(rota);
+      await expect(page.getByRole("banner")).toBeVisible();
+      await page.waitForTimeout(400);
+    }
+    expect(erros).toEqual([]);
+  });
+});
+
+test.describe("primeira tela", () => {
+  const AVANCADO = { ebookPages: ALL_EBOOK_PAGES, mapElements: ["publico", "objetivos"] as const };
+  const item = (page: Page, nome: string) => trilha(page).getByRole("listitem").filter({ hasText: nome });
+
+  test("cada item da trilha mostra a sua linha de estado, com as unidades vistas", async ({ page }) => {
+    await seedState(page, { progress: { ...AVANCADO, mapElements: [...AVANCADO.mapElements] } });
+    await page.goto("/");
+    await expect(item(page, "E-book")).toContainText("Concluído · 18 de 18 páginas · 100%");
+    await expect(item(page, "Mapa interativo")).toContainText("Em andamento · 2 de 4 elementos · 50%");
+    await expect(item(page, "Avaliação")).toContainText("Não iniciada · 0 de 4 perguntas · 0%");
+    await expect(item(page, "Relatório")).toContainText("Ainda não aberto · 0%");
+  });
+
+  test("o item sugerido leva o rótulo Próximo e só ele", async ({ page }) => {
+    await seedState(page, { progress: { ...AVANCADO, mapElements: [...AVANCADO.mapElements] } });
+    await page.goto("/");
+    await expect(item(page, "Mapa interativo")).toContainText("Próximo");
+    await expect(trilha(page).getByText("Próximo", { exact: true })).toHaveCount(1);
+  });
+
+  test("sem nada visto, o sugerido é o e-book, porque o vídeo ainda não existe", async ({ page }) => {
+    await page.goto("/");
+    await expect(item(page, "E-book")).toContainText("Próximo");
+    await expect(trilha(page).getByText("Próximo", { exact: true })).toHaveCount(1);
+    await expect(item(page, "Vídeo")).not.toContainText("Próximo");
+  });
+
+  test("cada item disponível é um só link e o que está em andamento oferece Continuar", async ({ page }) => {
+    await seedState(page, { progress: { ...AVANCADO, mapElements: [...AVANCADO.mapElements] } });
+    await page.goto("/");
+    await expect(trilha(page).getByRole("link")).toHaveCount(4);
+    await expect(item(page, "Mapa interativo").getByRole("link")).toContainText("Continuar");
+    await expect(item(page, "E-book").getByRole("link")).toContainText("Abrir");
+  });
+
+  test("o texto principal acompanha quem já avançou, sem repetir a apresentação", async ({ page }) => {
+    await page.goto("/");
+    await expect(page.getByText(/Aprenda a planejar uma experiência/)).toBeVisible();
+
+    await seedState(page, { progress: { ...AVANCADO, mapElements: [...AVANCADO.mapElements] } });
+    await page.goto("/");
+    await expect(page.getByText("Você já avançou 38% da trilha.", { exact: false })).toBeVisible();
+    await expect(page.getByText(/Aprenda a planejar uma experiência/)).toHaveCount(0);
+  });
+
+  test("a ilustração principal só aparece em tela larga e abaixo de 1500 px nem é baixada", async ({ page }) => {
+    const requisicoes: string[] = [];
+    page.on("request", (requisicao) => requisicoes.push(requisicao.url()));
+    // O texto alternativo da ilustração principal (livro, cérebro de circuitos e notebook), e não o da
+    // imagem de objetivos mais abaixo na página, que também começa com "Ilustração em azul-marinho".
+    const ilustracao = page.getByRole("img", { name: /um livro aberto, um cérebro de circuitos/ });
+
+    await page.setViewportSize({ width: 1366, height: 768 });
+    await page.goto("/");
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    await expect(ilustracao).toHaveCount(0);
+    await page.waitForTimeout(500);
+    expect(requisicoes.filter((url) => /hero/.test(url))).toEqual([]);
+
+    await page.setViewportSize({ width: 1600, height: 900 });
+    await expect(ilustracao).toBeVisible();
+  });
+
+  test("a partir de 1500 px a trilha passa para a esquerda do texto", async ({ page }) => {
+    await page.setViewportSize({ width: 1600, height: 900 });
+    await page.goto("/");
+    const trilhaCaixa = await trilha(page).boundingBox();
+    const titulo = await page.getByRole("heading", { level: 1 }).boundingBox();
+    const imagem = await page.getByRole("img", { name: /um livro aberto, um cérebro de circuitos/ }).boundingBox();
+    expect(trilhaCaixa && titulo && trilhaCaixa.x + trilhaCaixa.width <= titulo.x).toBe(true);
+    // Três colunas: a trilha é estreita (cerca de 340 px) e a ilustração fica à direita do texto.
+    // Com a regra de tela larga perdendo para a de tela média, a trilha passaria de 800 px e a
+    // ilustração cairia embaixo dela, à esquerda.
+    expect(trilhaCaixa && trilhaCaixa.width).toBeLessThan(500);
+    expect(imagem && titulo && imagem.x > titulo.x).toBe(true);
+
+    await page.setViewportSize({ width: 1366, height: 768 });
+    const trilhaMedia = await trilha(page).boundingBox();
+    const tituloMedio = await page.getByRole("heading", { level: 1 }).boundingBox();
+    expect(trilhaMedia && tituloMedio && trilhaMedia.x >= tituloMedio.x + tituloMedio.width - 1).toBe(true);
   });
 });
 

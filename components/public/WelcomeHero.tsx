@@ -5,11 +5,11 @@ import { Chip } from "@heroui/react";
 import { buttonVariants } from "@heroui/styles";
 import { ArrowDown, ArrowRight, BookOpen, Network } from "lucide-react";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
-import { HomeResetButton } from "@/components/journey/HomeResetButton";
 import { JourneyLoading } from "@/components/journey/JourneyLoading";
 import { moduleContent } from "@/content/module";
 import { useHydrated } from "@/lib/journey/useHydrated";
 import { useTrail } from "@/lib/journey/useTrail";
+import { TrailCard } from "./TrailCard";
 
 /** Materiais de estudo em destaque na tela principal (hoje, os dois principais pontos de acesso). */
 const MATERIALS = [
@@ -28,28 +28,25 @@ const MATERIALS = [
   },
 ] as const;
 
-const STATUS_LABEL = {
-  soon: "Em breve",
-  todo: "Não iniciado",
-  doing: "Em andamento",
-  done: "Concluído",
-} as const;
-
+/**
+ * Primeira tela. Abaixo de 1500 px: o texto à esquerda e a trilha à direita. A partir de 1500 px
+ * entra a ilustração principal ao lado do texto, e a trilha passa para a esquerda (no passo
+ * seguinte do plano ela vira uma régua lateral).
+ */
 export function WelcomeHero() {
   const isHydrated = useHydrated();
   const trail = useTrail();
 
   const started = trail.items.some((item) => item.available && item.percent > 0);
   const next = trail.items.find((item) => item.id === trail.next);
-  const cta =
-    !started || !next
-      ? started
-        ? { href: "/relatorio", label: "Rever o relatório" }
-        : { href: "/ebook", label: "Começar pelo e-book" }
-      : { href: next.href, label: `Continuar: ${next.label}` };
+  const cta = !started
+    ? { href: "/ebook", label: "Começar pelo e-book" }
+    : next
+      ? { href: next.href, label: `Continuar: ${next.label}` }
+      : { href: "/relatorio", label: "Rever o relatório" };
 
   return (
-    <div className="m-auto grid w-full max-w-5xl gap-8 md:grid-cols-[3fr_2fr] md:items-center">
+    <div className="m-auto grid w-full max-w-5xl gap-8 md:grid-cols-[3fr_2fr] md:items-center wide:max-w-[1400px] wide:grid-cols-[340px_minmax(0,1fr)_minmax(0,420px)] wide:gap-10">
       <div className="flex flex-col gap-4">
         <div className="flex flex-wrap gap-2">
           <Chip size="sm" className="bg-(--gold) text-(--brand)">
@@ -63,7 +60,11 @@ export function WelcomeHero() {
           </Chip>
         </div>
         <h1 className="text-3xl font-bold md:text-4xl">{moduleContent.title}</h1>
-        <p className="text-(--muted)">{moduleContent.description}</p>
+        <p className="text-(--muted)">
+          {started
+            ? `Você já avançou ${trail.overallPercent}% da trilha. Continue de onde parou ou abra qualquer item: a ordem é só uma sugestão.`
+            : moduleContent.description}
+        </p>
         {isHydrated ? (
           <Link href={cta.href} className={`${buttonVariants({ variant: "primary", size: "lg" })} w-fit`}>
             {cta.label}
@@ -112,72 +113,19 @@ export function WelcomeHero() {
         </a>
       </div>
 
-      <div className="flex flex-col gap-4">
+      <div className="wide:order-first">
+        {isHydrated ? <TrailCard /> : <JourneyLoading fullScreen={false} />}
+      </div>
+
+      {/* Só em telas largas, ao lado do texto. Sem `priority`: escondida, a imagem nem é baixada. */}
+      <div className="hidden wide:block">
         <ImagePlaceholder
           label="Ilustração principal"
           hint="public/img/hero.jpg · 1456×720"
           src="/img/hero.jpg"
           alt="Ilustração em azul-marinho e dourado: um livro aberto, um cérebro de circuitos que representa a inteligência artificial e um notebook com a figura de uma pessoa, ligados por linhas e nós."
-          priority
-          className="aspect-[2/1] max-h-[24dvh] w-full border border-(--border)"
+          className="aspect-[2/1] w-full border border-(--border)"
         />
-        {isHydrated ? (
-          <section
-            aria-labelledby="trilha-title"
-            className="flex flex-col gap-3 rounded-xl border border-(--border) bg-(--surface) p-4"
-          >
-            <h2 id="trilha-title" className="text-lg font-bold">
-              Sua trilha
-            </h2>
-            <label className="flex flex-col gap-1 text-sm font-medium">
-              Progresso da trilha: {trail.overallPercent}%
-              <progress
-                value={trail.overallPercent}
-                max={100}
-                className="h-2 w-full accent-(--brand)"
-              />
-            </label>
-            <ol className="flex flex-col gap-2">
-              {trail.items.map((item, index) => (
-                <li key={item.id}>
-                  {item.available ? (
-                    <Link
-                      href={item.href}
-                      className="flex items-center gap-3 rounded-lg border border-(--border) px-3 py-2 hover:bg-(--surface-secondary) focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-(--focus)"
-                    >
-                      <span aria-hidden="true" className="font-bold">
-                        {index + 1}
-                      </span>
-                      <span className="flex flex-1 flex-col">
-                        <span className="font-semibold">{item.label}</span>
-                        <span className="text-xs text-(--muted)">{STATUS_LABEL[item.status]}</span>
-                      </span>
-                      <span className="text-sm font-bold">{item.percent}%</span>
-                    </Link>
-                  ) : (
-                    <div
-                      aria-disabled="true"
-                      className="flex items-center gap-3 rounded-lg border border-dashed border-(--border) px-3 py-2 text-(--muted)"
-                    >
-                      <span aria-hidden="true" className="font-bold">
-                        {index + 1}
-                      </span>
-                      <span className="flex flex-1 flex-col">
-                        <span className="font-semibold">{item.label}</span>
-                        <span className="text-xs">Em breve</span>
-                      </span>
-                    </div>
-                  )}
-                </li>
-              ))}
-            </ol>
-            <div className="flex justify-end">
-              <HomeResetButton />
-            </div>
-          </section>
-        ) : (
-          <JourneyLoading fullScreen={false} />
-        )}
       </div>
     </div>
   );

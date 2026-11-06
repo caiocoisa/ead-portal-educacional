@@ -65,10 +65,16 @@ function toSnapshot(progress: ProgressV2): ProgressSnapshot {
   return { ...progress, ebook: { pagesSeen: isBrowser() ? readEbookPages() : [] } };
 }
 
-/** Visão sem progresso, sempre o mesmo objeto: serve de valor inicial no servidor. */
-export const EMPTY_PROGRESS_SNAPSHOT: ProgressSnapshot = Object.freeze(
-  toSnapshot(emptyProgress()),
-) as ProgressSnapshot;
+/**
+ * Visão sem progresso, sempre o mesmo objeto: é o valor do servidor e da primeira renderização
+ * do navegador (a hidratação). Por isso **não pode ler o armazenamento** ao ser criada: se
+ * lesse, no navegador já viria com as páginas do e-book salvas, ficaria diferente da do
+ * servidor e a hidratação falharia (erro React #418).
+ */
+export const EMPTY_PROGRESS_SNAPSHOT: ProgressSnapshot = Object.freeze({
+  ...emptyProgress(),
+  ebook: { pagesSeen: [] },
+}) as ProgressSnapshot;
 
 export class LocalStorageProgressRepository implements ProgressRepository {
   private cache: { signature: string; snapshot: ProgressSnapshot } | null = null;

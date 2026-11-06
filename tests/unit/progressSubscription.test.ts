@@ -42,6 +42,18 @@ describe("leitura estável e assinatura do progresso", () => {
       expect(EMPTY_PROGRESS_SNAPSHOT).toEqual({ ...emptyProgress(), ebook: { pagesSeen: [] } });
     });
 
+    it("a visão vazia do servidor não lê o armazenamento ao ser criada, o que quebraria a hidratação", async () => {
+      // Com o progresso já salvo, o módulo é carregado do zero, como acontece ao abrir a página.
+      localStorage.setItem(STORAGE_KEYS.ebookPages, JSON.stringify([1, 2, 3]));
+      localStorage.setItem(
+        STORAGE_KEYS.progress,
+        JSON.stringify({ ...emptyProgress(), mapa: { elementsSeen: ["publico"] } }),
+      );
+      vi.resetModules();
+      const recemCarregado = await import("@/services/user-progress/LocalStorageProgressRepository");
+      expect(recemCarregado.EMPTY_PROGRESS_SNAPSHOT).toEqual({ ...emptyProgress(), ebook: { pagesSeen: [] } });
+    });
+
     it("devolve um objeto novo depois de uma escrita", () => {
       const before = repository.getSnapshot();
       repository.markMapElement("publico");

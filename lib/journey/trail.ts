@@ -15,14 +15,16 @@ export interface TrailItemDefinition {
   /** Rótulo curto, para cabeçalhos e barras com pouco espaço. */
   shortLabel: string;
   href: string;
+  /** Unidade em que o item é medido (páginas, elementos, perguntas); ausente quando não se aplica. */
+  unit?: string;
 }
 
 /** Itens da trilha, na ordem sugerida. */
 export const TRAIL_ITEMS: readonly TrailItemDefinition[] = [
   { id: "video", label: "Vídeo", shortLabel: "Vídeo", href: "/video" },
-  { id: "ebook", label: "E-book", shortLabel: "E-book", href: "/ebook" },
-  { id: "mapa", label: "Mapa interativo", shortLabel: "Mapa", href: "/mapa" },
-  { id: "avaliacao", label: "Avaliação", shortLabel: "Avaliação", href: "/avaliacao" },
+  { id: "ebook", label: "E-book", shortLabel: "E-book", href: "/ebook", unit: "páginas" },
+  { id: "mapa", label: "Mapa interativo", shortLabel: "Mapa", href: "/mapa", unit: "elementos" },
+  { id: "avaliacao", label: "Avaliação", shortLabel: "Avaliação", href: "/avaliacao", unit: "perguntas" },
   { id: "relatorio", label: "Relatório", shortLabel: "Relatório", href: "/relatorio" },
 ];
 
@@ -120,4 +122,26 @@ export function buildTrail(progress: ProgressSnapshot, options: TrailOptions): T
   const next = counted.find((item) => item.status !== "done")?.id ?? null;
 
   return { items, overallPercent, next };
+}
+
+/**
+ * Linha de estado de um item, em texto: "Em andamento · 2 de 4 elementos · 50%". É o que a
+ * primeira tela mostra sob o nome de cada item da trilha.
+ */
+export function describeTrailItem(item: TrailItemState): string {
+  if (item.status === "soon") return "Ainda não publicado · fora do cálculo do progresso";
+  if (item.id === "relatorio") return item.status === "done" ? "Visto · 100%" : "Ainda não aberto · 0%";
+
+  const feminine = item.id === "avaliacao";
+  const word =
+    item.status === "done"
+      ? feminine ? "Concluída" : "Concluído"
+      : item.status === "doing"
+        ? "Em andamento"
+        : feminine ? "Não iniciada" : "Não iniciado";
+  const units =
+    item.unit && item.seen !== null && item.total !== null
+      ? ` · ${item.seen} de ${item.total} ${item.unit}`
+      : "";
+  return `${word}${units} · ${item.percent}%`;
 }

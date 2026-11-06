@@ -3,6 +3,7 @@ import { moduleContent } from "@/content/module";
 import { EBOOK_TOTAL_PAGES } from "@/content/materiais";
 import {
   buildTrail,
+  describeTrailItem,
   DONE_THRESHOLD_PERCENT,
   TRAIL_ITEMS,
   type TrailItemId,
@@ -236,5 +237,41 @@ describe("buildTrail: relatório e fim da trilha", () => {
       OPTIONS,
     );
     expect(state.next).toBe("avaliacao");
+  });
+});
+
+describe("describeTrailItem: a linha de estado da primeira tela", () => {
+  const texto = (partial: Partial<ProgressSnapshot>, id: TrailItemId, options = OPTIONS) =>
+    describeTrailItem(item(buildTrail(progress(partial), options), id));
+
+  it("e-book: palavra de estado, páginas vistas e percentual", () => {
+    expect(texto({}, "ebook")).toBe("Não iniciado · 0 de 18 páginas · 0%");
+    expect(texto({ ebook: { pagesSeen: pages(3) } }, "ebook")).toBe("Em andamento · 3 de 18 páginas · 17%");
+    expect(texto({ ebook: { pagesSeen: pages(18) } }, "ebook")).toBe("Concluído · 18 de 18 páginas · 100%");
+  });
+
+  it("mapa: elementos vistos", () => {
+    expect(texto({ mapa: { elementsSeen: ["publico", "objetivos"] } }, "mapa")).toBe(
+      "Em andamento · 2 de 4 elementos · 50%"
+    );
+  });
+
+  it("avaliação concorda no feminino", () => {
+    expect(texto({}, "avaliacao")).toBe("Não iniciada · 0 de 4 perguntas · 0%");
+    expect(texto({ avaliacao: { answers: { q1: 0, q2: 0, q3: 0, q4: 0 }, result: null } }, "avaliacao")).toBe(
+      "Concluída · 4 de 4 perguntas · 100%"
+    );
+  });
+
+  it("relatório: visto ou ainda não aberto, sem unidades", () => {
+    expect(texto({}, "relatorio")).toBe("Ainda não aberto · 0%");
+    expect(texto({ relatorio: { openedAt: "2026-11-06T10:00:00.000Z" } }, "relatorio")).toBe("Visto · 100%");
+  });
+
+  it("vídeo sem link avisa que está fora do cálculo; com link mostra só o percentual", () => {
+    expect(texto({}, "video")).toBe("Ainda não publicado · fora do cálculo do progresso");
+    expect(texto({ video: { percent: 40, positionSeconds: 30 } }, "video", WITH_VIDEO)).toBe(
+      "Em andamento · 40%"
+    );
   });
 });
