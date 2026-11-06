@@ -1,17 +1,18 @@
 "use client";
 
-import { useJourneyGuard } from "@/lib/journey/useJourneyGuard";
+import { useHydrated } from "@/lib/journey/useHydrated";
 import { JourneyLoading } from "@/components/journey/JourneyLoading";
 import { JourneyLayout } from "@/components/journey/JourneyLayout";
 import { ModuleAssessmentStep } from "@/components/journey/ModuleAssessmentStep";
 
+/** Página livre: espera só a leitura das respostas salvas, para retomar de onde parou. */
 export default function AvaliacaoPage() {
-  const { isChecking, progress } = useJourneyGuard("avaliacao");
+  const isHydrated = useHydrated();
 
-  if (isChecking || !progress) return <JourneyLoading />;
+  if (!isHydrated) return <JourneyLoading />;
 
   return (
-    <JourneyLayout userName={progress.userName} step="avaliacao">
+    <JourneyLayout>
       <ModuleAssessmentStep />
     </JourneyLayout>
   );

@@ -1,11 +1,13 @@
 import type { Page } from "@playwright/test";
 import { moduleContent } from "../../content/module";
+import type { MapNodeId } from "../../content/mapa";
 import { gradeQuiz } from "../../lib/quiz/gradeQuiz";
-import type { JourneyStep, UserProgress } from "../../types/progress";
+import type { ProgressV2 } from "../../types/progress";
 
 /** Chaves reais de `localStorage` usadas pelo portal. */
 export const STORAGE = {
   progress: "ead-portal:user-progress",
+  ebookPages: "ead-portal:ebook-pages",
   theme: "heroui-theme",
   fontSize: "ead-portal:font-size",
   contrast: "ead-portal:contrast",
@@ -43,8 +45,44 @@ export function sampleAnswers(): Record<string, number> {
   return answers;
 }
 
-/** Monta um `UserProgress` válido para a etapa pedida. */
-export function buildProgress(step: JourneyStep): UserProgress {
+/** O que já foi visto, em termos do aluno. Tudo é opcional: sem nada, é quem acabou de chegar. */
+export interface SeedProgress {
+  /** Páginas do e-book vistas (de 1 a 18). */
+  ebookPages?: number[];
+  mapElements?: MapNodeId[];
+  /** Respostas confirmadas, por pergunta; sem `assessmentDone`, a avaliação fica no meio. */
+  answers?: Record<string, number>;
+  /** Todas as perguntas respondidas e o resultado salvo (o relatório tem o que mostrar). */
+  assessmentDone?: boolean;
+  reportOpened?: boolean;
+  videoPercent?: number;
+}
+
+/** Todas as páginas do e-book, de 1 a 18. */
+export const ALL_EBOOK_PAGES = Array.from({ length: 18 }, (_, index) => index + 1);
+
+/** Monta o progresso no formato salvo (v2) e as páginas do e-book, que ficam em outra chave. */
+export function buildProgress(seed: SeedProgress): { progress: ProgressV2; ebookPages: number[] } {
+  const answers = seed.assessmentDone ? sampleAnswers() : (seed.answers ?? {});
+  const now = new Date().toISOString();
+  return {
+    progress: {
+      version: 2,
+      updatedAt: now,
+      video: { percent: seed.videoPercent ?? 0, positionSeconds: 0 },
+      mapa: { elementsSeen: seed.mapElements ?? [] },
+      avaliacao: {
+        answers,
+        result: seed.assessmentDone ? gradeQuiz(moduleContent.questions, answers) : null,
+      },
+      relatorio: { openedAt: seed.reportOpened ? now : null },
+    },
+    ebookPages: seed.ebookPages ?? [],
+  };
+}
+
+/** Progresso no formato antigo (v1: uma etapa corrente, com nome), para testar a migração. */
+export function buildLegacyProgress(step: "video" | "avaliacao" | "relatorio"): Record<string, unknown> {
   const now = new Date().toISOString();
   return {
     userId: "00000000-0000-4000-8000-000000000000",
@@ -59,22 +97,33 @@ export function buildProgress(step: JourneyStep): UserProgress {
 }
 
 interface SeedOptions {
-  /** Etapa em que o aluno já está; sem ela, ninguém se identificou ainda. */
-  step?: JourneyStep;
+  /** O que o aluno já viu; sem isso, ninguém avançou ainda. */
+  progress?: SeedProgress;
+  /** Grava o formato antigo (v1) no lugar do novo. */
+  legacy?: "video" | "avaliacao" | "relatorio";
   preferences?: Partial<Preferences>;
 }
 
 /** Grava progresso e preferências no `localStorage` antes de a página carregar. */
 export async function seedState(page: Page, options: SeedOptions = {}) {
   const preferences = { ...DEFAULT_PREFERENCES, ...options.preferences };
-  const progress = options.step ? JSON.stringify(buildProgress(options.step)) : null;
+  let progress: string | null = null;
+  let ebookPages: string | null = null;
+  if (options.legacy) {
+    progress = JSON.stringify(buildLegacyProgress(options.legacy));
+  } else if (options.progress) {
+    const built = buildProgress(options.progress);
+    progress = JSON.stringify(built.progress);
+    ebookPages = built.ebookPages.length > 0 ? JSON.stringify(built.ebookPages) : null;
+  }
   await page.addInitScript(
-    ({ keys, progress, preferences }) => {
+    ({ keys, progress, ebookPages, preferences }) => {
       localStorage.setItem(keys.theme, preferences.theme);
       localStorage.setItem(keys.fontSize, preferences.fontSize);
       localStorage.setItem(keys.contrast, preferences.contrast);
       if (progress) localStorage.setItem(keys.progress, progress);
+      if (ebookPages) localStorage.setItem(keys.ebookPages, ebookPages);
     },
-    { keys: STORAGE, progress, preferences }
+    { keys: STORAGE, progress, ebookPages, preferences }
   );
 }

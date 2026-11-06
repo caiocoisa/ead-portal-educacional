@@ -2,16 +2,10 @@ import {
   EMPTY_PROGRESS_SNAPSHOT,
   LocalStorageProgressRepository,
 } from "./LocalStorageProgressRepository";
-import { LocalStorageUserProgressRepository } from "./LocalStorageUserProgressRepository";
 import type { ProgressRepository } from "./ProgressRepository";
-import type { UserProgressRepository } from "./UserProgressRepository";
 
-/** Modelo v2 (fluxo livre). Ainda sem uso na interface: entra nos passos 3 e 4 do PR A. */
+/** Progresso do aluno no fluxo livre (estado de cada item da trilha). */
 export const progressRepository: ProgressRepository = new LocalStorageProgressRepository();
 
-/** Modelo v1 (etapa corrente). Sai quando a interface trocar para o `progressRepository`. */
-export const userProgressRepository: UserProgressRepository =
-  new LocalStorageUserProgressRepository();
-
 export { EMPTY_PROGRESS_SNAPSHOT };
-export type { ProgressRepository, UserProgressRepository };
+export type { ProgressRepository };

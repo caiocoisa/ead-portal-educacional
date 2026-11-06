@@ -5,8 +5,8 @@ export interface ModuleContent {
   description: string;
   /**
    * ID de um vídeo do YouTube não listado, sem monetização (ver PRD 3.2.1).
-   * `null` enquanto o vídeo real do módulo ainda não foi definido — a etapa
-   * de vídeo exibe um skeleton no lugar do player.
+   * `null` enquanto o vídeo real do módulo ainda não foi definido: o item fica
+   * desativado na trilha, fora do progresso geral, e a página de vídeo avisa "Vídeo em breve".
    */
   youtubeVideoId: string | null;
   questions: Question[];
@@ -16,7 +16,7 @@ export const moduleContent: ModuleContent = {
   title: "Planejamento Pedagógico para EaD com Apoio de IA",
   description:
     "Aprenda a planejar uma experiência de aprendizagem a distância articulando público, objetivos, conteúdos, atividades e avaliação. Use uma aula de Computação como exemplo prático de como pedir, analisar e melhorar sugestões de um assistente de IA, como o Gemini.",
-  // Vídeo do módulo ainda não definido — ver VideoSkeleton.
+  // Vídeo do módulo ainda não definido: a página de vídeo mostra "Vídeo em breve".
   youtubeVideoId: null,
   // Banco de questões definido em banco-questoes.md — ver lib/quiz/resolveFeedback.ts
   // para a lógica de retorno pedagógico por proximidade da resposta.

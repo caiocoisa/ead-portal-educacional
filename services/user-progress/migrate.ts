@@ -1,6 +1,6 @@
 import { EBOOK_TOTAL_PAGES, MAPA_ELEMENT_IDS } from "@/content/materiais";
 import type { MapNodeId } from "@/content/mapa";
-import { PROGRESS_VERSION, type JourneyStep, type ProgressV2 } from "@/types/progress";
+import { PROGRESS_VERSION, type ProgressV2 } from "@/types/progress";
 import type { AnsweredQuestion, AssessmentResult } from "@/types/quiz";
 
 /**
@@ -14,7 +14,8 @@ export interface ParsedProgress {
   migrated: boolean;
 }
 
-const V1_STEPS: readonly JourneyStep[] = ["video", "avaliacao", "relatorio"];
+/** Etapas que o formato v1 conhecia (`currentStep`); serve só para reconhecê-lo. */
+const V1_STEPS: readonly string[] = ["video", "avaliacao", "relatorio"];
 
 export function emptyProgress(): ProgressV2 {
   return {
@@ -146,7 +147,7 @@ export function parseStoredProgress(raw: string | null): ParsedProgress | null {
   if (!isRecord(stored)) return null;
 
   if (stored.version === undefined) {
-    const isV1 = typeof stored.currentStep === "string" && V1_STEPS.includes(stored.currentStep as JourneyStep);
+    const isV1 = typeof stored.currentStep === "string" && V1_STEPS.includes(stored.currentStep);
     return isV1 ? { progress: migrateV1(stored), migrated: true } : null;
   }
   if (stored.version === PROGRESS_VERSION) {

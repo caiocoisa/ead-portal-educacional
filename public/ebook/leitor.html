@@ -753,8 +753,18 @@ compatível com [a restrição do público].</code></div>
     stage.style.setProperty('--s',s.toFixed(4));
   }
 
+  // Progresso do portal: guarda cada página exibida na chave `ead-portal:ebook-pages` (mesma origem,
+  // então vale também em tela cheia). O portal lê a lista e a confere; aqui só se acrescenta.
+  function registra(p){
+    try{
+      var lista=JSON.parse(window.localStorage.getItem('ead-portal:ebook-pages')||'[]');
+      if(!Array.isArray(lista)) lista=[];
+      if(lista.indexOf(p)===-1){lista.push(p); window.localStorage.setItem('ead-portal:ebook-pages',JSON.stringify(lista));}
+    }catch(e){}
+  }
+
   function go(n,focus){
-    n=Math.max(0,Math.min(N-1,n)); cur=n;
+    n=Math.max(0,Math.min(N-1,n)); cur=n; registra(n+1);
     pages.forEach(function(p,i){p.hidden=(i!==n);});
     pos.textContent='Página '+(n+1)+' de '+N+' · '+pages[n].getAttribute('data-titulo');
     barra.style.width=((n+1)/N*100)+'%';

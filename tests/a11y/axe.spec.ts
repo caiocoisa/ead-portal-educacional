@@ -2,12 +2,14 @@ import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Locator, type Page } from "@playwright/test";
 import { moduleContent } from "../../content/module";
 import {
+  ALL_EBOOK_PAGES,
   seedState,
+  STORAGE,
   type Contrast,
   type FontSize,
+  type SeedProgress,
   type Theme,
 } from "../helpers/progress";
-import type { JourneyStep } from "../../types/progress";
 
 const THEMES: Theme[] = ["light", "dark"];
 const CONTRASTS: Contrast[] = ["normal", "high"];
@@ -19,21 +21,37 @@ const WCAG_TAGS = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"];
 interface Screen {
   name: string;
   path: string;
-  step?: JourneyStep;
+  /** O que o aluno já viu antes de abrir a tela; sem isso, quem acabou de chegar. */
+  progress?: SeedProgress;
   /** Elemento que só existe quando a tela terminou de carregar. */
   ready: (page: Page) => Locator;
 }
 
 const SCREENS: Screen[] = [
   { name: "início", path: "/", ready: (p) => p.getByRole("heading", { level: 1 }) },
-  { name: "vídeo", path: "/video", step: "video", ready: (p) => p.getByRole("button", { name: "Concluir" }) },
+  {
+    name: "início com progresso",
+    path: "/",
+    progress: { ebookPages: ALL_EBOOK_PAGES, mapElements: ["publico", "objetivos"] },
+    ready: (p) => p.getByText(/Progresso da trilha: 38%/),
+  },
+  { name: "vídeo", path: "/video", ready: (p) => p.getByText("Vídeo em breve") },
   {
     name: "avaliação",
     path: "/avaliacao",
-    step: "avaliacao",
     ready: (p) => p.getByRole("button", { name: "Confirmar resposta" }),
   },
-  { name: "relatório", path: "/relatorio", step: "relatorio", ready: (p) => p.getByText("Relatório final") },
+  {
+    name: "relatório",
+    path: "/relatorio",
+    progress: { assessmentDone: true },
+    ready: (p) => p.getByText("Relatório final"),
+  },
+  {
+    name: "relatório sem resultado",
+    path: "/relatorio",
+    ready: (p) => p.getByText(/Você ainda não fez a avaliação/),
+  },
   // O axe analisa também o leitor incorporado (iframe de mesma origem), na capa.
   {
     name: "e-book",
@@ -99,7 +117,7 @@ for (const theme of THEMES) {
       test.describe(`tema ${theme}, contraste ${contrast}, fonte ${fontSize}`, () => {
         for (const screen of SCREENS) {
           test(`tela de ${screen.name}`, async ({ page }) => {
-            await seedState(page, { step: screen.step, preferences: { theme, contrast, fontSize } });
+            await seedState(page, { progress: screen.progress, preferences: { theme, contrast, fontSize } });
             await page.goto(screen.path);
             await aguardarPreferencias(page, theme, contrast, fontSize);
             await expect(screen.ready(page)).toBeVisible();
@@ -119,7 +137,7 @@ for (const theme of THEMES) {
       const preferences = { theme, contrast, fontSize: "normal" as const };
 
       test("avaliação com os três níveis de retorno", async ({ page }) => {
-        await seedState(page, { step: "avaliacao", preferences });
+        await seedState(page, { preferences });
         await page.goto("/avaliacao");
         await aguardarPreferencias(page, theme, contrast, "normal");
 
@@ -132,7 +150,9 @@ for (const theme of THEMES) {
           { indice: far, titulo: "Vamos revisar" },
         ];
         for (const { indice, titulo } of alvo) {
-          // Recarrega para limpar a confirmação anterior e testar cada nível isolado.
+          // As respostas confirmadas ficam salvas e a avaliação retoma de onde parou; para testar
+          // cada nível isolado, apaga o progresso e recarrega.
+          await page.evaluate((chave) => localStorage.removeItem(chave), STORAGE.progress);
           await page.goto("/avaliacao");
           await page.getByRole("radio", { name: question.options[indice].slice(0, 60) }).check({ force: true });
           await page.getByRole("button", { name: "Confirmar resposta" }).click();
@@ -142,7 +162,7 @@ for (const theme of THEMES) {
       });
 
       test("relatório, aba do gabarito comentado com o primeiro item aberto", async ({ page }) => {
-        await seedState(page, { step: "relatorio", preferences });
+        await seedState(page, { progress: { assessmentDone: true }, preferences });
         await page.goto("/relatorio");
         await aguardarPreferencias(page, theme, contrast, "normal");
         await page.getByRole("tab", { name: "Gabarito comentado" }).click();
@@ -182,7 +202,7 @@ for (const theme of THEMES) {
       });
 
       test("menu de acessibilidade aberto", async ({ page }) => {
-        await seedState(page, { step: "video", preferences });
+        await seedState(page, { preferences });
         await page.goto("/video");
         await aguardarPreferencias(page, theme, contrast, "normal");
         await page.getByRole("button", { name: "Abrir menu de acessibilidade" }).click();

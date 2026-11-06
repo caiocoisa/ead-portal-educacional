@@ -21,7 +21,8 @@ test.describe("e-book no portal", () => {
     await expect(page).toHaveURL(/\/ebook$/);
     await page.getByRole("link", { name: "Voltar ao curso" }).click();
     await expect(page).toHaveURL("/");
-    await expect(page.getByLabel("Como podemos te chamar?")).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    await expect(page.getByLabel("Como podemos te chamar?")).toHaveCount(0);
   });
 
   test("a página inicial destaca o e-book em um cartão da tela principal", async ({ page }) => {
@@ -36,17 +37,17 @@ test.describe("e-book no portal", () => {
     await expect(page.getByRole("link", { name: "Mapa interativo", exact: true })).not.toHaveAttribute("aria-current", "page");
   });
 
-  test("quem está na jornada abre o e-book e volta à mesma etapa, sem perder o progresso", async ({ page }) => {
-    await seedState(page, { step: "avaliacao" });
+  test("quem tem progresso abre o e-book pela trilha sem perder o que já foi salvo e volta ao curso", async ({ page }) => {
+    await seedState(page, { progress: { mapElements: ["publico"], answers: { q1: 0 } } });
     await page.goto("/avaliacao");
     const antes = await page.evaluate((k) => localStorage.getItem(k), STORAGE.progress);
 
-    await page.getByRole("link", { name: "E-book" }).click();
+    await page.getByRole("navigation", { name: "Trilha do curso" }).getByRole("link", { name: /E-book/ }).click();
     await expect(page).toHaveURL(/\/ebook$/);
     expect(await page.evaluate((k) => localStorage.getItem(k), STORAGE.progress)).toBe(antes);
 
     await page.getByRole("link", { name: "Voltar ao curso" }).click();
-    await expect(page).toHaveURL(/\/avaliacao$/);
+    await expect(page).toHaveURL("/");
   });
 
   test("o leitor navega por botões, teclado e sumário dentro do portal", async ({ page }) => {

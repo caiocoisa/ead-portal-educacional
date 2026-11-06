@@ -173,7 +173,21 @@ const PLANEJADOS = {
 const HISTORICOS = {
   "app/providers.tsx": "HeroUI v3 não usa Provider", "tailwind.config.ts": "Tailwind v4 configura por CSS",
   "next.config.js": "o arquivo é next.config.ts", "components/public/IdentificationModal.tsx": "substituído por WelcomeHero (Task 16)",
-  "components/journey/JourneyNavbar.tsx": "substituído por JourneyLayout e ProgressIndicator"
+  "components/journey/JourneyNavbar.tsx": "substituído por JourneyLayout e TrailNav",
+  // Removidos no fluxo livre (PR A, docs/plano-implementacao-fluxo-v3.md). Os documentos de
+  // diagnóstico (revisao-fluxo-ux.md) os citam como evidência do estado antigo, e isso segue válido.
+  "services/user-progress/UserProgressRepository.ts": "removido no fluxo livre; substituído por ProgressRepository",
+  "services/user-progress/LocalStorageUserProgressRepository.ts": "removido no fluxo livre; substituído por LocalStorageProgressRepository",
+  "lib/journey/useJourneyGuard.ts": "removido: o fluxo é livre, sem guarda de etapas",
+  "components/journey/ProgressIndicator.tsx": "removido; substituído por TrailNav",
+  "components/journey/RestartJourneyModal.tsx": "removido; substituído por RestartAssessmentModal",
+  "components/video/VideoSkeleton.tsx": "removido: a página de vídeo mostra 'Vídeo em breve'",
+  "UserProgressRepository.ts": "removido no fluxo livre",
+  "LocalStorageUserProgressRepository.ts": "removido no fluxo livre",
+  "useJourneyGuard.ts": "removido no fluxo livre",
+  "ProgressIndicator.tsx": "removido; substituído por TrailNav",
+  "RestartJourneyModal.tsx": "removido; substituído por RestartAssessmentModal",
+  "VideoSkeleton.tsx": "removido"
 };
 const RAMOS_GIT = new Set(["docs/evolucao-v2"]); // nomes de branch citados nos documentos, não caminhos
 const planejados = [], historicos = [];
@@ -210,6 +224,11 @@ for (const doc of ["docs/revisao-fluxo-ux.md", "docs/matriz-rastreabilidade.md"]
     let rel = m[1];
     if (!existe(rel)) {
       const cand = porNome[path.basename(rel)] || [];
+      // Arquivo removido de propósito: a citação é a evidência do diagnóstico antigo, e continua válida.
+      if (cand.length === 0 && (HISTORICOS[rel] || HISTORICOS[path.basename(rel)])) {
+        console.log(`  ~ ${rel}:${m[2]}  (${HISTORICOS[rel] || HISTORICOS[path.basename(rel)]})`);
+        continue;
+      }
       if (cand.length !== 1) { falha(`${doc}: ${rel} não resolve para um único arquivo (${cand.length})`); continue; }
       rel = cand[0];
     }

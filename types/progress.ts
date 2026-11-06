@@ -1,31 +1,16 @@
 import type { MapNodeId } from "@/content/mapa";
 import type { AssessmentResult } from "./quiz";
 
-export type JourneyStep = "video" | "avaliacao" | "relatorio";
-
-/**
- * Formato v1 do progresso: uma etapa corrente, com nome obrigatório.
- *
- * @deprecated Substituído por `ProgressV2` (fluxo livre, estado por item). Segue aqui
- * enquanto a interface não trocar de modelo e porque a migração precisa conhecê-lo.
- */
-export interface UserProgress {
-  userId: string;
-  userName: string;
-  currentStep: JourneyStep;
-  videoCompleted: boolean;
-  assessmentResult: AssessmentResult | null;
-  createdAt: string;
-  updatedAt: string;
-}
-
 /** Versão do esquema salvo no `localStorage`. */
 export const PROGRESS_VERSION = 2;
 
 /**
- * Formato v2 do progresso, salvo em `ead-portal:user-progress`: o estado de cada item
- * da trilha, sem identificação do aluno. O e-book **não** entra aqui: o leitor estático
- * grava as páginas vistas numa chave própria (ver `ProgressSnapshot`).
+ * Progresso salvo em `ead-portal:user-progress`: o estado de cada item da trilha, sem
+ * identificação do aluno. O e-book **não** entra aqui: o leitor estático grava as páginas
+ * vistas numa chave própria (ver `ProgressSnapshot`).
+ *
+ * O formato anterior (uma etapa corrente, com nome) é migrado na leitura; ver
+ * `services/user-progress/migrate.ts`.
  */
 export interface ProgressV2 {
   version: typeof PROGRESS_VERSION;

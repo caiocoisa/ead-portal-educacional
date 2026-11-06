@@ -3,21 +3,22 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { AlertDialog, Button } from "@heroui/react";
-import { userProgressRepository } from "@/services/user-progress";
+import { progressRepository } from "@/services/user-progress";
 
-export function RestartJourneyModal() {
+/** Refaz só a avaliação: o restante do progresso (e-book, mapa, relatório) é mantido. */
+export function RestartAssessmentModal() {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
   function handleConfirm() {
-    userProgressRepository.resetJourney();
-    router.push("/video");
+    progressRepository.resetAssessment();
+    router.push("/avaliacao");
   }
 
   return (
     <>
       <Button variant="danger-soft" onPress={() => setIsOpen(true)}>
-        Reiniciar jornada
+        Refazer a avaliação
       </Button>
       <AlertDialog.Root isOpen={isOpen} onOpenChange={setIsOpen}>
         <AlertDialog.Backdrop>
@@ -25,18 +26,19 @@ export function RestartJourneyModal() {
             <AlertDialog.Dialog>
               <AlertDialog.Header>
                 <AlertDialog.Icon status="danger" />
-                <AlertDialog.Heading>Reiniciar jornada?</AlertDialog.Heading>
+                <AlertDialog.Heading>Refazer a avaliação?</AlertDialog.Heading>
               </AlertDialog.Header>
               <AlertDialog.Body>
-                Isso vai apagar o resultado da sua avaliação e te levar de
-                volta ao início do vídeo. Essa ação não pode ser desfeita.
+                Isso vai apagar as suas respostas e o resultado da avaliação e te levar de
+                volta à primeira pergunta. O restante do seu progresso é mantido. Essa ação não
+                pode ser desfeita.
               </AlertDialog.Body>
               <AlertDialog.Footer>
                 <Button slot="close" variant="ghost">
                   Cancelar
                 </Button>
                 <Button variant="danger" onPress={handleConfirm}>
-                  Reiniciar
+                  Refazer
                 </Button>
               </AlertDialog.Footer>
             </AlertDialog.Dialog>

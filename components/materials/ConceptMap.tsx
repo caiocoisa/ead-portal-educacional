@@ -1,6 +1,7 @@
 "use client";
 
-import { useRef, useState, type KeyboardEvent, type ReactNode } from "react";
+import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
+import { progressRepository } from "@/services/user-progress";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@heroui/react";
@@ -130,13 +131,19 @@ export function ConceptMap() {
   const step = selected ? mapNodes.findIndex((n) => n.id === selected) : -1;
   const showMap = view === "mapa";
 
-  function choose(id: MapNodeId) {
+  /** Abre o elemento e o registra como visto no progresso. */
+  function select(id: MapNodeId) {
+    progressRepository.markMapElement(id);
     setSelected(id);
+  }
+
+  function choose(id: MapNodeId) {
+    select(id);
     setTour(false);
   }
 
   function startTour() {
-    setSelected(mapNodes[0].id);
+    select(mapNodes[0].id);
     setTour(true);
   }
 
@@ -146,8 +153,26 @@ export function ConceptMap() {
       setTour(false);
       return;
     }
-    setSelected(mapNodes[Math.max(0, index)].id);
+    select(mapNodes[Math.max(0, index)].id);
   }
+
+  // Na lista (única forma em telas pequenas) não há o que clicar: o elemento vale como visto
+  // quando o seu título aparece na tela. Com a lista escondida, nada intersecta e nada é gravado.
+  useEffect(() => {
+    if (typeof IntersectionObserver === "undefined") return;
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          progressRepository.markMapElement(entry.target.id.replace("lista-", "") as MapNodeId);
+        }
+      }
+    });
+    for (const node of mapNodes) {
+      const heading = document.getElementById(`lista-${node.id}`);
+      if (heading) observer.observe(heading);
+    }
+    return () => observer.disconnect();
+  }, []);
 
   function handleKeyDown(event: KeyboardEvent<HTMLButtonElement>, index: number) {
     const delta = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[

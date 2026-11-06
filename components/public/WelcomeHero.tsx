@@ -1,37 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import {
-  Button,
-  Card,
-  Chip,
-  FieldError,
-  Form,
-  Input,
-  Label,
-  TextField,
-} from "@heroui/react";
-import {
-  ArrowDown,
-  ArrowRight,
-  BookOpen,
-  ChartColumn,
-  ClipboardList,
-  Clapperboard,
-  Network,
-} from "lucide-react";
-import { userProgressRepository } from "@/services/user-progress";
+import { Chip } from "@heroui/react";
+import { buttonVariants } from "@heroui/styles";
+import { ArrowDown, ArrowRight, BookOpen, Network } from "lucide-react";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
+import { HomeResetButton } from "@/components/journey/HomeResetButton";
 import { JourneyLoading } from "@/components/journey/JourneyLoading";
 import { moduleContent } from "@/content/module";
-
-const STEP_ROUTES = {
-  video: "/video",
-  avaliacao: "/avaliacao",
-  relatorio: "/relatorio",
-} as const;
+import { useHydrated } from "@/lib/journey/useHydrated";
+import { useTrail } from "@/lib/journey/useTrail";
 
 /** Materiais de estudo em destaque na tela principal (hoje, os dois principais pontos de acesso). */
 const MATERIALS = [
@@ -50,36 +28,25 @@ const MATERIALS = [
   },
 ] as const;
 
+const STATUS_LABEL = {
+  soon: "Em breve",
+  todo: "Não iniciado",
+  doing: "Em andamento",
+  done: "Concluído",
+} as const;
+
 export function WelcomeHero() {
-  const router = useRouter();
-  const [isReady, setIsReady] = useState(false);
-  const [userName, setUserName] = useState("");
-  const [error, setError] = useState<string | null>(null);
+  const isHydrated = useHydrated();
+  const trail = useTrail();
 
-  useEffect(() => {
-    const existing = userProgressRepository.getCurrent();
-    if (existing) {
-      router.replace(STEP_ROUTES[existing.currentStep]);
-      return;
-    }
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time client-only localStorage check, not derived from render state
-    setIsReady(true);
-  }, [router]);
-
-  function handleSubmit(event: React.FormEvent) {
-    event.preventDefault();
-    const trimmedName = userName.trim();
-    if (!trimmedName) {
-      setError("Informe seu nome para continuar.");
-      return;
-    }
-    userProgressRepository.create(trimmedName);
-    router.push("/video");
-  }
-
-  if (!isReady) {
-    return <JourneyLoading fullScreen={false} />;
-  }
+  const started = trail.items.some((item) => item.available && item.percent > 0);
+  const next = trail.items.find((item) => item.id === trail.next);
+  const cta =
+    !started || !next
+      ? started
+        ? { href: "/relatorio", label: "Rever o relatório" }
+        : { href: "/ebook", label: "Começar pelo e-book" }
+      : { href: next.href, label: `Continuar: ${next.label}` };
 
   return (
     <div className="m-auto grid w-full max-w-5xl gap-8 md:grid-cols-[3fr_2fr] md:items-center">
@@ -97,6 +64,12 @@ export function WelcomeHero() {
         </div>
         <h1 className="text-3xl font-bold md:text-4xl">{moduleContent.title}</h1>
         <p className="text-(--muted)">{moduleContent.description}</p>
+        {isHydrated ? (
+          <Link href={cta.href} className={`${buttonVariants({ variant: "primary", size: "lg" })} w-fit`}>
+            {cta.label}
+            <ArrowRight aria-hidden="true" className="size-5" />
+          </Link>
+        ) : null}
         <section aria-labelledby="materiais-title" className="flex flex-col gap-2">
           <h2
             id="materiais-title"
@@ -140,67 +113,71 @@ export function WelcomeHero() {
       </div>
 
       <div className="flex flex-col gap-4">
-      <ImagePlaceholder
-        label="Ilustração principal"
-        hint="public/img/hero.jpg · 1456×720"
-        src="/img/hero.jpg"
-        alt="Ilustração em azul-marinho e dourado: um livro aberto, um cérebro de circuitos que representa a inteligência artificial e um notebook com a figura de uma pessoa, ligados por linhas e nós."
-        priority
-        className="aspect-[2/1] max-h-[24dvh] w-full border border-(--border)"
-      />
-      <ol
-        aria-label="Etapas da jornada"
-        className="flex items-center justify-between gap-2 rounded-xl border border-(--border) bg-(--surface) p-3"
-      >
-        {[
-          { icon: Clapperboard, label: "Vídeo" },
-          { icon: ClipboardList, label: "Avaliação" },
-          { icon: ChartColumn, label: "Relatório" },
-        ].map((item, index, all) => (
-          <li key={item.label} className="flex flex-1 items-start gap-2">
-            <div className="flex flex-col items-center gap-1">
-              <span
-                aria-hidden="true"
-                className="flex size-10 items-center justify-center rounded-full bg-(--brand) text-(--gold)"
-              >
-                <item.icon className="size-5" />
-              </span>
-              <span className="text-xs font-medium">{item.label}</span>
+        <ImagePlaceholder
+          label="Ilustração principal"
+          hint="public/img/hero.jpg · 1456×720"
+          src="/img/hero.jpg"
+          alt="Ilustração em azul-marinho e dourado: um livro aberto, um cérebro de circuitos que representa a inteligência artificial e um notebook com a figura de uma pessoa, ligados por linhas e nós."
+          priority
+          className="aspect-[2/1] max-h-[24dvh] w-full border border-(--border)"
+        />
+        {isHydrated ? (
+          <section
+            aria-labelledby="trilha-title"
+            className="flex flex-col gap-3 rounded-xl border border-(--border) bg-(--surface) p-4"
+          >
+            <h2 id="trilha-title" className="text-lg font-bold">
+              Sua trilha
+            </h2>
+            <label className="flex flex-col gap-1 text-sm font-medium">
+              Progresso da trilha: {trail.overallPercent}%
+              <progress
+                value={trail.overallPercent}
+                max={100}
+                className="h-2 w-full accent-(--brand)"
+              />
+            </label>
+            <ol className="flex flex-col gap-2">
+              {trail.items.map((item, index) => (
+                <li key={item.id}>
+                  {item.available ? (
+                    <Link
+                      href={item.href}
+                      className="flex items-center gap-3 rounded-lg border border-(--border) px-3 py-2 hover:bg-(--surface-secondary) focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-(--focus)"
+                    >
+                      <span aria-hidden="true" className="font-bold">
+                        {index + 1}
+                      </span>
+                      <span className="flex flex-1 flex-col">
+                        <span className="font-semibold">{item.label}</span>
+                        <span className="text-xs text-(--muted)">{STATUS_LABEL[item.status]}</span>
+                      </span>
+                      <span className="text-sm font-bold">{item.percent}%</span>
+                    </Link>
+                  ) : (
+                    <div
+                      aria-disabled="true"
+                      className="flex items-center gap-3 rounded-lg border border-dashed border-(--border) px-3 py-2 text-(--muted)"
+                    >
+                      <span aria-hidden="true" className="font-bold">
+                        {index + 1}
+                      </span>
+                      <span className="flex flex-1 flex-col">
+                        <span className="font-semibold">{item.label}</span>
+                        <span className="text-xs">Em breve</span>
+                      </span>
+                    </div>
+                  )}
+                </li>
+              ))}
+            </ol>
+            <div className="flex justify-end">
+              <HomeResetButton tone="onLight" />
             </div>
-            {index < all.length - 1 ? (
-              <span aria-hidden="true" className="mt-5 h-0.5 flex-1 bg-(--border)" />
-            ) : null}
-          </li>
-        ))}
-      </ol>
-      <Card className="w-full">
-        <Card.Header>
-          <Card.Title>Vamos começar?</Card.Title>
-          <Card.Description>
-            Informe seu nome para iniciar a jornada.
-          </Card.Description>
-        </Card.Header>
-        <Card.Content>
-          <Form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            <TextField
-              value={userName}
-              onChange={(value) => {
-                setUserName(value);
-                setError(null);
-              }}
-              isRequired
-              fullWidth
-            >
-              <Label>Como podemos te chamar?</Label>
-              <Input placeholder="Seu nome" />
-              {error ? <FieldError>{error}</FieldError> : null}
-            </TextField>
-            <Button type="submit" fullWidth>
-              Iniciar minha jornada
-            </Button>
-          </Form>
-        </Card.Content>
-      </Card>
+          </section>
+        ) : (
+          <JourneyLoading fullScreen={false} />
+        )}
       </div>
     </div>
   );

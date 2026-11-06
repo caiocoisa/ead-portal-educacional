@@ -104,16 +104,17 @@ test.describe("mapa interativo no portal", () => {
     await expect(page).toHaveURL(/\/mapa$/);
   });
 
-  test("quem está na jornada abre o mapa e volta à mesma etapa, sem perder o progresso", async ({ page }) => {
-    await seedState(page, { step: "avaliacao" });
+  test("quem tem progresso abre o mapa pela trilha sem perder o que já foi salvo e volta ao curso", async ({ page }) => {
+    await seedState(page, { progress: { ebookPages: [1, 2], answers: { q1: 0 } } });
     await page.goto("/avaliacao");
     const antes = await page.evaluate((k) => localStorage.getItem(k), STORAGE.progress);
 
-    await page.getByRole("link", { name: "Mapa", exact: true }).click();
+    await page.getByRole("navigation", { name: "Trilha do curso" }).getByRole("link", { name: /Mapa/ }).click();
     await expect(page).toHaveURL(/\/mapa$/);
+    // Em tela larga só existe o diagrama: abrir a página, sem escolher um elemento, não grava nada.
     expect(await page.evaluate((k) => localStorage.getItem(k), STORAGE.progress)).toBe(antes);
 
     await page.getByRole("link", { name: "Voltar ao curso" }).click();
-    await expect(page).toHaveURL(/\/avaliacao$/);
+    await expect(page).toHaveURL("/");
   });
 });

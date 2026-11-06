@@ -1,17 +1,10 @@
-"use client";
-
-import { useJourneyGuard } from "@/lib/journey/useJourneyGuard";
-import { JourneyLoading } from "@/components/journey/JourneyLoading";
 import { JourneyLayout } from "@/components/journey/JourneyLayout";
 import { ModuleVideoStep } from "@/components/journey/ModuleVideoStep";
 
+/** Página livre: não há guarda de etapas; o aluno abre o vídeo quando quiser. */
 export default function VideoPage() {
-  const { isChecking, progress } = useJourneyGuard("video");
-
-  if (isChecking || !progress) return <JourneyLoading />;
-
   return (
-    <JourneyLayout userName={progress.userName} step="video">
+    <JourneyLayout>
       <ModuleVideoStep />
     </JourneyLayout>
   );
