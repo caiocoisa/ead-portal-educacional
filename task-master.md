@@ -3156,10 +3156,11 @@ para escolher uma delas com evidência e descobrir como incorporá-la ao
 portal sem comprometer acessibilidade, privacidade e aparência.
 
 **Details:**
-- 10 casos (PL-01 a PL-10): plano e custo, incorporação, acessibilidade,
+- 11 casos (PL-01 a PL-11): plano e custo, incorporação, acessibilidade,
   interatividade, fidelidade ao design, desempenho em celular, privacidade
-  (LGPD), portabilidade e termos, convivência com os temas do portal e
-  atualização.
+  (LGPD), portabilidade e termos, convivência com os temas do portal,
+  atualização e **download pelo leitor** (PL-11, acrescentado em 2026-11-05
+  pela Task 65: o portal não quer oferecer a ação de exportar o livro).
 - Ações suas: criar as contas, publicar o ebook de teste fictício e ler
   os termos e planos; o restante é executado por Claude.
 - **Ponto de aprovação C:** você escolhe a plataforma e aprova o custo do
@@ -3487,28 +3488,36 @@ CD-04 e CD-05
 
 **Description:**
 Pedido do usuário em 2026-11-05: a página `/ebook` oferece o botão "Baixar em
-PDF", e a opção deve deixar de existir. O **motivo não foi informado**; ele
-define se basta esconder o botão ou se o arquivo também precisa sair do
-alcance público (ver Details).
+PDF", e a opção deve deixar de existir. **Motivo (informado em 2026-11-05):**
+não é proteger nem impedir a cópia do conteúdo; é **não oferecer a ação de
+exportar**, porque ler o conteúdo em PDF empobrece a experiência em relação a
+interagir com ele no portal ou no FlipHTML5. É uma decisão de experiência do
+usuário, e não de segurança.
 
 **Details:**
 - Remover o link "Baixar em PDF" e a constante `PDF` de `app/ebook/page.tsx`.
   A abertura em tela cheia (`/ebook/leitor.html`) fica como está.
-- **Decidir o destino do arquivo** `public/ebook/ebook-planejar-com-ia.pdf`.
-  Enquanto ele estiver em `public/`, a URL direta continua servindo o PDF
-  mesmo sem o botão. Para impedir de fato o download, tirá-lo de `public/`
-  (por exemplo, para `conteudo/ebook/`). Não apagar: ele é a **fonte para
-  importar o e-book no FlipHTML5 ou no Genially** (Tasks 58 e 61). Se o
-  arquivo sair de `public/`, `testes/ebook/verificar-ebook.js` precisa gravar
-  em outro lugar. A impressão pelo navegador (`@media print` do leitor)
-  continua possível e **não dá para impedir**; decidir se isso importa.
+- **Destino do arquivo** `public/ebook/ebook-planejar-com-ia.pdf`. Como o
+  objetivo é de experiência e não de proteção, o mínimo é tirar o botão. **A
+  recomendação é tirar também o arquivo de `public/`** (por exemplo, para
+  `conteudo/ebook/`), porque mantê-lo acessível por URL, só sem link, deixa
+  uma saída que ninguém oferece nem mantém. Custo baixo: o script
+  `testes/ebook/verificar-ebook.js` passa a gravar em outro lugar. **Não
+  apagar:** ele é a **fonte para importar o e-book no FlipHTML5 ou no
+  Genially** (Tasks 58 e 61). A impressão pelo navegador (`@media print` do
+  leitor) **deixa de ser preocupação**: o objetivo não é bloquear a cópia.
 - **Conflito com o R1 a resolver:** o PRD (seção 9.3), o plano e as Tasks 52
   e 61 dizem que o portal mantém uma **versão acessível em HTML e PDF**. Sem
   o PDF, a versão acessível passa a ser só o HTML do leitor (que já cumpre
-  teclado, leitor de tela, alto contraste e fonte ampliada). Atualizar o
-  PRD, o plano, as Tasks 52 e 61, `conteudo/ebook/roteiro.md` e o texto da
-  contracapa do leitor ("em HTML e PDF"), e **confirmar com o usuário** se a
-  restrição também vale para o e-book publicado na plataforma externa.
+  teclado, leitor de tela, alto contraste e fonte ampliada), o que condiz com
+  o motivo. Atualizar o PRD, o plano, as Tasks 52 e 61,
+  `conteudo/ebook/roteiro.md` e o texto da contracapa do leitor ("em HTML e
+  PDF").
+- **E-book na plataforma externa:** pelo mesmo motivo, ao publicar no
+  FlipHTML5 ou no Genially, **desativar a opção de download do livro**, se a
+  plataforma a oferecer (a página de preços do FlipHTML5 lista "sem download
+  de livros" no plano gratuito; a conferir nos planos pagos). Registrar na
+  Task 58 como critério de escolha da plataforma.
 - Ajustar `tests/e2e/ebook.spec.ts`: o teste "o PDF e o leitor em tela cheia
   estão publicados e acessíveis por link" passa a verificar que **não há**
   link de download e que a tela cheia segue funcionando (e, se o arquivo
@@ -3517,8 +3526,8 @@ alcance público (ver Details).
 **Files:**
 - `app/ebook/page.tsx`
 - `tests/e2e/ebook.spec.ts`
-- `public/ebook/leitor.html` (texto da contracapa) e, conforme a decisão, o
-  PDF e `testes/ebook/verificar-ebook.js`
+- `public/ebook/leitor.html` (texto da contracapa), o PDF (sai de `public/`) e
+  `testes/ebook/verificar-ebook.js`
 - `PRD.md`, `plano-evolucao-v2.md`, `conteudo/ebook/roteiro.md`, Tasks 52 e 61
 
 **Test strategy:**
@@ -3528,8 +3537,10 @@ Se o PDF sair de `public/`, a URL antiga responde 404.
 
 **Acceptance criteria:**
 - [ ] A página `/ebook` não oferece mais a opção de baixar o PDF.
-- [ ] O destino do arquivo PDF decidido e registrado (ficar em `public/` ou sair).
+- [ ] O arquivo PDF fora de `public/` (a URL antiga responde 404) e mantido
+      como fonte para a plataforma externa, ou a decisão de mantê-lo registrada.
 - [ ] O conflito com o R1 resolvido nos documentos, com o motivo registrado.
+- [ ] Critério de "sem download" registrado na Task 58 para a plataforma externa.
 
 **Source:** pedido do usuário em 2026-11-05
 

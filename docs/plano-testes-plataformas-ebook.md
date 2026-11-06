@@ -41,20 +41,22 @@ final. Guardar evidências em `testes/plataformas-ebook/<id>/`.
 | **PL-08** | Portabilidade e termos | [U] | Ler os termos; verificar exportação (PDF, HTML ou arquivo), propriedade do conteúdo e o que acontece se a conta ou o plano expirar | Conteúdo exportável e uso permitido em portal educacional; risco de perda registrado |
 | **PL-09** | Convivência com os temas do portal | [C] | Ver o embed com `data-theme="dark"`, `data-contrast="high"` e os três tamanhos de fonte | A moldura do portal mantém legibilidade e contraste mesmo que o embed não se adapte |
 | **PL-10** | Atualização | [U] | Alterar uma página do ebook publicado e verificar se o link e o código de incorporação continuam válidos | Atualização sem trocar o embed no portal |
+| **PL-11** | Download pelo leitor | [U] | Verificar se a plataforma oferece **ao leitor** a opção de baixar ou exportar o livro (PDF, imagens ou arquivo), se ela pode ser **desativada** e em quais planos (decisão da Task 65: o portal não quer essa ação, pois ler em PDF empobrece a experiência) | O leitor não tem a opção de baixar, ou ela é desativável em um plano aceito. **Não confundir** com a exportação para o autor (PL-08) |
 
 ## 4. Como o resultado decide
 
 | Desfecho | Ação |
 |---|---|
 | Uma plataforma passa nos critérios obrigatórios (PL-02, 03, 07) e tem melhor custo e interatividade | Escolhê-la (ponto de aprovação C) |
-| As duas passam | Desempatar por PL-04, PL-05, PL-01 e PL-10 |
+| As duas passam | Desempatar por PL-04, PL-05, PL-01, PL-10 e PL-11 |
 | Nenhuma passa em acessibilidade ou privacidade | Publicar mesmo assim, como **experiência interativa complementar**, e manter a versão acessível no portal como principal. Registrar a decisão e os riscos |
 | Nenhuma passa em incorporação (PL-02) | Publicar na plataforma e **linkar** para ela a partir do portal, em vez de incorporar |
 
 > **Princípio do plano, independente do resultado:** o ebook tem duas
 > faces. A **versão interativa** na plataforma escolhida cumpre o
-> requisito R1; a **versão acessível** (HTML ou PDF) no portal preserva o
-> compromisso de acessibilidade com todos os alunos.
+> requisito R1; a **versão acessível** no portal preserva o compromisso de
+> acessibilidade com todos os alunos. Pela decisão da Task 65, essa versão
+> acessível é o **HTML do leitor**, sem PDF para download.
 
 ## 5. Registro de resultados
 
@@ -70,5 +72,6 @@ final. Guardar evidências em `testes/plataformas-ebook/<id>/`.
 | PL-08 | | | | |
 | PL-09 | | | | |
 | PL-10 | | | | |
+| PL-11 | | | | |
 
 **Plataforma escolhida e justificativa:** _a preencher ao fim da Task 58._
