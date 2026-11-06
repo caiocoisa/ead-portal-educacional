@@ -11,6 +11,12 @@ export const STORAGE_KEYS = {
   ebookPages: "ead-portal:ebook-pages",
 } as const;
 
+/**
+ * Evento disparado na própria janela depois de cada escrita. O evento nativo `storage`
+ * só chega às *outras* janelas (outras abas e o leitor do e-book dentro do `iframe`).
+ */
+export const PROGRESS_EVENT = "ead-portal:progress";
+
 function isBrowser(): boolean {
   return typeof window !== "undefined";
 }
@@ -30,6 +36,10 @@ function writeRaw(key: string, value: string): void {
   } catch {
     // sem armazenamento disponível: o estado vale só nesta chamada
   }
+}
+
+function notify(): void {
+  window.dispatchEvent(new Event(PROGRESS_EVENT));
 }
 
 function readEbookPages(): number[] {
@@ -55,10 +65,49 @@ function toSnapshot(progress: ProgressV2): ProgressSnapshot {
   return { ...progress, ebook: { pagesSeen: isBrowser() ? readEbookPages() : [] } };
 }
 
+/** Visão sem progresso, sempre o mesmo objeto: serve de valor inicial no servidor. */
+export const EMPTY_PROGRESS_SNAPSHOT: ProgressSnapshot = Object.freeze(
+  toSnapshot(emptyProgress()),
+) as ProgressSnapshot;
+
 export class LocalStorageProgressRepository implements ProgressRepository {
+  private cache: { signature: string; snapshot: ProgressSnapshot } | null = null;
+
   get(): ProgressSnapshot {
     return toSnapshot(readStored() ?? emptyProgress());
   }
+
+  getSnapshot = (): ProgressSnapshot => {
+    if (!isBrowser()) return EMPTY_PROGRESS_SNAPSHOT;
+    // Lê primeiro (isso migra o formato antigo) e só então compara o que está salvo.
+    const progress = readStored();
+    const signature = `${readRaw(STORAGE_KEYS.progress) ?? ""}|${readRaw(STORAGE_KEYS.ebookPages) ?? ""}`;
+    if (this.cache?.signature === signature) return this.cache.snapshot;
+
+    const snapshot = toSnapshot(progress ?? emptyProgress());
+    this.cache = { signature, snapshot };
+    return snapshot;
+  };
+
+  subscribe = (listener: () => void): (() => void) => {
+    if (!isBrowser()) return () => {};
+    const onStorage = (event: StorageEvent) => {
+      // `key` nulo é o `localStorage.clear()`.
+      if (
+        event.key === null ||
+        event.key === STORAGE_KEYS.progress ||
+        event.key === STORAGE_KEYS.ebookPages
+      ) {
+        listener();
+      }
+    };
+    window.addEventListener("storage", onStorage);
+    window.addEventListener(PROGRESS_EVENT, listener);
+    return () => {
+      window.removeEventListener("storage", onStorage);
+      window.removeEventListener(PROGRESS_EVENT, listener);
+    };
+  };
 
   markEbookPage(page: number): ProgressSnapshot {
     if (isBrowser() && Number.isInteger(page)) {
@@ -66,6 +115,7 @@ export class LocalStorageProgressRepository implements ProgressRepository {
       const next = sanitizeEbookPages([...pages, page]);
       if (next.length !== pages.length) {
         writeRaw(STORAGE_KEYS.ebookPages, JSON.stringify(next));
+        notify();
       }
     }
     return this.get();
@@ -133,6 +183,7 @@ export class LocalStorageProgressRepository implements ProgressRepository {
     } catch {
       // sem armazenamento disponível: nada a apagar
     }
+    notify();
   }
 
   /**
@@ -147,6 +198,7 @@ export class LocalStorageProgressRepository implements ProgressRepository {
 
     const next: ProgressV2 = { ...changed, updatedAt: new Date().toISOString() };
     writeRaw(STORAGE_KEYS.progress, JSON.stringify(next));
+    notify();
     return toSnapshot(next);
   }
 }

@@ -247,7 +247,9 @@ Passos, cada um em um commit com testes verdes:
 | Passo | Situação | Observação |
 |---|---|---|
 | 1 | **Feito** | Modelo v2, migração e repositório, com testes. Entrou **só aditivo**: o repositório novo (`progressRepository`) vive ao lado do antigo e ainda não é usado pela interface, porque o guarda, o formulário de nome e os cabeçalhos atuais ainda leem o formato v1 na mesma chave. O repositório antigo sai no passo 4. |
-| 2 a 8 | A fazer | |
+| 2 | **Feito** | Regras da trilha (percentual por item, concluído a partir de 80, geral sem o vídeo, próximo sugerido) e o hook que lê o progresso. O repositório ganhou uma leitura estável (`getSnapshot`, que devolve o mesmo objeto enquanto nada muda) e uma assinatura (`subscribe`), que o React exige: sem o cache a tela entraria em laço de renderização. Ainda sem uso nas telas. |
+| 3 e 4 (juntos) | A fazer | Registro do que foi visto e fim do guarda |
+| 5 a 8 | A fazer | |
 
 **Ajuste de ordem nos passos 3 e 4:** registrar o que foi visto (3) grava no formato v2, e
 o guarda atual (4) ainda lê o v1 na mesma chave. Os dois só ficam verdes **juntos**, então

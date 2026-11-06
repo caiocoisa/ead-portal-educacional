@@ -8,6 +8,16 @@ import type { AssessmentResult } from "@/types/quiz";
  */
 export interface ProgressRepository {
   get(): ProgressSnapshot;
+  /**
+   * Leitura para a interface (`useSyncExternalStore`): devolve **o mesmo objeto** enquanto
+   * nada mudou no que está salvo. Fora do navegador, devolve sempre a visão vazia.
+   */
+  getSnapshot(): ProgressSnapshot;
+  /**
+   * Avisa a cada mudança: escritas desta janela, do leitor do e-book no `iframe` e de outras
+   * abas. Devolve a função que cancela a assinatura.
+   */
+  subscribe(listener: () => void): () => void;
   /** Registra uma página do e-book (de 1 a 18); valores inválidos são ignorados. */
   markEbookPage(page: number): ProgressSnapshot;
   /** Registra um elemento do mapa como visto; repetições e ids desconhecidos são ignorados. */

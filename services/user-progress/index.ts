@@ -1,4 +1,7 @@
-import { LocalStorageProgressRepository } from "./LocalStorageProgressRepository";
+import {
+  EMPTY_PROGRESS_SNAPSHOT,
+  LocalStorageProgressRepository,
+} from "./LocalStorageProgressRepository";
 import { LocalStorageUserProgressRepository } from "./LocalStorageUserProgressRepository";
 import type { ProgressRepository } from "./ProgressRepository";
 import type { UserProgressRepository } from "./UserProgressRepository";
@@ -10,4 +13,5 @@ export const progressRepository: ProgressRepository = new LocalStorageProgressRe
 export const userProgressRepository: UserProgressRepository =
   new LocalStorageUserProgressRepository();
 
+export { EMPTY_PROGRESS_SNAPSHOT };
 export type { ProgressRepository, UserProgressRepository };
