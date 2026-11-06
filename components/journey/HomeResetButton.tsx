@@ -5,13 +5,8 @@ import { useRouter } from "next/navigation";
 import { AlertDialog, Button, Tooltip } from "@heroui/react";
 import { progressRepository } from "@/services/user-progress";
 
-interface HomeResetButtonProps {
-  /** `onDark` para o cabeçalho azul-marinho; `onLight` para fundos claros. */
-  tone?: "onDark" | "onLight";
-}
-
 /** Apaga todo o progresso salvo neste navegador, depois de confirmar. As preferências ficam. */
-export function HomeResetButton({ tone = "onDark" }: HomeResetButtonProps) {
+export function HomeResetButton() {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -26,12 +21,7 @@ export function HomeResetButton({ tone = "onDark" }: HomeResetButtonProps) {
           `Tooltip.Trigger` (um `div role="button"`) aninha dois botões, o que o
           axe-core acusa como `nested-interactive`. */}
       <Tooltip delay={300}>
-        <Button
-          variant={tone === "onDark" ? "ghost" : "outline"}
-          size="sm"
-          className={tone === "onDark" ? "text-white hover:bg-white/10" : undefined}
-          onPress={() => setIsOpen(true)}
-        >
+        <Button variant="outline" size="sm" onPress={() => setIsOpen(true)}>
           Apagar meu progresso
         </Button>
         <Tooltip.Content>Apaga todo o progresso salvo neste navegador</Tooltip.Content>

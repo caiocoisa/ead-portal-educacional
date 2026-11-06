@@ -87,25 +87,27 @@ test.describe("quadrinho no portal", () => {
     await expect(page.getByText("Painel 1 de 6")).toBeVisible();
   });
 
-  test("o menu superior traz os três materiais e marca a página atual", async ({ page }) => {
+  test("o quadrinho está fora da trilha: o cabeçalho não tem link para ele nem marca item atual", async ({ page }) => {
     await page.goto("/quadrinho");
-    const menu = page.getByRole("navigation", { name: "Materiais e navegação do portal" });
-    await expect(menu.getByRole("link", { name: "Quadrinho" })).toHaveAttribute("aria-current", "page");
-    await expect(menu.getByRole("link", { name: "E-book" })).not.toHaveAttribute("aria-current", "page");
-    await expect(menu.getByRole("link", { name: "Mapa interativo" })).toBeVisible();
-
-    await menu.getByRole("link", { name: "Mapa interativo" }).click();
+    const trilha = page.getByRole("navigation", { name: "Trilha do curso" });
+    await expect(trilha.getByRole("link", { name: /Quadrinho/ })).toHaveCount(0);
+    await expect(trilha.locator('[aria-current="page"]')).toHaveCount(0);
+    // A trilha segue funcionando a partir dele.
+    await trilha.getByRole("link", { name: /^Mapa/ }).click();
     await expect(page).toHaveURL(/\/mapa$/);
   });
 
-  test("a tela principal continua destacando só o e-book e o mapa", async ({ page }) => {
+  test("nenhuma página oferece um link para o quadrinho", async ({ page }) => {
     await page.goto("/");
+    await expect(page.getByRole("link", { name: /quadrinho/i })).toHaveCount(0);
     const materiais = page.getByRole("region", { name: "Materiais de estudo" });
     await expect(materiais.getByRole("link")).toHaveCount(2);
-    await expect(materiais.getByRole("link", { name: /quadrinho/i })).toHaveCount(0);
-    // O quadrinho aparece no menu superior.
-    await page.getByRole("navigation", { name: "Materiais e navegação do portal" }).getByRole("link", { name: "Quadrinho" }).click();
-    await expect(page).toHaveURL(/\/quadrinho$/);
+  });
+
+  test("abrir o quadrinho não altera o progresso da trilha", async ({ page }) => {
+    await page.goto("/quadrinho");
+    await expect(page.getByText("Trilha 0%")).toBeVisible();
+    expect(await page.evaluate(() => localStorage.getItem("ead-portal:user-progress"))).toBeNull();
   });
 
   test("em tela pequena não há rolagem horizontal e o balão fica abaixo da imagem", async ({ page }) => {

@@ -172,7 +172,7 @@ export function WelcomeHero() {
               ))}
             </ol>
             <div className="flex justify-end">
-              <HomeResetButton tone="onLight" />
+              <HomeResetButton />
             </div>
           </section>
         ) : (

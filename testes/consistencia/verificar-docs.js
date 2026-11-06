@@ -187,7 +187,15 @@ const HISTORICOS = {
   "useJourneyGuard.ts": "removido no fluxo livre",
   "ProgressIndicator.tsx": "removido; substituído por TrailNav",
   "RestartJourneyModal.tsx": "removido; substituído por RestartAssessmentModal",
-  "VideoSkeleton.tsx": "removido"
+  "VideoSkeleton.tsx": "removido",
+  // Cabeçalho único no layout compartilhado do grupo (portal) (PR A, passo 5): as páginas mudaram de pasta.
+  "components/journey/JourneyLayout.tsx": "removido; o layout compartilhado de app/(portal) hospeda o cabeçalho",
+  "JourneyLayout.tsx": "removido; o layout compartilhado de app/(portal) hospeda o cabeçalho",
+  "app/page.tsx": "movido para app/(portal)/page.tsx",
+  "app/ebook/page.tsx": "movido para app/(portal)/ebook/page.tsx",
+  "app/video/page.tsx": "movido para app/(portal)/video/page.tsx",
+  "app/avaliacao/page.tsx": "movido para app/(portal)/avaliacao/page.tsx",
+  "app/relatorio/page.tsx": "movido para app/(portal)/relatorio/page.tsx"
 };
 const RAMOS_GIT = new Set(["docs/evolucao-v2"]); // nomes de branch citados nos documentos, não caminhos
 const planejados = [], historicos = [];

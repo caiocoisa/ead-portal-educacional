@@ -2,6 +2,8 @@ import { expect, test } from "@playwright/test";
 import { STORAGE, seedState } from "../helpers/progress";
 
 const TITULO = "Planejar com IA sem perder a didática";
+/** Nome do link da marca no cabeçalho, que leva à primeira tela. */
+const MARCA = "Planejamento Pedagógico para EaD";
 
 test.describe("e-book no portal", () => {
   test("abre sem identificação, sem ser redirecionado, e mostra o leitor", async ({ page }) => {
@@ -15,11 +17,11 @@ test.describe("e-book no portal", () => {
     await expect(leitor.locator("#pos")).toContainText("Página 1 de 18");
   });
 
-  test("a página inicial leva ao e-book e o cabeçalho do e-book volta ao curso", async ({ page }) => {
+  test("a página inicial leva ao e-book pela trilha e a marca do cabeçalho volta ao curso", async ({ page }) => {
     await page.goto("/");
-    await page.getByRole("link", { name: "E-book", exact: true }).click();
+    await page.getByRole("navigation", { name: "Trilha do curso" }).getByRole("link", { name: /^E-book/ }).click();
     await expect(page).toHaveURL(/\/ebook$/);
-    await page.getByRole("link", { name: "Voltar ao curso" }).click();
+    await page.getByRole("link", { name: MARCA, exact: true }).click();
     await expect(page).toHaveURL("/");
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
     await expect(page.getByLabel("Como podemos te chamar?")).toHaveCount(0);
@@ -31,10 +33,11 @@ test.describe("e-book no portal", () => {
     await expect(page).toHaveURL(/\/ebook$/);
   });
 
-  test("no e-book, o item do menu superior da página atual é marcado com aria-current", async ({ page }) => {
+  test("no e-book, o item da trilha da página atual é marcado com aria-current", async ({ page }) => {
     await page.goto("/ebook");
-    await expect(page.getByRole("link", { name: "E-book", exact: true })).toHaveAttribute("aria-current", "page");
-    await expect(page.getByRole("link", { name: "Mapa interativo", exact: true })).not.toHaveAttribute("aria-current", "page");
+    const trilha = page.getByRole("navigation", { name: "Trilha do curso" });
+    await expect(trilha.getByRole("link", { name: /^E-book/ })).toHaveAttribute("aria-current", "page");
+    await expect(trilha.getByRole("link", { name: /^Mapa/ })).not.toHaveAttribute("aria-current", "page");
   });
 
   test("quem tem progresso abre o e-book pela trilha sem perder o que já foi salvo e volta ao curso", async ({ page }) => {
@@ -46,7 +49,7 @@ test.describe("e-book no portal", () => {
     await expect(page).toHaveURL(/\/ebook$/);
     expect(await page.evaluate((k) => localStorage.getItem(k), STORAGE.progress)).toBe(antes);
 
-    await page.getByRole("link", { name: "Voltar ao curso" }).click();
+    await page.getByRole("link", { name: MARCA, exact: true }).click();
     await expect(page).toHaveURL("/");
   });
 

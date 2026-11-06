@@ -3495,7 +3495,7 @@ interagir com ele no portal ou no FlipHTML5. É uma decisão de experiência do
 usuário, e não de segurança.
 
 **Details:**
-- Remover o link "Baixar em PDF" e a constante `PDF` de `app/ebook/page.tsx`.
+- Remover o link "Baixar em PDF" e a constante `PDF` de `app/(portal)/ebook/page.tsx`.
   A abertura em tela cheia (`/ebook/leitor.html`) fica como está.
 - **Destino do arquivo** `public/ebook/ebook-planejar-com-ia.pdf`. Como o
   objetivo é de experiência e não de proteção, o mínimo é tirar o botão. **A
@@ -3524,7 +3524,7 @@ usuário, e não de segurança.
   sair de `public/`, que a URL antiga responde 404).
 
 **Files:**
-- `app/ebook/page.tsx`
+- `app/(portal)/ebook/page.tsx`
 - `tests/e2e/ebook.spec.ts`
 - `public/ebook/leitor.html` (texto da contracapa), o PDF (sai de `public/`) e
   `testes/ebook/verificar-ebook.js`
@@ -3577,7 +3577,7 @@ Absorve as Tasks 51 e 53 (proposta, aguardando confirmação).
 
 **Files:**
 - `types/progress.ts`, `services/user-progress/*`, `lib/journey/*`
-- `app/avaliacao/page.tsx`, `app/relatorio/page.tsx`, `app/video/page.tsx`
+- `app/(portal)/avaliacao/page.tsx`, `app/(portal)/relatorio/page.tsx`, `app/(portal)/video/page.tsx`
 - `components/materials/ConceptMap.tsx`, `components/journey/*`, `public/ebook/leitor.html`
 - `tests/helpers/progress.ts`, `tests/unit/*`, `tests/e2e/jornada.spec.ts`
 
@@ -3624,8 +3624,8 @@ Task 52 (proposta, aguardando confirmação) e inclui a Task 65.
 
 **Files:**
 - `components/public/*`, `components/accessibility/*`, `components/journey/*`
-- `app/layout.tsx`, `app/page.tsx` e as páginas de cada rota
-- `app/ebook/page.tsx`, `tests/e2e/*`, `tests/a11y/axe.spec.ts`
+- `app/layout.tsx`, `app/(portal)/page.tsx` e as páginas de cada rota
+- `app/(portal)/ebook/page.tsx`, `tests/e2e/*`, `tests/a11y/axe.spec.ts`
 
 **Test strategy:**
 E2E de cabeçalho, trilha, régua, barra inferior no celular e réguas largas; axe
@@ -3745,7 +3745,7 @@ capítulo do e-book e o elemento do mapa onde o assunto aparece. Cumpre a decis�
 
 **Files:**
 - `components/journey/FinalReport.tsx`, `components/materials/ConceptMap.tsx`
-- `app/ebook/page.tsx`, `content/*`, `tests/*`
+- `app/(portal)/ebook/page.tsx`, `content/*`, `tests/*`
 
 **Test strategy:**
 Teste unitário de que toda pergunta tem referência válida (páginas de 1 a 18,

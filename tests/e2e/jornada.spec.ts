@@ -85,6 +85,80 @@ test.describe("fluxo livre", () => {
   });
 });
 
+test.describe("cabeçalho único e layout compartilhado", () => {
+  const ROTAS = ["/", "/video", "/ebook", "/mapa", "/avaliacao", "/relatorio", "/quadrinho"];
+
+  test("cada página tem um só cabeçalho, com a trilha de cinco itens e o progresso geral", async ({ page }) => {
+    for (const rota of ROTAS) {
+      await page.goto(rota);
+      await expect(page.getByRole("banner")).toHaveCount(1);
+      await expect(navegacaoDaTrilha(page).getByRole("listitem")).toHaveCount(5);
+      await expect(page.getByText(/^Trilha \d+%$/)).toBeVisible();
+    }
+  });
+
+  test("o cabeçalho não é remontado ao navegar entre as páginas", async ({ page }) => {
+    await page.goto("/");
+    await page.getByRole("banner").evaluate((el) => el.setAttribute("data-teste", "mesmo"));
+
+    await navegacaoDaTrilha(page).getByRole("link", { name: /^E-book/ }).click();
+    await expect(page).toHaveURL(/\/ebook$/);
+    await expect(page.getByRole("banner")).toHaveAttribute("data-teste", "mesmo");
+
+    await navegacaoDaTrilha(page).getByRole("link", { name: /^Mapa/ }).click();
+    await expect(page).toHaveURL(/\/mapa$/);
+    await expect(page.getByRole("banner")).toHaveAttribute("data-teste", "mesmo");
+  });
+
+  test("o item atual da trilha vem da URL, em cada página, e só um por vez", async ({ page }) => {
+    const paginas = [
+      ["/ebook", /^E-book/],
+      ["/mapa", /^Mapa/],
+      ["/avaliacao", /^Avaliação/],
+      ["/relatorio", /^Relatório/],
+    ] as const;
+    for (const [rota, nome] of paginas) {
+      await page.goto(rota);
+      await expect(navegacaoDaTrilha(page).getByRole("link", { name: nome })).toHaveAttribute("aria-current", "page");
+      await expect(navegacaoDaTrilha(page).locator('[aria-current="page"]')).toHaveCount(1);
+    }
+
+    // Na primeira tela nenhum item está atual; quem fica marcado é a marca.
+    await page.goto("/");
+    await expect(navegacaoDaTrilha(page).locator('[aria-current="page"]')).toHaveCount(0);
+    await expect(page.getByRole("link", { name: "Planejamento Pedagógico para EaD", exact: true })).toHaveAttribute(
+      "aria-current",
+      "page"
+    );
+  });
+
+  test("com fonte extra grande em tela estreita, a trilha quebra em linhas sem esconder item nem criar rolagem horizontal", async ({ page }) => {
+    await seedState(page, { preferences: { fontSize: "extra-large" } });
+    // 640 px: com 125% de fonte as cinco pílulas não cabem numa linha e precisam descer.
+    // Provisório: no passo 7 do PR A, abaixo de 768 px a trilha passa para a barra inferior.
+    await page.setViewportSize({ width: 640, height: 800 });
+    await page.goto("/mapa");
+
+    const itens = navegacaoDaTrilha(page).getByRole("listitem");
+    await expect(itens).toHaveCount(5);
+    for (let i = 0; i < 5; i += 1) await expect(itens.nth(i)).toBeVisible();
+
+    const sobra = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+    expect(sobra).toBeLessThanOrEqual(1);
+    const todosDentro = await itens.evaluateAll((elementos) =>
+      elementos.every((elemento) => elemento.getBoundingClientRect().right <= window.innerWidth)
+    );
+    expect(todosDentro).toBe(true);
+  });
+
+  test("a primeira tela rola por dentro da área de conteúdo e o cabeçalho continua à vista", async ({ page }) => {
+    await page.goto("/");
+    await page.getByRole("link", { name: /Conheça os objetivos/ }).click();
+    await expect(page.locator("#objetivos-title")).toBeInViewport();
+    await expect(page.getByRole("banner")).toBeInViewport();
+  });
+});
+
 test.describe("avaliação e relatório", () => {
   test("percurso completo: perguntas, relatório e refazer só a avaliação", async ({ page }) => {
     // Fluxo longo (4 perguntas, várias interações cada): o limite padrão de 30 s
@@ -256,7 +330,7 @@ test.describe("interações da avaliação", () => {
   // o gatilho deixou de ser um `div role="button"` com um botão dentro.
 
   test("a dica do botão 'Apagar meu progresso' aparece ao passar o mouse", async ({ page }) => {
-    await page.goto("/video");
+    await page.goto("/");
     // O React Aria só abre a dica por mouse depois de uma interação por ponteiro.
     await page.mouse.click(2, 2);
     await page.getByRole("button", { name: "Apagar meu progresso" }).hover();

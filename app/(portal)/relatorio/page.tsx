@@ -5,7 +5,7 @@ import { useHydrated } from "@/lib/journey/useHydrated";
 import { useProgress } from "@/lib/journey/useProgress";
 import { progressRepository } from "@/services/user-progress";
 import { JourneyLoading } from "@/components/journey/JourneyLoading";
-import { JourneyLayout } from "@/components/journey/JourneyLayout";
+import { JourneyMain } from "@/components/journey/JourneyMain";
 import { FinalReport } from "@/components/journey/FinalReport";
 import { ReportEmptyState } from "@/components/journey/ReportEmptyState";
 
@@ -18,11 +18,15 @@ export default function RelatorioPage() {
     progressRepository.markReportOpened();
   }, []);
 
-  if (!isHydrated) return <JourneyLoading />;
-
   return (
-    <JourneyLayout>
-      {result ? <FinalReport assessmentResult={result} /> : <ReportEmptyState />}
-    </JourneyLayout>
+    <JourneyMain>
+      {!isHydrated ? (
+        <JourneyLoading fullScreen={false} />
+      ) : result ? (
+        <FinalReport assessmentResult={result} />
+      ) : (
+        <ReportEmptyState />
+      )}
+    </JourneyMain>
   );
 }
