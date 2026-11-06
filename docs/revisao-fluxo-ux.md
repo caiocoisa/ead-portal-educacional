@@ -191,13 +191,23 @@ não implementadas**. O fluxo-alvo da seção 4 fica superado por elas.
 - O **cabeçalho e a navegação** são escopo do R2 ("navegações" estão na lista do redesenho via Claude Design), o que cruza as Tasks 59, 60 e 62.
 - O achado do **progresso salvo sem validade** (a tela principal redireciona quem tem progresso e some com os cartões) **deixa de existir** com a decisão 3: a tela principal passa a ser sempre exibida.
 
-**Dúvidas que surgiram** (análise iterada até convergir; ver a resposta que originou esta seção). Cada uma tem uma sugestão-padrão a confirmar:
+**Dúvidas que surgiram e como o usuário as decidiu** (2026-11-05, em resposta à análise iterada até convergir):
 
-1. **Onde entra o quadrinho** na trilha, já que a sequência decidida não o cita? Sugestão: material opcional entre o mapa e a avaliação.
-2. **O que conta como "visto"** em cada material, como se calcula a porcentagem e quando um item vale como concluído? Sugestão: unidades distintas visitadas (e-book: páginas de 18; mapa: elementos de 4; quadrinho: painéis de 6; avaliação: perguntas respondidas; vídeo: o percentual assistido) e concluído a partir de 80%.
-3. **Cabeçalho e navegação no celular sem menu colapsado**, e onde mora o progresso? Sugestão: barra única e fina no topo em telas grandes, com a trilha e o estado de cada item; no celular, barra **fixa inferior** com os itens.
-4. **Nome:** removido de vez, ou opcional depois (por exemplo, para um certificado de participação, decisão ainda em aberto)? Sugestão: sem nome em lugar nenhum por ora.
-5. **Vídeo ainda inexistente** na trilha e no cálculo do progresso? Sugestão: aparece como "em breve" e **fica fora** da porcentagem até existir.
-6. **Prototipar antes de codar?** A navegação é escopo do R2. Sugestão: protótipos de baixa fidelidade em HTML (2 variantes de cabeçalho e o painel da trilha) antes de implementar.
+| # | Dúvida | Decisão |
+|---|---|---|
+| 1 | Onde entra o quadrinho na trilha | **Fica de fora por enquanto**: fora da trilha e do cálculo de progresso |
+| 2 | O que conta como "visto" e quando um item vale como concluído | **Sugestão aceita**: unidades distintas visitadas (e-book: páginas de 18; mapa: elementos de 4; avaliação: perguntas respondidas; vídeo: percentual assistido) e concluído a partir de 80% |
+| 3 | Cabeçalho e navegação sem menu colapsado, e onde mora o progresso | **Sugestão aceita**: barra fina no topo em telas grandes, com a trilha e o estado de cada item; no celular, barra fixa inferior |
+| 4 | Nome do aluno | **Nenhum nome**; só será pedido se houver certificado |
+| 5 | Vídeo ainda inexistente | **Sem vídeo no momento**: fica fora da trilha e do progresso |
+| 6 | Prototipar antes de codar | **Sim**: gerar prompts otimizados e usar o Claude Design para os protótipos |
+
+**Suposições minhas sobre essas respostas, a confirmar com o usuário:**
+
+- O quadrinho segue existindo como rota pública, mas **sem link na navegação principal** enquanto estiver fora da trilha.
+- O vídeo **não aparece nem como "em breve"** nos protótipos, para não prometer o que não existe. A trilha atual tem quatro itens: e-book, mapa, avaliação e relatório.
+- O progresso geral é a média simples dos quatro itens (por exemplo, e-book 100%, mapa 50%, os demais 0% dão 38%).
+
+**Protótipos feitos:** seis telas no Claude Design, com cópia estática em `testes/claude-design/prototipos-fluxo/index.html` (primeira tela de visitante novo e de quem já avançou, estudo de duas variantes de cabeçalho em três estados, página do mapa, relatório com "Seu percurso" e primeira tela no celular). Os prompts e os critérios de avaliação estão em `docs/prompts-claude-design-fluxo.md`. A escolha entre as variantes A (56 px) e B (44 px com faixa de progresso) está **pendente**.
 
 **Assumidos, salvo objeção:** avaliação e relatório também são livres (o relatório sem resultado mostra um estado vazio com chamada para a avaliação); o indicador de progresso aparece em todas as páginas; "Continuar de onde parou" substitui "Iniciar minha jornada"; "Apagar meu progresso" fica na primeira tela, com confirmação; o relatório ganha um bloco "Seu percurso"; as perguntas do relatório apontam para materiais com links profundos (capítulo do e-book, elemento do mapa, painel do quadrinho); o leitor do e-book, por ser da mesma origem, registra o progresso no armazenamento local do navegador.

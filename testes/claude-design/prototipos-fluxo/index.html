@@ -1,0 +1,594 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Protótipos do fluxo do portal (cópia local)</title>
+<style>
+body{margin:0;background:#e9edf2;color:#11181c;font-family:Arial,Helvetica,sans-serif}
+a{color:inherit;text-decoration:none}
+.pagina{max-width:1500px;margin:0 auto;padding:24px 20px 64px}
+h1{margin:0 0 4px;font-size:26px;color:#0b2545}
+.nota{margin:0 0 28px;color:#52525b;font-size:14px;line-height:1.5}
+.quadro{margin:0 0 40px}
+.quadro h2{margin:0 0 10px;font-size:18px;color:#0b2545}
+.quadro h2 small{font-weight:400;color:#52525b;font-size:13px;margin-left:8px}
+.moldura{overflow:auto;border:1px solid #c4c9d1;border-radius:8px;background:#fff;box-shadow:0 2px 8px rgba(11,37,69,.12)}
+.tela{position:relative;overflow:hidden}
+</style>
+</head>
+<body>
+<div class="pagina">
+<h1>Fluxo v2: primeira tela com a trilha</h1>
+<p class="nota">Cópia estática dos protótipos feitos no Claude Design, para abrir sem depender do link do artefato. São desenhos de decisão, não o portal: os links não navegam e os valores (38%, 3 de 4 acertos) são exemplos.</p>
+<section class="quadro" aria-labelledby="t0">
+<h2 id="t0">1. Primeira tela: visitante novo (variante A) <small>1366 × 768</small></h2>
+<div class="moldura"><div class="tela" style="width:1366px;height:768px">
+<div style="position:relative;width:1366px;height:768px;box-sizing:border-box;background:#f5f7fa;color:#11181c;font-family:Arial,Helvetica,sans-serif;overflow:hidden">
+
+<header style="height:56px;box-sizing:border-box;background:#0b2545;border-bottom:4px solid #c9a227;display:flex;align-items:center;gap:20px;padding:0 24px;color:#fff">
+<a href="#" style="display:flex;align-items:center;gap:10px;color:#fff;font-weight:700;font-size:15px;white-space:nowrap">
+<svg width="28" height="28" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#c9a227"/><path d="M32 22c-4.500-3.200-11-4.200-18-3v26c7-1.200 13.500-.2 18 3 4.500-3.200 11-4.200 18-3V19c-7-1.200-13.500-.2-18 3z" fill="#0b2545"/><path d="M32 22v26" stroke="#c9a227" stroke-width="2.600" stroke-linecap="round"/></svg>
+Planejamento Pedagógico para EaD
+</a>
+<nav aria-label="Trilha do curso" style="flex:1;display:flex;justify-content:center">
+<ol style="list-style:none;margin:0;padding:0;display:flex;align-items:center">
+<li style="display:flex;align-items:center">
+<a href="#" style="display:flex;align-items:center;gap:8px;height:36px;box-sizing:border-box;padding:0 12px;border-radius:999px;border:2px solid #c9a227;color:#fff;font-size:14px;font-weight:700">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/></svg>
+E-book <span style="font-size:12px;background:rgba(255,255,255,.16);border-radius:999px;padding:2px 7px">0%</span></a>
+<span aria-hidden="true" style="width:18px;height:2px;background:rgba(255,255,255,.35)"></span>
+</li>
+<li style="display:flex;align-items:center">
+<a href="#" style="display:flex;align-items:center;gap:8px;height:36px;box-sizing:border-box;padding:0 12px;border-radius:999px;border:2px solid transparent;color:#fff;font-size:14px;font-weight:700">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="16" y="16" width="6" height="6" rx="1"/><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3M12 12V8"/></svg>
+Mapa <span style="font-size:12px;background:rgba(255,255,255,.16);border-radius:999px;padding:2px 7px">0%</span></a>
+<span aria-hidden="true" style="width:18px;height:2px;background:rgba(255,255,255,.35)"></span>
+</li>
+<li style="display:flex;align-items:center">
+<a href="#" style="display:flex;align-items:center;gap:8px;height:36px;box-sizing:border-box;padding:0 12px;border-radius:999px;border:2px solid transparent;color:#fff;font-size:14px;font-weight:700">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg>
+Avaliação <span style="font-size:12px;background:rgba(255,255,255,.16);border-radius:999px;padding:2px 7px">0%</span></a>
+<span aria-hidden="true" style="width:18px;height:2px;background:rgba(255,255,255,.35)"></span>
+</li>
+<li style="display:flex;align-items:center">
+<a href="#" style="display:flex;align-items:center;gap:8px;height:36px;box-sizing:border-box;padding:0 12px;border-radius:999px;border:2px solid transparent;color:#fff;font-size:14px;font-weight:700">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M8 17v-6M13 17V7M18 17v-4"/></svg>
+Relatório <span style="font-size:12px;background:rgba(255,255,255,.16);border-radius:999px;padding:2px 7px">0%</span></a>
+</li>
+</ol>
+</nav>
+<p style="margin:0;font-size:14px;font-weight:700;white-space:nowrap">Trilha 0%</p>
+</header>
+
+<button type="button" aria-label="Abrir menu de acessibilidade" style="position:absolute;left:0;top:320px;writing-mode:vertical-rl;background:#fff;color:#11181c;border:1px solid #d4d4d8;border-left:0;border-radius:0 12px 12px 0;padding:14px 8px;font:14px Arial,Helvetica,sans-serif;cursor:pointer">Acessibilidade</button>
+
+<main style="box-sizing:border-box;height:712px;padding:56px 72px 0 72px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px;align-items:start">
+
+<section style="display:flex;flex-direction:column;gap:20px;padding-top:24px">
+<div style="display:flex;gap:8px;flex-wrap:wrap">
+<span style="font-size:13px;font-weight:700;background:#c9a227;color:#0b2545;border-radius:999px;padding:4px 12px">Curso online</span>
+<span style="font-size:13px;font-weight:700;background:#e6f4ec;color:#0f5132;border-radius:999px;padding:4px 12px">Ritmo livre</span>
+<span style="font-size:13px;font-weight:700;background:#e4e4e7;color:#27272a;border-radius:999px;padding:4px 12px">Sem cadastro</span>
+</div>
+<h1 style="margin:0;font-size:44px;line-height:1.1;color:#0b2545">Planejamento Pedagógico para EaD com Apoio de IA</h1>
+<p style="margin:0;font-size:18px;line-height:1.5;color:#52525b;max-width:560px">Aprenda a planejar uma experiência de aprendizagem a distância e a auditar o que a IA sugere. Siga a trilha na ordem que quiser: o seu progresso fica salvo neste navegador.</p>
+<div style="display:flex;align-items:center;gap:24px;margin-top:8px">
+<a href="#" style="display:inline-flex;align-items:center;gap:10px;height:52px;box-sizing:border-box;padding:0 28px;border-radius:12px;background:#0b2545;color:#fff;font-size:17px;font-weight:700">Começar pelo e-book
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+<a href="#" style="font-size:16px;font-weight:700;color:#0b2545;text-decoration:underline">Conhecer os objetivos do curso</a>
+</div>
+</section>
+
+<section aria-labelledby="trilha-titulo" style="background:#fff;border:1px solid #d4d4d8;border-radius:16px;padding:24px 28px;box-sizing:border-box">
+<div style="display:flex;align-items:baseline;justify-content:space-between">
+<h2 id="trilha-titulo" style="margin:0;font-size:22px;color:#0b2545">Sua trilha</h2>
+<p style="margin:0;font-size:14px;color:#52525b">Ordem sugerida, todos os itens abertos</p>
+</div>
+<div style="margin:14px 0 18px">
+<div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:6px"><span style="font-weight:700">Progresso da trilha</span><span style="font-weight:700">0%</span></div>
+<div role="img" aria-label="Progresso da trilha: 0%" style="height:10px;background:#e4e4e7;border-radius:999px;overflow:hidden"><div style="width:0%;height:100%;background:#0b2545"></div></div>
+</div>
+
+<ol style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column">
+<li style="display:grid;grid-template-columns:36px minmax(0,1fr) auto;column-gap:16px;padding-bottom:16px;position:relative">
+<span aria-hidden="true" style="position:absolute;left:17px;top:38px;bottom:0;width:2px;background:#d4d4d8"></span>
+<span aria-hidden="true" style="width:36px;height:36px;box-sizing:border-box;border-radius:50%;border:2px solid #0b2545;background:#fff;color:#0b2545;font-weight:700;display:flex;align-items:center;justify-content:center">1</span>
+<div>
+<div style="display:flex;align-items:center;gap:10px"><h3 style="margin:0;font-size:17px;color:#11181c">E-book</h3><span style="font-size:12px;font-weight:700;background:#f6edc6;color:#0b2545;border-radius:999px;padding:3px 10px;letter-spacing:.5px">PRÓXIMO</span></div>
+<p style="margin:2px 0 0;font-size:14px;color:#52525b">Guia de bolso para planejar com IA sem perder a didática.</p>
+<p style="margin:4px 0 0;font-size:13px;font-weight:700;color:#3f3f46">Não iniciado · 0 de 18 páginas · 0%</p>
+</div>
+<a href="#" style="align-self:center;display:inline-flex;align-items:center;gap:6px;height:38px;box-sizing:border-box;padding:0 14px;border:2px solid #0b2545;border-radius:8px;color:#0b2545;font-size:14px;font-weight:700">Abrir
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+</li>
+<li style="display:grid;grid-template-columns:36px minmax(0,1fr) auto;column-gap:16px;padding-bottom:16px;position:relative">
+<span aria-hidden="true" style="position:absolute;left:17px;top:38px;bottom:0;width:2px;background:#d4d4d8"></span>
+<span aria-hidden="true" style="width:36px;height:36px;box-sizing:border-box;border-radius:50%;border:2px solid #0b2545;background:#fff;color:#0b2545;font-weight:700;display:flex;align-items:center;justify-content:center">2</span>
+<div>
+<h3 style="margin:0;font-size:17px;color:#11181c">Mapa interativo</h3>
+<p style="margin:2px 0 0;font-size:14px;color:#52525b">Os quatro elementos de um planejamento e a falha típica da IA em cada um.</p>
+<p style="margin:4px 0 0;font-size:13px;font-weight:700;color:#3f3f46">Não iniciado · 0 de 4 elementos · 0%</p>
+</div>
+<a href="#" style="align-self:center;display:inline-flex;align-items:center;gap:6px;height:38px;box-sizing:border-box;padding:0 14px;border:2px solid #0b2545;border-radius:8px;color:#0b2545;font-size:14px;font-weight:700">Abrir
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+</li>
+<li style="display:grid;grid-template-columns:36px minmax(0,1fr) auto;column-gap:16px;padding-bottom:16px;position:relative">
+<span aria-hidden="true" style="position:absolute;left:17px;top:38px;bottom:0;width:2px;background:#d4d4d8"></span>
+<span aria-hidden="true" style="width:36px;height:36px;box-sizing:border-box;border-radius:50%;border:2px solid #0b2545;background:#fff;color:#0b2545;font-weight:700;display:flex;align-items:center;justify-content:center">3</span>
+<div>
+<h3 style="margin:0;font-size:17px;color:#11181c">Avaliação</h3>
+<p style="margin:2px 0 0;font-size:14px;color:#52525b">Quatro perguntas para testar o seu olhar de auditoria.</p>
+<p style="margin:4px 0 0;font-size:13px;font-weight:700;color:#3f3f46">Não iniciada · 0 de 4 perguntas · 0%</p>
+</div>
+<a href="#" style="align-self:center;display:inline-flex;align-items:center;gap:6px;height:38px;box-sizing:border-box;padding:0 14px;border:2px solid #0b2545;border-radius:8px;color:#0b2545;font-size:14px;font-weight:700">Abrir
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+</li>
+<li style="display:grid;grid-template-columns:36px minmax(0,1fr) auto;column-gap:16px;position:relative">
+<span aria-hidden="true" style="width:36px;height:36px;box-sizing:border-box;border-radius:50%;border:2px solid #0b2545;background:#fff;color:#0b2545;font-weight:700;display:flex;align-items:center;justify-content:center">4</span>
+<div>
+<h3 style="margin:0;font-size:17px;color:#11181c">Relatório</h3>
+<p style="margin:2px 0 0;font-size:14px;color:#52525b">O seu resultado, com comentários e links para os materiais.</p>
+<p style="margin:4px 0 0;font-size:13px;font-weight:700;color:#3f3f46">Sem resultado ainda · 0%</p>
+</div>
+<a href="#" style="align-self:center;display:inline-flex;align-items:center;gap:6px;height:38px;box-sizing:border-box;padding:0 14px;border:2px solid #0b2545;border-radius:8px;color:#0b2545;font-size:14px;font-weight:700">Abrir
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+</li>
+</ol>
+
+<div style="margin-top:16px;padding-top:12px;border-top:1px solid #e4e4e7;text-align:right">
+<button type="button" style="background:none;border:0;padding:0;font:13px Arial,Helvetica,sans-serif;color:#52525b;text-decoration:underline;cursor:pointer">Apagar meu progresso</button>
+</div>
+</section>
+</main>
+
+<p style="position:absolute;left:0;right:0;bottom:14px;margin:0;text-align:center;font-size:13px;color:#52525b">Mais abaixo: objetivos, público e perguntas frequentes ↓</p>
+</div>
+</div></div>
+</section>
+<section class="quadro" aria-labelledby="t1">
+<h2 id="t1">2. Primeira tela: quem já avançou (variante A) <small>1366 × 768</small></h2>
+<div class="moldura"><div class="tela" style="width:1366px;height:768px">
+<div style="position:relative;width:1366px;height:768px;box-sizing:border-box;background:#f5f7fa;color:#11181c;font-family:Arial,Helvetica,sans-serif;overflow:hidden">
+
+<header style="height:56px;box-sizing:border-box;background:#0b2545;border-bottom:4px solid #c9a227;display:flex;align-items:center;gap:20px;padding:0 24px;color:#fff">
+<a href="#" style="display:flex;align-items:center;gap:10px;color:#fff;font-weight:700;font-size:15px;white-space:nowrap">
+<svg width="28" height="28" viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#c9a227"/><path d="M32 22c-4.500-3.200-11-4.200-18-3v26c7-1.200 13.500-.2 18 3 4.500-3.200 11-4.200 18-3V19c-7-1.200-13.500-.2-18 3z" fill="#0b2545"/><path d="M32 22v26" stroke="#c9a227" stroke-width="2.600" stroke-linecap="round"/></svg>
+Planejamento Pedagógico para EaD
+</a>
+<nav aria-label="Trilha do curso" style="flex:1;display:flex;justify-content:center">
+<ol style="list-style:none;margin:0;padding:0;display:flex;align-items:center">
+<li style="display:flex;align-items:center">
+<a href="#" style="display:flex;align-items:center;gap:8px;height:36px;box-sizing:border-box;padding:0 12px;border-radius:999px;border:2px solid transparent;color:#fff;font-size:14px;font-weight:700">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4h6a4 4 0 0 1 4 4v13a3 3 0 0 0-3-3H2z"/><path d="M22 4h-6a4 4 0 0 0-4 4v13a3 3 0 0 1 3-3h7z"/></svg>
+E-book <span style="display:inline-flex;align-items:center;gap:4px;font-size:12px;background:#157347;border-radius:999px;padding:2px 8px 2px 6px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg>100%</span></a>
+<span aria-hidden="true" style="width:18px;height:2px;background:#4ade9b"></span>
+</li>
+<li style="display:flex;align-items:center">
+<a href="#" style="display:flex;align-items:center;gap:8px;height:36px;box-sizing:border-box;padding:0 12px;border-radius:999px;border:2px solid #c9a227;color:#fff;font-size:14px;font-weight:700">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="16" y="16" width="6" height="6" rx="1"/><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3M12 12V8"/></svg>
+Mapa <span style="font-size:12px;background:#c9a227;color:#0b2545;border-radius:999px;padding:2px 7px">50%</span></a>
+<span aria-hidden="true" style="width:18px;height:2px;background:rgba(255,255,255,.35)"></span>
+</li>
+<li style="display:flex;align-items:center">
+<a href="#" style="display:flex;align-items:center;gap:8px;height:36px;box-sizing:border-box;padding:0 12px;border-radius:999px;border:2px solid transparent;color:#fff;font-size:14px;font-weight:700">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg>
+Avaliação <span style="font-size:12px;background:rgba(255,255,255,.16);border-radius:999px;padding:2px 7px">0%</span></a>
+<span aria-hidden="true" style="width:18px;height:2px;background:rgba(255,255,255,.35)"></span>
+</li>
+<li style="display:flex;align-items:center">
+<a href="#" style="display:flex;align-items:center;gap:8px;height:36px;box-sizing:border-box;padding:0 12px;border-radius:999px;border:2px solid transparent;color:#fff;font-size:14px;font-weight:700">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M8 17v-6M13 17V7M18 17v-4"/></svg>
+Relatório <span style="font-size:12px;background:rgba(255,255,255,.16);border-radius:999px;padding:2px 7px">0%</span></a>
+</li>
+</ol>
+</nav>
+<p style="margin:0;font-size:14px;font-weight:700;white-space:nowrap">Trilha 38%</p>
+</header>
+
+<button type="button" aria-label="Abrir menu de acessibilidade" style="position:absolute;left:0;top:320px;writing-mode:vertical-rl;background:#fff;color:#11181c;border:1px solid #d4d4d8;border-left:0;border-radius:0 12px 12px 0;padding:14px 8px;font:14px Arial,Helvetica,sans-serif;cursor:pointer">Acessibilidade</button>
+
+<main style="box-sizing:border-box;height:712px;padding:56px 72px 0 72px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:64px;align-items:start">
+
+<section style="display:flex;flex-direction:column;gap:20px;padding-top:24px">
+<div style="display:flex;gap:8px;flex-wrap:wrap">
+<span style="font-size:13px;font-weight:700;background:#c9a227;color:#0b2545;border-radius:999px;padding:4px 12px">Curso online</span>
+<span style="font-size:13px;font-weight:700;background:#e6f4ec;color:#0f5132;border-radius:999px;padding:4px 12px">Ritmo livre</span>
+<span style="font-size:13px;font-weight:700;background:#e4e4e7;color:#27272a;border-radius:999px;padding:4px 12px">Sem cadastro</span>
+</div>
+<h1 style="margin:0;font-size:44px;line-height:1.1;color:#0b2545">Planejamento Pedagógico para EaD com Apoio de IA</h1>
+<p style="margin:0;font-size:18px;line-height:1.5;color:#52525b;max-width:560px">Você já concluiu o e-book e abriu 2 dos 4 elementos do mapa. Continue de onde parou ou abra qualquer item da trilha: a ordem é só uma sugestão.</p>
+<div style="display:flex;align-items:center;gap:24px;margin-top:8px">
+<a href="#" style="display:inline-flex;align-items:center;gap:10px;height:52px;box-sizing:border-box;padding:0 28px;border-radius:12px;background:#0b2545;color:#fff;font-size:17px;font-weight:700">Continuar: mapa interativo
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+<a href="#" style="font-size:16px;font-weight:700;color:#0b2545;text-decoration:underline">Conhecer os objetivos do curso</a>
+</div>
+</section>
+
+<section aria-labelledby="trilha-titulo" style="background:#fff;border:1px solid #d4d4d8;border-radius:16px;padding:24px 28px;box-sizing:border-box">
+<div style="display:flex;align-items:baseline;justify-content:space-between">
+<h2 id="trilha-titulo" style="margin:0;font-size:22px;color:#0b2545">Sua trilha</h2>
+<p style="margin:0;font-size:14px;color:#52525b">Ordem sugerida, todos os itens abertos</p>
+</div>
+<div style="margin:14px 0 18px">
+<div style="display:flex;justify-content:space-between;font-size:14px;margin-bottom:6px"><span style="font-weight:700">Progresso da trilha</span><span style="font-weight:700">38%</span></div>
+<div role="img" aria-label="Progresso da trilha: 38%" style="height:10px;background:#e4e4e7;border-radius:999px;overflow:hidden"><div style="width:38%;height:100%;background:#0b2545"></div></div>
+</div>
+
+<ol style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column">
+<li style="display:grid;grid-template-columns:36px minmax(0,1fr) auto;column-gap:16px;padding-bottom:16px;position:relative">
+<span aria-hidden="true" style="position:absolute;left:17px;top:38px;bottom:0;width:2px;background:#157347"></span>
+<span aria-hidden="true" style="width:36px;height:36px;box-sizing:border-box;border-radius:50%;background:#157347;color:#fff;display:flex;align-items:center;justify-content:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg></span>
+<div>
+<h3 style="margin:0;font-size:17px;color:#11181c">E-book</h3>
+<p style="margin:2px 0 0;font-size:14px;color:#52525b">Guia de bolso para planejar com IA sem perder a didática.</p>
+<p style="margin:4px 0 0;font-size:13px;font-weight:700;color:#0f5132">Concluído · 18 de 18 páginas · 100%</p>
+</div>
+<a href="#" style="align-self:center;display:inline-flex;align-items:center;gap:6px;height:38px;box-sizing:border-box;padding:0 14px;border:2px solid #0b2545;border-radius:8px;color:#0b2545;font-size:14px;font-weight:700">Abrir
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+</li>
+<li style="display:grid;grid-template-columns:36px minmax(0,1fr) auto;column-gap:16px;padding-bottom:16px;position:relative">
+<span aria-hidden="true" style="position:absolute;left:17px;top:38px;bottom:0;width:2px;background:#d4d4d8"></span>
+<span aria-hidden="true" style="width:36px;height:36px;box-sizing:border-box;border-radius:50%;border:3px solid #c9a227;background:#fff;color:#0b2545;font-weight:700;display:flex;align-items:center;justify-content:center">2</span>
+<div>
+<div style="display:flex;align-items:center;gap:10px"><h3 style="margin:0;font-size:17px;color:#11181c">Mapa interativo</h3><span style="font-size:12px;font-weight:700;background:#f6edc6;color:#0b2545;border-radius:999px;padding:3px 10px;letter-spacing:.5px">PRÓXIMO</span></div>
+<p style="margin:2px 0 0;font-size:14px;color:#52525b">Os quatro elementos de um planejamento e a falha típica da IA em cada um.</p>
+<p style="margin:4px 0 0;font-size:13px;font-weight:700;color:#3f3f46">Em andamento · 2 de 4 elementos · 50%</p>
+<div role="img" aria-label="Mapa interativo: 50%" style="margin-top:6px;height:6px;width:220px;background:#e4e4e7;border-radius:999px;overflow:hidden"><div style="width:50%;height:100%;background:#0b2545"></div></div>
+</div>
+<a href="#" style="align-self:center;display:inline-flex;align-items:center;gap:6px;height:38px;box-sizing:border-box;padding:0 14px;border:2px solid #0b2545;border-radius:8px;background:#0b2545;color:#fff;font-size:14px;font-weight:700">Continuar
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+</li>
+<li style="display:grid;grid-template-columns:36px minmax(0,1fr) auto;column-gap:16px;padding-bottom:16px;position:relative">
+<span aria-hidden="true" style="position:absolute;left:17px;top:38px;bottom:0;width:2px;background:#d4d4d8"></span>
+<span aria-hidden="true" style="width:36px;height:36px;box-sizing:border-box;border-radius:50%;border:2px solid #0b2545;background:#fff;color:#0b2545;font-weight:700;display:flex;align-items:center;justify-content:center">3</span>
+<div>
+<h3 style="margin:0;font-size:17px;color:#11181c">Avaliação</h3>
+<p style="margin:2px 0 0;font-size:14px;color:#52525b">Quatro perguntas para testar o seu olhar de auditoria.</p>
+<p style="margin:4px 0 0;font-size:13px;font-weight:700;color:#3f3f46">Não iniciada · 0 de 4 perguntas · 0%</p>
+</div>
+<a href="#" style="align-self:center;display:inline-flex;align-items:center;gap:6px;height:38px;box-sizing:border-box;padding:0 14px;border:2px solid #0b2545;border-radius:8px;color:#0b2545;font-size:14px;font-weight:700">Abrir
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+</li>
+<li style="display:grid;grid-template-columns:36px minmax(0,1fr) auto;column-gap:16px;position:relative">
+<span aria-hidden="true" style="width:36px;height:36px;box-sizing:border-box;border-radius:50%;border:2px solid #0b2545;background:#fff;color:#0b2545;font-weight:700;display:flex;align-items:center;justify-content:center">4</span>
+<div>
+<h3 style="margin:0;font-size:17px;color:#11181c">Relatório</h3>
+<p style="margin:2px 0 0;font-size:14px;color:#52525b">O seu resultado, com comentários e links para os materiais.</p>
+<p style="margin:4px 0 0;font-size:13px;font-weight:700;color:#3f3f46">Sem resultado ainda · 0%</p>
+</div>
+<a href="#" style="align-self:center;display:inline-flex;align-items:center;gap:6px;height:38px;box-sizing:border-box;padding:0 14px;border:2px solid #0b2545;border-radius:8px;color:#0b2545;font-size:14px;font-weight:700">Abrir
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+</li>
+</ol>
+
+<div style="margin-top:16px;padding-top:12px;border-top:1px solid #e4e4e7;text-align:right">
+<button type="button" style="background:none;border:0;padding:0;font:13px Arial,Helvetica,sans-serif;color:#52525b;text-decoration:underline;cursor:pointer">Apagar meu progresso</button>
+</div>
+</section>
+</main>
+
+<p style="position:absolute;left:0;right:0;bottom:14px;margin:0;text-align:center;font-size:13px;color:#52525b">Mais abaixo: objetivos, público e perguntas frequentes ↓</p>
+</div>
+</div></div>
+</section>
+<section class="quadro" aria-labelledby="t2">
+<h2 id="t2">3. Estudo dos cabeçalhos: variantes A e B <small>1366 × 740</small></h2>
+<div class="moldura"><div class="tela" style="width:1366px;height:740px">
+<div style="width:1366px;height:740px;box-sizing:border-box;background:#f5f7fa;color:#11181c;font-family:Arial,Helvetica,sans-serif;padding:20px 0;overflow:hidden">
+
+<p style="margin:0 0 6px 32px;font-size:13px;font-weight:700">VARIANTE A · trilha com ícone, rótulo e percentual · visitante novo · altura total 56 px</p>
+<header style="height:56px;box-sizing:border-box;background:#0b2545;border-bottom:4px solid #c9a227;display:flex;align-items:center;gap:20px;padding:0 24px;color:#fff;margin-bottom:16px">
+<a href="#" style="font-weight:700;font-size:15px;white-space:nowrap;color:#fff">Planejamento Pedagógico para EaD</a>
+<nav aria-label="Trilha do curso, visitante novo" style="flex:1;display:flex;justify-content:center;gap:8px;font-size:14px;font-weight:700">
+<a href="#" style="display:flex;align-items:center;gap:8px;height:36px;box-sizing:border-box;padding:0 12px;border-radius:999px;border:2px solid #c9a227;color:#fff">E-book <span style="font-size:12px;background:rgba(255,255,255,.16);border-radius:999px;padding:2px 7px">0%</span></a>
+<a href="#" style="display:flex;align-items:center;gap:8px;height:36px;box-sizing:border-box;padding:0 12px;border-radius:999px;border:2px solid transparent;color:#fff">Mapa <span style="font-size:12px;background:rgba(255,255,255,.16);border-radius:999px;padding:2px 7px">0%</span></a>
+<a href="#" style="display:flex;align-items:center;gap:8px;height:36px;box-sizing:border-box;padding:0 12px;border-radius:999px;border:2px solid transparent;color:#fff">Avaliação <span style="font-size:12px;background:rgba(255,255,255,.16);border-radius:999px;padding:2px 7px">0%</span></a>
+<a href="#" style="display:flex;align-items:center;gap:8px;height:36px;box-sizing:border-box;padding:0 12px;border-radius:999px;border:2px solid transparent;color:#fff">Relatório <span style="font-size:12px;background:rgba(255,255,255,.16);border-radius:999px;padding:2px 7px">0%</span></a>
+</nav>
+<p style="margin:0;font-size:14px;font-weight:700;white-space:nowrap">Trilha 0%</p>
+</header>
+
+<p style="margin:0 0 6px 32px;font-size:13px;font-weight:700">VARIANTE A · quem já avançou (e-book 100%, mapa 50%, página atual: mapa) · altura total 56 px</p>
+<header style="height:56px;box-sizing:border-box;background:#0b2545;border-bottom:4px solid #c9a227;display:flex;align-items:center;gap:20px;padding:0 24px;color:#fff;margin-bottom:16px">
+<a href="#" style="font-weight:700;font-size:15px;white-space:nowrap;color:#fff">Planejamento Pedagógico para EaD</a>
+<nav aria-label="Trilha do curso, quem já avançou" style="flex:1;display:flex;justify-content:center;gap:8px;font-size:14px;font-weight:700">
+<a href="#" style="display:flex;align-items:center;gap:8px;height:36px;box-sizing:border-box;padding:0 12px;border-radius:999px;border:2px solid transparent;color:#fff">E-book <span style="display:inline-flex;align-items:center;gap:4px;font-size:12px;background:#157347;border-radius:999px;padding:2px 8px 2px 6px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg>100%</span></a>
+<a href="#" aria-current="page" style="display:flex;align-items:center;gap:8px;height:36px;box-sizing:border-box;padding:0 12px;border-radius:999px;border:2px solid #fff;background:#fff;color:#0b2545">Mapa <span style="font-size:12px;background:#c9a227;color:#0b2545;border-radius:999px;padding:2px 7px">50%</span></a>
+<a href="#" style="display:flex;align-items:center;gap:8px;height:36px;box-sizing:border-box;padding:0 12px;border-radius:999px;border:2px solid transparent;color:#fff">Avaliação <span style="font-size:12px;background:rgba(255,255,255,.16);border-radius:999px;padding:2px 7px">0%</span></a>
+<a href="#" style="display:flex;align-items:center;gap:8px;height:36px;box-sizing:border-box;padding:0 12px;border-radius:999px;border:2px solid transparent;color:#fff">Relatório <span style="font-size:12px;background:rgba(255,255,255,.16);border-radius:999px;padding:2px 7px">0%</span></a>
+</nav>
+<p style="margin:0;font-size:14px;font-weight:700;white-space:nowrap">Trilha 38%</p>
+</header>
+
+<p style="margin:0 0 6px 32px;font-size:13px;font-weight:700">VARIANTE A · fonte extra grande (125%) em janela de 1024 px: a barra quebra em duas linhas, sem esconder item · altura total ~108 px</p>
+<div style="width:1024px;margin-bottom:16px">
+<header style="box-sizing:border-box;background:#0b2545;border-bottom:4px solid #c9a227;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px 20px;padding:8px 24px;color:#fff;font-size:18px">
+<a href="#" style="font-weight:700;font-size:19px;white-space:nowrap;color:#fff">Planejamento Pedagógico para EaD</a>
+<p style="margin:0;font-size:17px;font-weight:700;white-space:nowrap">Trilha 38%</p>
+<nav aria-label="Trilha do curso, fonte extra grande" style="flex:1 1 100%;display:flex;gap:8px;font-size:17px;font-weight:700">
+<a href="#" style="display:flex;align-items:center;gap:8px;height:40px;box-sizing:border-box;padding:0 12px;border-radius:999px;border:2px solid transparent;color:#fff">E-book <span style="display:inline-flex;align-items:center;gap:4px;font-size:15px;background:#157347;border-radius:999px;padding:2px 8px 2px 6px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg>100%</span></a>
+<a href="#" style="display:flex;align-items:center;gap:8px;height:40px;box-sizing:border-box;padding:0 12px;border-radius:999px;border:2px solid #c9a227;color:#fff">Mapa <span style="font-size:15px;background:#c9a227;color:#0b2545;border-radius:999px;padding:2px 7px">50%</span></a>
+<a href="#" style="display:flex;align-items:center;gap:8px;height:40px;box-sizing:border-box;padding:0 12px;border-radius:999px;border:2px solid transparent;color:#fff">Avaliação <span style="font-size:15px;background:rgba(255,255,255,.16);border-radius:999px;padding:2px 7px">0%</span></a>
+<a href="#" style="display:flex;align-items:center;gap:8px;height:40px;box-sizing:border-box;padding:0 12px;border-radius:999px;border:2px solid transparent;color:#fff">Relatório <span style="font-size:15px;background:rgba(255,255,255,.16);border-radius:999px;padding:2px 7px">0%</span></a>
+</nav>
+</header>
+</div>
+
+<p style="margin:0 0 6px 32px;font-size:13px;font-weight:700">VARIANTE B · barra mínima de 44 px e faixa segmentada de 6 px · visitante novo · altura total 50 px</p>
+<header style="background:#0b2545;color:#fff;margin-bottom:16px">
+<div style="height:44px;box-sizing:border-box;display:flex;align-items:center;justify-content:space-between;padding:0 24px">
+<a href="#" style="font-weight:700;font-size:14px;color:#fff">Planejamento Pedagógico para EaD</a>
+<nav aria-label="Trilha do curso, variante B, visitante novo" style="display:flex;align-items:center;gap:22px;font-size:14px;font-weight:700">
+<a href="#" style="display:flex;align-items:center;gap:7px;color:#fff"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.500" aria-hidden="true"><circle cx="12" cy="12" r="9"/></svg>E-book</a>
+<a href="#" style="display:flex;align-items:center;gap:7px;color:#fff"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.500" aria-hidden="true"><circle cx="12" cy="12" r="9"/></svg>Mapa</a>
+<a href="#" style="display:flex;align-items:center;gap:7px;color:#fff"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.500" aria-hidden="true"><circle cx="12" cy="12" r="9"/></svg>Avaliação</a>
+<a href="#" style="display:flex;align-items:center;gap:7px;color:#fff"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.500" aria-hidden="true"><circle cx="12" cy="12" r="9"/></svg>Relatório</a>
+<span style="font-size:14px;color:#fff;border-left:1px solid rgba(255,255,255,.35);padding-left:22px">Trilha 0%</span>
+</nav>
+</div>
+<div aria-hidden="true" style="height:6px;display:flex;gap:2px;background:#0b2545"><span style="flex:1;background:rgba(255,255,255,.22)"></span><span style="flex:1;background:rgba(255,255,255,.22)"></span><span style="flex:1;background:rgba(255,255,255,.22)"></span><span style="flex:1;background:rgba(255,255,255,.22)"></span></div>
+</header>
+
+<p style="margin:0 0 6px 32px;font-size:13px;font-weight:700">VARIANTE B · quem já avançou (e-book 100%, mapa 50%, página atual: mapa, sublinhada) · altura total 50 px</p>
+<header style="background:#0b2545;color:#fff;margin-bottom:16px">
+<div style="height:44px;box-sizing:border-box;display:flex;align-items:center;justify-content:space-between;padding:0 24px">
+<a href="#" style="font-weight:700;font-size:14px;color:#fff">Planejamento Pedagógico para EaD</a>
+<nav aria-label="Trilha do curso, variante B, quem já avançou" style="display:flex;align-items:center;gap:22px;font-size:14px;font-weight:700">
+<a href="#" style="display:flex;align-items:center;gap:7px;color:#fff"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="#157347"/><path d="m7 12.500 3.500 3.500 6-7" fill="none" stroke="#fff" stroke-width="2.500" stroke-linecap="round" stroke-linejoin="round"/></svg>E-book</a>
+<a href="#" aria-current="page" style="display:flex;align-items:center;gap:7px;color:#fff;text-decoration:underline;text-underline-offset:6px;text-decoration-thickness:2px"><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="#c9a227" stroke-width="2.500"/><path d="M12 3a9 9 0 0 1 0 18z" fill="#c9a227"/></svg>Mapa</a>
+<a href="#" style="display:flex;align-items:center;gap:7px;color:#fff"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.500" aria-hidden="true"><circle cx="12" cy="12" r="9"/></svg>Avaliação</a>
+<a href="#" style="display:flex;align-items:center;gap:7px;color:#fff"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.500" aria-hidden="true"><circle cx="12" cy="12" r="9"/></svg>Relatório</a>
+<span style="font-size:14px;color:#fff;border-left:1px solid rgba(255,255,255,.35);padding-left:22px">Trilha 38%</span>
+</nav>
+</div>
+<div aria-hidden="true" style="height:6px;display:flex;gap:2px;background:#0b2545"><span style="flex:1;background:#4ade9b"></span><span style="flex:1;background:linear-gradient(90deg,#c9a227 50%,rgba(255,255,255,.22) 50%)"></span><span style="flex:1;background:rgba(255,255,255,.22)"></span><span style="flex:1;background:rgba(255,255,255,.22)"></span></div>
+</header>
+
+<p style="margin:0 0 6px 32px;font-size:13px;font-weight:700">VARIANTE B · fonte extra grande (125%) em janela de 1024 px · altura total ~86 px</p>
+<div style="width:1024px">
+<header style="background:#0b2545;color:#fff">
+<div style="box-sizing:border-box;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 22px;padding:8px 24px;font-size:17px">
+<a href="#" style="font-weight:700;font-size:17px;color:#fff;white-space:nowrap">Planejamento Pedagógico para EaD</a>
+<nav aria-label="Trilha do curso, variante B, fonte extra grande" style="display:flex;flex-wrap:wrap;align-items:center;gap:6px 22px;font-size:17px;font-weight:700">
+<a href="#" style="color:#fff">E-book ✓</a><a href="#" style="color:#fff;text-decoration:underline;text-underline-offset:6px">Mapa ◐</a><a href="#" style="color:#fff">Avaliação ○</a><a href="#" style="color:#fff">Relatório ○</a><span style="color:#fff">Trilha 38%</span>
+</nav>
+</div>
+<div aria-hidden="true" style="height:6px;display:flex;gap:2px"><span style="flex:1;background:#4ade9b"></span><span style="flex:1;background:linear-gradient(90deg,#c9a227 50%,rgba(255,255,255,.22) 50%)"></span><span style="flex:1;background:rgba(255,255,255,.22)"></span><span style="flex:1;background:rgba(255,255,255,.22)"></span></div>
+</header>
+</div>
+</div>
+</div></div>
+</section>
+<section class="quadro" aria-labelledby="t3">
+<h2 id="t3">4. Página do mapa com o novo cabeçalho <small>1366 × 768</small></h2>
+<div class="moldura"><div class="tela" style="width:1366px;height:768px">
+<div style="position:relative;width:1366px;height:768px;box-sizing:border-box;background:#f5f7fa;color:#11181c;font-family:Arial,Helvetica,sans-serif;display:flex;flex-direction:column;overflow:hidden">
+
+<header style="flex:none;height:56px;box-sizing:border-box;background:#0b2545;border-bottom:4px solid #c9a227;display:flex;align-items:center;gap:20px;padding:0 24px;color:#fff">
+<a href="#" style="font-weight:700;font-size:15px;white-space:nowrap;color:#fff">Planejamento Pedagógico para EaD</a>
+<nav aria-label="Trilha do curso" style="flex:1;display:flex;justify-content:center;gap:8px;font-size:14px;font-weight:700">
+<a href="#" style="display:flex;align-items:center;gap:8px;height:36px;box-sizing:border-box;padding:0 12px;border-radius:999px;border:2px solid transparent;color:#fff">E-book <span style="display:inline-flex;align-items:center;gap:4px;font-size:12px;background:#157347;border-radius:999px;padding:2px 8px 2px 6px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg>100%</span></a>
+<a href="#" aria-current="page" style="display:flex;align-items:center;gap:8px;height:36px;box-sizing:border-box;padding:0 12px;border-radius:999px;border:2px solid #fff;background:#fff;color:#0b2545">Mapa <span style="font-size:12px;background:#c9a227;color:#0b2545;border-radius:999px;padding:2px 7px">50%</span></a>
+<a href="#" style="display:flex;align-items:center;gap:8px;height:36px;box-sizing:border-box;padding:0 12px;border-radius:999px;border:2px solid transparent;color:#fff">Avaliação <span style="font-size:12px;background:rgba(255,255,255,.16);border-radius:999px;padding:2px 7px">0%</span></a>
+<a href="#" style="display:flex;align-items:center;gap:8px;height:36px;box-sizing:border-box;padding:0 12px;border-radius:999px;border:2px solid transparent;color:#fff">Relatório <span style="font-size:12px;background:rgba(255,255,255,.16);border-radius:999px;padding:2px 7px">0%</span></a>
+</nav>
+<p style="margin:0;font-size:14px;font-weight:700;white-space:nowrap">Trilha 38%</p>
+</header>
+
+<p style="position:absolute;left:72px;bottom:84px;margin:0;background:#f6edc6;color:#0b2545;font-size:12px;font-weight:700;padding:5px 10px;border-radius:6px">Cabeçalho: 56 px (antes: 124 px, somando o cabeçalho e a linha de título)</p>
+
+<button type="button" aria-label="Abrir menu de acessibilidade" style="position:absolute;left:0;top:300px;writing-mode:vertical-rl;background:#fff;color:#11181c;border:1px solid #d4d4d8;border-left:0;border-radius:0 12px 12px 0;padding:14px 8px;font:14px Arial,Helvetica,sans-serif;cursor:pointer">Acessibilidade</button>
+
+<main style="flex:1;min-height:0;box-sizing:border-box;padding:16px 56px 12px 56px;display:flex;flex-direction:column;gap:12px">
+<div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px">
+<div>
+<h1 style="margin:0;font-size:24px;color:#0b2545">Mapa do alinhamento</h1>
+<p style="margin:2px 0 0;font-size:14px;color:#52525b">Quatro elementos de um planejamento e a falha típica da IA em cada um. Exemplo: um curso de horta em casa.</p>
+</div>
+<div style="display:flex;gap:8px;align-items:center">
+<a href="#" style="display:inline-flex;align-items:center;height:36px;box-sizing:border-box;padding:0 14px;border-radius:8px;background:#0b2545;color:#fff;font-size:14px;font-weight:700">Mapa</a>
+<a href="#" style="display:inline-flex;align-items:center;height:36px;box-sizing:border-box;padding:0 14px;border-radius:8px;border:2px solid #0b2545;color:#0b2545;font-size:14px;font-weight:700">Lista</a>
+<a href="#" style="display:inline-flex;align-items:center;height:36px;box-sizing:border-box;padding:0 14px;border-radius:8px;background:#e4e4e7;color:#11181c;font-size:14px;font-weight:700">Percurso guiado</a>
+</div>
+</div>
+
+<div style="flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:20px">
+<div style="position:relative;background:#eef1f5;border:1px solid #d4d4d8;border-radius:16px;overflow:hidden">
+<svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" style="position:absolute;left:0;top:0;width:100%;height:100%">
+<line x1="14" y1="50" x2="44" y2="50" stroke="#c9a227" stroke-width="4" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+<line x1="44" y1="50" x2="80" y2="22" stroke="#c9a227" stroke-width="4" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+<line x1="44" y1="50" x2="80" y2="78" stroke="#c9a227" stroke-width="4" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+<line x1="80" y1="22" x2="80" y2="78" stroke="#8b8b93" stroke-opacity=".55" stroke-width="3" stroke-linecap="round" vector-effect="non-scaling-stroke"/>
+</svg>
+<a href="#" style="position:absolute;left:14%;top:50%;transform:translate(-50%,-50%);width:23%;min-width:110px;box-sizing:border-box;padding:10px 8px;text-align:center;background:#fff;border:2px solid #0b2545;border-radius:16px;display:flex;flex-direction:column;align-items:center;gap:4px">
+<span style="width:40px;height:40px;border-radius:10px;background:#0b2545;color:#c9a227;display:flex;align-items:center;justify-content:center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.500"/><path d="M2 20a7 7 0 0 1 14 0"/><circle cx="17" cy="9" r="2.500"/><path d="M17 14a5 5 0 0 1 5 5"/></svg></span>
+<b style="font-size:14px">Público</b><span style="font-size:12px;color:#52525b">Para quem é o curso?</span></a>
+<a href="#" aria-current="true" style="position:absolute;left:44%;top:50%;transform:translate(-50%,-50%);width:23%;min-width:110px;box-sizing:border-box;padding:10px 8px;text-align:center;background:#0b2545;color:#fff;border:2px solid #c9a227;border-radius:16px;display:flex;flex-direction:column;align-items:center;gap:4px">
+<span style="width:40px;height:40px;border-radius:10px;background:#0b2545;color:#c9a227;display:flex;align-items:center;justify-content:center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.500"/></svg></span>
+<b style="font-size:14px">Objetivos</b><span style="font-size:12px;color:#e4e4e7">O que a pessoa fará ao final?</span></a>
+<a href="#" style="position:absolute;left:80%;top:22%;transform:translate(-50%,-50%);width:23%;min-width:110px;box-sizing:border-box;padding:10px 8px;text-align:center;background:#fff;border:2px solid #0b2545;border-radius:16px;display:flex;flex-direction:column;align-items:center;gap:4px">
+<span style="width:40px;height:40px;border-radius:10px;background:#0b2545;color:#c9a227;display:flex;align-items:center;justify-content:center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 12-8.500 8.500a2.120 2.120 0 0 1-3-3L12 9"/><path d="M17.640 15 22 10.640M20.910 11.700l-1.250-1.250a1 1 0 0 1 0-1.410l-1.790-1.790a2 2 0 0 0-2.830 0L14 8.500"/></svg></span>
+<b style="font-size:14px">Atividades</b><span style="font-size:12px;color:#52525b">O que a pessoa faz para aprender?</span></a>
+<a href="#" style="position:absolute;left:80%;top:78%;transform:translate(-50%,-50%);width:23%;min-width:110px;box-sizing:border-box;padding:10px 8px;text-align:center;background:#fff;border:2px solid #0b2545;border-radius:16px;display:flex;flex-direction:column;align-items:center;gap:4px">
+<span style="width:40px;height:40px;border-radius:10px;background:#0b2545;color:#c9a227;display:flex;align-items:center;justify-content:center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg></span>
+<b style="font-size:14px">Avaliação</b><span style="font-size:12px;color:#52525b">Como conferir que aprendeu?</span></a>
+</div>
+
+<section aria-label="Detalhe do elemento" style="background:#eef1f5;border:1px solid #d4d4d8;border-radius:16px;padding:14px 16px;box-sizing:border-box;overflow:hidden">
+<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+<span style="width:44px;height:44px;border-radius:12px;background:#0b2545;color:#c9a227;display:flex;align-items:center;justify-content:center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.500"/></svg></span>
+<div><h2 style="margin:0;font-size:20px;color:#0b2545">Objetivos</h2><p style="margin:0;font-size:13px;color:#52525b">O que a pessoa fará ao final?</p></div>
+</div>
+<dl style="margin:0;display:flex;flex-direction:column;gap:8px">
+<div style="background:#fff;border-left:4px solid #c9a227;border-radius:8px;padding:7px 12px"><dt style="font-size:11px;font-weight:700;letter-spacing:.8px;color:#52525b">CONCEITO</dt><dd style="margin:2px 0 0;font-size:13.500px;line-height:1.4">O objetivo diz o que a pessoa será capaz de fazer ao final, com um verbo que dá para observar (montar, comparar, explicar). É ele que orienta o que treinar e o que medir.</dd></div>
+<div style="background:#fff;border-left:4px solid #c9a227;border-radius:8px;padding:7px 12px"><dt style="font-size:11px;font-weight:700;letter-spacing:.8px;color:#52525b">EXEMPLO</dt><dd style="margin:2px 0 0;font-size:13.500px;line-height:1.4">Ao final, a pessoa monta uma horta de ervas em vasos na varanda e a mantém por quatro semanas.</dd></div>
+<div style="background:#fff;border-left:4px solid #b91c1c;border-radius:8px;padding:7px 12px"><dt style="font-size:11px;font-weight:700;letter-spacing:.8px;color:#b91c1c">FALHA TÍPICA DA IA</dt><dd style="margin:2px 0 0;font-size:13.500px;line-height:1.4">A IA escreve objetivos vagos (“compreender a importância das plantas”) ou longos demais, sem nada que se possa ver a pessoa fazendo.</dd></div>
+</dl>
+<p style="margin:10px 0 2px;font-size:13px;font-weight:700">Conexões</p>
+<ul style="margin:0;padding-left:18px;font-size:12px;line-height:1.5;color:#3f3f46"><li>Público → Objetivos: define o que é realista aprender</li><li>Objetivos → Atividades: define o que treinar</li><li>Objetivos → Avaliação: define o que medir</li></ul>
+</section>
+</div>
+</main>
+
+<div role="region" aria-label="Sugestão de caminho" style="flex:none;height:60px;box-sizing:border-box;background:#fff;border-top:1px solid #d4d4d8;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:0 56px">
+<a href="#" style="display:inline-flex;align-items:center;gap:8px;height:40px;box-sizing:border-box;padding:0 16px;border:2px solid #0b2545;border-radius:10px;color:#0b2545;font-size:14px;font-weight:700"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>Anterior sugerido: E-book</a>
+<div style="display:flex;align-items:center;gap:12px;font-size:14px"><span style="font-weight:700">Mapa interativo: 50% visto</span><span role="img" aria-label="50%" style="display:block;width:160px;height:8px;background:#e4e4e7;border-radius:999px;overflow:hidden"><span style="display:block;width:50%;height:100%;background:#0b2545"></span></span></div>
+<a href="#" style="display:inline-flex;align-items:center;gap:8px;height:40px;box-sizing:border-box;padding:0 16px;border-radius:10px;background:#0b2545;color:#fff;font-size:14px;font-weight:700">Próximo sugerido: Avaliação<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+</div>
+</div>
+</div></div>
+</section>
+<section class="quadro" aria-labelledby="t4">
+<h2 id="t4">5. Relatório: Seu percurso e comentários com materiais <small>1366 × 820</small></h2>
+<div class="moldura"><div class="tela" style="width:1366px;height:820px">
+<div style="position:relative;width:1366px;height:820px;box-sizing:border-box;background:#f5f7fa;color:#11181c;font-family:Arial,Helvetica,sans-serif;display:flex;flex-direction:column;overflow:hidden">
+
+<header style="flex:none;height:56px;box-sizing:border-box;background:#0b2545;border-bottom:4px solid #c9a227;display:flex;align-items:center;gap:20px;padding:0 24px;color:#fff">
+<a href="#" style="font-weight:700;font-size:15px;white-space:nowrap;color:#fff">Planejamento Pedagógico para EaD</a>
+<nav aria-label="Trilha do curso" style="flex:1;display:flex;justify-content:center;gap:8px;font-size:14px;font-weight:700">
+<a href="#" style="display:flex;align-items:center;gap:8px;height:36px;box-sizing:border-box;padding:0 12px;border-radius:999px;border:2px solid transparent;color:#fff">E-book <span style="display:inline-flex;align-items:center;gap:4px;font-size:12px;background:#157347;border-radius:999px;padding:2px 8px 2px 6px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg>100%</span></a>
+<a href="#" style="display:flex;align-items:center;gap:8px;height:36px;box-sizing:border-box;padding:0 12px;border-radius:999px;border:2px solid transparent;color:#fff">Mapa <span style="font-size:12px;background:#c9a227;color:#0b2545;border-radius:999px;padding:2px 7px">75%</span></a>
+<a href="#" style="display:flex;align-items:center;gap:8px;height:36px;box-sizing:border-box;padding:0 12px;border-radius:999px;border:2px solid transparent;color:#fff">Avaliação <span style="display:inline-flex;align-items:center;gap:4px;font-size:12px;background:#157347;border-radius:999px;padding:2px 8px 2px 6px"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg>100%</span></a>
+<a href="#" aria-current="page" style="display:flex;align-items:center;gap:8px;height:36px;box-sizing:border-box;padding:0 12px;border-radius:999px;border:2px solid #fff;background:#fff;color:#0b2545">Relatório <span style="font-size:12px;background:#e4e4e7;color:#0b2545;border-radius:999px;padding:2px 7px">0%</span></a>
+</nav>
+<p style="margin:0;font-size:14px;font-weight:700;white-space:nowrap">Trilha 69%</p>
+</header>
+
+<button type="button" aria-label="Abrir menu de acessibilidade" style="position:absolute;left:0;top:340px;writing-mode:vertical-rl;background:#fff;color:#11181c;border:1px solid #d4d4d8;border-left:0;border-radius:0 12px 12px 0;padding:14px 8px;font:14px Arial,Helvetica,sans-serif;cursor:pointer">Acessibilidade</button>
+
+<main style="flex:1;min-height:0;box-sizing:border-box;padding:20px 56px 16px 56px;display:flex;flex-direction:column;gap:14px">
+<div style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px">
+<div>
+<h1 style="margin:0;font-size:26px;color:#0b2545">Seu relatório</h1>
+<p style="margin:3px 0 0;font-size:14px;color:#52525b">Resultado da avaliação, o caminho que você percorreu e onde rever cada ponto.</p>
+</div>
+<div style="display:flex;gap:8px">
+<a href="#" style="display:inline-flex;align-items:center;gap:8px;height:40px;box-sizing:border-box;padding:0 16px;border:2px solid #0b2545;border-radius:10px;color:#0b2545;font-size:14px;font-weight:700"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="7"/></svg>Imprimir</a>
+<a href="#" style="display:inline-flex;align-items:center;height:40px;box-sizing:border-box;padding:0 16px;border-radius:10px;background:#0b2545;color:#fff;font-size:14px;font-weight:700">Refazer a avaliação</a>
+</div>
+</div>
+
+<div style="flex:1;min-height:0;display:grid;grid-template-columns:420px minmax(0,1fr);gap:20px">
+
+<aside style="display:flex;flex-direction:column;gap:14px;min-height:0">
+<section aria-label="Resultado" style="background:#0b2545;color:#fff;border-radius:16px;padding:18px 20px;display:flex;align-items:center;gap:18px">
+<div style="flex:none;width:84px;height:84px;border-radius:50%;border:5px solid #c9a227;display:flex;align-items:center;justify-content:center;flex-direction:column"><b style="font-size:26px;line-height:1">3/4</b><span style="font-size:11px">acertos</span></div>
+<div><h2 style="margin:0;font-size:18px">Bom resultado</h2><p style="margin:4px 0 0;font-size:13.500px;line-height:1.45;color:#e4e4e7">Você acertou três das quatro perguntas. A que errou trata de <b style="color:#fff">atividades</b>; veja o comentário e o material indicado.</p></div>
+</section>
+
+<section aria-label="Seu percurso" style="flex:1;min-height:0;background:#fff;border:1px solid #d4d4d8;border-radius:16px;padding:16px 18px;box-sizing:border-box;overflow:hidden">
+<h2 style="margin:0 0 4px;font-size:18px;color:#0b2545">Seu percurso</h2>
+<p style="margin:0 0 12px;font-size:13px;color:#52525b">O que você viu em cada parte. A ordem é uma sugestão; nada é obrigatório.</p>
+<ol style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:12px">
+<li style="display:grid;grid-template-columns:32px 1fr auto;gap:10px;align-items:center">
+<span style="width:32px;height:32px;border-radius:50%;background:#157347;color:#fff;display:flex;align-items:center;justify-content:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg></span>
+<div><b style="font-size:14px">E-book</b><div style="font-size:12.500px;color:#52525b">18 de 18 páginas vistas</div><span role="img" aria-label="100%" style="display:block;margin-top:5px;height:6px;background:#e4e4e7;border-radius:999px;overflow:hidden"><span style="display:block;width:100%;height:100%;background:#157347"></span></span></div>
+<a href="#" style="font-size:13px;font-weight:700;color:#0b2545;text-decoration:underline">Rever</a></li>
+<li style="display:grid;grid-template-columns:32px 1fr auto;gap:10px;align-items:center">
+<span style="width:32px;height:32px;border-radius:50%;background:#c9a227;color:#0b2545;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px">2</span>
+<div><b style="font-size:14px">Mapa interativo</b><div style="font-size:12.500px;color:#52525b">3 de 4 elementos vistos · falta: Avaliação</div><span role="img" aria-label="75%" style="display:block;margin-top:5px;height:6px;background:#e4e4e7;border-radius:999px;overflow:hidden"><span style="display:block;width:75%;height:100%;background:#0b2545"></span></span></div>
+<a href="#" style="font-size:13px;font-weight:700;color:#0b2545;text-decoration:underline">Continuar</a></li>
+<li style="display:grid;grid-template-columns:32px 1fr auto;gap:10px;align-items:center">
+<span style="width:32px;height:32px;border-radius:50%;background:#157347;color:#fff;display:flex;align-items:center;justify-content:center"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg></span>
+<div><b style="font-size:14px">Avaliação</b><div style="font-size:12.500px;color:#52525b">4 de 4 perguntas respondidas</div><span role="img" aria-label="100%" style="display:block;margin-top:5px;height:6px;background:#e4e4e7;border-radius:999px;overflow:hidden"><span style="display:block;width:100%;height:100%;background:#157347"></span></span></div>
+<a href="#" style="font-size:13px;font-weight:700;color:#0b2545;text-decoration:underline">Refazer</a></li>
+<li style="display:grid;grid-template-columns:32px 1fr auto;gap:10px;align-items:center">
+<span style="width:32px;height:32px;border-radius:50%;background:#fff;border:2px solid #0b2545;color:#0b2545;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px">4</span>
+<div><b style="font-size:14px">Relatório</b><div style="font-size:12.500px;color:#52525b">Você está aqui</div></div>
+<span></span></li>
+</ol>
+<p style="margin:14px 0 0;padding-top:10px;border-top:1px solid #e4e4e7;font-size:13px;color:#3f3f46">Por competência: <b>Público</b> acertou · <b>Objetivos</b> acertou · <b>Atividades</b> errou · <b>Avaliação</b> acertou</p>
+</section>
+</aside>
+
+<section aria-label="Gabarito comentado" style="min-height:0;background:#fff;border:1px solid #d4d4d8;border-radius:16px;padding:16px 20px;box-sizing:border-box;overflow:hidden;display:flex;flex-direction:column;gap:10px">
+<div style="display:flex;align-items:baseline;justify-content:space-between"><h2 style="margin:0;font-size:18px;color:#0b2545">Gabarito comentado</h2><span style="font-size:12.500px;color:#52525b">Cada comentário aponta o material onde o assunto aparece</span></div>
+
+<article style="border:1px solid #d4d4d8;border-left:5px solid #157347;border-radius:10px;padding:9px 14px">
+<div style="display:flex;align-items:center;gap:8px"><span style="display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:700;color:#157347"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg>Acertou</span><b style="font-size:14px">1. Público</b></div>
+<p style="margin:4px 0 6px;font-size:13.500px;line-height:1.45">Definir quem vai aprender, e com que conhecimento prévio, vem antes de escrever qualquer objetivo. Sua resposta seguiu essa ordem.</p>
+<a href="#" style="display:inline-flex;align-items:center;gap:6px;min-height:28px;box-sizing:border-box;padding:3px 10px;border-radius:999px;background:#e8eef7;color:#0b2545;font-size:12.500px;font-weight:700"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="1.500"/></svg>Mapa interativo · elemento Público</a>
+</article>
+
+<article style="border:1px solid #d4d4d8;border-left:5px solid #157347;border-radius:10px;padding:9px 14px">
+<div style="display:flex;align-items:center;gap:8px"><span style="display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:700;color:#157347"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg>Acertou</span><b style="font-size:14px">2. Objetivos</b></div>
+<p style="margin:4px 0 6px;font-size:13.500px;line-height:1.45">Um bom objetivo usa um verbo que dá para observar. “Montar uma horta de ervas em vasos” é verificável; “compreender a importância das plantas” não é.</p>
+<a href="#" style="display:inline-flex;align-items:center;gap:6px;min-height:28px;box-sizing:border-box;padding:3px 10px;border-radius:999px;background:#e8eef7;color:#0b2545;font-size:12.500px;font-weight:700"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/></svg>E-book · capítulo 2 · Objetivos que dá para observar</a>
+</article>
+
+<article style="border:1px solid #d4d4d8;border-left:5px solid #b91c1c;border-radius:10px;padding:9px 14px;background:#fdf6f6">
+<div style="display:flex;align-items:center;gap:8px"><span style="display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:700;color:#b91c1c"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>Errou</span><b style="font-size:14px">3. Atividades</b></div>
+<p style="margin:4px 0 6px;font-size:13.500px;line-height:1.45">Você escolheu aceitar a atividade sugerida pela IA sem conferir. Ela estava longe do objetivo: pedia só leitura, e o objetivo pede prática. A resposta certa era <b>auditar a sugestão</b> contra o objetivo antes de usá-la.</p>
+<div style="display:flex;flex-wrap:wrap;gap:8px">
+<a href="#" style="display:inline-flex;align-items:center;gap:6px;min-height:28px;box-sizing:border-box;padding:3px 10px;border-radius:999px;background:#0b2545;color:#fff;font-size:12.500px;font-weight:700"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/></svg>E-book · capítulo 3 · Auditar a sugestão da IA</a>
+<a href="#" style="display:inline-flex;align-items:center;gap:6px;min-height:28px;box-sizing:border-box;padding:3px 10px;border-radius:999px;background:#e8eef7;color:#0b2545;font-size:12.500px;font-weight:700"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="1.500"/></svg>Mapa interativo · elemento Atividades</a>
+</div>
+</article>
+
+<article style="border:1px solid #d4d4d8;border-left:5px solid #157347;border-radius:10px;padding:9px 14px">
+<div style="display:flex;align-items:center;gap:8px"><span style="display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:700;color:#157347"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg>Acertou</span><b style="font-size:14px">4. Avaliação</b></div>
+<p style="margin:4px 0 6px;font-size:13.500px;line-height:1.45">A avaliação precisa medir o que o objetivo promete. Você ligou a prova ao verbo do objetivo, que é o alinhamento que o curso busca.</p>
+<a href="#" style="display:inline-flex;align-items:center;gap:6px;min-height:28px;box-sizing:border-box;padding:3px 10px;border-radius:999px;background:#e8eef7;color:#0b2545;font-size:12.500px;font-weight:700;border:1px dashed #0b2545"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="1.500"/></svg>Mapa interativo · elemento Avaliação (ainda não visto)</a>
+</article>
+</section>
+</div>
+</main>
+</div>
+</div></div>
+</section>
+<section class="quadro" aria-labelledby="t5">
+<h2 id="t5">6. Primeira tela no celular, com barra inferior <small>390 × 844</small></h2>
+<div class="moldura"><div class="tela" style="width:390px;height:844px">
+<div style="position:relative;width:390px;height:844px;box-sizing:border-box;background:#f5f7fa;color:#11181c;font-family:Arial,Helvetica,sans-serif;display:flex;flex-direction:column;overflow:hidden">
+
+<header style="flex:none;height:48px;box-sizing:border-box;background:#0b2545;border-bottom:3px solid #c9a227;display:flex;align-items:center;justify-content:space-between;padding:0 16px;color:#fff">
+<a href="#" style="font-weight:700;font-size:15px;color:#fff">Planejamento para EaD</a>
+<p style="margin:0;font-size:13px;font-weight:700;white-space:nowrap;display:flex;align-items:center;gap:8px">Trilha 38%<span role="img" aria-label="38%" style="display:block;width:44px;height:6px;background:rgba(255,255,255,.25);border-radius:999px;overflow:hidden"><span style="display:block;width:38%;height:100%;background:#c9a227"></span></span></p>
+</header>
+
+<main style="flex:1;min-height:0;box-sizing:border-box;padding:16px 16px 12px 16px;display:flex;flex-direction:column;gap:12px;overflow:hidden">
+<div>
+<h1 style="margin:0;font-size:22px;line-height:1.25;color:#0b2545">Bem-vindo de volta</h1>
+<p style="margin:4px 0 0;font-size:14px;line-height:1.45;color:#3f3f46">Você já concluiu o e-book e metade do mapa. Siga a trilha sugerida ou abra o que preferir.</p>
+</div>
+
+<a href="#" style="display:flex;align-items:center;justify-content:center;gap:8px;min-height:52px;box-sizing:border-box;padding:0 16px;border-radius:12px;background:#0b2545;color:#fff;font-size:16px;font-weight:700;border:2px solid #c9a227">Continuar: mapa interativo<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+
+<h2 style="margin:4px 0 0;font-size:15px;color:#0b2545">Sua trilha</h2>
+<ol style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px">
+<li><a href="#" style="display:grid;grid-template-columns:36px 1fr auto;gap:12px;align-items:center;min-height:64px;box-sizing:border-box;padding:8px 14px;background:#fff;border:1px solid #d4d4d8;border-radius:12px">
+<span style="width:36px;height:36px;border-radius:50%;background:#157347;color:#fff;display:flex;align-items:center;justify-content:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg></span>
+<span><b style="font-size:15px">E-book</b><br><span style="font-size:13px;color:#52525b">18 de 18 páginas</span></span>
+<b style="font-size:13px;color:#157347">100%</b></a></li>
+<li><a href="#" aria-current="step" style="display:grid;grid-template-columns:36px 1fr auto;gap:12px;align-items:center;min-height:64px;box-sizing:border-box;padding:8px 14px;background:#fff;border:2px solid #c9a227;border-radius:12px">
+<span style="width:36px;height:36px;border-radius:50%;background:#c9a227;color:#0b2545;display:flex;align-items:center;justify-content:center;font-weight:700">2</span>
+<span><b style="font-size:15px">Mapa interativo</b><br><span style="font-size:13px;color:#52525b">2 de 4 elementos · próximo</span></span>
+<b style="font-size:13px;color:#0b2545">50%</b></a></li>
+<li><a href="#" style="display:grid;grid-template-columns:36px 1fr auto;gap:12px;align-items:center;min-height:64px;box-sizing:border-box;padding:8px 14px;background:#fff;border:1px solid #d4d4d8;border-radius:12px">
+<span style="width:36px;height:36px;border-radius:50%;background:#fff;border:2px solid #0b2545;color:#0b2545;display:flex;align-items:center;justify-content:center;font-weight:700">3</span>
+<span><b style="font-size:15px">Avaliação</b><br><span style="font-size:13px;color:#52525b">0 de 4 perguntas</span></span>
+<b style="font-size:13px;color:#52525b">0%</b></a></li>
+<li><a href="#" style="display:grid;grid-template-columns:36px 1fr auto;gap:12px;align-items:center;min-height:64px;box-sizing:border-box;padding:8px 14px;background:#fff;border:1px solid #d4d4d8;border-radius:12px">
+<span style="width:36px;height:36px;border-radius:50%;background:#fff;border:2px solid #0b2545;color:#0b2545;display:flex;align-items:center;justify-content:center;font-weight:700">4</span>
+<span><b style="font-size:15px">Relatório</b><br><span style="font-size:13px;color:#52525b">Depois da avaliação</span></span>
+<b style="font-size:13px;color:#52525b">0%</b></a></li>
+</ol>
+
+<a href="#" style="align-self:flex-start;display:inline-flex;align-items:center;min-height:44px;font-size:14px;color:#0b2545;text-decoration:underline">Apagar meu progresso</a>
+</main>
+
+<nav aria-label="Trilha do curso" style="flex:none;height:64px;box-sizing:border-box;background:#fff;border-top:1px solid #d4d4d8;display:grid;grid-template-columns:repeat(4,1fr);position:relative">
+<a href="#" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#157347;font-size:12px;font-weight:700"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="m9 11 2 2 4-4"/></svg>E-book</a>
+<a href="#" aria-current="step" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#0b2545;font-size:12px;font-weight:700;border-top:3px solid #c9a227;margin-top:-1px;background:#fbf6e2"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="6" cy="12" r="2.500"/><circle cx="18" cy="6" r="2.500"/><circle cx="18" cy="18" r="2.500"/><path d="m8.300 11 7.400-3.700M8.300 13l7.400 3.700"/></svg>Mapa</a>
+<a href="#" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#3f3f46;font-size:12px;font-weight:700"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg>Avaliação</a>
+<a href="#" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:#3f3f46;font-size:12px;font-weight:700"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h5"/></svg>Relatório</a>
+</nav>
+
+<button type="button" aria-label="Abrir menu de acessibilidade" style="position:absolute;right:0;bottom:80px;writing-mode:vertical-rl;background:#fff;color:#11181c;border:1px solid #d4d4d8;border-right:0;border-radius:12px 0 0 12px;padding:12px 8px;font:13px Arial,Helvetica,sans-serif;cursor:pointer">Acessibilidade</button>
+</div>
+</div></div>
+</section>
+</div>
+</body>
+</html>
