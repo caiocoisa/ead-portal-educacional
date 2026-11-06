@@ -2714,13 +2714,18 @@ Escreve os roteiros usando os templates da Task 43, com cenários novos
 - **Ebook (versão definitiva, 2026-11-05):** adiantado sem liberar esta
   task: `conteudo/ebook/roteiro.md`, `public/ebook/leitor.html` e
   `public/ebook/ebook-planejar-com-ia.pdf`, publicados no portal pela rota
-  `/ebook`. O restante desta task (quadrinho, revisão por educadores e
-  matriz definitiva) continua `blocked`.
+  `/ebook`. O restante desta task (revisão por educadores e matriz
+  definitiva) continua `blocked`.
 - **Mapa interativo (2026-11-05):** também adiantado sem liberar esta task:
   `conteudo/mapa/roteiro.md`, `content/mapa.ts` e o componente
   `components/materials/ConceptMap.tsx`, publicados na rota `/mapa`. Faltam
   as ilustrações dos quatro nós (prompts em `docs/prompts-ilustracao.md`,
   seção 5.4) e a revisão por educadores (Task 50).
+- **Quadrinho (2026-11-05):** também adiantado sem liberar esta task:
+  `conteudo/quadrinho/roteiro.md`, `content/quadrinho.ts` e o componente
+  `components/materials/ComicReader.tsx`, publicados na rota `/quadrinho`,
+  com as seis cenas da Task 64 (as mesmas do ebook). Falta a revisão por
+  educadores (Task 50); cenas próprias e um episódio 2 ficam para depois.
 
 **Files:**
 - `conteudo/{mapa,quadrinho,ebook}/` (novos)
@@ -3551,8 +3556,20 @@ links. Verificado por testes de ponta a ponta (`tests/e2e/mapa.spec.ts`) e
 pela matriz de axe-core em tema, contraste e fonte, inclusive com
 elemento selecionado, percurso guiado e lista. **Faltam** as ilustrações
 dos quatro nós (cada nó mostra um ícone), a revisão por educadores (Task
-50), o redesenho (R2) e a reorganização no hub (Task 52). O terceiro
-artefato, o quadrinho, segue sem roteiro.
+50), o redesenho (R2) e a reorganização no hub (Task 52).
+
+**Quadrinho (2026-11-05), terceiro artefato:** está **no portal**, na rota
+pública `/quadrinho`, como componente nativo (`components/materials/`), com
+seis painéis, duas decisões (só se avança com a resposta certa) e uma visão
+"Roteiro em texto" para leitor de tela. É item do menu superior das páginas
+públicas, mas **não** tem cartão na tela principal, onde só e-book e mapa são
+destaque. Verificado por testes de ponta a ponta
+(`tests/e2e/quadrinho.spec.ts`) e pela matriz de axe-core em tema, contraste
+e fonte, inclusive com a decisão errada, a certa e o roteiro em texto. As
+cenas são as seis imagens de avaliação da Task 64, as mesmas do ebook.
+**Faltam** a revisão por educadores (Task 50), cenas próprias e um episódio
+2, e o redesenho (R2). Com os três artefatos, a reavaliação do fluxo
+(UX-21) deixou de ser hipótese.
 
 **Outras entregas de 2026-11-05:** ícone da aba do navegador próprio
 (`app/icon.svg`, `app/apple-icon.png`, `app/favicon.ico`; `npm run icones`),
@@ -3575,8 +3592,8 @@ estão em `docs/revisao-fluxo-ux.md` (UX-20) e se resolvem nas Tasks 52 e
 **Pendência a analisar (2026-11-05): UX-21, reavaliar o fluxo do usuário
 com os novos artefatos.** A jornada foi desenhada como um percurso linear
 (vídeo, avaliação, relatório) com materiais em um hub opcional (D1). Entraram
-o e-book e o mapa como rotas públicas separadas, fora da jornada (o
-quadrinho será a terceira), e o percurso não diz quando cada uma serve. Fatos
+o e-book, o mapa e o quadrinho como rotas públicas separadas, fora da jornada (os
+três materiais já estão no ar), e o percurso não diz quando cada uma serve. Fatos
 do estado atual: a tela principal destaca os materiais porque o vídeo ainda
 não existe; quem já tem progresso é redirecionado e nunca vê os cartões;
 nada registra que um material foi visto nem o liga ao relatório; o menu

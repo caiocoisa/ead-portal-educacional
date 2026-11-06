@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { ArrowLeft, BookOpen, Network } from "lucide-react";
+import { ArrowLeft, BookImage, BookOpen, Network } from "lucide-react";
 import { AccessibilityControls } from "@/components/accessibility/AccessibilityControls";
 
-export type PortalPage = "home" | "ebook" | "mapa";
+export type PortalPage = "home" | "ebook" | "mapa" | "quadrinho";
 
 interface PortalHeaderProps {
   /** Página em que o cabeçalho está; destaca o item do menu e decide se oferece "Voltar ao curso". */
@@ -17,6 +17,7 @@ const LINK_ACTIVE = `${LINK_BASE} border-white bg-white font-semibold text-(--br
 const MATERIALS = [
   { page: "ebook", href: "/ebook", label: "E-book", icon: BookOpen },
   { page: "mapa", href: "/mapa", label: "Mapa interativo", icon: Network },
+  { page: "quadrinho", href: "/quadrinho", label: "Quadrinho", icon: BookImage },
 ] as const;
 
 export function PortalHeader({ current = "home" }: PortalHeaderProps) {

@@ -248,7 +248,7 @@ export function ConceptMap() {
                   onClick={() => choose(node.id)}
                   onKeyDown={(e) => handleKeyDown(e, index)}
                   style={{ left: `${node.position.x}%`, top: `${node.position.y}%` }}
-                  className={`absolute flex w-[23%] min-w-28 -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-1 rounded-2xl border-2 p-2 text-center shadow-sm transition-colors focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-(--focus) ${
+                  className={`absolute flex w-[23%] min-w-28 -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-1 rounded-2xl border-2 p-2 text-center shadow-sm focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-(--focus) ${
                     isSelected
                       ? "border-(--gold) bg-(--brand) text-white"
                       : "border-(--brand) bg-(--surface) hover:bg-(--surface-secondary)"
