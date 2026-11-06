@@ -677,3 +677,10 @@ Figma usar e se há limite de créditos.
    vertical (cabeçalho do portal, linha de título, barra e rodapé do
    leitor; sobram ~50% da janela em um notebook) e obriga a rolar. Medições
    e direções possíveis em `docs/revisao-fluxo-ux.md`; sem decisão.
+8. **Pendência a analisar (UX-21):** reavaliar o **fluxo do usuário** com
+   o e-book, o mapa e, futuramente, o quadrinho como rotas públicas fora da
+   jornada: papel de cada artefato no percurso, jornada linear ou trilha,
+   como quem já tem progresso os encontra, hierarquia da tela principal, hub
+   ou rotas separadas e registro de material visto. Coloca em questão a D1
+   (hub opcional); deve ser respondida **antes do ADR da Task 46**. Detalhes
+   em `docs/revisao-fluxo-ux.md`; sem decisão.
