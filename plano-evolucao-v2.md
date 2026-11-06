@@ -49,7 +49,7 @@ O ebook deve ser:
 > **Ponto de atenção, que não substitui a publicação:** plataformas de
 > terceiros podem ter limitações de acessibilidade e de privacidade. A
 > Task 58 mede isso antes da escolha. Independentemente do resultado, o
-> portal mantém **também uma versão acessível** (HTML ou PDF) ao lado da
+> portal mantém **também uma versão acessível** (o HTML do leitor) ao lado da
 > versão interativa, para preservar o compromisso WCAG 2.1 AA do PRD.
 
 ### R2 — Todo o layout da plataforma reelaborado via Claude Design
@@ -349,7 +349,7 @@ que já tem atrito (U1/U2); permite entrada **a partir do ponto de dor**.
      (R1)** é incorporada à página, com moldura, proporção e título
      acessível definidos no design system v2; ao lado, a **versão
      acessível** (capítulos em HTML pesquisável e legível em leitor de
-     tela, mais download em PDF).
+     tela; o portal não oferece o PDF para download, decisão da Task 65).
 4. **Integração com o relatório:** mapeamento `competência → materiais`
    e recomendação personalizada.
 5. **Qualidade:** testes ponta a ponta (Playwright), auditoria axe-core
@@ -626,7 +626,7 @@ Figma usar e se há limite de créditos.
 |---|---|---|
 | Vídeo gravado difere do roteiro v2 | Retrabalho no banco v2 | Gate pós-gravação (10.2); rastreabilidade por trecho |
 | Claude Design não atende (formato, fidelidade, licença ou tokens) | Atrasa 49, 59 e 60; **R2 exige a ferramenta** | Testes da Task 44 antes de tudo; **se falharem, parar e consultar você** antes de trocar de ferramenta |
-| Ebook em plataforma de terceiros com limitações de acessibilidade ou de privacidade | Regressão frente ao compromisso WCAG 2.1 AA do portal e à LGPD | Task 58 mede antes de escolher; o portal oferece **também** uma versão acessível (HTML ou PDF) ao lado da versão interativa |
+| Ebook em plataforma de terceiros com limitações de acessibilidade ou de privacidade | Regressão frente ao compromisso WCAG 2.1 AA do portal e à LGPD | Task 58 mede antes de escolher; o portal oferece **também** uma versão acessível (o HTML do leitor) ao lado da versão interativa |
 | Plano gratuito da plataforma com marca d'água, anúncios ou limite de publicações | Aparência não profissional | Verificado na Task 58; custo do plano é decisão sua no ponto C |
 | Redesign regride a acessibilidade | Perda do ponto mais maduro do portal | Contraste verificado antes da aprovação (A e B); axe em todas as combinações na Task 55 |
 | Redesign copia concorrentes | Perda de autenticidade e risco autoral | Referências para padrões, não para identidade |
@@ -663,7 +663,7 @@ Figma usar e se há limite de créditos.
    ser liberada: roteiro `conteudo/ebook/roteiro.md`, leitor em
    `public/ebook/leitor.html` (18 páginas, um elemento interativo por
    capítulo, cenas da Marina com a pergunta-foco como balão de fala) e PDF
-   `public/ebook/ebook-planejar-com-ia.pdf` para importar no FlipHTML5 ou
+   `conteudo/ebook/ebook-planejar-com-ia.pdf` (fora de `public/`, sem download no portal) para importar no FlipHTML5 ou
    no Genially. **Está no portal:** a rota pública `/ebook` incorpora o
    leitor, fora da jornada (não altera o progresso), com entradas na página
    inicial (cartão em destaque e menu superior) e no cabeçalho da jornada.

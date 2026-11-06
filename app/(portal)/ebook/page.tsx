@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Download, ExternalLink } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "E-book: Planejar com IA sem perder a didática | Planejamento Pedagógico para EaD com Apoio de IA",
@@ -8,7 +8,6 @@ export const metadata: Metadata = {
 };
 
 const LEITOR = "/ebook/leitor.html";
-const PDF = "/ebook/ebook-planejar-com-ia.pdf";
 
 const ACTION_CLASS =
   "inline-flex items-center gap-2 rounded-full border border-(--brand) px-4 py-1.5 text-sm font-medium hover:bg-(--surface-secondary)";
@@ -16,6 +15,10 @@ const ACTION_CLASS =
 /**
  * Página livre, item da trilha: o leitor registra as páginas exibidas no progresso. O cabeçalho
  * vem do layout compartilhado do portal.
+ *
+ * Não há botão de baixar o PDF (Task 65): ler o conteúdo em PDF empobrece a experiência em relação
+ * a interagir com ele aqui; não é uma proteção contra cópia. A versão acessível é o próprio HTML
+ * do leitor, que cumpre teclado, leitor de tela, alto contraste e fonte ampliada.
  */
 export default function EbookPage() {
   return (
@@ -27,21 +30,11 @@ export default function EbookPage() {
             Guia de bolso em e-book · 18 páginas
           </p>
         </div>
-        <ul className="flex flex-wrap gap-2">
-          <li>
-            <a href={PDF} download className={ACTION_CLASS}>
-              <Download aria-hidden="true" className="size-4" />
-              Baixar em PDF
-            </a>
-          </li>
-          <li>
-            <a href={LEITOR} target="_blank" rel="noopener" className={ACTION_CLASS}>
-              <ExternalLink aria-hidden="true" className="size-4" />
-              Abrir em tela cheia
-              <span className="sr-only"> (abre em uma nova aba)</span>
-            </a>
-          </li>
-        </ul>
+        <a href={LEITOR} target="_blank" rel="noopener" className={ACTION_CLASS}>
+          <ExternalLink aria-hidden="true" className="size-4" />
+          Abrir em tela cheia
+          <span className="sr-only"> (abre em uma nova aba)</span>
+        </a>
       </div>
       <iframe
         src={LEITOR}

@@ -2894,7 +2894,7 @@ leitura, com acessibilidade no nível do restante do portal.
   design system v2, e ajusta cabeçalhos e política de conteúdo em
   `next.config.ts` se a incorporação exigir. Ao lado, a **versão
   acessível**: capítulos em HTML pesquisável e legível em leitor de tela,
-  com download em PDF.
+  sem opção de baixar o PDF (Task 65).
 - **Analisar o UX-20** (`docs/revisao-fluxo-ux.md`): o leitor do ebook, já
   no ar em `/ebook`, deixa pouco espaço vertical para a página (dois
   cabeçalhos mais o rodapé de navegação; 329 px de 657 em um notebook) e
@@ -3167,7 +3167,10 @@ portal sem comprometer acessibilidade, privacidade e aparência.
   plano.
 - Princípio fixo, qualquer que seja o resultado: ebook com **duas
   faces** — versão interativa na plataforma (cumpre R1) e versão acessível
-  (HTML ou PDF) no portal.
+  (o HTML do leitor) no portal, sem opção de baixar o PDF (Task 65).
+- **Critério de escolha (Task 65):** a plataforma deve permitir **desativar o
+  download do livro** pelo leitor (caso PL-11); registrar em quais planos isso
+  é possível.
 
 **Files:**
 - `docs/plano-testes-plataformas-ebook.md` (resultados)
@@ -3299,7 +3302,9 @@ cumprindo a obrigatoriedade do requisito R1.
   repositório.**
 - Testar o ebook publicado em celular e por teclado; registrar o link
   público e o código de incorporação.
-- Gerar a **versão acessível** (HTML e PDF) para o portal.
+- Conferir a **versão acessível**, que é o HTML do leitor (sem PDF para
+  download, Task 65), e gerar o PDF-fonte da publicação.
+- **Desativar o download do livro** na plataforma, se ela o oferecer (Task 65).
 
 **Files:**
 - `conteudo/ebook/publicacao.md` (link, configuração e checklist)
@@ -3311,7 +3316,8 @@ repetidos sobre o ebook final.
 **Acceptance criteria:**
 - [ ] Ebook publicado e acessível por link público.
 - [ ] Código de incorporação validado em uma página de teste.
-- [ ] Versão acessível (HTML e PDF) pronta.
+- [ ] Versão acessível (o HTML do leitor) conferida; o PDF segue só como fonte.
+- [ ] Download do livro desativado na plataforma, ou a limitação registrada.
 
 **Source:** `plano-evolucao-v2.md`, requisito R1
 
@@ -3479,7 +3485,7 @@ CD-04 e CD-05
 |---|---|
 | **ID** | 65 |
 | **Title** | Remover a opção de baixar o PDF do e-book |
-| **Status** | `pending` |
+| **Status** | `done` |
 | **Priority** | `medium` |
 | **Complexity** | 2 |
 | **Dependencies** | `[]` |
@@ -3536,11 +3542,11 @@ e o leitor seguem funcionando; matriz de axe da tela `/ebook` sem violações.
 Se o PDF sair de `public/`, a URL antiga responde 404.
 
 **Acceptance criteria:**
-- [ ] A página `/ebook` não oferece mais a opção de baixar o PDF.
-- [ ] O arquivo PDF fora de `public/` (a URL antiga responde 404) e mantido
-      como fonte para a plataforma externa, ou a decisão de mantê-lo registrada.
-- [ ] O conflito com o R1 resolvido nos documentos, com o motivo registrado.
-- [ ] Critério de "sem download" registrado na Task 58 para a plataforma externa.
+- [x] A página `/ebook` não oferece mais a opção de baixar o PDF.
+- [x] O arquivo PDF fora de `public/` (a URL antiga responde 404) e mantido
+      como fonte para a plataforma externa (agora em `conteudo/ebook/`).
+- [x] O conflito com o R1 resolvido nos documentos, com o motivo registrado.
+- [x] Critério de "sem download" registrado na Task 58 para a plataforma externa.
 
 **Source:** pedido do usuário em 2026-11-05
 
@@ -3551,7 +3557,7 @@ Se o PDF sair de `public/`, a URL antiga responde 404.
 |---|---|
 | **ID** | 66 |
 | **Title** | Progresso v2 e fluxo livre (sem guarda de etapas e sem nome) |
-| **Status** | `pending` |
+| **Status** | `done` |
 | **Priority** | `high` |
 | **Complexity** | 7 |
 | **Dependencies** | `[45]` |
@@ -3600,7 +3606,7 @@ livres, progresso por item, retomada das respostas e relatório contado ao abrir
 |---|---|
 | **ID** | 67 |
 | **Title** | Cabeçalho A, primeira tela com a trilha, régua de acessibilidade e barra inferior |
-| **Status** | `blocked` |
+| **Status** | `done` |
 | **Priority** | `high` |
 | **Complexity** | 8 |
 | **Dependencies** | `[66]` |
@@ -3646,7 +3652,7 @@ na matriz de 12 combinações, com fonte a 125%.
 |---|---|
 | **ID** | 68 |
 | **Title** | Linguagem visual: gradientes, sombras, pílulas de estado e menos subtítulos |
-| **Status** | `blocked` |
+| **Status** | `pending` |
 | **Priority** | `medium` |
 | **Complexity** | 6 |
 | **Dependencies** | `[67]` |
@@ -3685,7 +3691,7 @@ manual dos cartões de resultado e dos banners.
 |---|---|
 | **ID** | 69 |
 | **Title** | Página "Quem somos" e seus pontos de acesso |
-| **Status** | `blocked` |
+| **Status** | `pending` |
 | **Priority** | `medium` |
 | **Complexity** | 4 |
 | **Dependencies** | `[67]` |
@@ -3789,16 +3795,17 @@ elementos existentes); E2E dos links profundos e do estado vazio.
 
 ### Pronto para iniciar (dependências concluídas), em 2026-11-04
 - **Em andamento:** 41 (benchmark de concorrentes; matriz incompleta), 43 (engenharia reversa; falta evidência de quadrinho e ebook), 44 (testes do Claude Design), 57 (referências visuais; falta ver a aparência), 64 (avaliação de IAs de imagem).
-- **Prontas, sem dependência pendente:** 31, 32, 33, 37, 38 (tasks da Fase 9); 58 (plataformas de ebook); 65 (remover o download do PDF do e-book); 66 (progresso v2 e fluxo livre, a primeira do plano do fluxo v3).
+- **Prontas, sem dependência pendente:** 31, 32, 33, 37, 38 (tasks da Fase 9); 58 (plataformas de ebook); 68 (linguagem visual) e 69 (página "Quem somos", que ainda precisa dos dados do autor).
 - **Dependência concluída, mas com decisão adiada (D5):** 30.
 - **Bloqueada por dependência externa:** 35 (precisa do vídeo gravado).
-- **Concluídas na Fase 9 e na evolução v2:** 28, 29, 39, 40, 42, 45.
+- **Concluídas na Fase 9 e na evolução v2:** 28, 29, 39, 40, 42, 45, 65, 66, 67.
 
 ### Estado consolidado (2026-11-05)
 
-**70 tasks:** 33 `done` (1–29, 39, 40, 42, 45), 5 `in-progress` (41, 43, 44,
-57, 64), 9 `pending` (30, 31, 32, 33, 37, 38, 58, 65, 66) e 23 `blocked`
-(34, 35, 36, 46–56, 59–63, 67–70). As Tasks 66 a 70 vêm do plano do fluxo v3
+**70 tasks:** 36 `done` (1–29, 39, 40, 42, 45, 65, 66, 67), 5 `in-progress` (41,
+43, 44, 57, 64), 9 `pending` (30, 31, 32, 33, 37, 38, 58, 68, 69) e 20 `blocked`
+(34, 35, 36, 46–56, 59–63, 70). As Tasks 65 a 67 estão implementadas na branch
+`feat/fluxo-livre-trilha` (PR A) e valem como concluídas quando o PR for mesclado. As Tasks 66 a 70 vêm do plano do fluxo v3
 (`docs/plano-implementacao-fluxo-v3.md`); a proposta de reescopo das Tasks 46,
 51, 52 e 53 aguarda confirmação e não alterou nenhum status.
 
@@ -3827,8 +3834,9 @@ depois. O deploy de produção na Vercel disparado pelo PR #7 ainda não foi
 conferido.
 
 **Ebook (2026-11-05):** o ebook de 18 páginas está **no portal**, na rota
-pública `/ebook` (leitor incorporado, PDF para download e tela cheia), com
-roteiro em `conteudo/ebook/`, leitor e PDF em `public/ebook/`. Verificado
+pública `/ebook` (leitor incorporado e tela cheia; o PDF para download foi
+retirado pela Task 65), com roteiro e PDF-fonte em `conteudo/ebook/` e leitor em
+`public/ebook/`. Verificado
 por `npm run ebook:verificar` (sem estouro de conteúdo, sem violação de
 axe-core em desktop, alto contraste e fonte ampliada, quatro interações,
 celular e janela baixa). **Ainda não** está publicado em FlipHTML5 ou

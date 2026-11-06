@@ -83,18 +83,34 @@ test.describe("e-book no portal", () => {
     await expect(leitor.locator("#m-saida")).toContainText("Aja como designer instrucional");
   });
 
-  test("o PDF e o leitor em tela cheia estão publicados e acessíveis por link", async ({ page, request }) => {
+  // Task 65: o portal não oferece a ação de baixar o PDF. O motivo é de experiência (ler em PDF
+  // empobrece o que o portal oferece) e não de proteção contra cópia.
+  test("a página do e-book não oferece baixar o PDF: sem botão, sem link e sem o arquivo público", async ({ page, request }) => {
     await page.goto("/ebook");
-    const pdf = page.getByRole("link", { name: "Baixar em PDF" });
-    await expect(pdf).toHaveAttribute("href", "/ebook/ebook-planejar-com-ia.pdf");
-    const resposta = await request.get("/ebook/ebook-planejar-com-ia.pdf");
-    expect(resposta.status()).toBe(200);
-    expect(resposta.headers()["content-type"]).toContain("pdf");
+    await expect(page.getByRole("heading", { level: 1, name: TITULO })).toBeVisible();
 
+    await expect(page.getByRole("link", { name: /PDF/i })).toHaveCount(0);
+    await expect(page.getByRole("button", { name: /baixar|download/i })).toHaveCount(0);
+    expect(await page.locator("a[download]").count()).toBe(0);
+    expect(await page.locator('a[href$=".pdf"]').count()).toBe(0);
+
+    // A URL antiga do arquivo deixou de existir: ele saiu de `public/`.
+    expect((await request.get("/ebook/ebook-planejar-com-ia.pdf")).status()).toBe(404);
+  });
+
+  test("o leitor em tela cheia segue publicado e acessível por link", async ({ page, request }) => {
+    await page.goto("/ebook");
     const telaCheia = page.getByRole("link", { name: /Abrir em tela cheia/ });
+    await expect(telaCheia).toHaveAttribute("href", "/ebook/leitor.html");
     await expect(telaCheia).toHaveAttribute("target", "_blank");
     await expect(telaCheia).toHaveAttribute("rel", /noopener/);
     expect((await request.get("/ebook/leitor.html")).status()).toBe(200);
+  });
+
+  test("a contracapa do leitor não promete mais uma versão em PDF", async ({ page }) => {
+    await page.goto("/ebook/leitor.html#p1");
+    await expect(page.locator("body")).not.toContainText("em HTML e PDF");
+    await expect(page.locator("body")).toContainText("as duas nesta mesma página");
   });
 
   test("o leitor respeita o alto contraste e o tamanho de fonte salvos no portal", async ({ page }) => {

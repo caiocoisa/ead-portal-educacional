@@ -22,7 +22,7 @@ node testes/ebook/verificar-ebook.js
 ```
 
 O `verificar-ebook.js` é a única exceção à regra de somente leitura: ele
-**regrava** `public/ebook/ebook-planejar-com-ia.pdf`. Com
+**regrava** `conteudo/ebook/ebook-planejar-com-ia.pdf`. Com
 `--capturas <pasta>` salva uma imagem de cada página.
 
 Nada nesta pasta é publicado no portal.

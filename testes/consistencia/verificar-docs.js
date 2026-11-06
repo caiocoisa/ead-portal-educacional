@@ -200,7 +200,9 @@ const HISTORICOS = {
   "components/accessibility/AccessibilityControls.tsx": "removido: a gaveta virou régua sempre visível (AccessibilityRail)",
   "AccessibilityControls.tsx": "removido: a gaveta virou régua sempre visível (AccessibilityRail)",
   "lib/preferences/usePersistentAttribute.ts": "removido: as preferências usam um armazenamento compartilhado (preferenceStore)",
-  "usePersistentAttribute.ts": "removido: as preferências usam um armazenamento compartilhado (preferenceStore)"
+  "usePersistentAttribute.ts": "removido: as preferências usam um armazenamento compartilhado (preferenceStore)",
+  // O PDF saiu de public/ (PR A, Task 65): a Task 65 descreve de onde ele saiu.
+  "public/ebook/ebook-planejar-com-ia.pdf": "movido para conteudo/ebook/ (Task 65): o portal não o oferece para download"
 };
 const RAMOS_GIT = new Set(["docs/evolucao-v2"]); // nomes de branch citados nos documentos, não caminhos
 const planejados = [], historicos = [];

@@ -53,7 +53,7 @@ Termos em linguagem simples; referências citadas.
 ## 7. Duas faces (decisão do plano)
 
 - **Versão interativa:** publicada na plataforma escolhida.
-- **Versão acessível:** HTML e PDF no portal, com o mesmo conteúdo.
+- **Versão acessível:** o HTML do leitor no portal, com o mesmo conteúdo. O PDF não é oferecido para download; serve só de fonte para a plataforma.
 
 ## 8. Checklist de qualidade
 

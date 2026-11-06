@@ -502,8 +502,8 @@ descrito abaixo. Decisões tomadas:
   "Vale revisar" do relatório (remediação dirigida).
 - **Ebook no portal (2026-11-05).** Antes do hub, a rota pública `/ebook`
   incorpora o leitor `public/ebook/leitor.html` (18 páginas, com as cenas
-  da Marina) por `iframe`, com o PDF para download e a abertura em tela
-  cheia. Fica **fora da jornada**: não usa o guarda de etapas e nunca
+  da Marina) por `iframe`, com a abertura em tela
+  cheia, sem opção de baixar o PDF (Task 65). Fica **fora da jornada**: não usa o guarda de etapas e nunca
   altera o progresso salvo. Entradas: menu superior das páginas públicas,
   cartão em destaque na tela principal e cabeçalho da jornada. O leitor usa
   a mesma fonte do portal (Arial), respeita o alto contraste e o tamanho de
@@ -569,8 +569,8 @@ descrito abaixo. Decisões tomadas:
   lógica, e design profissional e envolvente. **A publicação em
   plataforma interativa (FlipHTML5 ou Genially) é obrigatória.** O
   portal incorpora a versão publicada e mantém ao lado uma versão
-  acessível (HTML e PDF), para preservar o compromisso WCAG 2.1 AA da
-  seção 4.
+  acessível (o HTML do leitor; o PDF não é oferecido para download), para
+  preservar o compromisso WCAG 2.1 AA da seção 4.
 - **R2 — Redesign completo via Claude Design.** Cores, fontes, formatos
   dos elementos, navegações, incorporação de elementos externos e
   exibição e sobreposição de componentes são reelaborados a partir das
