@@ -267,19 +267,30 @@ HeroUI.
   `app/favicon.ico`, gerados por `npm run icones` (livro aberto dourado
   sobre azul-marinho, com um ponto verde que lembra a IA).
 - **Menu de materiais (`PortalHeader`):** nas páginas públicas (início,
-  `/ebook`, `/mapa`), `E-book` e `Mapa interativo` são pílulas com borda
-  branca no cabeçalho; a da página atual fica preenchida de branco e leva
-  `aria-current="page"`; fora do início há também "Voltar ao curso". Na
-  jornada (`JourneyLayout`), `E-book` e `Mapa` são links discretos.
+  `/ebook`, `/mapa`, `/quadrinho`), `E-book`, `Mapa interativo` e
+  `Quadrinho` são pílulas com borda branca no cabeçalho; a da página atual
+  fica preenchida de branco e leva `aria-current="page"`; fora do início há
+  também "Voltar ao curso". Na jornada (`JourneyLayout`), `E-book` e `Mapa`
+  são links discretos (o quadrinho ainda não está lá).
 - **Cartões de materiais da tela principal:** dois cartões grandes
   clicáveis (borda `--brand` de 2px, ícone dourado sobre `--brand`, título,
   descrição e seta) abaixo da descrição do curso, sob o rótulo "Materiais
-  de estudo". Hoje são os destaques da tela principal.
+  de estudo". Hoje são os destaques da tela principal, e só e-book e mapa
+  têm cartão (o quadrinho fica no menu superior).
 - **Mapa interativo (`components/materials/ConceptMap.tsx`):** nós como
   botões com `aria-pressed`, selecionado em `--brand` com borda `--gold`;
   linhas de conexão em `--muted` (realçadas em `--gold` nas do nó
   selecionado); diagrama fixo (`sticky`) ao lado do painel; ilustração do
   nó (quando existir) é decorativa, com `alt` vazio.
+- **Quadrinho (`components/materials/ComicReader.tsx`):** imagem sem texto
+  com **balão de fala em HTML** (fundo branco, texto e borda `--brand`) sobre
+  a área livre da cena, que em telas pequenas vai para baixo da imagem;
+  quadros de texto por tom (narração com barra `--gold`, comando com borda
+  tracejada `--brand`, sugestão da IA com barra `--accent`); decisão em
+  `fieldset` com opções-botão (borda `--success` ou `--danger` na escolhida,
+  retorno em região `status` com ícone e texto, nunca só cor); sem
+  transições de cor, para a verificação de contraste não pegar o meio da
+  animação.
 - **Cabeçalho da jornada (`JourneyLayout`):** fundo `--brand`, texto
   branco, borda inferior de 4px em `--gold` — visualmente distinto do
   resto da interface, para ancorar a identidade do portal em toda tela

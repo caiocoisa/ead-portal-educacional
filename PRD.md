@@ -520,10 +520,22 @@ descrito abaixo. Decisões tomadas:
   descritas em texto. Também fica **fora da jornada**. O caso de exemplo é
   um curso de horta em casa. Roteiro em `conteudo/mapa/roteiro.md`; as
   ilustrações dos nós ainda não existem (cada nó mostra um ícone).
+- **Quadrinho no portal (2026-11-05), terceiro artefato.** A rota pública
+  `/quadrinho` ("Duas sugestões da IA") é um componente **nativo** do
+  portal: seis painéis em que a professora Marina audita duas sugestões da
+  IA para um curso de fotografia com o celular, com balões em HTML sobre as
+  cenas, quadros de narração, de comando e de sugestão da IA, e **duas
+  decisões** em que o leitor escolhe (só se avança com a resposta certa, com
+  a explicação de cada erro). Há visão "Roteiro em texto" com todo o conteúdo
+  e as respostas, para leitor de tela. Também fica **fora da jornada**. As
+  cenas são as seis imagens de avaliação da Task 64 (as mesmas do e-book).
+  Roteiro em `conteudo/quadrinho/roteiro.md`.
 - **E-book e mapa são hoje os destaques da tela principal (2026-11-05).**
   Dois cartões grandes ("Ler o e-book" e "Explorar o mapa interativo")
   ficam logo abaixo da descrição, e o menu superior de todas as páginas
-  públicas traz os dois links, com a página atual marcada. Para dar lugar
+  públicas traz os três materiais (E-book, Mapa interativo e Quadrinho),
+  com a página atual marcada; o quadrinho **não** tem cartão na tela
+  principal. Para dar lugar
   aos cartões, saiu da primeira dobra a grade de quatro frases
   informativas, que repetia a lista de etapas e a seção "Como funciona". O
   campo de nome deixou de receber foco automático, que rolava a tela e

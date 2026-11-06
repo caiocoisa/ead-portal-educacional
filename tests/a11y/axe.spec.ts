@@ -45,6 +45,11 @@ const SCREENS: Screen[] = [
     path: "/mapa",
     ready: (p) => p.getByRole("heading", { level: 1, name: "Mapa do alinhamento" }),
   },
+  {
+    name: "quadrinho",
+    path: "/quadrinho",
+    ready: (p) => p.getByRole("heading", { level: 1, name: "Quadrinho: duas sugestões da IA" }),
+  },
 ];
 
 // Falsos positivos conhecidos do axe-core. Cada item é estreito (regra + elemento)
@@ -142,6 +147,23 @@ for (const theme of THEMES) {
         await aguardarPreferencias(page, theme, contrast, "normal");
         await page.getByRole("tab", { name: "Gabarito comentado" }).click();
         await page.getByRole("button", { name: /Pergunta 1/ }).click();
+        await auditar(page);
+      });
+
+      test("quadrinho com decisão errada, decisão certa e o roteiro em texto", async ({ page }) => {
+        await seedState(page, { preferences });
+        await page.goto("/quadrinho");
+        await aguardarPreferencias(page, theme, contrast, "normal");
+        for (let i = 0; i < 3; i++) await page.getByRole("button", { name: "Próximo" }).click();
+        await expect(page.getByText("Painel 4 de 6")).toBeVisible();
+        await page.getByRole("button", { name: /O plano não combina com o objetivo/ }).click();
+        await expect(page.getByRole("status").getByText(/Ainda não\./)).toBeVisible();
+        await auditar(page);
+        await page.getByRole("button", { name: /A oficina não cabe na rotina/ }).click();
+        await expect(page.getByRole("status").getByText(/Correto\./)).toBeVisible();
+        await auditar(page);
+        await page.getByRole("button", { name: "Roteiro em texto" }).click();
+        await expect(page.getByRole("article")).toHaveCount(6);
         await auditar(page);
       });
 

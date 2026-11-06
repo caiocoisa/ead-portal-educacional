@@ -672,7 +672,11 @@ Figma usar e se há limite de créditos.
    horta em casa. E-book e mapa são os destaques da tela principal e do
    menu superior. Faltam as ilustrações dos nós (seção 5.4 de
    `docs/prompts-ilustracao.md`), a revisão (Task 50) e o redesenho (R2).
-   O quadrinho é o terceiro artefato.
+   **Quadrinho (terceiro artefato, 2026-11-05):** roteiro
+   `conteudo/quadrinho/roteiro.md` e rota `/quadrinho`, nativa, com seis
+   painéis, duas decisões e roteiro em texto; item do menu superior, sem
+   cartão na tela principal. Usa as seis cenas da Task 64 (as mesmas do
+   ebook); cenas próprias e um episódio 2 ficam para depois.
 7. **Pendência a analisar (UX-20):** o ebook em `/ebook` usa mal o espaço
    vertical (cabeçalho do portal, linha de título, barra e rodapé do
    leitor; sobram ~50% da janela em um notebook) e obriga a rolar. Medições
