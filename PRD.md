@@ -487,7 +487,7 @@ e 29 estão concluídas; as demais seguem conforme o `task-master.md`
 7. **Iteration and Reiteration** — link de feedback pós-curso no
    relatório final (Task 38).
 
-### 9.3 Evolução v2: materiais complementares e revisão do fluxo (Tasks 39–65)
+### 9.3 Evolução v2: materiais complementares e revisão do fluxo (Tasks 39–70)
 
 Planejada em 2026-11-04; o detalhamento está em
 `plano-evolucao-v2.md` e as tasks estão no `task-master.md` (Fases

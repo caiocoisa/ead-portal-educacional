@@ -2,8 +2,8 @@
 
 > Gerado em: 2026-09-27 · Revisado em: 2026-11-04
 > Baseado em: `PRD.md` (raiz do repositório, versão MVP de escopo reduzido)
-> Total de tasks: 65 (15 do MVP + 12 de refinamento pós-deploy + 11 de
-> adequação a design instrucional + 27 de evolução v2)
+> Total de tasks: 70 (15 do MVP + 12 de refinamento pós-deploy + 11 de
+> adequação a design instrucional + 32 de evolução v2)
 
 ## Visão geral
 
@@ -3546,6 +3546,219 @@ Se o PDF sair de `public/`, a URL antiga responde 404.
 
 ---
 
+### Task 66
+| Field | Value |
+|---|---|
+| **ID** | 66 |
+| **Title** | Progresso v2 e fluxo livre (sem guarda de etapas e sem nome) |
+| **Status** | `pending` |
+| **Priority** | `high` |
+| **Complexity** | 7 |
+| **Dependencies** | `[45]` |
+| **Phase** | 13 — Evolução v2: implementação |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Troca o modelo de progresso de "uma etapa corrente" por **estado de cada item**
+(vídeo, e-book, mapa, avaliação, relatório) e libera todas as rotas. Entrega a
+parte de dados e de comportamento do fluxo v3; o visual novo vem na Task 67.
+Absorve as Tasks 51 e 53 (proposta, aguardando confirmação).
+
+**Details:**
+- Esquema v2 versionado, sem `userId` nem `userName`, e migração do formato
+  antigo (seção 4.1 do plano).
+- Regras puras da trilha: percentual por item, concluído a partir de 80,
+  progresso geral sem o vídeo enquanto não houver link, próximo sugerido.
+- Registro do que foi visto: leitor do e-book (chave própria), mapa, avaliação
+  com retomada das respostas (resolve o UX-04) e relatório contado ao abrir.
+- Remover o guarda de etapas, o formulário de nome e os redirecionamentos.
+- Vídeo desativado: a rota mostra o aviso "Em breve" e some o botão "Concluir".
+- Ler o guia relevante em `node_modules/next/dist/docs/` antes de codar.
+
+**Files:**
+- `types/progress.ts`, `services/user-progress/*`, `lib/journey/*`
+- `app/avaliacao/page.tsx`, `app/relatorio/page.tsx`, `app/video/page.tsx`
+- `components/materials/ConceptMap.tsx`, `components/journey/*`, `public/ebook/leitor.html`
+- `tests/helpers/progress.ts`, `tests/unit/*`, `tests/e2e/jornada.spec.ts`
+
+**Test strategy:**
+Unitários das regras e da migração (fixtures do formato antigo); E2E de rotas
+livres, progresso por item, retomada das respostas e relatório contado ao abrir.
+
+**Acceptance criteria:**
+- [ ] Nenhuma rota redireciona; o aluno abre qualquer item a qualquer momento.
+- [ ] Quem tinha progresso no formato antigo mantém o que existia.
+- [ ] As respostas confirmadas da avaliação sobrevivem a recarregar a página.
+- [ ] Lint, testes, build, E2E e axe limpos.
+
+**Source:** `docs/plano-implementacao-fluxo-v3.md`, seções 4.1 a 4.4 e PR A
+
+---
+
+### Task 67
+| Field | Value |
+|---|---|
+| **ID** | 67 |
+| **Title** | Cabeçalho A, primeira tela com a trilha, régua de acessibilidade e barra inferior |
+| **Status** | `blocked` |
+| **Priority** | `high` |
+| **Complexity** | 8 |
+| **Dependencies** | `[66]` |
+| **Phase** | 13 — Evolução v2: implementação |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Implementa a navegação aprovada nos protótipos: um cabeçalho só (variante A, 56
+px), a primeira tela com a trilha e o item sugerido, a régua de acessibilidade
+sempre visível no lugar da gaveta e a barra fixa inferior no celular. Absorve a
+Task 52 (proposta, aguardando confirmação) e inclui a Task 65.
+
+**Details:**
+- Layout compartilhado por um grupo de rotas; item atual pela URL; vídeo
+  desativado; quebra em duas linhas entre 768 e 1200 px e com fonte grande.
+- Primeira tela: botão contextual, cartão da trilha, "Apagar meu progresso" com
+  confirmação e ilustração principal (decisão 1 da seção 9 do plano).
+- Régua à direita abaixo de 1500 px; a partir daí, régua da trilha à esquerda e
+  painel expandido à direita. No celular, linha de controles acima da barra.
+- Cumprir a Task 65 (fim do botão e do arquivo de PDF) neste PR.
+
+**Files:**
+- `components/public/*`, `components/accessibility/*`, `components/journey/*`
+- `app/layout.tsx`, `app/page.tsx` e as páginas de cada rota
+- `app/ebook/page.tsx`, `tests/e2e/*`, `tests/a11y/axe.spec.ts`
+
+**Test strategy:**
+E2E de cabeçalho, trilha, régua, barra inferior no celular e réguas largas; axe
+na matriz de 12 combinações, com fonte a 125%.
+
+**Acceptance criteria:**
+- [ ] Um único cabeçalho em todas as páginas, com o progresso geral visível.
+- [ ] Vídeo desativado em todos os pontos de acesso.
+- [ ] Nenhum menu colapsado; controles de acessibilidade sempre visíveis.
+- [ ] Sem rolagem horizontal no celular; alvos de toque de 44 px.
+
+**Source:** `docs/plano-implementacao-fluxo-v3.md`, seções 4.3, 4.4, 4.6 e PR A
+
+---
+
+### Task 68
+| Field | Value |
+|---|---|
+| **ID** | 68 |
+| **Title** | Linguagem visual: gradientes, sombras, pílulas de estado e menos subtítulos |
+| **Status** | `blocked` |
+| **Priority** | `medium` |
+| **Complexity** | 6 |
+| **Dependencies** | `[67]` |
+| **Phase** | 13 — Evolução v2: implementação |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Aplica as regras visuais aprovadas na quarta rodada dos protótipos: sem faixa
+colorida na lateral, sem caixa chapada de 1 px, mais cor por gradiente e menos
+subtítulos. É a base do design system v2 em código (parte das Tasks 62 e 63).
+
+**Details:**
+- Tokens em `app/globals.css`: sombra de cartão, gradientes e tintas de estado.
+- **Degradação obrigatória** no alto contraste (sólido, borda forte) e no tema
+  escuro (versões próprias dos tokens).
+- Conferência manual do contraste de texto sobre gradiente, que o axe não acusa.
+
+**Files:**
+- `app/globals.css`, `components/*` (cartões, chips, botões, barras)
+
+**Test strategy:**
+Matriz de axe nos 12 cenários; captura das telas nos três modos e conferência
+manual dos cartões de resultado e dos banners.
+
+**Acceptance criteria:**
+- [ ] Nenhum cartão usa faixa colorida na lateral.
+- [ ] Alto contraste sem gradiente nem sombra; tema escuro com tokens próprios.
+- [ ] Axe sem violações nas 12 combinações.
+
+**Source:** `docs/plano-implementacao-fluxo-v3.md`, seção 4.7 e PR B
+
+---
+
+### Task 69
+| Field | Value |
+|---|---|
+| **ID** | 69 |
+| **Title** | Página "Quem somos" e seus pontos de acesso |
+| **Status** | `blocked` |
+| **Priority** | `medium` |
+| **Complexity** | 4 |
+| **Dependencies** | `[67]` |
+| **Phase** | 13 — Evolução v2: implementação |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Página fora da trilha que apresenta o autor do portal, com acesso pelo
+cabeçalho, pelo rodapé da primeira tela e, no celular, ao lado de "Apagar meu
+progresso". **Depende de dados do autor** (quem é, contato e créditos).
+
+**Details:**
+- Página de servidor com metadados e um componente de cliente (copiar a
+  referência). Conteúdo em arquivo próprio, com os campos do autor a preencher.
+- O link no cabeçalho só aparece quando a rota existir.
+
+**Files:**
+- A rota de "Quem somos" (nova), `content/*`, `components/public/*`
+- `tests/e2e/*`, `tests/a11y/axe.spec.ts`
+
+**Test strategy:**
+E2E: o link existe em todas as páginas, a página não marca item da trilha como
+atual e o botão copia a referência; axe nas 12 combinações.
+
+**Acceptance criteria:**
+- [ ] A página abre pelos três pontos de acesso e volta à trilha.
+- [ ] Nenhum dado do autor inventado: só o que o usuário informou.
+
+**Source:** `docs/plano-implementacao-fluxo-v3.md`, seção 4.8 e PR C
+
+---
+
+### Task 70
+| Field | Value |
+|---|---|
+| **ID** | 70 |
+| **Title** | Relatório com "Seu percurso" e comentários que apontam para os materiais |
+| **Status** | `blocked` |
+| **Priority** | `medium` |
+| **Complexity** | 5 |
+| **Dependencies** | `[66, 68]` |
+| **Phase** | 13 — Evolução v2: implementação |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+O relatório mostra o caminho percorrido e cada comentário do gabarito aponta o
+capítulo do e-book e o elemento do mapa onde o assunto aparece. Cumpre a decisão
+6 do usuário (registro de passos e materiais) e parte da Task 54.
+
+**Details:**
+- Mapeamento pergunta para material, seguindo as matrizes de
+  `conteudo/ebook/roteiro.md` e `conteudo/mapa/roteiro.md`.
+- Links profundos: o hash chega ao `iframe` do e-book e o mapa pré-seleciona o
+  elemento.
+- Sem resultado de avaliação, o relatório mostra um estado vazio com chamada para
+  a avaliação, e ainda assim conta como visto.
+
+**Files:**
+- `components/journey/FinalReport.tsx`, `components/materials/ConceptMap.tsx`
+- `app/ebook/page.tsx`, `content/*`, `tests/*`
+
+**Test strategy:**
+Teste unitário de que toda pergunta tem referência válida (páginas de 1 a 18,
+elementos existentes); E2E dos links profundos e do estado vazio.
+
+**Acceptance criteria:**
+- [ ] Cada comentário do gabarito leva ao ponto certo do material.
+- [ ] O relatório sem resultado mostra o estado vazio, sem erro.
+
+**Source:** `docs/plano-implementacao-fluxo-v3.md`, seção 4.5 e PR B
+
+---
+
 ## Resumo
 
 ### Tasks por fase
@@ -3564,28 +3777,30 @@ Se o PDF sair de `public/`, a URL antiga responde 404.
 | 10 — Evolução v2: diagnóstico e pesquisa | 39, 40, 41, 42, 43, 44, 45, 57, 58, 64 | 39, 40, 41, 43, 44, 45, 57, 58 e 64 sem dependências; 42 depende de 39,40 |
 | 11 — Evolução v2: decisão | 46, 47, 59, 60 | 46 depende de 39–43; 47 depende de 46,31,32,33; 59 depende de 44,46,57; 60 depende de 59 |
 | 12 — Evolução v2: produção de conteúdo | 48, 49, 50, 61 | 48 depende de 43,46,47; 49 depende de 44,48,58,59,64; 50 depende de 49; 61 depende de 50,58 |
-| 13 — Evolução v2: implementação | 51, 52, 53, 54, 62, 63, 65 | 51 depende de 45,46; 62 depende de 45,60; 63 depende de 62,64; 52 depende de 44,50,51,61,62; 53 depende de 46,51,63; 54 depende de 47,52; 65 sem dependências |
+| 13 — Evolução v2: implementação | 51, 52, 53, 54, 62, 63, 65, 66, 67, 68, 69, 70 | 51 depende de 45,46; 62 depende de 45,60; 63 depende de 62,64; 52 depende de 44,50,51,61,62; 53 depende de 46,51,63; 54 depende de 47,52; 65 sem dependências; 66 depende de 45; 67 depende de 66; 68 depende de 67; 69 depende de 67; 70 depende de 66,68 |
 | 14 — Evolução v2: validação | 55, 56 | 55 depende de 52,53,54,62,63; 56 depende de 55 |
 
 ### Tasks por prioridade
 | Prioridade | IDs |
 |---|---|
-| high | 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 15, 20, 29, 35, 39, 43, 44, 45, 46, 47, 48, 49, 51, 52, 55, 57, 58, 59, 60, 61, 62, 63, 64 |
-| medium | 11, 14, 16, 17, 18, 19, 21, 22, 24, 25, 26, 30, 31, 33, 34, 36, 38, 40, 41, 42, 50, 53, 54, 65 |
+| high | 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 15, 20, 29, 35, 39, 43, 44, 45, 46, 47, 48, 49, 51, 52, 55, 57, 58, 59, 60, 61, 62, 63, 64, 66, 67 |
+| medium | 11, 14, 16, 17, 18, 19, 21, 22, 24, 25, 26, 30, 31, 33, 34, 36, 38, 40, 41, 42, 50, 53, 54, 65, 68, 69, 70 |
 | low | 23, 27, 28, 32, 37, 56 |
 
 ### Pronto para iniciar (dependências concluídas), em 2026-11-04
 - **Em andamento:** 41 (benchmark de concorrentes; matriz incompleta), 43 (engenharia reversa; falta evidência de quadrinho e ebook), 44 (testes do Claude Design), 57 (referências visuais; falta ver a aparência), 64 (avaliação de IAs de imagem).
-- **Prontas, sem dependência pendente:** 31, 32, 33, 37, 38 (tasks da Fase 9); 58 (plataformas de ebook); 65 (remover o download do PDF do e-book).
+- **Prontas, sem dependência pendente:** 31, 32, 33, 37, 38 (tasks da Fase 9); 58 (plataformas de ebook); 65 (remover o download do PDF do e-book); 66 (progresso v2 e fluxo livre, a primeira do plano do fluxo v3).
 - **Dependência concluída, mas com decisão adiada (D5):** 30.
 - **Bloqueada por dependência externa:** 35 (precisa do vídeo gravado).
 - **Concluídas na Fase 9 e na evolução v2:** 28, 29, 39, 40, 42, 45.
 
 ### Estado consolidado (2026-11-05)
 
-**65 tasks:** 33 `done` (1–29, 39, 40, 42, 45), 5 `in-progress` (41, 43, 44,
-57, 64), 8 `pending` (30, 31, 32, 33, 37, 38, 58, 65) e 19 `blocked`
-(34, 35, 36, 46–56, 59–63).
+**70 tasks:** 33 `done` (1–29, 39, 40, 42, 45), 5 `in-progress` (41, 43, 44,
+57, 64), 9 `pending` (30, 31, 32, 33, 37, 38, 58, 65, 66) e 23 `blocked`
+(34, 35, 36, 46–56, 59–63, 67–70). As Tasks 66 a 70 vêm do plano do fluxo v3
+(`docs/plano-implementacao-fluxo-v3.md`); a proposta de reescopo das Tasks 46,
+51, 52 e 53 aguarda confirmação e não alterou nenhum status.
 
 **Decisões:** D0 (Design interno ao Claude), D1 (hub opcional), D2 (banco
 híbrido), D3 (três mídias), D4 (plano de testes do Claude Design), D6
