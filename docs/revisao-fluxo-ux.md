@@ -199,15 +199,25 @@ não implementadas**. O fluxo-alvo da seção 4 fica superado por elas.
 | 2 | O que conta como "visto" e quando um item vale como concluído | **Sugestão aceita**: unidades distintas visitadas (e-book: páginas de 18; mapa: elementos de 4; avaliação: perguntas respondidas; vídeo: percentual assistido) e concluído a partir de 80% |
 | 3 | Cabeçalho e navegação sem menu colapsado, e onde mora o progresso | **Sugestão aceita**: barra fina no topo em telas grandes, com a trilha e o estado de cada item; no celular, barra fixa inferior |
 | 4 | Nome do aluno | **Nenhum nome**; só será pedido se houver certificado |
-| 5 | Vídeo ainda inexistente | **Sem vídeo no momento**: fica fora da trilha e do progresso |
+| 5 | Vídeo ainda inexistente | **O vídeo continua na trilha, como passo 1.** "Sem vídeo no momento" quis dizer só que ainda não há link do YouTube: aparece como "Em breve" e fica fora do percentual até ser publicado. *(Corrigido: a primeira leitura, "vídeo removido", estava errada.)* |
 | 6 | Prototipar antes de codar | **Sim**: gerar prompts otimizados e usar o Claude Design para os protótipos |
 
 **Suposições minhas sobre essas respostas, a confirmar com o usuário:**
 
 - O quadrinho segue existindo como rota pública, mas **sem link na navegação principal** enquanto estiver fora da trilha.
-- O vídeo **não aparece nem como "em breve"** nos protótipos, para não prometer o que não existe. A trilha atual tem quatro itens: e-book, mapa, avaliação e relatório.
-- O progresso geral é a média simples dos quatro itens (por exemplo, e-book 100%, mapa 50%, os demais 0% dão 38%).
+- Enquanto o vídeo não tem link, o progresso geral é a média simples dos **quatro itens publicados** (e-book, mapa, avaliação, relatório): por exemplo, e-book 100%, mapa 50% e os demais 0% dão 38%. Quando o vídeo for publicado, entra na média.
 
-**Protótipos feitos:** seis telas no Claude Design, com cópia estática em `testes/claude-design/prototipos-fluxo/index.html` (primeira tela de visitante novo e de quem já avançou, estudo de duas variantes de cabeçalho em três estados, página do mapa, relatório com "Seu percurso" e primeira tela no celular). Os prompts e os critérios de avaliação estão em `docs/prompts-claude-design-fluxo.md`. A escolha entre as variantes A (56 px) e B (44 px com faixa de progresso) está **pendente**.
+**Respostas da segunda rodada (2026-11-05):**
+
+| Ponto | Decisão |
+|---|---|
+| Cabeçalho | **Variante A** (56 px, trilha com ícone, rótulo e percentual); a B está descartada |
+| Acessibilidade | Sai a aba que abria um menu; entram **controles sempre visíveis** nos espaços laterais, que hoje são subutilizados |
+| Relatório | **Conta como visto ao ser acessado** (100%) |
+| Rótulos curtos no cabeçalho | Aceitos ("Mapa" no lugar de "Mapa interativo") |
+
+**Como os laterais foram usados nos protótipos:** abaixo de 1500 px, uma régua de 88 px à direita com fonte menor e maior, contraste e tema; a partir de 1500 px, a trilha vira régua à esquerda (com progresso e atalho para cada item) e a direita ganha os controles expandidos mais o índice "Nesta página". No celular, os quatro controles ficam numa linha acima da barra inferior.
+
+**Protótipos feitos:** sete quadros no Claude Design, com cópia estática em `testes/claude-design/prototipos-fluxo/index.html` (primeira tela de visitante novo e de quem já avançou, cabeçalho A em quatro estados, página do mapa, relatório com "Seu percurso", primeira tela no celular e tela larga). Os prompts e os critérios de avaliação estão em `docs/prompts-claude-design-fluxo.md`. **Ainda em aberto:** o que o relatório mostra quando não há resultado de avaliação (estado vazio com chamada para a avaliação, como assumido acima); quando o vídeo for publicado, se o relatório continua contando como visto ao abrir; e a ordem final dos controles de acessibilidade.
 
 **Assumidos, salvo objeção:** avaliação e relatório também são livres (o relatório sem resultado mostra um estado vazio com chamada para a avaliação); o indicador de progresso aparece em todas as páginas; "Continuar de onde parou" substitui "Iniciar minha jornada"; "Apagar meu progresso" fica na primeira tela, com confirmação; o relatório ganha um bloco "Seu percurso"; as perguntas do relatório apontam para materiais com links profundos (capítulo do e-book, elemento do mapa, painel do quadrinho); o leitor do e-book, por ser da mesma origem, registra o progresso no armazenamento local do navegador.

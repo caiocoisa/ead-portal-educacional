@@ -7,12 +7,14 @@
 > de estrutura**, mas já usam as cores e a fonte atuais do portal; o
 > design system v2 (Task 59) ainda vai redefinir o visual.
 
+> **Revisão v3 (2026-11-05):** a primeira versão destes prompts tirou o vídeo da trilha por engano. O vídeo **continua como passo 1** ("Em breve", fora do percentual), a trilha tem **cinco** itens, o cabeçalho escolhido é a **variante A**, a aba de acessibilidade virou **controles sempre visíveis nos laterais** e o relatório **conta como visto ao abrir**. Onde os prompts por tela abaixo falarem em quatro itens, leia cinco; os protótipos em `testes/claude-design/prototipos-fluxo/index.html` já refletem a versão corrigida.
+
 ## 1. O que está decidido (entra em todos os prompts)
 
 | Ponto | Decisão |
 |---|---|
-| Trilha | **E-book, mapa interativo, avaliação, relatório**, nessa ordem **sugerida**, nunca obrigatória |
-| Vídeo | **Fora** por enquanto, sem espaço reservado; o desenho comporta um quinto passo depois |
+| Trilha | **Vídeo, e-book, mapa interativo, avaliação, relatório**, nessa ordem **sugerida**, nunca obrigatória |
+| Vídeo | **Continua na trilha, como passo 1.** Ainda não há link do YouTube, então aparece com o selo "Em breve", sem botão de abrir e **fora do cálculo do percentual** até ser publicado |
 | Quadrinho | **Fora** da trilha e do progresso; a rota existe, mas sem link na navegação |
 | Primeira tela | Todos os itens da trilha acessíveis; **sem campo de nome**; progresso visível já ali |
 | Navegação | Cada item tem a sua rota; **sem menus colapsados**; cabeçalho com pouca altura |
@@ -30,7 +32,7 @@ Identidade atual a manter (não é o design final, só a base): azul-marinho #0b
 
 Regras de acessibilidade (obrigatórias, o portal mira WCAG 2.2 AA): contraste mínimo de 4,5:1 em todo texto; nunca usar só cor para dizer o estado (sempre ícone ou texto também); elementos clicáveis são links ou botões de verdade; alvo mínimo de toque de 44 px no celular; sem menus colapsados (hambúrguer, gaveta ou lista suspensa) para a navegação principal.
 
-A trilha, nesta ordem sugerida: 1) E-book (18 páginas), 2) Mapa interativo (4 elementos), 3) Avaliação (4 perguntas), 4) Relatório (resultado e comentários). A ordem é uma SUGESTÃO: todos os itens ficam clicáveis o tempo todo, nenhum aparece bloqueado. Sem vídeo e sem quadrinho nesta versão.
+A trilha, nesta ordem sugerida: 1) Vídeo (ainda não publicado: selo "Em breve", fora do percentual), 2) E-book (18 páginas), 3) Mapa interativo (4 elementos), 4) Avaliação (4 perguntas), 5) Relatório (resultado e comentários; conta como visto ao ser aberto). A ordem é uma SUGESTÃO: todos os itens publicados ficam clicáveis o tempo todo, nenhum aparece bloqueado. Sem quadrinho nesta versão.
 
 Estados de cada item: não iniciado (0%), em andamento (1% a 79%), concluído (80% ou mais, com ícone de confirmação). O percentual é sempre mostrado em texto. O item sugerido a seguir (o primeiro não concluído) é destacado com o rótulo "Próximo", mas os demais continuam acessíveis.
 
