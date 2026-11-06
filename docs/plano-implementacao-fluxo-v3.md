@@ -77,17 +77,17 @@ O PR C **depende de dados do autor** (seção 9). Os PRs A e B não dependem.
 Esquema versionado, na mesma chave, sem `userId` nem `userName`:
 
 ```ts
-interface UserProgressV2 {
+interface ProgressV2 {
   version: 2;
-  createdAt: string;
-  updatedAt: string;
+  updatedAt: string | null;                       // nulo enquanto não houver progresso
   video: { percent: number; positionSeconds: number };
   mapa: { elementsSeen: MapNodeId[] };            // 4 elementos
   avaliacao: { answers: Record<string, number>;   // pergunta -> alternativa confirmada
                result: AssessmentResult | null };
   relatorio: { openedAt: string | null };
 }
-// O e-book não entra aqui: ver 4.2.
+// O e-book não entra aqui: ver 4.2. A interface lê `ProgressSnapshot`, que soma
+// `ebook: { pagesSeen: number[] }` a este modelo. Não há `createdAt`: nada o usa.
 ```
 
 **Regras de cálculo** (módulo puro, sem React, fácil de testar):
@@ -241,6 +241,18 @@ Passos, cada um em um commit com testes verdes:
    do celular e as duas réguas de 1500 px ou mais.
 8. **Fim do PDF (Task 65), testes e documentos.** Botão e arquivo fora, E2E e axe
    adaptados, PRD, plano e task-master atualizados.
+
+**Andamento do PR A (atualizado em 2026-11-06):**
+
+| Passo | Situação | Observação |
+|---|---|---|
+| 1 | **Feito** | Modelo v2, migração e repositório, com testes. Entrou **só aditivo**: o repositório novo (`progressRepository`) vive ao lado do antigo e ainda não é usado pela interface, porque o guarda, o formulário de nome e os cabeçalhos atuais ainda leem o formato v1 na mesma chave. O repositório antigo sai no passo 4. |
+| 2 a 8 | A fazer | |
+
+**Ajuste de ordem nos passos 3 e 4:** registrar o que foi visto (3) grava no formato v2, e
+o guarda atual (4) ainda lê o v1 na mesma chave. Os dois só ficam verdes **juntos**, então
+viram um passo só: "registro do que foi visto e fim do guarda". O passo 2 (regras da trilha
+e hook) não depende disso e segue antes.
 
 **Remove:** `useJourneyGuard`, `ProgressIndicator`, `HomeResetButton` (vira o
 "Apagar meu progresso" da primeira tela), `RestartJourneyModal` (a refação passa a
