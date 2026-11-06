@@ -4,9 +4,10 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@heroui/react";
 import { moduleContent } from "@/content/module";
+import { useProgress } from "@/lib/journey/useProgress";
 import { gradeQuiz } from "@/lib/quiz/gradeQuiz";
 import { resolveFeedback } from "@/lib/quiz/resolveFeedback";
-import { userProgressRepository } from "@/services/user-progress";
+import { progressRepository } from "@/services/user-progress";
 import { QuestionRenderer } from "@/components/quiz/QuestionRenderer";
 import { QuestionNavigator } from "@/components/quiz/QuestionNavigator";
 import { AnswerFeedback } from "@/components/quiz/AnswerFeedback";
@@ -15,11 +16,24 @@ const questions = moduleContent.questions;
 
 export function ModuleAssessmentStep() {
   const router = useRouter();
-  /** Respostas já confirmadas (bloqueadas, com retorno pedagógico). */
-  const [answers, setAnswers] = useState<Record<string, number>>({});
+  /** Respostas já confirmadas (bloqueadas, com retorno pedagógico), salvas no progresso. */
+  const answers = useProgress().avaliacao.answers;
   /** Alternativa marcada, ainda não confirmada, por pergunta. */
   const [drafts, setDrafts] = useState<Record<string, number>>({});
-  const [currentIndex, setCurrentIndex] = useState(0);
+  /**
+   * Pergunta aberta. Nulo enquanto o aluno não navegou: aí vale a primeira sem resposta, o que
+   * retoma de onde parou ao recarregar (ou a última, se todas já foram respondidas).
+   */
+  const [chosenIndex, setChosenIndex] = useState<number | null>(null);
+
+  const answeredIds = useMemo(
+    () => new Set(questions.filter((q) => answers[q.id] !== undefined).map((q) => q.id)),
+    [answers]
+  );
+  const allAnswered = answeredIds.size === questions.length;
+  const firstPendingIndex = questions.findIndex((q) => answers[q.id] === undefined);
+  const currentIndex =
+    chosenIndex ?? (firstPendingIndex === -1 ? questions.length - 1 : firstPendingIndex);
 
   const currentQuestion = questions[currentIndex];
   const confirmedOption = answers[currentQuestion.id];
@@ -29,7 +43,6 @@ export function ModuleAssessmentStep() {
     ? resolveFeedback(currentQuestion, confirmedOption)
     : null;
 
-  const answeredIds = useMemo(() => new Set(Object.keys(answers)), [answers]);
   const correctIds = useMemo(
     () =>
       new Set(
@@ -39,7 +52,6 @@ export function ModuleAssessmentStep() {
       ),
     [answers]
   );
-  const allAnswered = answeredIds.size === questions.length;
   const nextPendingIndex = questions.findIndex(
     (q, i) => i > currentIndex && answers[q.id] === undefined
   );
@@ -50,14 +62,17 @@ export function ModuleAssessmentStep() {
 
   function handleConfirm() {
     if (selectedOption === undefined) return;
+    // Fixa a pergunta aberta antes de gravar: sem isso, a primeira sem resposta passaria a ser a
+    // seguinte e a tela pularia antes de mostrar o retorno.
+    setChosenIndex(currentIndex);
     // O retorno aparece no alerta abaixo da pergunta (região `status`). Não há
     // toast: ele cobria o botão de avançar (UX-18) e duplicava o alerta (UX-15).
-    setAnswers((prev) => ({ ...prev, [currentQuestion.id]: selectedOption }));
+    progressRepository.saveAnswer(currentQuestion.id, selectedOption);
   }
 
   function handleFinish() {
     const result = gradeQuiz(questions, answers);
-    userProgressRepository.saveAssessmentResult(result);
+    progressRepository.saveAssessmentResult(result);
     router.push("/relatorio");
   }
 
@@ -77,7 +92,7 @@ export function ModuleAssessmentStep() {
         ? nextPendingIndex
         : questions.findIndex((q) => answers[q.id] === undefined);
     return (
-      <Button onPress={() => setCurrentIndex(target)}>Próxima pergunta</Button>
+      <Button onPress={() => setChosenIndex(target)}>Próxima pergunta</Button>
     );
   }
 
@@ -88,7 +103,7 @@ export function ModuleAssessmentStep() {
         currentIndex={currentIndex}
         answeredIds={answeredIds}
         correctIds={correctIds}
-        onNavigate={setCurrentIndex}
+        onNavigate={setChosenIndex}
       />
 
       <section
@@ -117,7 +132,7 @@ export function ModuleAssessmentStep() {
           <Button
             variant="ghost"
             isDisabled={currentIndex === 0}
-            onPress={() => setCurrentIndex((i) => i - 1)}
+            onPress={() => setChosenIndex(currentIndex - 1)}
           >
             ← Anterior
           </Button>

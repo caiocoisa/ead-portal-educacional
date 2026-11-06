@@ -1,6 +1,7 @@
 "use client";
 
-import { Button, useTheme } from "@heroui/react";
+import { Button } from "@heroui/react";
+import { useThemePreference } from "@/lib/preferences/useThemePreference";
 
 const OPTIONS = [
   { value: "light", label: "Claro" },
@@ -9,7 +10,7 @@ const OPTIONS = [
 ] as const;
 
 export function ThemeToggle() {
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme } = useThemePreference();
 
   return (
     <div className="flex items-center gap-1" role="group" aria-label="Tema">

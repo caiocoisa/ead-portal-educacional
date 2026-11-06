@@ -3,14 +3,15 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { AlertDialog, Button, Tooltip } from "@heroui/react";
-import { userProgressRepository } from "@/services/user-progress";
+import { progressRepository } from "@/services/user-progress";
 
+/** Apaga todo o progresso salvo neste navegador, depois de confirmar. As preferências ficam. */
 export function HomeResetButton() {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
 
   function handleConfirm() {
-    userProgressRepository.clearAll();
+    progressRepository.clearAll();
     router.push("/");
   }
 
@@ -20,15 +21,10 @@ export function HomeResetButton() {
           `Tooltip.Trigger` (um `div role="button"`) aninha dois botões, o que o
           axe-core acusa como `nested-interactive`. */}
       <Tooltip delay={300}>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="text-white hover:bg-white/10"
-          onPress={() => setIsOpen(true)}
-        >
-          Início
+        <Button variant="outline" size="sm" onPress={() => setIsOpen(true)}>
+          Apagar meu progresso
         </Button>
-        <Tooltip.Content>Volta à tela de boas-vindas e apaga o progresso</Tooltip.Content>
+        <Tooltip.Content>Apaga todo o progresso salvo neste navegador</Tooltip.Content>
       </Tooltip>
       <AlertDialog.Root isOpen={isOpen} onOpenChange={setIsOpen}>
         <AlertDialog.Backdrop>
@@ -36,19 +32,19 @@ export function HomeResetButton() {
             <AlertDialog.Dialog>
               <AlertDialog.Header>
                 <AlertDialog.Icon status="danger" />
-                <AlertDialog.Heading>Voltar ao início?</AlertDialog.Heading>
+                <AlertDialog.Heading>Apagar o seu progresso?</AlertDialog.Heading>
               </AlertDialog.Header>
               <AlertDialog.Body>
-                Isso vai apagar seu nome e todo o progresso salvo neste
-                navegador, te levando de volta à tela de boas-vindas. Essa
-                ação não pode ser desfeita.
+                Isso vai apagar todo o progresso salvo neste navegador: páginas do e-book,
+                elementos do mapa, respostas e resultado da avaliação. Suas preferências de
+                acessibilidade são mantidas. Essa ação não pode ser desfeita.
               </AlertDialog.Body>
               <AlertDialog.Footer>
                 <Button slot="close" variant="ghost">
                   Cancelar
                 </Button>
                 <Button variant="danger" onPress={handleConfirm}>
-                  Voltar ao início
+                  Apagar progresso
                 </Button>
               </AlertDialog.Footer>
             </AlertDialog.Dialog>

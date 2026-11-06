@@ -1,37 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import {
-  Button,
-  Card,
-  Chip,
-  FieldError,
-  Form,
-  Input,
-  Label,
-  TextField,
-} from "@heroui/react";
-import {
-  ArrowDown,
-  ArrowRight,
-  BookOpen,
-  ChartColumn,
-  ClipboardList,
-  Clapperboard,
-  Network,
-} from "lucide-react";
-import { userProgressRepository } from "@/services/user-progress";
+import { Chip } from "@heroui/react";
+import { buttonVariants } from "@heroui/styles";
+import { ArrowDown, ArrowRight, BookOpen, Network } from "lucide-react";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
 import { JourneyLoading } from "@/components/journey/JourneyLoading";
 import { moduleContent } from "@/content/module";
-
-const STEP_ROUTES = {
-  video: "/video",
-  avaliacao: "/avaliacao",
-  relatorio: "/relatorio",
-} as const;
+import { useHydrated } from "@/lib/journey/useHydrated";
+import { useTrail } from "@/lib/journey/useTrail";
+import { TrailCard } from "./TrailCard";
 
 /** Materiais de estudo em destaque na tela principal (hoje, os dois principais pontos de acesso). */
 const MATERIALS = [
@@ -50,39 +28,30 @@ const MATERIALS = [
   },
 ] as const;
 
+/**
+ * Primeira tela.
+ * - Celular (abaixo de 768 px): texto e trilha empilhados; os cartões de materiais não aparecem, porque
+ *   a barra inferior já dá acesso direto ao e-book e ao mapa e eles empurrariam a trilha para baixo.
+ * - De 768 px a 1024 px: texto e cartão da trilha empilhados (com a régua lateral, duas colunas ficam
+ *   apertadas demais).
+ * - De 1024 px a 1500 px: o texto à esquerda e o cartão da trilha à direita.
+ * - A partir de 1500 px: a trilha vive na régua lateral esquerda (em todas as páginas), então o
+ *   cartão some daqui e entra a ilustração principal ao lado do texto.
+ */
 export function WelcomeHero() {
-  const router = useRouter();
-  const [isReady, setIsReady] = useState(false);
-  const [userName, setUserName] = useState("");
-  const [error, setError] = useState<string | null>(null);
+  const isHydrated = useHydrated();
+  const trail = useTrail();
 
-  useEffect(() => {
-    const existing = userProgressRepository.getCurrent();
-    if (existing) {
-      router.replace(STEP_ROUTES[existing.currentStep]);
-      return;
-    }
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time client-only localStorage check, not derived from render state
-    setIsReady(true);
-  }, [router]);
-
-  function handleSubmit(event: React.FormEvent) {
-    event.preventDefault();
-    const trimmedName = userName.trim();
-    if (!trimmedName) {
-      setError("Informe seu nome para continuar.");
-      return;
-    }
-    userProgressRepository.create(trimmedName);
-    router.push("/video");
-  }
-
-  if (!isReady) {
-    return <JourneyLoading fullScreen={false} />;
-  }
+  const started = trail.items.some((item) => item.available && item.percent > 0);
+  const next = trail.items.find((item) => item.id === trail.next);
+  const cta = !started
+    ? { href: "/ebook", label: "Começar pelo e-book" }
+    : next
+      ? { href: next.href, label: `Continuar: ${next.label}` }
+      : { href: "/relatorio", label: "Rever o relatório" };
 
   return (
-    <div className="m-auto grid w-full max-w-5xl gap-8 md:grid-cols-[3fr_2fr] md:items-center">
+    <div className="m-auto grid w-full max-w-5xl grid-cols-[minmax(0,1fr)] gap-8 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] lg:items-center wide:max-w-[1200px] wide:grid-cols-[minmax(0,1fr)_minmax(0,440px)] wide:gap-12">
       <div className="flex flex-col gap-4">
         <div className="flex flex-wrap gap-2">
           <Chip size="sm" className="bg-(--gold) text-(--brand)">
@@ -96,15 +65,25 @@ export function WelcomeHero() {
           </Chip>
         </div>
         <h1 className="text-3xl font-bold md:text-4xl">{moduleContent.title}</h1>
-        <p className="text-(--muted)">{moduleContent.description}</p>
-        <section aria-labelledby="materiais-title" className="flex flex-col gap-2">
+        <p className="text-(--muted)">
+          {started
+            ? `Você já avançou ${trail.overallPercent}% da trilha. Continue de onde parou ou abra qualquer item: a ordem é só uma sugestão.`
+            : moduleContent.description}
+        </p>
+        {isHydrated ? (
+          <Link href={cta.href} className={`${buttonVariants({ variant: "primary", size: "lg" })} w-fit`}>
+            {cta.label}
+            <ArrowRight aria-hidden="true" className="size-5" />
+          </Link>
+        ) : null}
+        <section aria-labelledby="materiais-title" className="hidden flex-col gap-2 md:flex">
           <h2
             id="materiais-title"
             className="text-sm font-semibold tracking-wide text-(--muted) uppercase"
           >
             Materiais de estudo
           </h2>
-          <ul className="grid gap-3 sm:grid-cols-2">
+          <ul className="grid gap-3 sm:grid-cols-2 wide:grid-cols-1">
             {MATERIALS.map((material) => (
               <li key={material.href}>
                 <Link
@@ -139,68 +118,19 @@ export function WelcomeHero() {
         </a>
       </div>
 
-      <div className="flex flex-col gap-4">
-      <ImagePlaceholder
-        label="Ilustração principal"
-        hint="public/img/hero.jpg · 1456×720"
-        src="/img/hero.jpg"
-        alt="Ilustração em azul-marinho e dourado: um livro aberto, um cérebro de circuitos que representa a inteligência artificial e um notebook com a figura de uma pessoa, ligados por linhas e nós."
-        priority
-        className="aspect-[2/1] max-h-[24dvh] w-full border border-(--border)"
-      />
-      <ol
-        aria-label="Etapas da jornada"
-        className="flex items-center justify-between gap-2 rounded-xl border border-(--border) bg-(--surface) p-3"
-      >
-        {[
-          { icon: Clapperboard, label: "Vídeo" },
-          { icon: ClipboardList, label: "Avaliação" },
-          { icon: ChartColumn, label: "Relatório" },
-        ].map((item, index, all) => (
-          <li key={item.label} className="flex flex-1 items-start gap-2">
-            <div className="flex flex-col items-center gap-1">
-              <span
-                aria-hidden="true"
-                className="flex size-10 items-center justify-center rounded-full bg-(--brand) text-(--gold)"
-              >
-                <item.icon className="size-5" />
-              </span>
-              <span className="text-xs font-medium">{item.label}</span>
-            </div>
-            {index < all.length - 1 ? (
-              <span aria-hidden="true" className="mt-5 h-0.5 flex-1 bg-(--border)" />
-            ) : null}
-          </li>
-        ))}
-      </ol>
-      <Card className="w-full">
-        <Card.Header>
-          <Card.Title>Vamos começar?</Card.Title>
-          <Card.Description>
-            Informe seu nome para iniciar a jornada.
-          </Card.Description>
-        </Card.Header>
-        <Card.Content>
-          <Form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            <TextField
-              value={userName}
-              onChange={(value) => {
-                setUserName(value);
-                setError(null);
-              }}
-              isRequired
-              fullWidth
-            >
-              <Label>Como podemos te chamar?</Label>
-              <Input placeholder="Seu nome" />
-              {error ? <FieldError>{error}</FieldError> : null}
-            </TextField>
-            <Button type="submit" fullWidth>
-              Iniciar minha jornada
-            </Button>
-          </Form>
-        </Card.Content>
-      </Card>
+      <div className="wide:hidden">
+        {isHydrated ? <TrailCard /> : <JourneyLoading fullScreen={false} />}
+      </div>
+
+      {/* Só em telas largas, ao lado do texto. Sem `priority`: escondida, a imagem nem é baixada. */}
+      <div className="hidden wide:block">
+        <ImagePlaceholder
+          label="Ilustração principal"
+          hint="public/img/hero.jpg · 1456×720"
+          src="/img/hero.jpg"
+          alt="Ilustração em azul-marinho e dourado: um livro aberto, um cérebro de circuitos que representa a inteligência artificial e um notebook com a figura de uma pessoa, ligados por linhas e nós."
+          className="aspect-[2/1] w-full border border-(--border)"
+        />
       </div>
     </div>
   );

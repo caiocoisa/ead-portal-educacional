@@ -711,7 +711,7 @@ compatível com [a restrição do público].</code></div>
     </div>
     <figure class="capa-cena" style="background:#e8eef7"><img src="arte/marina-retrato.webp" width="1024" height="559" alt="Retrato de Marina: professora de cabelo cacheado e óculos redondos dourados, de blazer azul-marinho, com a mão na cintura, diante de uma estante de livros." style="aspect-ratio:1024/559"></figure>
     <div class="capa-topo" style="padding-top:0">
-      <div class="cartao"><b style="color:#fff">Minicurso Planejamento pedagógico para EaD com apoio de IA</b>Este guia tem duas faces: a versão interativa e a versão acessível, em HTML e PDF.</div>
+      <div class="cartao"><b style="color:#fff">Minicurso Planejamento pedagógico para EaD com apoio de IA</b>Este guia tem duas faces: a versão interativa e a versão acessível, as duas nesta mesma página.</div>
     </div>
     <div class="capa-base"><span>Portal Educacional EaD</span><span>Pedir · Auditar · Decidir</span></div>
   </div>
@@ -753,8 +753,18 @@ compatível com [a restrição do público].</code></div>
     stage.style.setProperty('--s',s.toFixed(4));
   }
 
+  // Progresso do portal: guarda cada página exibida na chave `ead-portal:ebook-pages` (mesma origem,
+  // então vale também em tela cheia). O portal lê a lista e a confere; aqui só se acrescenta.
+  function registra(p){
+    try{
+      var lista=JSON.parse(window.localStorage.getItem('ead-portal:ebook-pages')||'[]');
+      if(!Array.isArray(lista)) lista=[];
+      if(lista.indexOf(p)===-1){lista.push(p); window.localStorage.setItem('ead-portal:ebook-pages',JSON.stringify(lista));}
+    }catch(e){}
+  }
+
   function go(n,focus){
-    n=Math.max(0,Math.min(N-1,n)); cur=n;
+    n=Math.max(0,Math.min(N-1,n)); cur=n; registra(n+1);
     pages.forEach(function(p,i){p.hidden=(i!==n);});
     pos.textContent='Página '+(n+1)+' de '+N+' · '+pages[n].getAttribute('data-titulo');
     barra.style.width=((n+1)/N*100)+'%';

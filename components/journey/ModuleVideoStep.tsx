@@ -2,11 +2,12 @@
 
 import { useRef } from "react";
 import dynamic from "next/dynamic";
-import { useRouter } from "next/navigation";
-import { Button, Card } from "@heroui/react";
-import { userProgressRepository } from "@/services/user-progress";
+import Link from "next/link";
+import { Card } from "@heroui/react";
+import { buttonVariants } from "@heroui/styles";
 import { moduleContent } from "@/content/module";
-import { VideoSkeleton } from "@/components/video/VideoSkeleton";
+import { useProgress } from "@/lib/journey/useProgress";
+import { progressRepository } from "@/services/user-progress";
 import type { VideoProgress } from "@/components/video/VideoPlayer";
 
 const VideoPlayer = dynamic(
@@ -14,50 +15,71 @@ const VideoPlayer = dynamic(
   { ssr: false }
 );
 
-const COMPLETION_THRESHOLD_PERCENT = 90;
+/** O player avisa a cada segundo; grava só quando a posição andou o bastante. */
+const SAVE_EVERY_SECONDS = 5;
 
-export function ModuleVideoStep() {
-  const router = useRouter();
-  const hasCompletedRef = useRef(false);
+/** Enquanto o vídeo não tem link, a página avisa em vez de mostrar um player vazio. */
+function VideoComingSoon() {
+  return (
+    <Card className="h-fit max-h-full w-full max-w-3xl">
+      <Card.Header>
+        <Card.Title>Vídeo em breve</Card.Title>
+        <Card.Description>
+          O vídeo de apresentação do curso ainda não foi publicado. Ele entra na trilha, como
+          primeiro passo, assim que estiver disponível.
+        </Card.Description>
+      </Card.Header>
+      <Card.Content className="flex flex-wrap gap-3">
+        <Link href="/ebook" className={buttonVariants({ variant: "primary" })}>
+          Ler o e-book
+        </Link>
+        <Link href="/mapa" className={buttonVariants({ variant: "outline" })}>
+          Explorar o mapa interativo
+        </Link>
+      </Card.Content>
+    </Card>
+  );
+}
 
-  function completeAndAdvance() {
-    if (hasCompletedRef.current) return;
-    hasCompletedRef.current = true;
-    userProgressRepository.markVideoCompleted();
-    router.push("/avaliacao");
-  }
+function VideoWithPlayer({ youtubeVideoId }: { youtubeVideoId: string }) {
+  const { video } = useProgress();
+  const lastSavedSecondsRef = useRef(video.positionSeconds);
 
   function handleProgress(progress: VideoProgress) {
-    if (progress.percent >= COMPLETION_THRESHOLD_PERCENT) {
-      completeAndAdvance();
-    }
+    if (Math.abs(progress.currentTime - lastSavedSecondsRef.current) < SAVE_EVERY_SECONDS) return;
+    lastSavedSecondsRef.current = progress.currentTime;
+    progressRepository.setVideoProgress(progress.percent, progress.currentTime);
+  }
+
+  function handleEnded() {
+    lastSavedSecondsRef.current = 0;
+    progressRepository.setVideoProgress(100, 0);
   }
 
   return (
     <Card className="h-fit max-h-full w-full max-w-3xl">
       <Card.Header>
         <Card.Title>{moduleContent.title}</Card.Title>
-        <Card.Description>
-          Assista ao vídeo até o final para liberar a avaliação.
-        </Card.Description>
       </Card.Header>
       <Card.Content className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto">
         {/* Limita a largura para que o vídeo 16:9 caiba na altura da tela. */}
         <div className="mx-auto w-full max-w-[min(100%,calc(50dvh*16/9))]">
-          {moduleContent.youtubeVideoId ? (
-            <VideoPlayer
-              youtubeVideoId={moduleContent.youtubeVideoId}
-              onProgress={handleProgress}
-              onEnded={completeAndAdvance}
-            />
-          ) : (
-            <VideoSkeleton />
-          )}
+          <VideoPlayer
+            youtubeVideoId={youtubeVideoId}
+            initialTime={video.positionSeconds}
+            onProgress={handleProgress}
+            onEnded={handleEnded}
+          />
         </div>
-        <Button variant="outline" onPress={completeAndAdvance} fullWidth>
-          Concluir
-        </Button>
       </Card.Content>
     </Card>
+  );
+}
+
+export function ModuleVideoStep() {
+  return moduleContent.youtubeVideoId ? (
+    <VideoWithPlayer youtubeVideoId={moduleContent.youtubeVideoId} />
+  ) : (
+    <VideoComingSoon />
   );
 }

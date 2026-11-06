@@ -85,35 +85,37 @@ test.describe("mapa interativo no portal", () => {
     expect(rolagemHorizontal).toBeLessThanOrEqual(1);
   });
 
-  test("o menu superior marca a página atual e leva ao e-book", async ({ page }) => {
+  test("a trilha do cabeçalho marca a página atual e leva ao e-book", async ({ page }) => {
     await page.goto("/mapa");
-    await expect(page.getByRole("link", { name: "Mapa interativo", exact: true })).toHaveAttribute("aria-current", "page");
-    await page.getByRole("link", { name: "E-book", exact: true }).click();
+    const trilha = page.getByRole("navigation", { name: "Trilha do curso" });
+    await expect(trilha.getByRole("link", { name: /^Mapa/ })).toHaveAttribute("aria-current", "page");
+    await trilha.getByRole("link", { name: /^E-book/ }).click();
     await expect(page).toHaveURL(/\/ebook$/);
   });
 
-  test("a página inicial destaca o mapa em um cartão e no menu superior", async ({ page }) => {
+  test("a página inicial destaca o mapa em um cartão e na trilha do cabeçalho", async ({ page }) => {
     await page.goto("/");
     const materiais = page.getByRole("region", { name: "Materiais de estudo" });
     await expect(materiais.getByRole("link")).toHaveCount(2);
     await materiais.getByRole("link", { name: /Explorar o mapa interativo/ }).click();
     await expect(page).toHaveURL(/\/mapa$/);
 
-    await page.getByRole("link", { name: "Voltar ao curso" }).click();
-    await page.getByRole("navigation", { name: "Materiais e navegação do portal" }).getByRole("link", { name: "Mapa interativo" }).click();
+    await page.getByRole("link", { name: "Planejamento Pedagógico para EaD", exact: true }).click();
+    await page.getByRole("navigation", { name: "Trilha do curso" }).getByRole("link", { name: /^Mapa/ }).click();
     await expect(page).toHaveURL(/\/mapa$/);
   });
 
-  test("quem está na jornada abre o mapa e volta à mesma etapa, sem perder o progresso", async ({ page }) => {
-    await seedState(page, { step: "avaliacao" });
+  test("quem tem progresso abre o mapa pela trilha sem perder o que já foi salvo e volta ao curso", async ({ page }) => {
+    await seedState(page, { progress: { ebookPages: [1, 2], answers: { q1: 0 } } });
     await page.goto("/avaliacao");
     const antes = await page.evaluate((k) => localStorage.getItem(k), STORAGE.progress);
 
-    await page.getByRole("link", { name: "Mapa", exact: true }).click();
+    await page.getByRole("navigation", { name: "Trilha do curso" }).getByRole("link", { name: /Mapa/ }).click();
     await expect(page).toHaveURL(/\/mapa$/);
+    // Em tela larga só existe o diagrama: abrir a página, sem escolher um elemento, não grava nada.
     expect(await page.evaluate((k) => localStorage.getItem(k), STORAGE.progress)).toBe(antes);
 
-    await page.getByRole("link", { name: "Voltar ao curso" }).click();
-    await expect(page).toHaveURL(/\/avaliacao$/);
+    await page.getByRole("link", { name: "Planejamento Pedagógico para EaD", exact: true }).click();
+    await expect(page).toHaveURL("/");
   });
 });

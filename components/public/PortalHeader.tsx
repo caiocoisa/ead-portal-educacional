@@ -1,56 +1,44 @@
+"use client";
+
 import Link from "next/link";
-import { ArrowLeft, BookImage, BookOpen, Network } from "lucide-react";
-import { AccessibilityControls } from "@/components/accessibility/AccessibilityControls";
+import { usePathname } from "next/navigation";
+import { TrailNav, TrailPercent } from "@/components/journey/TrailNav";
 
-export type PortalPage = "home" | "ebook" | "mapa" | "quadrinho";
+/**
+ * Cabeçalho único do portal (variante A): marca, trilha com o percentual de cada item e o
+ * progresso geral. Fica no layout compartilhado, então não é remontado ao navegar.
+ *
+ * Em telas largas tudo cabe em uma linha; abaixo de 1280 px (e com fonte ampliada) a trilha
+ * desce para uma segunda linha, em vez de esconder itens. No celular (abaixo de 768 px) o
+ * cabeçalho fica só com a marca e o progresso, porque a trilha vai para a barra inferior.
+ */
+export function PortalHeader() {
+  const pathname = usePathname();
 
-interface PortalHeaderProps {
-  /** Página em que o cabeçalho está; destaca o item do menu e decide se oferece "Voltar ao curso". */
-  current?: PortalPage;
-}
-
-const LINK_BASE =
-  "inline-flex items-center gap-2 rounded-full border px-4 py-1.5 text-sm font-medium focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white";
-const LINK_IDLE = `${LINK_BASE} border-white/60 text-white hover:bg-white/10`;
-const LINK_ACTIVE = `${LINK_BASE} border-white bg-white font-semibold text-(--brand)`;
-
-const MATERIALS = [
-  { page: "ebook", href: "/ebook", label: "E-book", icon: BookOpen },
-  { page: "mapa", href: "/mapa", label: "Mapa interativo", icon: Network },
-  { page: "quadrinho", href: "/quadrinho", label: "Quadrinho", icon: BookImage },
-] as const;
-
-export function PortalHeader({ current = "home" }: PortalHeaderProps) {
   return (
-    <header className="flex w-full shrink-0 flex-wrap items-center justify-between gap-3 border-b-4 border-(--gold) bg-(--brand) px-6 py-3 text-white">
-      <div className="flex flex-col">
-        <span className="text-lg font-semibold">
-          Planejamento Pedagógico para EaD com Apoio de IA
-        </span>
-        <span className="hidden text-sm text-white/80 sm:inline">
-          Planeje aulas a distância com a ajuda de um assistente de IA
-        </span>
+    <header className="flex min-h-12 shrink-0 flex-wrap items-center gap-x-4 gap-y-1 border-b-4 border-(--gold) bg-(--brand) px-4 py-1.5 text-white sm:px-5 md:min-h-14 md:py-2">
+      <Link
+        href="/"
+        aria-current={pathname === "/" ? "page" : undefined}
+        className="flex items-center gap-2.5 rounded-sm text-[0.9375rem] font-bold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+      >
+        <svg width="28" height="28" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
+          <rect width="64" height="64" rx="14" fill="#c9a227" />
+          <path
+            d="M32 22c-4.5-3.2-11-4.2-18-3v26c7-1.2 13.5-.2 18 3 4.5-3.2 11-4.2 18-3V19c-7-1.2-13.5-.2-18 3z"
+            fill="#0b2545"
+          />
+          <path d="M32 22v26" stroke="#c9a227" strokeWidth="2.6" strokeLinecap="round" />
+        </svg>
+        <span className="hidden md:inline">Planejamento Pedagógico para EaD</span>
+        <span className="md:hidden">Planejamento para EaD</span>
+      </Link>
+      <div className="order-3 hidden min-w-0 basis-full justify-center md:flex xl:order-2 xl:flex-1 xl:basis-auto">
+        <TrailNav />
       </div>
-      <nav aria-label="Materiais e navegação do portal" className="flex flex-wrap items-center gap-2">
-        {current !== "home" ? (
-          <Link href="/" className={LINK_IDLE}>
-            <ArrowLeft aria-hidden="true" className="size-4" />
-            Voltar ao curso
-          </Link>
-        ) : null}
-        {MATERIALS.map(({ page, href, label, icon: Icon }) => (
-          <Link
-            key={page}
-            href={href}
-            aria-current={current === page ? "page" : undefined}
-            className={current === page ? LINK_ACTIVE : LINK_IDLE}
-          >
-            <Icon aria-hidden="true" className="size-4" />
-            {label}
-          </Link>
-        ))}
-      </nav>
-      <AccessibilityControls />
+      <div className="order-2 ml-auto xl:order-3">
+        <TrailPercent />
+      </div>
     </header>
   );
 }

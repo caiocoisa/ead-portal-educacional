@@ -112,8 +112,8 @@ deriva do roteiro audiovisual v2 e do banco de questões.
 
 ## 7. Duas faces
 
-- **Interativa:** `public/ebook/leitor.html` (página a página, com os quatro elementos interativos), e o PDF `public/ebook/ebook-planejar-com-ia.pdf` para importar na plataforma. Elementos interativos viram versões impressas estáticas no PDF (modelo em branco, respostas à vista).
-- **Acessível:** o próprio HTML é navegável por teclado e leitor de tela, respeita o alto contraste e o tamanho de fonte do portal, e reflui em uma coluna em telas pequenas, baixas ou com a fonte ampliada. O PDF é a versão para impressão e download.
+- **Interativa:** `public/ebook/leitor.html` (página a página, com os quatro elementos interativos). O PDF `conteudo/ebook/ebook-planejar-com-ia.pdf`, gerado por `npm run ebook:verificar`, fica **fora de `public/`** e serve só para importar na plataforma externa (FlipHTML5 ou Genially). O portal **não o oferece para download**: decisão da Task 65, por experiência (ler em PDF empobrece o que o portal e a plataforma oferecem) e não por proteção contra cópia. Elementos interativos viram versões impressas estáticas no PDF (modelo em branco, respostas à vista).
+- **Acessível:** o próprio HTML é navegável por teclado e leitor de tela, respeita o alto contraste e o tamanho de fonte do portal, e reflui em uma coluna em telas pequenas, baixas ou com a fonte ampliada. **A versão acessível é o HTML do leitor**, e não o PDF.
 - **Ilustrações:** as imagens otimizadas ficam em `public/ebook/arte/` (WebP, ~25 KB cada) e são geradas a partir de `testes/imagens-ia/` por `npm run ebook:arte`. Os prompts de capa e de ilustração de capítulo da etapa 3 (`E3-ebook-*`) não foram necessários: as cenas da etapa 2 cobrem o livro.
 
 ## 8. Matriz de cobertura: capítulo × competência × questão

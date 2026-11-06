@@ -173,7 +173,36 @@ const PLANEJADOS = {
 const HISTORICOS = {
   "app/providers.tsx": "HeroUI v3 não usa Provider", "tailwind.config.ts": "Tailwind v4 configura por CSS",
   "next.config.js": "o arquivo é next.config.ts", "components/public/IdentificationModal.tsx": "substituído por WelcomeHero (Task 16)",
-  "components/journey/JourneyNavbar.tsx": "substituído por JourneyLayout e ProgressIndicator"
+  "components/journey/JourneyNavbar.tsx": "substituído por JourneyLayout e TrailNav",
+  // Removidos no fluxo livre (PR A, docs/plano-implementacao-fluxo-v3.md). Os documentos de
+  // diagnóstico (revisao-fluxo-ux.md) os citam como evidência do estado antigo, e isso segue válido.
+  "services/user-progress/UserProgressRepository.ts": "removido no fluxo livre; substituído por ProgressRepository",
+  "services/user-progress/LocalStorageUserProgressRepository.ts": "removido no fluxo livre; substituído por LocalStorageProgressRepository",
+  "lib/journey/useJourneyGuard.ts": "removido: o fluxo é livre, sem guarda de etapas",
+  "components/journey/ProgressIndicator.tsx": "removido; substituído por TrailNav",
+  "components/journey/RestartJourneyModal.tsx": "removido; substituído por RestartAssessmentModal",
+  "components/video/VideoSkeleton.tsx": "removido: a página de vídeo mostra 'Vídeo em breve'",
+  "UserProgressRepository.ts": "removido no fluxo livre",
+  "LocalStorageUserProgressRepository.ts": "removido no fluxo livre",
+  "useJourneyGuard.ts": "removido no fluxo livre",
+  "ProgressIndicator.tsx": "removido; substituído por TrailNav",
+  "RestartJourneyModal.tsx": "removido; substituído por RestartAssessmentModal",
+  "VideoSkeleton.tsx": "removido",
+  // Cabeçalho único no layout compartilhado do grupo (portal) (PR A, passo 5): as páginas mudaram de pasta.
+  "components/journey/JourneyLayout.tsx": "removido; o layout compartilhado de app/(portal) hospeda o cabeçalho",
+  "JourneyLayout.tsx": "removido; o layout compartilhado de app/(portal) hospeda o cabeçalho",
+  "app/page.tsx": "movido para app/(portal)/page.tsx",
+  "app/ebook/page.tsx": "movido para app/(portal)/ebook/page.tsx",
+  "app/video/page.tsx": "movido para app/(portal)/video/page.tsx",
+  "app/avaliacao/page.tsx": "movido para app/(portal)/avaliacao/page.tsx",
+  "app/relatorio/page.tsx": "movido para app/(portal)/relatorio/page.tsx",
+  // Régua de acessibilidade no lugar da gaveta (PR A, passo 7).
+  "components/accessibility/AccessibilityControls.tsx": "removido: a gaveta virou régua sempre visível (AccessibilityRail)",
+  "AccessibilityControls.tsx": "removido: a gaveta virou régua sempre visível (AccessibilityRail)",
+  "lib/preferences/usePersistentAttribute.ts": "removido: as preferências usam um armazenamento compartilhado (preferenceStore)",
+  "usePersistentAttribute.ts": "removido: as preferências usam um armazenamento compartilhado (preferenceStore)",
+  // O PDF saiu de public/ (PR A, Task 65): a Task 65 descreve de onde ele saiu.
+  "public/ebook/ebook-planejar-com-ia.pdf": "movido para conteudo/ebook/ (Task 65): o portal não o oferece para download"
 };
 const RAMOS_GIT = new Set(["docs/evolucao-v2"]); // nomes de branch citados nos documentos, não caminhos
 const planejados = [], historicos = [];
@@ -210,6 +239,11 @@ for (const doc of ["docs/revisao-fluxo-ux.md", "docs/matriz-rastreabilidade.md"]
     let rel = m[1];
     if (!existe(rel)) {
       const cand = porNome[path.basename(rel)] || [];
+      // Arquivo removido de propósito: a citação é a evidência do diagnóstico antigo, e continua válida.
+      if (cand.length === 0 && (HISTORICOS[rel] || HISTORICOS[path.basename(rel)])) {
+        console.log(`  ~ ${rel}:${m[2]}  (${HISTORICOS[rel] || HISTORICOS[path.basename(rel)]})`);
+        continue;
+      }
       if (cand.length !== 1) { falha(`${doc}: ${rel} não resolve para um único arquivo (${cand.length})`); continue; }
       rel = cand[0];
     }

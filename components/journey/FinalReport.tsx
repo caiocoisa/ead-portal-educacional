@@ -5,7 +5,7 @@ import type { AssessmentResult } from "@/types/quiz";
 import { moduleContent } from "@/content/module";
 import { resolveFeedback } from "@/lib/quiz/resolveFeedback";
 import { AnswerFeedback } from "@/components/quiz/AnswerFeedback";
-import { RestartJourneyModal } from "./RestartJourneyModal";
+import { RestartAssessmentModal } from "./RestartAssessmentModal";
 
 interface FinalReportProps {
   assessmentResult: AssessmentResult;
@@ -121,7 +121,7 @@ export function FinalReport({ assessmentResult }: FinalReportProps) {
         </Tabs>
       </Card.Content>
       <Card.Footer className="shrink-0">
-        <RestartJourneyModal />
+        <RestartAssessmentModal />
       </Card.Footer>
     </Card>
   );

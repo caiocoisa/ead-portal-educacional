@@ -165,3 +165,76 @@ Cabeçalho (todas as etapas após o nome):
   para a Task 55.
 - A severidade é estimativa minha pela escala de Nielsen, não medida.
 - UX-13 é uma dependência do vídeo gravado, não uma falha do portal.
+
+---
+
+## 7. Decisões do usuário sobre o modelo de jornada (2026-11-05)
+
+Respostas às seis perguntas do UX-21. Estão **decididas e registradas, mas
+não implementadas**. O fluxo-alvo da seção 4 fica superado por elas.
+
+| # | Pergunta | Decisão |
+|---|---|---|
+| 1 | Papel dos artefatos e ordem | Ordem **sugerida**: vídeo, e-book, mapa, avaliação, relatório, com elementos visuais que a sugiram |
+| 2 | Linear ou trilha | A ordem é **sugestão, não regra**: o aluno pode estar no mapa e voltar ao vídeo, o que deve ser permitido |
+| 3 | Quem já tem progresso | O progresso é **visível e identificável desde a primeira tela**, com elementos de navegação para seguir a trilha ou navegar de forma não linear |
+| 4 | Tela principal | **Todos os artefatos acessíveis na primeira tela**; o campo de nome para iniciar é **removido** |
+| 5 | Hub ou rotas | **Cada item tem a sua rota**; cabeçalho e menu superior serão repensados (menos altura vertical e **sem menus colapsados**) |
+| 6 | Registro | Nova forma de registrar **passos realizados** e **materiais vistos com porcentagem**; nos comentários do relatório, os materiais podem ser **referenciados diretamente** |
+
+**Consequências identificadas na análise:**
+
+- O **guarda de etapas** (`useJourneyGuard`) deixa de existir: ele hoje redireciona para a única etapa corrente, o oposto da decisão 2. Mudam de natureza UX-01, UX-02, UX-03, UX-09, UX-10 e UX-12.
+- O **`UserProgress` v2** (Task 51) deixa de ser "uma etapa corrente" e passa a registrar o estado de **cada item** e o percentual visto de cada material. O modelo atual (`currentStep`, `videoCompleted`, `userName` obrigatório) não comporta isso e precisa de migração.
+- A **D1 (hub opcional) fica superada** pela tela principal com a trilha; a **Task 52** muda de escopo (sem hub `/materiais`).
+- O campo de nome sai da entrada: `userName` hoje é obrigatório em `create(userName)` e aparece no cabeçalho ("Olá, ...").
+- O **cabeçalho e a navegação** são escopo do R2 ("navegações" estão na lista do redesenho via Claude Design), o que cruza as Tasks 59, 60 e 62.
+- O achado do **progresso salvo sem validade** (a tela principal redireciona quem tem progresso e some com os cartões) **deixa de existir** com a decisão 3: a tela principal passa a ser sempre exibida.
+
+**Dúvidas que surgiram e como o usuário as decidiu** (2026-11-05, em resposta à análise iterada até convergir):
+
+| # | Dúvida | Decisão |
+|---|---|---|
+| 1 | Onde entra o quadrinho na trilha | **Fica de fora por enquanto**: fora da trilha e do cálculo de progresso |
+| 2 | O que conta como "visto" e quando um item vale como concluído | **Sugestão aceita**: unidades distintas visitadas (e-book: páginas de 18; mapa: elementos de 4; avaliação: perguntas respondidas; vídeo: percentual assistido) e concluído a partir de 80% |
+| 3 | Cabeçalho e navegação sem menu colapsado, e onde mora o progresso | **Sugestão aceita**: barra fina no topo em telas grandes, com a trilha e o estado de cada item; no celular, barra fixa inferior |
+| 4 | Nome do aluno | **Nenhum nome**; só será pedido se houver certificado |
+| 5 | Vídeo ainda inexistente | **O vídeo continua na trilha, como passo 1.** "Sem vídeo no momento" quis dizer só que ainda não há link do YouTube: aparece como "Em breve" e fica fora do percentual até ser publicado. *(Corrigido: a primeira leitura, "vídeo removido", estava errada.)* |
+| 6 | Prototipar antes de codar | **Sim**: gerar prompts otimizados e usar o Claude Design para os protótipos |
+
+**Suposições minhas sobre essas respostas, a confirmar com o usuário:**
+
+- O quadrinho segue existindo como rota pública, mas **sem link na navegação principal** enquanto estiver fora da trilha.
+- Enquanto o vídeo não tem link, o progresso geral é a média simples dos **quatro itens publicados** (e-book, mapa, avaliação, relatório): por exemplo, e-book 100%, mapa 50% e os demais 0% dão 38%. Quando o vídeo for publicado, entra na média.
+
+**Respostas da segunda rodada (2026-11-05):**
+
+| Ponto | Decisão |
+|---|---|
+| Cabeçalho | **Variante A** (56 px, trilha com ícone, rótulo e percentual); a B está descartada |
+| Acessibilidade | Sai a aba que abria um menu; entram **controles sempre visíveis** nos espaços laterais, que hoje são subutilizados |
+| Relatório | **Conta como visto ao ser acessado** (100%) |
+| Rótulos curtos no cabeçalho | Aceitos ("Mapa" no lugar de "Mapa interativo") |
+
+**Como os laterais foram usados nos protótipos:** abaixo de 1500 px, uma régua de 88 px à direita com fonte menor e maior, contraste e tema; a partir de 1500 px, a trilha vira régua à esquerda (com progresso e atalho para cada item) e a direita ganha os controles expandidos mais o índice "Nesta página". No celular, os quatro controles ficam numa linha acima da barra inferior.
+
+**Terceira rodada (2026-11-05):**
+
+| Ponto | Decisão |
+|---|---|
+| Vídeo desativado | O Vídeo fica **desativado (`enabled = false`)**: seção e botão em cinza, sem rota nem link, e **sem a pílula "Em breve" no cabeçalho**. O aviso "Em breve" permanece só no cartão da trilha e na régua da tela larga. Quando o link existir, o item fica ativo e entra na média do progresso. |
+| Página "Quem somos" | Página **fora da trilha**, sem progresso próprio, para apresentar o autor do portal. Conteúdo: foto, nome, função, contato, "Sobre o autor", "Por que este portal existe", "Sobre o portal", "Seus dados", "Acessibilidade", "Créditos", "Como citar" e um bloco para voltar à trilha. Foto, nome, textos e créditos são **espaços a preencher**: o conteúdo real depende do usuário. |
+| Acesso a "Quem somos" | **Cabeçalho**, no extremo direito, depois do progresso, como link de texto com ícone (não é pílula, porque não é passo da trilha); **rodapé da primeira tela**; no celular, ao lado de "Apagar meu progresso" e no rodapé da página. Na própria página, o link ganha sublinhado dourado e `aria-current`. |
+
+**Quarta rodada, linguagem visual (2026-11-05):** o protótipo estava plano e com pouca cor. As regras abaixo valem para a implementação e para o design system v2 (Task 59):
+
+| Ponto | Regra |
+|---|---|
+| Destaque de cartão | **Sem faixa colorida na lateral.** O destaque vem de um fundo em gradiente suave na cor do estado (verde para acerto, vermelho para erro, dourado para "próximo" e para exemplos) e de um rótulo em pílula cheia (por exemplo, "Acertou", "Errou", "Conceito"). |
+| Delimitação | **Sem caixa chapada de 1 px.** Cartões e painéis usam fundo em gradiente leve, borda clara e duas sombras suaves; réguas laterais e barras fixas também ganham sombra. |
+| Cor | Gradientes no cabeçalho, nos botões primários, nas barras de progresso (azul mais vivo na ponta; verde nas concluídas), no fundo da página (brilho azul no alto e dourado embaixo) e em faixas de destaque, como o banner de "Quem somos". Texto nunca fica sobre gradiente de baixo contraste. |
+| Subtítulos | **Só quando dizem algo que o título não diz.** Saíram os de "Quem somos", do mapa, do relatório (três), da trilha e de "Como citar", além da descrição de cada item da trilha, que repetia o nome. Cada item fica com título e uma linha de estado. |
+
+**Protótipos feitos:** dez quadros no Claude Design, com cópia estática em `testes/claude-design/prototipos-fluxo/index.html` (primeira tela de visitante novo e de quem já avançou, cabeçalho A em quatro estados, página do mapa, relatório com "Seu percurso", primeira tela no celular, tela larga, "Quem somos" no desktop e no celular e o quadro com os pontos de acesso). Os prompts e os critérios de avaliação estão em `docs/prompts-claude-design-fluxo.md`. **Ainda em aberto:** o que o relatório mostra quando não há resultado de avaliação (estado vazio com chamada para a avaliação, como assumido acima); quando o vídeo for publicado, se o relatório continua contando como visto ao abrir; e a ordem final dos controles de acessibilidade.
+
+**Assumidos, salvo objeção:** avaliação e relatório também são livres (o relatório sem resultado mostra um estado vazio com chamada para a avaliação); o indicador de progresso aparece em todas as páginas; "Continuar de onde parou" substitui "Iniciar minha jornada"; "Apagar meu progresso" fica na primeira tela, com confirmação; o relatório ganha um bloco "Seu percurso"; as perguntas do relatório apontam para materiais com links profundos (capítulo do e-book, elemento do mapa, painel do quadrinho); o leitor do e-book, por ser da mesma origem, registra o progresso no armazenamento local do navegador.

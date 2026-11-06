@@ -1,16 +1,16 @@
 "use client";
 
-import { usePersistentAttribute } from "./usePersistentAttribute";
+import { useSyncExternalStore } from "react";
+import { fontSizeStore, type FontSize } from "./stores";
 
-export type FontSize = "normal" | "large" | "extra-large";
+export type { FontSize };
 
-const STORAGE_KEY = "ead-portal:font-size";
-
+/** Tamanho da fonte salvo. No servidor e na hidratação vale `normal`; o valor salvo entra depois. */
 export function useFontSize() {
-  const [fontSize, setFontSize] = usePersistentAttribute<FontSize>(
-    STORAGE_KEY,
-    "data-font-size",
-    "normal"
+  const fontSize = useSyncExternalStore(
+    fontSizeStore.subscribe,
+    fontSizeStore.getSnapshot,
+    fontSizeStore.getServerSnapshot
   );
-  return { fontSize, setFontSize };
+  return { fontSize, setFontSize: fontSizeStore.set };
 }

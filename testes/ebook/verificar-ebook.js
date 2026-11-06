@@ -6,7 +6,7 @@
  * Confere, para cada uma das 18 páginas: estouro de conteúdo e violações de axe-core
  * (WCAG 2.2 AA) em três modos (desktop, alto contraste e fonte ampliada), as quatro
  * interações, a navegação, a leitura em celular e as preferências do portal; por fim
- * regrava o PDF em public/ebook/. Não altera mais nada.
+ * regrava o PDF em conteudo/ebook/ (fora de public/: o portal não o oferece para download, ele é a fonte para importar numa plataforma externa). Não altera mais nada.
  */
 const path = require("path");
 const fs = require("fs");
@@ -16,7 +16,7 @@ const AxeBuilder = require("@axe-core/playwright").default;
 
 const RAIZ = path.resolve(__dirname, "..", "..");
 const HTML = path.join(RAIZ, "public", "ebook", "leitor.html");
-const PDF = path.join(RAIZ, "public", "ebook", "ebook-planejar-com-ia.pdf");
+const PDF = path.join(RAIZ, "conteudo", "ebook", "ebook-planejar-com-ia.pdf");
 // Espaço em branco máximo tolerado no fim da área útil de cada página (px, em 720x960).
 const VAZIO_MAX = Number(process.env.VAZIO_MAX || 120);
 const URL = pathToFileURL(HTML).href;
