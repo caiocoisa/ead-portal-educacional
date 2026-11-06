@@ -165,3 +165,39 @@ Cabeçalho (todas as etapas após o nome):
   para a Task 55.
 - A severidade é estimativa minha pela escala de Nielsen, não medida.
 - UX-13 é uma dependência do vídeo gravado, não uma falha do portal.
+
+---
+
+## 7. Decisões do usuário sobre o modelo de jornada (2026-11-05)
+
+Respostas às seis perguntas do UX-21. Estão **decididas e registradas, mas
+não implementadas**. O fluxo-alvo da seção 4 fica superado por elas.
+
+| # | Pergunta | Decisão |
+|---|---|---|
+| 1 | Papel dos artefatos e ordem | Ordem **sugerida**: vídeo, e-book, mapa, avaliação, relatório, com elementos visuais que a sugiram |
+| 2 | Linear ou trilha | A ordem é **sugestão, não regra**: o aluno pode estar no mapa e voltar ao vídeo, o que deve ser permitido |
+| 3 | Quem já tem progresso | O progresso é **visível e identificável desde a primeira tela**, com elementos de navegação para seguir a trilha ou navegar de forma não linear |
+| 4 | Tela principal | **Todos os artefatos acessíveis na primeira tela**; o campo de nome para iniciar é **removido** |
+| 5 | Hub ou rotas | **Cada item tem a sua rota**; cabeçalho e menu superior serão repensados (menos altura vertical e **sem menus colapsados**) |
+| 6 | Registro | Nova forma de registrar **passos realizados** e **materiais vistos com porcentagem**; nos comentários do relatório, os materiais podem ser **referenciados diretamente** |
+
+**Consequências identificadas na análise:**
+
+- O **guarda de etapas** (`useJourneyGuard`) deixa de existir: ele hoje redireciona para a única etapa corrente, o oposto da decisão 2. Mudam de natureza UX-01, UX-02, UX-03, UX-09, UX-10 e UX-12.
+- O **`UserProgress` v2** (Task 51) deixa de ser "uma etapa corrente" e passa a registrar o estado de **cada item** e o percentual visto de cada material. O modelo atual (`currentStep`, `videoCompleted`, `userName` obrigatório) não comporta isso e precisa de migração.
+- A **D1 (hub opcional) fica superada** pela tela principal com a trilha; a **Task 52** muda de escopo (sem hub `/materiais`).
+- O campo de nome sai da entrada: `userName` hoje é obrigatório em `create(userName)` e aparece no cabeçalho ("Olá, ...").
+- O **cabeçalho e a navegação** são escopo do R2 ("navegações" estão na lista do redesenho via Claude Design), o que cruza as Tasks 59, 60 e 62.
+- O achado do **progresso salvo sem validade** (a tela principal redireciona quem tem progresso e some com os cartões) **deixa de existir** com a decisão 3: a tela principal passa a ser sempre exibida.
+
+**Dúvidas que surgiram** (análise iterada até convergir; ver a resposta que originou esta seção). Cada uma tem uma sugestão-padrão a confirmar:
+
+1. **Onde entra o quadrinho** na trilha, já que a sequência decidida não o cita? Sugestão: material opcional entre o mapa e a avaliação.
+2. **O que conta como "visto"** em cada material, como se calcula a porcentagem e quando um item vale como concluído? Sugestão: unidades distintas visitadas (e-book: páginas de 18; mapa: elementos de 4; quadrinho: painéis de 6; avaliação: perguntas respondidas; vídeo: o percentual assistido) e concluído a partir de 80%.
+3. **Cabeçalho e navegação no celular sem menu colapsado**, e onde mora o progresso? Sugestão: barra única e fina no topo em telas grandes, com a trilha e o estado de cada item; no celular, barra **fixa inferior** com os itens.
+4. **Nome:** removido de vez, ou opcional depois (por exemplo, para um certificado de participação, decisão ainda em aberto)? Sugestão: sem nome em lugar nenhum por ora.
+5. **Vídeo ainda inexistente** na trilha e no cálculo do progresso? Sugestão: aparece como "em breve" e **fica fora** da porcentagem até existir.
+6. **Prototipar antes de codar?** A navegação é escopo do R2. Sugestão: protótipos de baixa fidelidade em HTML (2 variantes de cabeçalho e o painel da trilha) antes de implementar.
+
+**Assumidos, salvo objeção:** avaliação e relatório também são livres (o relatório sem resultado mostra um estado vazio com chamada para a avaliação); o indicador de progresso aparece em todas as páginas; "Continuar de onde parou" substitui "Iniciar minha jornada"; "Apagar meu progresso" fica na primeira tela, com confirmação; o relatório ganha um bloco "Seu percurso"; as perguntas do relatório apontam para materiais com links profundos (capítulo do e-book, elemento do mapa, painel do quadrinho); o leitor do e-book, por ser da mesma origem, registra o progresso no armazenamento local do navegador.
