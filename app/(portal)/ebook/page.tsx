@@ -19,7 +19,7 @@ const ACTION_CLASS =
  */
 export default function EbookPage() {
   return (
-    <main className="flex min-h-0 flex-1 flex-col gap-3 p-3 sm:p-4 sm:pl-10">
+    <main className="flex min-h-0 flex-1 flex-col gap-3 p-3 sm:p-4">
       <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2">
         <div className="flex flex-col">
           <h1 className="text-xl font-bold">Planejar com IA sem perder a didática</h1>

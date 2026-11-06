@@ -1,16 +1,16 @@
 "use client";
 
-import { usePersistentAttribute } from "./usePersistentAttribute";
+import { useSyncExternalStore } from "react";
+import { contrastStore, type ContrastMode } from "./stores";
 
-export type ContrastMode = "normal" | "high";
+export type { ContrastMode };
 
-const STORAGE_KEY = "ead-portal:contrast";
-
+/** Contraste salvo. No servidor e na hidratação vale `normal`; o valor salvo entra depois. */
 export function useHighContrast() {
-  const [contrast, setContrast] = usePersistentAttribute<ContrastMode>(
-    STORAGE_KEY,
-    "data-contrast",
-    "normal"
+  const contrast = useSyncExternalStore(
+    contrastStore.subscribe,
+    contrastStore.getSnapshot,
+    contrastStore.getServerSnapshot
   );
-  return { contrast, setContrast };
+  return { contrast, setContrast: contrastStore.set };
 }

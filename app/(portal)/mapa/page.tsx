@@ -13,7 +13,7 @@ export const metadata: Metadata = {
  */
 export default function MapaPage() {
   return (
-    <main className="min-h-0 flex-1 overflow-y-auto p-3 sm:p-4 sm:pl-10">
+    <main className="min-h-0 flex-1 overflow-y-auto p-3 sm:p-4">
       <ConceptMap />
     </main>
   );

@@ -33,7 +33,9 @@ const SCREENS: Screen[] = [
     name: "início com progresso",
     path: "/",
     progress: { ebookPages: ALL_EBOOK_PAGES, mapElements: ["publico", "objetivos"] },
-    ready: (p) => p.getByText(/Progresso da trilha: 38%/),
+    // Só no cartão da primeira tela: a régua da trilha também tem esse texto, mas fica escondida
+    // abaixo de 1500 px, e um localizador que encontra dois elementos é recusado.
+    ready: (p) => p.getByRole("region", { name: "Sua trilha" }).getByText(/Progresso da trilha: 38%/),
   },
   { name: "vídeo", path: "/video", ready: (p) => p.getByText("Vídeo em breve") },
   {
@@ -201,14 +203,53 @@ for (const theme of THEMES) {
         await auditar(page);
       });
 
-      test("menu de acessibilidade aberto", async ({ page }) => {
+      test("régua de acessibilidade, antes e depois de aumentar a fonte", async ({ page }) => {
         await seedState(page, { preferences });
-        await page.goto("/video");
+        await page.goto("/mapa");
         await aguardarPreferencias(page, theme, contrast, "normal");
-        await page.getByRole("button", { name: "Abrir menu de acessibilidade" }).click();
-        await expect(page.getByRole("dialog")).toBeVisible();
+        const regua = page.getByRole("group", { name: "Controles de acessibilidade" });
+        await expect(regua).toBeVisible();
+        await auditar(page);
+
+        await regua.getByRole("button", { name: /^A\+ Fonte/ }).click();
+        await expect(page.locator("html")).toHaveAttribute("data-font-size", "large");
         await auditar(page);
       });
     });
+  }
+}
+
+// Larguras em que a interface muda de forma: o celular (topo enxuto, linha de ajustes e barra inferior
+// da trilha), o tablet, e a tela larga (régua da trilha à esquerda e painel de acessibilidade à
+// direita). Cada uma em cada combinação de tema × contraste.
+const LARGURAS = [
+  { nome: "celular", width: 390, height: 844, fontSize: "normal" as const },
+  { nome: "celular com fonte extra grande", width: 390, height: 844, fontSize: "extra-large" as const },
+  { nome: "tablet", width: 800, height: 900, fontSize: "normal" as const },
+  { nome: "tela larga", width: 1600, height: 900, fontSize: "normal" as const },
+];
+const ROTAS_POR_LARGURA = [
+  { rota: "/", ready: (p: Page) => p.getByRole("heading", { level: 1 }) },
+  { rota: "/mapa", ready: (p: Page) => p.getByRole("heading", { level: 1, name: "Mapa do alinhamento" }) },
+  { rota: "/avaliacao", ready: (p: Page) => p.getByRole("button", { name: "Confirmar resposta" }) },
+];
+
+for (const theme of THEMES) {
+  for (const contrast of CONTRASTS) {
+    for (const largura of LARGURAS) {
+      test(`${largura.nome}, tema ${theme}, contraste ${contrast}: primeira tela, mapa e avaliação`, async ({ page }) => {
+        await page.setViewportSize({ width: largura.width, height: largura.height });
+        await seedState(page, {
+          progress: { ebookPages: ALL_EBOOK_PAGES, mapElements: ["publico", "objetivos"] },
+          preferences: { theme, contrast, fontSize: largura.fontSize },
+        });
+        for (const { rota, ready } of ROTAS_POR_LARGURA) {
+          await page.goto(rota);
+          await aguardarPreferencias(page, theme, contrast, largura.fontSize);
+          await expect(ready(page)).toBeVisible();
+          await auditar(page);
+        }
+      });
+    }
   }
 }

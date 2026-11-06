@@ -195,7 +195,12 @@ const HISTORICOS = {
   "app/ebook/page.tsx": "movido para app/(portal)/ebook/page.tsx",
   "app/video/page.tsx": "movido para app/(portal)/video/page.tsx",
   "app/avaliacao/page.tsx": "movido para app/(portal)/avaliacao/page.tsx",
-  "app/relatorio/page.tsx": "movido para app/(portal)/relatorio/page.tsx"
+  "app/relatorio/page.tsx": "movido para app/(portal)/relatorio/page.tsx",
+  // Régua de acessibilidade no lugar da gaveta (PR A, passo 7).
+  "components/accessibility/AccessibilityControls.tsx": "removido: a gaveta virou régua sempre visível (AccessibilityRail)",
+  "AccessibilityControls.tsx": "removido: a gaveta virou régua sempre visível (AccessibilityRail)",
+  "lib/preferences/usePersistentAttribute.ts": "removido: as preferências usam um armazenamento compartilhado (preferenceStore)",
+  "usePersistentAttribute.ts": "removido: as preferências usam um armazenamento compartilhado (preferenceStore)"
 };
 const RAMOS_GIT = new Set(["docs/evolucao-v2"]); // nomes de branch citados nos documentos, não caminhos
 const planejados = [], historicos = [];

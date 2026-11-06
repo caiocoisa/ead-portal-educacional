@@ -9,13 +9,14 @@ import { TrailNav, TrailPercent } from "@/components/journey/TrailNav";
  * progresso geral. Fica no layout compartilhado, então não é remontado ao navegar.
  *
  * Em telas largas tudo cabe em uma linha; abaixo de 1280 px (e com fonte ampliada) a trilha
- * desce para uma segunda linha, em vez de esconder itens.
+ * desce para uma segunda linha, em vez de esconder itens. No celular (abaixo de 768 px) o
+ * cabeçalho fica só com a marca e o progresso, porque a trilha vai para a barra inferior.
  */
 export function PortalHeader() {
   const pathname = usePathname();
 
   return (
-    <header className="flex min-h-14 shrink-0 flex-wrap items-center gap-x-4 gap-y-1 border-b-4 border-(--gold) bg-(--brand) px-4 py-2 text-white sm:px-5">
+    <header className="flex min-h-12 shrink-0 flex-wrap items-center gap-x-4 gap-y-1 border-b-4 border-(--gold) bg-(--brand) px-4 py-1.5 text-white sm:px-5 md:min-h-14 md:py-2">
       <Link
         href="/"
         aria-current={pathname === "/" ? "page" : undefined}
@@ -29,9 +30,10 @@ export function PortalHeader() {
           />
           <path d="M32 22v26" stroke="#c9a227" strokeWidth="2.6" strokeLinecap="round" />
         </svg>
-        Planejamento Pedagógico para EaD
+        <span className="hidden md:inline">Planejamento Pedagógico para EaD</span>
+        <span className="md:hidden">Planejamento para EaD</span>
       </Link>
-      <div className="order-3 flex min-w-0 basis-full justify-center xl:order-2 xl:flex-1 xl:basis-auto">
+      <div className="order-3 hidden min-w-0 basis-full justify-center md:flex xl:order-2 xl:flex-1 xl:basis-auto">
         <TrailNav />
       </div>
       <div className="order-2 ml-auto xl:order-3">

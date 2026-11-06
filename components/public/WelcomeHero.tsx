@@ -29,9 +29,14 @@ const MATERIALS = [
 ] as const;
 
 /**
- * Primeira tela. Abaixo de 1500 px: o texto à esquerda e a trilha à direita. A partir de 1500 px
- * entra a ilustração principal ao lado do texto, e a trilha passa para a esquerda (no passo
- * seguinte do plano ela vira uma régua lateral).
+ * Primeira tela.
+ * - Celular (abaixo de 768 px): texto e trilha empilhados; os cartões de materiais não aparecem, porque
+ *   a barra inferior já dá acesso direto ao e-book e ao mapa e eles empurrariam a trilha para baixo.
+ * - De 768 px a 1024 px: texto e cartão da trilha empilhados (com a régua lateral, duas colunas ficam
+ *   apertadas demais).
+ * - De 1024 px a 1500 px: o texto à esquerda e o cartão da trilha à direita.
+ * - A partir de 1500 px: a trilha vive na régua lateral esquerda (em todas as páginas), então o
+ *   cartão some daqui e entra a ilustração principal ao lado do texto.
  */
 export function WelcomeHero() {
   const isHydrated = useHydrated();
@@ -46,7 +51,7 @@ export function WelcomeHero() {
       : { href: "/relatorio", label: "Rever o relatório" };
 
   return (
-    <div className="m-auto grid w-full max-w-5xl gap-8 md:grid-cols-[3fr_2fr] md:items-center wide:max-w-[1400px] wide:grid-cols-[340px_minmax(0,1fr)_minmax(0,420px)] wide:gap-10">
+    <div className="m-auto grid w-full max-w-5xl grid-cols-[minmax(0,1fr)] gap-8 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] lg:items-center wide:max-w-[1200px] wide:grid-cols-[minmax(0,1fr)_minmax(0,440px)] wide:gap-12">
       <div className="flex flex-col gap-4">
         <div className="flex flex-wrap gap-2">
           <Chip size="sm" className="bg-(--gold) text-(--brand)">
@@ -71,14 +76,14 @@ export function WelcomeHero() {
             <ArrowRight aria-hidden="true" className="size-5" />
           </Link>
         ) : null}
-        <section aria-labelledby="materiais-title" className="flex flex-col gap-2">
+        <section aria-labelledby="materiais-title" className="hidden flex-col gap-2 md:flex">
           <h2
             id="materiais-title"
             className="text-sm font-semibold tracking-wide text-(--muted) uppercase"
           >
             Materiais de estudo
           </h2>
-          <ul className="grid gap-3 sm:grid-cols-2">
+          <ul className="grid gap-3 sm:grid-cols-2 wide:grid-cols-1">
             {MATERIALS.map((material) => (
               <li key={material.href}>
                 <Link
@@ -113,7 +118,7 @@ export function WelcomeHero() {
         </a>
       </div>
 
-      <div className="wide:order-first">
+      <div className="wide:hidden">
         {isHydrated ? <TrailCard /> : <JourneyLoading fullScreen={false} />}
       </div>
 

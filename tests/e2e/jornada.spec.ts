@@ -91,19 +91,31 @@ test.describe("fluxo livre", () => {
 test.describe("hidratação", () => {
   // Uma falha de hidratação (o HTML do servidor diferente do primeiro desenho do navegador) não
   // derruba a tela, mas o React a registra como erro da página: este teste a transforma em falha.
-  test("as páginas carregam sem erro mesmo com progresso salvo", async ({ page }) => {
-    const erros: string[] = [];
-    page.on("pageerror", (erro) => erros.push(`${page.url()}: ${erro.message.slice(0, 160)}`));
-    await seedState(page, {
-      progress: { ebookPages: ALL_EBOOK_PAGES, mapElements: ["publico", "objetivos"], answers: { q1: 0 }, reportOpened: true },
+  // Progresso e preferências diferentes do padrão, nas três formas da interface (celular, notebook
+  // e tela larga): é aí que um estado lido do armazenamento na primeira renderização divergiria do
+  // HTML do servidor. Os controles de acessibilidade agora ficam sempre visíveis, então o estado
+  // deles (fonte, contraste, tema) também precisa hidratar sem erro.
+  for (const { nome, width, height } of [
+    { nome: "celular", width: 390, height: 844 },
+    { nome: "notebook", width: 1280, height: 720 },
+    { nome: "tela larga", width: 1600, height: 900 },
+  ]) {
+    test(`as páginas carregam sem erro com progresso e preferências salvos, no ${nome}`, async ({ page }) => {
+      const erros: string[] = [];
+      page.on("pageerror", (erro) => erros.push(`${page.url()}: ${erro.message.slice(0, 160)}`));
+      await page.setViewportSize({ width, height });
+      await seedState(page, {
+        progress: { ebookPages: ALL_EBOOK_PAGES, mapElements: ["publico", "objetivos"], answers: { q1: 0 }, reportOpened: true },
+        preferences: { theme: "dark", contrast: "high", fontSize: "extra-large" },
+      });
+      for (const rota of ["/", "/video", "/ebook", "/mapa", "/avaliacao", "/relatorio", "/quadrinho"]) {
+        await page.goto(rota);
+        await expect(page.getByRole("banner")).toBeVisible();
+        await page.waitForTimeout(300);
+      }
+      expect(erros).toEqual([]);
     });
-    for (const rota of ["/", "/video", "/ebook", "/mapa", "/avaliacao", "/relatorio", "/quadrinho"]) {
-      await page.goto(rota);
-      await expect(page.getByRole("banner")).toBeVisible();
-      await page.waitForTimeout(400);
-    }
-    expect(erros).toEqual([]);
-  });
+  }
 });
 
 test.describe("primeira tela", () => {
@@ -169,20 +181,24 @@ test.describe("primeira tela", () => {
     await expect(ilustracao).toBeVisible();
   });
 
-  test("a partir de 1500 px a trilha passa para a esquerda do texto", async ({ page }) => {
+  test("a partir de 1500 px a trilha vive na régua da esquerda e a ilustração fica à direita do texto", async ({ page }) => {
     await page.setViewportSize({ width: 1600, height: 900 });
     await page.goto("/");
-    const trilhaCaixa = await trilha(page).boundingBox();
+    const regua = page.getByRole("complementary", { name: "Sua trilha" });
+    const reguaCaixa = await regua.boundingBox();
     const titulo = await page.getByRole("heading", { level: 1 }).boundingBox();
     const imagem = await page.getByRole("img", { name: /um livro aberto, um cérebro de circuitos/ }).boundingBox();
-    expect(trilhaCaixa && titulo && trilhaCaixa.x + trilhaCaixa.width <= titulo.x).toBe(true);
-    // Três colunas: a trilha é estreita (cerca de 340 px) e a ilustração fica à direita do texto.
-    // Com a regra de tela larga perdendo para a de tela média, a trilha passaria de 800 px e a
-    // ilustração cairia embaixo dela, à esquerda.
-    expect(trilhaCaixa && trilhaCaixa.width).toBeLessThan(500);
+    // A trilha está na régua (estreita) e não no cartão da primeira tela; a ilustração é a 2ª coluna.
+    // Com a regra de tela larga perdendo para a de tela média, o cartão reapareceria aqui e a
+    // ilustração cairia embaixo do texto.
+    await expect(trilha(page)).toHaveCount(0);
+    expect(reguaCaixa && reguaCaixa.width).toBeLessThan(400);
+    expect(reguaCaixa && titulo && reguaCaixa.x + reguaCaixa.width <= titulo.x).toBe(true);
     expect(imagem && titulo && imagem.x > titulo.x).toBe(true);
 
+    // Abaixo de 1500 px a régua some e o cartão volta à primeira tela, à direita do texto.
     await page.setViewportSize({ width: 1366, height: 768 });
+    await expect(regua).toBeHidden();
     const trilhaMedia = await trilha(page).boundingBox();
     const tituloMedio = await page.getByRole("heading", { level: 1 }).boundingBox();
     expect(trilhaMedia && tituloMedio && trilhaMedia.x >= tituloMedio.x + tituloMedio.width - 1).toBe(true);
@@ -234,25 +250,6 @@ test.describe("cabeçalho único e layout compartilhado", () => {
       "aria-current",
       "page"
     );
-  });
-
-  test("com fonte extra grande em tela estreita, a trilha quebra em linhas sem esconder item nem criar rolagem horizontal", async ({ page }) => {
-    await seedState(page, { preferences: { fontSize: "extra-large" } });
-    // 640 px: com 125% de fonte as cinco pílulas não cabem numa linha e precisam descer.
-    // Provisório: no passo 7 do PR A, abaixo de 768 px a trilha passa para a barra inferior.
-    await page.setViewportSize({ width: 640, height: 800 });
-    await page.goto("/mapa");
-
-    const itens = navegacaoDaTrilha(page).getByRole("listitem");
-    await expect(itens).toHaveCount(5);
-    for (let i = 0; i < 5; i += 1) await expect(itens.nth(i)).toBeVisible();
-
-    const sobra = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
-    expect(sobra).toBeLessThanOrEqual(1);
-    const todosDentro = await itens.evaluateAll((elementos) =>
-      elementos.every((elemento) => elemento.getBoundingClientRect().right <= window.innerWidth)
-    );
-    expect(todosDentro).toBe(true);
   });
 
   test("a primeira tela rola por dentro da área de conteúdo e o cabeçalho continua à vista", async ({ page }) => {
