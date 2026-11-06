@@ -69,6 +69,66 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Barra de rolagem: fina, arredondada e na paleta do portal, em vez da barra cinza do sistema.
+   O polegar tem pelo menos 3:1 de contraste com a página e com os cartões (WCAG 1.4.11): no tema
+   claro, de 3,8:1 (#6f7f99 sobre a página) a 4,1:1 (sobre cartão branco); no escuro, perto de 4:1.
+   No alto contraste vira a cor do texto, com trilho visível. */
+:root {
+  --scroll-thumb: #6f7f99;
+  --scroll-thumb-hover: #4f6280;
+  --scroll-track: transparent;
+}
+
+:root[data-theme="dark"] {
+  --scroll-thumb: #5d7fb0;
+  --scroll-thumb-hover: #86a8d6;
+}
+
+:root[data-contrast="high"] {
+  --scroll-thumb: var(--foreground);
+  --scroll-thumb-hover: var(--foreground);
+  --scroll-track: color-mix(in srgb, var(--foreground) 14%, transparent);
+}
+
+/* Chrome, Edge e Safari: o polegar leva uma borda transparente, o que o recua do canto e o deixa
+   com cara de pílula. Nesses navegadores `scrollbar-color` desligaria este bloco, por isso a forma
+   padrão fica no `@supports not` mais abaixo, só para o Firefox. */
+@supports selector(::-webkit-scrollbar) {
+  *::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: var(--scroll-track);
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background-color: var(--scroll-thumb);
+    background-clip: padding-box;
+    border: 3px solid transparent;
+    border-radius: 999px;
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  *::-webkit-scrollbar-thumb:hover,
+  *::-webkit-scrollbar-thumb:active {
+    background-color: var(--scroll-thumb-hover);
+  }
+
+  *::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scroll-thumb) var(--scroll-track);
+  }
+}
+
 /* Tamanho de fonte (lib/preferences/useFontSize.ts) — escala o root em
    rem, o que cobre a maior parte dos tamanhos de texto do Tailwind. */
 html[data-font-size="large"] {
