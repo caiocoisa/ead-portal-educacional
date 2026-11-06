@@ -2,8 +2,8 @@
 
 > Gerado em: 2026-09-27 · Revisado em: 2026-11-04
 > Baseado em: `PRD.md` (raiz do repositório, versão MVP de escopo reduzido)
-> Total de tasks: 64 (15 do MVP + 12 de refinamento pós-deploy + 11 de
-> adequação a design instrucional + 26 de evolução v2)
+> Total de tasks: 65 (15 do MVP + 12 de refinamento pós-deploy + 11 de
+> adequação a design instrucional + 27 de evolução v2)
 
 ## Visão geral
 
@@ -3473,6 +3473,68 @@ CD-04 e CD-05
 
 ---
 
+### Task 65
+| Field | Value |
+|---|---|
+| **ID** | 65 |
+| **Title** | Remover a opção de baixar o PDF do e-book |
+| **Status** | `pending` |
+| **Priority** | `medium` |
+| **Complexity** | 2 |
+| **Dependencies** | `[]` |
+| **Phase** | 13 — Evolução v2: implementação |
+| **Repositório** | ead-portal-educacional |
+
+**Description:**
+Pedido do usuário em 2026-11-05: a página `/ebook` oferece o botão "Baixar em
+PDF", e a opção deve deixar de existir. O **motivo não foi informado**; ele
+define se basta esconder o botão ou se o arquivo também precisa sair do
+alcance público (ver Details).
+
+**Details:**
+- Remover o link "Baixar em PDF" e a constante `PDF` de `app/ebook/page.tsx`.
+  A abertura em tela cheia (`/ebook/leitor.html`) fica como está.
+- **Decidir o destino do arquivo** `public/ebook/ebook-planejar-com-ia.pdf`.
+  Enquanto ele estiver em `public/`, a URL direta continua servindo o PDF
+  mesmo sem o botão. Para impedir de fato o download, tirá-lo de `public/`
+  (por exemplo, para `conteudo/ebook/`). Não apagar: ele é a **fonte para
+  importar o e-book no FlipHTML5 ou no Genially** (Tasks 58 e 61). Se o
+  arquivo sair de `public/`, `testes/ebook/verificar-ebook.js` precisa gravar
+  em outro lugar. A impressão pelo navegador (`@media print` do leitor)
+  continua possível e **não dá para impedir**; decidir se isso importa.
+- **Conflito com o R1 a resolver:** o PRD (seção 9.3), o plano e as Tasks 52
+  e 61 dizem que o portal mantém uma **versão acessível em HTML e PDF**. Sem
+  o PDF, a versão acessível passa a ser só o HTML do leitor (que já cumpre
+  teclado, leitor de tela, alto contraste e fonte ampliada). Atualizar o
+  PRD, o plano, as Tasks 52 e 61, `conteudo/ebook/roteiro.md` e o texto da
+  contracapa do leitor ("em HTML e PDF"), e **confirmar com o usuário** se a
+  restrição também vale para o e-book publicado na plataforma externa.
+- Ajustar `tests/e2e/ebook.spec.ts`: o teste "o PDF e o leitor em tela cheia
+  estão publicados e acessíveis por link" passa a verificar que **não há**
+  link de download e que a tela cheia segue funcionando (e, se o arquivo
+  sair de `public/`, que a URL antiga responde 404).
+
+**Files:**
+- `app/ebook/page.tsx`
+- `tests/e2e/ebook.spec.ts`
+- `public/ebook/leitor.html` (texto da contracapa) e, conforme a decisão, o
+  PDF e `testes/ebook/verificar-ebook.js`
+- `PRD.md`, `plano-evolucao-v2.md`, `conteudo/ebook/roteiro.md`, Tasks 52 e 61
+
+**Test strategy:**
+Playwright: a página `/ebook` não tem link nem botão de download; a tela cheia
+e o leitor seguem funcionando; matriz de axe da tela `/ebook` sem violações.
+Se o PDF sair de `public/`, a URL antiga responde 404.
+
+**Acceptance criteria:**
+- [ ] A página `/ebook` não oferece mais a opção de baixar o PDF.
+- [ ] O destino do arquivo PDF decidido e registrado (ficar em `public/` ou sair).
+- [ ] O conflito com o R1 resolvido nos documentos, com o motivo registrado.
+
+**Source:** pedido do usuário em 2026-11-05
+
+---
+
 ## Resumo
 
 ### Tasks por fase
@@ -3491,27 +3553,27 @@ CD-04 e CD-05
 | 10 — Evolução v2: diagnóstico e pesquisa | 39, 40, 41, 42, 43, 44, 45, 57, 58, 64 | 39, 40, 41, 43, 44, 45, 57, 58 e 64 sem dependências; 42 depende de 39,40 |
 | 11 — Evolução v2: decisão | 46, 47, 59, 60 | 46 depende de 39–43; 47 depende de 46,31,32,33; 59 depende de 44,46,57; 60 depende de 59 |
 | 12 — Evolução v2: produção de conteúdo | 48, 49, 50, 61 | 48 depende de 43,46,47; 49 depende de 44,48,58,59,64; 50 depende de 49; 61 depende de 50,58 |
-| 13 — Evolução v2: implementação | 51, 52, 53, 54, 62, 63 | 51 depende de 45,46; 62 depende de 45,60; 63 depende de 62,64; 52 depende de 44,50,51,61,62; 53 depende de 46,51,63; 54 depende de 47,52 |
+| 13 — Evolução v2: implementação | 51, 52, 53, 54, 62, 63, 65 | 51 depende de 45,46; 62 depende de 45,60; 63 depende de 62,64; 52 depende de 44,50,51,61,62; 53 depende de 46,51,63; 54 depende de 47,52; 65 sem dependências |
 | 14 — Evolução v2: validação | 55, 56 | 55 depende de 52,53,54,62,63; 56 depende de 55 |
 
 ### Tasks por prioridade
 | Prioridade | IDs |
 |---|---|
 | high | 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 13, 15, 20, 29, 35, 39, 43, 44, 45, 46, 47, 48, 49, 51, 52, 55, 57, 58, 59, 60, 61, 62, 63, 64 |
-| medium | 11, 14, 16, 17, 18, 19, 21, 22, 24, 25, 26, 30, 31, 33, 34, 36, 38, 40, 41, 42, 50, 53, 54 |
+| medium | 11, 14, 16, 17, 18, 19, 21, 22, 24, 25, 26, 30, 31, 33, 34, 36, 38, 40, 41, 42, 50, 53, 54, 65 |
 | low | 23, 27, 28, 32, 37, 56 |
 
 ### Pronto para iniciar (dependências concluídas), em 2026-11-04
 - **Em andamento:** 41 (benchmark de concorrentes; matriz incompleta), 43 (engenharia reversa; falta evidência de quadrinho e ebook), 44 (testes do Claude Design), 57 (referências visuais; falta ver a aparência), 64 (avaliação de IAs de imagem).
-- **Prontas, sem dependência pendente:** 31, 32, 33, 37, 38 (tasks da Fase 9); 58 (plataformas de ebook).
+- **Prontas, sem dependência pendente:** 31, 32, 33, 37, 38 (tasks da Fase 9); 58 (plataformas de ebook); 65 (remover o download do PDF do e-book).
 - **Dependência concluída, mas com decisão adiada (D5):** 30.
 - **Bloqueada por dependência externa:** 35 (precisa do vídeo gravado).
 - **Concluídas na Fase 9 e na evolução v2:** 28, 29, 39, 40, 42, 45.
 
 ### Estado consolidado (2026-11-05)
 
-**64 tasks:** 33 `done` (1–29, 39, 40, 42, 45), 5 `in-progress` (41, 43, 44,
-57, 64), 7 `pending` (30, 31, 32, 33, 37, 38, 58) e 19 `blocked`
+**65 tasks:** 33 `done` (1–29, 39, 40, 42, 45), 5 `in-progress` (41, 43, 44,
+57, 64), 8 `pending` (30, 31, 32, 33, 37, 38, 58, 65) e 19 `blocked`
 (34, 35, 36, 46–56, 59–63).
 
 **Decisões:** D0 (Design interno ao Claude), D1 (hub opcional), D2 (banco

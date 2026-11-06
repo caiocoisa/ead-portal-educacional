@@ -3,7 +3,7 @@
 > Gerado em: 2026-11-04
 > Status: **decisões D1–D4 e requisitos obrigatórios R1 e R2 registrados
 > em 2026-11-04; D5 em aberto até existir o vídeo final** (seção 10).
-> Tasks 39–64 promovidas ao `task-master.md`; Tasks 39 e 40 concluídas.
+> Tasks 39–65 promovidas ao `task-master.md`; Tasks 39 e 40 concluídas.
 > Nenhum código do portal foi alterado ainda.
 > Sucede o `plano-adequacao-design-instrucional.md` (Tasks 28–38) e o
 > complementa; onde houver sobreposição, ela está explicitada na seção 9.
@@ -458,10 +458,11 @@ Cada linha é uma task promovida ao `task-master.md`. **Tipo:** *interno*
 | | 52 | Hub `/materiais` e componentes, com ebook incorporado | F | código | 44, 50, 51, 61, 62 |
 | | 53 | Ajustes de fluxo | B | código | 46, 51, 63 |
 | | 54 | Remediação dirigida | F | código | 47, 52 |
+| | 65 | Remover a opção de baixar o PDF do e-book | F | código | — |
 | **14 — Validação** | 55 | E2E, axe, revisão visual e usabilidade | todas | interno + código | 52, 53, 54, 62, 63 |
 | | 56 | Atualizar PRD, task-master e guia de estilo | todas | interno | 55 |
 
-**Podem começar já (sem dependências):** 39, 40, 41, 43, 44, 45, 57, 58 e 64.
+**Podem começar já (sem dependências):** 39, 40, 41, 43, 44, 45, 57, 58, 64 e 65.
 
 **Dois caminhos críticos, que se encontram na Task 52:**
 - **Visual:** 57 → 59 → 60 → 62 → 63 → 53 → 55 → 56.
@@ -638,7 +639,7 @@ Figma usar e se há limite de créditos.
 
 ## 12. Próximo passo
 
-1. As Tasks 39–64 estão no `task-master.md` e o PRD tem a seção 9.3.
+1. As Tasks 39–65 estão no `task-master.md` e o PRD tem a seção 9.3.
    **Concluídas:** 39, 40, 42 e 45.
 2. **Em andamento:** a Task 41 (benchmark de concorrentes: matriz
    incompleta), a Task 43 (engenharia reversa: fichas e templates
