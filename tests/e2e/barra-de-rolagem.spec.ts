@@ -1,4 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
+import { aguardarPreferencias } from "../helpers/modos";
 import { seedState, type Preferences } from "../helpers/progress";
 
 /**
@@ -32,18 +33,6 @@ interface Barra {
   contrasteComPagina: number;
   contrasteComCartao: number;
   hoverMaisForte: boolean;
-}
-
-/**
- * As preferências salvas só chegam ao `<html>` depois da hidratação. Ler antes disso devolveria as
- * cores do tema claro e faria qualquer modo parecer correto; por isso espera o atributo aparecer.
- */
-async function aguardarPreferencias(page: Page, preferencias: Partial<Preferences>) {
-  const html = page.locator("html");
-  await expect(html).toHaveAttribute("data-theme", preferencias.theme ?? "light");
-  if (preferencias.contrast === "high") {
-    await expect(html).toHaveAttribute("data-contrast", "high");
-  }
 }
 
 /** O navegador devolve `lab(...)` para cores do tema e `rgb(...)` para o polegar; converte para comparar. */

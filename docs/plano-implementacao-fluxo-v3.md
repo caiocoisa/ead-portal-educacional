@@ -276,6 +276,15 @@ cartão da trilha, régua e barra inferior.
    mapa, relatório com "Seu percurso", estado vazio e chips com link.
 4. Testes e conferência manual de contraste.
 
+**Andamento do PR B (atualizado em 2026-11-06):**
+
+| Passo | Situação | Observação |
+|---|---|---|
+| 1 | **Feito** | **Tokens e degradação.** `app/globals.css` ganhou sombras, gradientes (cartão, tinta azul, destaque dourado, acerto, erro, faixa de destaque, botão primário, barras de progresso e fundo da página) e as classes de superfície `surface-card`, `surface-tint`, `surface-highlight`, `surface-success`, `surface-danger`, `surface-hero` e `surface-primary`, mais `fill-progress` e `fill-done`. Cada gradiente é montado a partir das **pontas** (`--card-from`, `--card-to`, ...), e a degradação vive só nos tokens: o **tema escuro** tem versão própria de cada um, e o **alto contraste** zera gradientes e sombras (`none`) e põe borda de 2 px na cor do texto, sobrando a cor sólida. Só o fundo da página já mudou nas telas; as classes entram nos componentes no passo 2. **Conferência de contraste automatizada**, no lugar da manual prevista: `tests/e2e/linguagem-visual.spec.ts` mede o texto sobre as duas pontas de cada gradiente nos três modos (mínimo 4,5:1; o pior caso medido foi 4,77:1, o botão primário no tema escuro). Junto veio a **barra de rolagem** estilizada (`d1aba71`). |
+| 2 | Pendente | Aplicar as classes nos componentes e tirar as 6 faixas laterais (mapa e quadrinho) e cerca de 32 caixas de 1 px em 13 arquivos. **Entra também um conserto achado no passo 1:** na primeira tela do celular, antes da hidratação não há o botão contextual e o cartão da trilha é só um indicador de carregamento; depois, o botão e o cartão entram e o conteúdo **pula 374 px**. Um toque dado nesse intervalo se perde (reproduzido em 5 de 40 tentativas em paralelo) e é a causa de um teste intermitente (`responsivo.spec.ts:185`). O `WelcomeHero` e o `TrailCard` são reestilizados neste passo, então o espaço do botão e o tamanho do indicador devem ser reservados junto. |
+| 3 | Pendente | Relatório com "Seu percurso", mapeamento pergunta para material e links profundos. |
+| 4 | Pendente | Testes e conferência final. |
+
 ### PR C: Quem somos (Task 69)
 
 1. Conteúdo, página, banner e seções, botão de copiar.

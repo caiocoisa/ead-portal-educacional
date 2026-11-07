@@ -65,8 +65,209 @@
 
 body {
   background: var(--background);
+  background-image: var(--grad-page);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ---------------------------------------------------------------------------------------------
+   Linguagem visual (Task 68): sombras, gradientes e tintas de estado no lugar das caixas chapadas
+   de 1 px e das faixas coloridas na lateral. Valores dos protótipos aprovados.
+
+   Cada gradiente é montado a partir das suas PONTAS (`--card-from`, `--card-to`, ...): é assim que
+   o teste confere o contraste do texto sobre as duas pontas, o que o axe não faz (texto sobre
+   gradiente ele marca como "incompleto").
+
+   Degradação obrigatória:
+   - Tema escuro: cada token tem versão própria, derivada de `--surface` para acompanhar o tema.
+   - Alto contraste: gradientes e sombras viram `none`, a borda passa a 2 px na cor do texto e
+     sobra a cor sólida de `background-color` de cada classe.
+   Quem usa as classes de superfície (abaixo) não precisa tratar nada disso.
+   --------------------------------------------------------------------------------------------- */
+:root {
+  --edge: #dfe4ec;
+  --edge-width: 1px;
+
+  --shadow-card: 0 1px 2px rgba(11, 37, 69, 0.06), 0 8px 22px rgba(11, 37, 69, 0.09);
+  --shadow-hero: 0 10px 28px rgba(11, 37, 69, 0.22);
+  --shadow-rail-left: 6px 0 18px rgba(11, 37, 69, 0.06);
+  --shadow-rail-right: -6px 0 18px rgba(11, 37, 69, 0.06);
+  --shadow-bar-top: 0 -6px 18px rgba(11, 37, 69, 0.07);
+
+  /* Cartão e painel: branco que esfria para um azul quase branco. */
+  --card-from: #ffffff;
+  --card-to: #f4f8fd;
+  /* Cartão com tinta azul: no lugar de `--surface-secondary` chapado. */
+  --tint-from: #f3f7fc;
+  --tint-to: #dfe9f7;
+  /* Destaque do item "próximo" e do "Início" ativo. */
+  --highlight-from: #fdf1c4;
+  --highlight-to: #fffaf0;
+  /* Resultado: acerto (verde) e erro (vermelho), cada um com o rótulo em pílula cheia. */
+  --success-tint-from: #ffffff;
+  --success-tint-to: #dcf1e5;
+  --danger-tint-from: #ffffff;
+  --danger-tint-to: #fbe0e0;
+  /* Faixa de destaque e cartão de resultado: marinho que abre para azul (texto branco). */
+  --hero-from: #0b2545;
+  --hero-mid: #16427f;
+  --hero-to: #2563b8;
+  /* Botão primário. */
+  --primary-from: #1a4a8f;
+  --primary-to: #0b2545;
+  /* Preenchimento das barras de progresso (sem texto por cima). */
+  --progress-from: #0b2545;
+  --progress-to: #2f6fd0;
+  --progress-done-from: #157347;
+  --progress-done-to: #34b877;
+  /* Cor do texto sobre `hero` e `primary`. */
+  --on-hero: #ffffff;
+
+  --grad-card: linear-gradient(180deg, var(--card-from) 0%, var(--card-to) 100%);
+  --grad-tint: linear-gradient(180deg, var(--tint-from) 0%, var(--tint-to) 100%);
+  --grad-highlight: linear-gradient(90deg, var(--highlight-from) 0%, var(--highlight-to) 100%);
+  --grad-success: linear-gradient(135deg, var(--success-tint-from) 0%, var(--success-tint-to) 100%);
+  --grad-danger: linear-gradient(135deg, var(--danger-tint-from) 0%, var(--danger-tint-to) 100%);
+  --grad-hero: linear-gradient(120deg, var(--hero-from) 0%, var(--hero-mid) 55%, var(--hero-to) 100%);
+  --grad-primary: linear-gradient(180deg, var(--primary-from) 0%, var(--primary-to) 100%);
+  --grad-progress: linear-gradient(90deg, var(--progress-from) 0%, var(--progress-to) 100%);
+  --grad-done: linear-gradient(90deg, var(--progress-done-from) 0%, var(--progress-done-to) 100%);
+  /* Fundo da página: um brilho azul no canto superior esquerdo e um dourado no inferior direito, sobre
+     uma base que esfria para baixo. Como todo texto solto fica sobre ele, as pontas são tokens e o
+     teste confere o contraste do texto contra cada uma. */
+  --page-from: #f5f7fa;
+  --page-to: #e9eff8;
+  --glow-blue: #d6e4fb;
+  --glow-gold: #fbecb8;
+  --grad-page:
+    radial-gradient(900px 380px at 10% -4%, var(--glow-blue) 0%, transparent 70%),
+    radial-gradient(700px 360px at 100% 100%, var(--glow-gold) 0%, transparent 65%),
+    linear-gradient(180deg, var(--page-from) 0%, var(--page-to) 100%);
+}
+
+:root[data-theme="dark"] {
+  --edge: rgba(255, 255, 255, 0.09);
+
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 22px rgba(0, 0, 0, 0.35);
+  --shadow-hero: 0 10px 28px rgba(0, 0, 0, 0.5);
+  --shadow-rail-left: 6px 0 18px rgba(0, 0, 0, 0.35);
+  --shadow-rail-right: -6px 0 18px rgba(0, 0, 0, 0.35);
+  --shadow-bar-top: 0 -6px 18px rgba(0, 0, 0, 0.4);
+
+  --card-from: var(--surface);
+  --card-to: color-mix(in oklab, var(--surface) 90%, #3f74b8 10%);
+  --tint-from: color-mix(in oklab, var(--surface) 92%, #3f74b8 8%);
+  --tint-to: color-mix(in oklab, var(--surface) 80%, #3f74b8 20%);
+  --highlight-from: color-mix(in oklab, var(--surface) 82%, #c9a227 18%);
+  --highlight-to: var(--surface);
+  --success-tint-from: var(--surface);
+  --success-tint-to: color-mix(in oklab, var(--surface) 82%, #4ade9b 18%);
+  --danger-tint-from: var(--surface);
+  --danger-tint-to: color-mix(in oklab, var(--surface) 84%, #f87171 16%);
+  /* O marinho some contra o fundo escuro: a faixa de destaque abre em azul mais claro. */
+  --hero-from: #12315e;
+  --hero-mid: #1c4b8f;
+  --hero-to: #2f6fd0;
+  --primary-from: #3f74b8;
+  --primary-to: #305fa3;
+  --progress-from: #3f74b8;
+  --progress-to: #86a8d6;
+  --progress-done-from: #22c07a;
+  --progress-done-to: #4ade9b;
+
+  /* No escuro a base é o próprio fundo e os brilhos são o fundo tingido, na mesma fórmula do claro. */
+  --page-from: var(--background);
+  --page-to: var(--background);
+  --glow-blue: color-mix(in oklab, var(--background) 80%, #3f74b8 20%);
+  --glow-gold: color-mix(in oklab, var(--background) 91%, #c9a227 9%);
+}
+
+/* Alto contraste (depois do tema escuro, para valer nos dois): sem gradiente nem sombra, borda forte. */
+:root[data-contrast="high"] {
+  --edge: var(--foreground);
+  --edge-width: 2px;
+
+  --shadow-card: none;
+  --shadow-hero: none;
+  --shadow-rail-left: none;
+  --shadow-rail-right: none;
+  --shadow-bar-top: none;
+
+  --grad-card: none;
+  --grad-tint: none;
+  --grad-highlight: none;
+  --grad-success: none;
+  --grad-danger: none;
+  --grad-hero: none;
+  --grad-primary: none;
+  --grad-progress: none;
+  --grad-done: none;
+  --grad-page: none;
+}
+
+@layer components {
+  /* Superfícies: cor sólida por baixo (é o que sobra no alto contraste), gradiente por cima, borda
+     clara e sombra no lugar da caixa chapada. Uma classe por papel; `utilities` do Tailwind ainda
+     pode sobrescrever (raio, espaçamento). */
+  .surface-card,
+  .surface-tint,
+  .surface-highlight,
+  .surface-success,
+  .surface-danger,
+  .surface-hero {
+    border: var(--edge-width) solid var(--edge);
+    box-shadow: var(--shadow-card);
+  }
+
+  .surface-card {
+    background-color: var(--surface);
+    background-image: var(--grad-card);
+  }
+
+  .surface-tint {
+    background-color: var(--surface-secondary);
+    background-image: var(--grad-tint);
+  }
+
+  .surface-highlight {
+    background-color: var(--surface);
+    background-image: var(--grad-highlight);
+  }
+
+  .surface-success {
+    background-color: var(--surface);
+    background-image: var(--grad-success);
+  }
+
+  .surface-danger {
+    background-color: var(--surface);
+    background-image: var(--grad-danger);
+  }
+
+  /* Faixa de destaque e cartão de resultado: texto branco sobre marinho/azul; filete dourado embaixo. */
+  .surface-hero {
+    background-color: var(--brand);
+    background-image: var(--grad-hero);
+    color: var(--on-hero);
+    box-shadow: var(--shadow-hero);
+    border-bottom: 4px solid var(--gold);
+  }
+
+  .surface-primary {
+    background-color: var(--accent);
+    background-image: var(--grad-primary);
+    color: var(--accent-foreground);
+  }
+
+  .fill-progress {
+    background-color: var(--accent);
+    background-image: var(--grad-progress);
+  }
+
+  .fill-done {
+    background-color: var(--success);
+    background-image: var(--grad-done);
+  }
 }
 
 /* Barra de rolagem: fina, arredondada e na paleta do portal, em vez da barra cinza do sistema.
