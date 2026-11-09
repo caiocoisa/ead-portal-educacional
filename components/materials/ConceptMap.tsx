@@ -50,19 +50,19 @@ function DetailItem({
   children: ReactNode;
 }) {
   return (
-    <div
-      className={`rounded-lg border-l-4 bg-(--surface) px-3 py-1.5 ${
-        tone === "danger" ? "border-(--danger)" : "border-(--gold)"
-      }`}
-    >
+    <div className={`rounded-lg px-3 py-2 ${tone === "danger" ? "surface-danger" : "surface-card"}`}>
+      {/* Rótulo em pílula cheia, no lugar da faixa colorida na lateral: no alto contraste a tinta some,
+          e é a pílula que diz o que é cada item. */}
       <dt
-        className={`text-xs font-bold uppercase tracking-wide ${
-          tone === "danger" ? "text-(--danger-text)" : "text-(--muted)"
+        className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide ${
+          tone === "danger"
+            ? "bg-(--danger) text-white"
+            : "bg-(--accent) text-(--accent-foreground)"
         }`}
       >
         {term}
       </dt>
-      <dd className="mt-0.5 text-sm">{children}</dd>
+      <dd className="mt-1 text-sm">{children}</dd>
     </div>
   );
 }
@@ -108,7 +108,7 @@ function NodeDetail({ node, headingId }: { node: MapNode; headingId: string }) {
 
 function Closing() {
   return (
-    <div className="flex flex-col gap-3 rounded-xl border-l-4 border-(--gold) bg-(--surface) p-4">
+    <div className="surface-highlight flex flex-col gap-3 rounded-xl p-4">
       <p className="font-medium">{mapClosing}</p>
       <Link
         href="/ebook"
@@ -231,7 +231,7 @@ export function ConceptMap() {
         {/* Mapa e painel de detalhe: só em telas largas e na forma "Mapa". */}
         <div className={showMap ? "hidden lg:contents" : "hidden"}>
           {/* Fixo ao rolar: o painel de detalhe pode ser mais alto que a janela. */}
-          <div className="relative aspect-[3/2] w-full rounded-2xl border border-(--border) bg-(--surface-secondary) lg:sticky lg:top-0">
+          <div className="surface-tint relative aspect-[3/2] w-full rounded-2xl lg:sticky lg:top-0">
             <svg
               viewBox="0 0 100 100"
               preserveAspectRatio="none"
@@ -273,7 +273,7 @@ export function ConceptMap() {
                   onClick={() => choose(node.id)}
                   onKeyDown={(e) => handleKeyDown(e, index)}
                   style={{ left: `${node.position.x}%`, top: `${node.position.y}%` }}
-                  className={`absolute flex w-[23%] min-w-28 -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-1 rounded-2xl border-2 p-2 text-center shadow-sm focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-(--focus) ${
+                  className={`absolute flex w-[23%] min-w-28 -translate-x-1/2 -translate-y-1/2 flex-col items-center gap-1 rounded-2xl border-2 p-2 text-center shadow-(--shadow-card) focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-(--focus) ${
                     isSelected
                       ? "border-(--gold) bg-(--brand) text-white"
                       : "border-(--brand) bg-(--surface) hover:bg-(--surface-secondary)"
@@ -294,7 +294,7 @@ export function ConceptMap() {
           <section
             id="painel-detalhe"
             aria-label="Detalhe do elemento"
-            className="rounded-2xl border border-(--border) bg-(--surface-secondary) p-4"
+            className="surface-tint rounded-2xl p-4"
           >
             {selectedNode ? (
               <div className="flex flex-col gap-4">
@@ -344,7 +344,7 @@ export function ConceptMap() {
               <li key={node.id}>
                 <article
                   aria-labelledby={`lista-${node.id}`}
-                  className="rounded-2xl border border-(--border) bg-(--surface-secondary) p-4"
+                  className="surface-tint rounded-2xl p-4"
                 >
                   <NodeDetail node={node} headingId={`lista-${node.id}`} />
                 </article>

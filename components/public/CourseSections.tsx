@@ -96,14 +96,13 @@ export function CourseSections() {
       <Section
         id="objetivos"
         title="Objetivos do curso"
-        subtitle="O que este módulo se propõe a desenvolver em você."
         aside={
           <ImagePlaceholder
             label="Ilustração dos objetivos"
             hint="public/img/objetivos.jpg · 1456×720"
             src="/img/objetivos.jpg"
             alt="Ilustração em azul-marinho e dourado: um alvo com uma flecha no centro, ligado por linhas a quatro emblemas, que são peças de quebra-cabeça, barras alinhadas, um balão de conversa com um brilho e um documento com marcas de verificação sob uma lupa."
-            className="aspect-[2/1] w-full border border-(--border)"
+            className="surface-frame aspect-[2/1] w-full"
           />
         }
       >
@@ -125,7 +124,6 @@ export function CourseSections() {
       <Section
         id="resultados"
         title="O que você será capaz de fazer ao final"
-        subtitle="Competências que você leva do módulo para a sua prática."
       >
         <CardGrid items={learningOutcomes} columns="sm:grid-cols-2" />
       </Section>
@@ -133,7 +131,7 @@ export function CourseSections() {
       <Section
         id="como-funciona"
         title="Como funciona"
-        subtitle="Uma jornada linear em três etapas."
+        subtitle="Estude na ordem que quiser: a trilha só sugere o próximo passo."
       >
         <CardGrid items={journeySteps} columns="sm:grid-cols-3" />
       </Section>
@@ -146,7 +144,7 @@ export function CourseSections() {
         <FaqAccordion />
       </Section>
 
-      <section className="w-full border-t-4 border-(--gold) bg-(--brand) px-6 py-10 text-center text-white">
+      <section className="w-full border-t-4 border-(--gold) bg-(--brand) bg-(image:--grad-hero) px-6 py-10 text-center text-white">
         <p className="mb-3 text-lg font-semibold">Pronto para começar?</p>
         <a
           href="#inicio"

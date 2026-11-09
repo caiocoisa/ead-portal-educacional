@@ -29,7 +29,7 @@ export function QuestionNavigator({
   return (
     <nav
       aria-label="Perguntas da avaliação"
-      className="flex shrink-0 flex-col gap-2 rounded-xl border border-(--border) bg-(--surface) p-3 lg:w-64 lg:gap-3 lg:overflow-y-auto lg:p-4"
+      className="surface-card flex shrink-0 flex-col gap-2 rounded-xl p-3 lg:w-64 lg:gap-3 lg:overflow-y-auto lg:p-4"
     >
       <div className="hidden items-center gap-3 lg:flex">
         <ProgressCircle
@@ -77,8 +77,8 @@ export function QuestionNavigator({
                 aria-label={`Pergunta ${index + 1} ${statusText}`}
                 className={`flex w-full items-center gap-2 rounded-lg border px-3 py-2 text-left text-sm transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 ${
                   isCurrent
-                    ? "border-(--accent) bg-(--accent) text-(--accent-foreground)"
-                    : "border-(--border) hover:bg-(--surface-secondary)"
+                    ? "surface-primary border-(--accent) text-(--accent-foreground)"
+                    : "border-(--border) hover:bg-(--surface-secondary) hover:bg-(image:--grad-tint)"
                 }`}
               >
                 <span className="font-medium">Pergunta {index + 1}</span>

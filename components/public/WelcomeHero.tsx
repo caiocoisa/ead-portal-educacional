@@ -5,7 +5,6 @@ import { Chip } from "@heroui/react";
 import { buttonVariants } from "@heroui/styles";
 import { ArrowDown, ArrowRight, BookOpen, Network } from "lucide-react";
 import { ImagePlaceholder } from "@/components/ui/ImagePlaceholder";
-import { JourneyLoading } from "@/components/journey/JourneyLoading";
 import { moduleContent } from "@/content/module";
 import { useHydrated } from "@/lib/journey/useHydrated";
 import { useTrail } from "@/lib/journey/useTrail";
@@ -70,12 +69,19 @@ export function WelcomeHero() {
             ? `Você já avançou ${trail.overallPercent}% da trilha. Continue de onde parou ou abra qualquer item: a ordem é só uma sugestão.`
             : moduleContent.description}
         </p>
-        {isHydrated ? (
-          <Link href={cta.href} className={`${buttonVariants({ variant: "primary", size: "lg" })} w-fit`}>
-            {cta.label}
-            <ArrowRight aria-hidden="true" className="size-5" />
-          </Link>
-        ) : null}
+        {/* Sempre no fluxo, também antes da hidratação, só que invisível: o botão que aparecia depois
+            empurrava o conteúdo abaixo dele (o link "Conheça os objetivos" pulava de lugar e um toque
+            nesse intervalo se perdia). `invisible` guarda o espaço e tira o botão do foco e dos leitores
+            de tela até o rótulo certo ser conhecido. */}
+        <Link
+          href={cta.href}
+          className={`${buttonVariants({ variant: "primary", size: "lg" })} surface-primary w-fit shadow-(--shadow-card) ${
+            isHydrated ? "" : "invisible"
+          }`}
+        >
+          {cta.label}
+          <ArrowRight aria-hidden="true" className="size-5" />
+        </Link>
         <section aria-labelledby="materiais-title" className="hidden flex-col gap-2 md:flex">
           <h2
             id="materiais-title"
@@ -88,7 +94,7 @@ export function WelcomeHero() {
               <li key={material.href}>
                 <Link
                   href={material.href}
-                  className="group flex h-full items-start gap-3 rounded-xl border-2 border-(--brand) bg-(--surface) p-4 transition-colors hover:bg-(--surface-secondary) focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-(--focus)"
+                  className="surface-card group flex h-full items-start gap-3 rounded-xl p-4 transition-colors hover:bg-(--surface-secondary) hover:bg-(image:--grad-tint) focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-(--focus)"
                 >
                   <span
                     aria-hidden="true"
@@ -118,8 +124,20 @@ export function WelcomeHero() {
         </a>
       </div>
 
-      <div className="wide:hidden">
-        {isHydrated ? <TrailCard /> : <JourneyLoading fullScreen={false} />}
+      {/* O cartão real é renderizado sempre, invisível até a hidratação, para o espaço ser o mesmo
+          antes e depois (sem salto de layout). Quem já tem progresso não vê um 0% passageiro: o que
+          aparece enquanto isso é o bloco de carregamento, com o tamanho exato do cartão. */}
+      <div className="relative wide:hidden">
+        <div className={isHydrated ? undefined : "invisible"}>
+          <TrailCard />
+        </div>
+        {isHydrated ? null : (
+          <div
+            role="status"
+            aria-label="Carregando"
+            className="absolute inset-0 rounded-2xl bg-(--surface-secondary) motion-safe:animate-pulse"
+          />
+        )}
       </div>
 
       {/* Só em telas largas, ao lado do texto. Sem `priority`: escondida, a imagem nem é baixada. */}
@@ -129,7 +147,7 @@ export function WelcomeHero() {
           hint="public/img/hero.jpg · 1456×720"
           src="/img/hero.jpg"
           alt="Ilustração em azul-marinho e dourado: um livro aberto, um cérebro de circuitos que representa a inteligência artificial e um notebook com a figura de uma pessoa, ligados por linhas e nós."
-          className="aspect-[2/1] w-full border border-(--border)"
+          className="surface-frame aspect-[2/1] w-full"
         />
       </div>
     </div>

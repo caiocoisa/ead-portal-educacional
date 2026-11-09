@@ -20,10 +20,12 @@ export function OptionsRadioGroup({
   const isRevealed = correctIndex !== undefined;
 
   function stateClass(index: number) {
-    if (!isRevealed) return "border-(--border)";
-    if (index === correctIndex) return "border-(--success) bg-(--success)/10";
-    if (index === value) return "border-(--danger) bg-(--danger)/10";
-    return "border-(--border) opacity-70";
+    // Cada opção é um cartão; certa e errada ganham a tinta do estado, e o rótulo em pílula (abaixo)
+    // diz o que é, porque no alto contraste a tinta some.
+    if (!isRevealed) return "surface-card";
+    if (index === correctIndex) return "surface-success border-(--success)";
+    if (index === value) return "surface-danger border-(--danger)";
+    return "surface-card opacity-70";
   }
 
   return (
@@ -38,7 +40,7 @@ export function OptionsRadioGroup({
         <Radio
           key={index}
           value={String(index)}
-          className={`rounded-lg border p-3 ${stateClass(index)}`}
+          className={`rounded-lg p-3 ${stateClass(index)}`}
         >
           <Radio.Content className="flex items-center gap-2">
             <Radio.Control>
@@ -46,12 +48,12 @@ export function OptionsRadioGroup({
             </Radio.Control>
             <Label>{option}</Label>
             {isRevealed && index === correctIndex ? (
-              <span className="ml-auto flex items-center gap-1 text-sm font-medium text-(--success)">
+              <span className="ml-auto flex items-center gap-1 rounded-full bg-(--success) px-2.5 py-0.5 text-sm font-bold text-(--success-foreground)">
                 <Check aria-hidden="true" className="size-4" /> Correta
               </span>
             ) : null}
             {isRevealed && index === value && index !== correctIndex ? (
-              <span className="ml-auto flex items-center gap-1 text-sm font-medium text-(--danger-text)">
+              <span className="ml-auto flex items-center gap-1 rounded-full bg-(--danger) px-2.5 py-0.5 text-sm font-bold text-white">
                 <X aria-hidden="true" className="size-4" /> Sua resposta
               </span>
             ) : null}

@@ -48,7 +48,7 @@ export function AccessibilityRail() {
   return (
     <aside
       aria-label="Acessibilidade"
-      className="hidden w-[88px] shrink-0 flex-col items-center gap-2.5 overflow-y-auto border-l border-(--border) bg-(--surface) py-3.5 md:flex wide:hidden"
+      className="panel-right hidden w-[88px] shrink-0 flex-col items-center gap-2.5 overflow-y-auto py-3.5 md:flex wide:hidden"
     >
       <span aria-hidden="true" className="text-(--foreground)">
         <Accessibility className="size-6" />
@@ -68,7 +68,7 @@ export function AccessibilityPanel() {
   return (
     <aside
       aria-label="Acessibilidade e navegação da página"
-      className="hidden w-[300px] shrink-0 flex-col gap-5 overflow-y-auto border-l border-(--border) bg-(--surface) p-5 wide:flex"
+      className="panel-right hidden w-[300px] shrink-0 flex-col gap-5 overflow-y-auto p-5 wide:flex"
     >
       <section aria-labelledby="acessibilidade-painel" className="flex flex-col gap-4">
         <h2 id="acessibilidade-painel" className="flex items-center gap-2 text-lg font-bold">
@@ -98,7 +98,7 @@ export function AccessibilityRow() {
   return (
     <section
       aria-label="Acessibilidade"
-      className="shrink-0 border-t border-(--border) bg-(--surface) px-3 py-2 md:hidden"
+      className="panel-bottom shrink-0 px-3 py-2 md:hidden"
     >
       <QuickControls layout="row" />
     </section>

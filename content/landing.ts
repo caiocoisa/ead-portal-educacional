@@ -1,11 +1,13 @@
 import {
   Accessibility,
+  BookOpen,
   Clapperboard,
   ChartColumn,
   ClipboardList,
   GraduationCap,
   Map,
   MessageSquare,
+  Network,
   Presentation,
   Puzzle,
   Search,
@@ -77,21 +79,32 @@ export const learningOutcomes: LandingItem[] = [
   },
 ];
 
+/** Os cinco itens da trilha, na ordem sugerida (a mesma de `lib/journey/trail.ts`). Sem numeração: a ordem é livre. */
 export const journeySteps: LandingItem[] = [
   {
     icon: Clapperboard,
-    title: "1. Vídeo",
-    description: "Assista à aula sobre planejamento pedagógico com apoio de IA.",
+    title: "Vídeo",
+    description: "Assista à aula sobre planejamento pedagógico com apoio de IA. Em breve.",
+  },
+  {
+    icon: BookOpen,
+    title: "E-book",
+    description: "Guia de bolso em 18 páginas para planejar com IA sem perder a didática.",
+  },
+  {
+    icon: Network,
+    title: "Mapa interativo",
+    description: "Veja como público, objetivos, atividades e avaliação se conectam.",
   },
   {
     icon: ClipboardList,
-    title: "2. Avaliação",
+    title: "Avaliação",
     description: "Responda a questões que simulam situações reais de planejamento.",
   },
   {
     icon: ChartColumn,
-    title: "3. Relatório final",
-    description: "Veja seu resultado, acertos e pontos de atenção.",
+    title: "Relatório",
+    description: "Veja seus acertos e os pontos de atenção.",
   },
 ];
 
@@ -99,7 +112,7 @@ export const courseFormat: LandingItem[] = [
   { icon: Timer, title: "Ritmo livre", description: "Estude quando quiser; seu progresso fica salvo neste navegador." },
   { icon: Smartphone, title: "Acesso em qualquer dispositivo", description: "Interface adaptável a celular, tablet e computador." },
   { icon: Accessibility, title: "Acessível", description: "Ajuste tema, tamanho da fonte e alto contraste." },
-  { icon: Unlock, title: "Sem cadastro", description: "Basta informar seu nome para começar, sem senha." },
+  { icon: Unlock, title: "Sem cadastro", description: "Não pede nome, e-mail nem senha: é só abrir e estudar." },
 ];
 
 export const faqs: { question: string; answer: string }[] = [
@@ -111,17 +124,17 @@ export const faqs: { question: string; answer: string }[] = [
   {
     question: "Quanto tempo leva o módulo?",
     answer:
-      "Você segue no seu ritmo: assiste ao vídeo, responde à avaliação e recebe o relatório. Pode pausar e retomar de onde parou.",
+      "Você segue no seu ritmo: abre o e-book, o mapa, a avaliação e o relatório na ordem que preferir, e pode pausar e retomar quando quiser. O vídeo entra em breve.",
   },
   {
     question: "Meu progresso é salvo?",
     answer:
-      "Sim. Ele é guardado neste navegador; ao voltar ao portal, você continua da etapa em que parou.",
+      "Sim. Ele é guardado neste navegador; ao voltar ao portal, você vê quanto já avançou em cada material e continua de onde parou.",
   },
   {
-    question: "Posso pular etapas?",
+    question: "Preciso seguir uma ordem?",
     answer:
-      "Não. A jornada é linear: cada etapa libera a seguinte, para que o aprendizado seja construído passo a passo.",
+      "Não. Todos os materiais ficam abertos desde o início, e a trilha só sugere o próximo passo. Se for ver o relatório, vale responder à avaliação antes: é ela que o preenche.",
   },
   {
     question: "O exemplo é só para quem ensina Computação?",

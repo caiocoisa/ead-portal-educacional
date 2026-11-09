@@ -268,6 +268,35 @@ body {
     background-color: var(--success);
     background-image: var(--grad-done);
   }
+
+  /* Moldura sem fundo: imagens e o leitor do e-book (borda clara e sombra, no lugar da linha de 1 px). */
+  .surface-frame {
+    border: var(--edge-width) solid var(--edge);
+    box-shadow: var(--shadow-card);
+  }
+
+  /* Painéis colados na borda da tela: a linha de 1 px vira borda clara mais sombra projetada para
+     dentro da área de conteúdo. O nome diz de que lado da tela o painel está. */
+  .panel-right,
+  .panel-left,
+  .panel-bottom {
+    background-color: var(--surface);
+  }
+
+  .panel-right {
+    border-left: var(--edge-width) solid var(--edge);
+    box-shadow: var(--shadow-rail-right);
+  }
+
+  .panel-left {
+    border-right: var(--edge-width) solid var(--edge);
+    box-shadow: var(--shadow-rail-left);
+  }
+
+  .panel-bottom {
+    border-top: var(--edge-width) solid var(--edge);
+    box-shadow: var(--shadow-bar-top);
+  }
 }
 
 /* Barra de rolagem: fina, arredondada e na paleta do portal, em vez da barra cinza do sistema.
