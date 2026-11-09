@@ -9,6 +9,9 @@ import type { MapNodeId } from "@/content/mapa";
 /** Total de páginas do e-book (leitor em public/ebook/leitor.html). */
 export const EBOOK_TOTAL_PAGES = 18;
 
+/** Versão interativa do e-book no FlipHTML5, aberta em nova aba (não é embedada: não registra progresso). */
+export const EBOOK_FLIPHTML5_URL = "https://online.fliphtml5.com/ykoqbl/ebook-planejar-com-ia/index.html";
+
 /** Elementos do mapa interativo, na ordem do diagrama (content/mapa.ts). */
 export const MAPA_ELEMENT_IDS: readonly MapNodeId[] = [
   "publico",

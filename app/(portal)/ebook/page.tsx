@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { ExternalLink } from "lucide-react";
+import { BookOpen, ExternalLink } from "lucide-react";
+import { EBOOK_FLIPHTML5_URL } from "@/content/materiais";
 
 export const metadata: Metadata = {
   title: "E-book: Planejar com IA sem perder a didática | Planejamento Pedagógico para EaD com Apoio de IA",
@@ -30,11 +31,18 @@ export default function EbookPage() {
             Guia de bolso em e-book · 18 páginas
           </p>
         </div>
-        <a href={LEITOR} target="_blank" rel="noopener" className={ACTION_CLASS}>
-          <ExternalLink aria-hidden="true" className="size-4" />
-          Abrir em tela cheia
-          <span className="sr-only"> (abre em uma nova aba)</span>
-        </a>
+        <div className="flex flex-wrap items-center gap-2">
+          <a href={EBOOK_FLIPHTML5_URL} target="_blank" rel="noopener noreferrer" className={ACTION_CLASS}>
+            <BookOpen aria-hidden="true" className="size-4" />
+            Ler no FlipHTML5
+            <span className="sr-only"> (abre em uma nova aba)</span>
+          </a>
+          <a href={LEITOR} target="_blank" rel="noopener" className={ACTION_CLASS}>
+            <ExternalLink aria-hidden="true" className="size-4" />
+            Abrir em tela cheia
+            <span className="sr-only"> (abre em uma nova aba)</span>
+          </a>
+        </div>
       </div>
       <iframe
         src={LEITOR}
