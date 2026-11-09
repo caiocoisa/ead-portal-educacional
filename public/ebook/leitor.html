@@ -20,6 +20,18 @@ body{background:radial-gradient(120% 100% at 50% 0%,#17335c 0%,#0b2545 60%,#071a
 /* Alto contraste do portal (ead-portal:contrast): preto sobre branco. */
 :root[data-contrast="high"]{--navy:#000;--ink:#000;--muted:#000;--line:#000;--green:#0b5d36;--gold-soft:#fff;--mint:#fff;--sky-soft:#fff;--bad-soft:#fff;--bad:#8a1111}
 :root[data-contrast="high"] .cartao,:root[data-contrast="high"] .caixa,:root[data-contrast="high"] .foco,:root[data-contrast="high"] .termo,:root[data-contrast="high"] .item,:root[data-contrast="high"] .dica,:root[data-contrast="high"] .passo{border:2px solid #000}
+/* Barra de rolagem na mesma forma do portal (app/globals.css), mas clara: aqui ela aparece sobre a
+   moldura azul-marinho (#8da9c4 sobre o marinho: 6,6:1). Alto contraste: branco, com trilho visível. */
+:root{--scroll-thumb:#8da9c4;--scroll-thumb-hover:#c5d6e8;--scroll-track:transparent}
+:root[data-contrast="high"]{--scroll-thumb:#fff;--scroll-thumb-hover:#fff;--scroll-track:rgba(255,255,255,.22)}
+@supports selector(::-webkit-scrollbar){
+  *::-webkit-scrollbar{width:12px;height:12px}
+  *::-webkit-scrollbar-track{background:var(--scroll-track)}
+  *::-webkit-scrollbar-thumb{background-color:var(--scroll-thumb);background-clip:padding-box;border:3px solid transparent;border-radius:999px;min-height:44px;min-width:44px}
+  *::-webkit-scrollbar-thumb:hover,*::-webkit-scrollbar-thumb:active{background-color:var(--scroll-thumb-hover)}
+  *::-webkit-scrollbar-corner{background:transparent}
+}
+@supports not selector(::-webkit-scrollbar){*{scrollbar-width:thin;scrollbar-color:var(--scroll-thumb) var(--scroll-track)}}
 
 /* Bordas de 2 px somam altura: compensa no espaçamento interno das tarefas. */
 :root[data-contrast="high"] .lista .item{padding:5px 10px}

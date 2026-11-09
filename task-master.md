@@ -3652,7 +3652,7 @@ na matriz de 12 combinações, com fonte a 125%.
 |---|---|
 | **ID** | 68 |
 | **Title** | Linguagem visual: gradientes, sombras, pílulas de estado e menos subtítulos |
-| **Status** | `pending` |
+| **Status** | `in-progress` |
 | **Priority** | `medium` |
 | **Complexity** | 6 |
 | **Dependencies** | `[67]` |
@@ -3794,18 +3794,18 @@ elementos existentes); E2E dos links profundos e do estado vazio.
 | low | 23, 27, 28, 32, 37, 56 |
 
 ### Pronto para iniciar (dependências concluídas), em 2026-11-04
-- **Em andamento:** 41 (benchmark de concorrentes; matriz incompleta), 43 (engenharia reversa; falta evidência de quadrinho e ebook), 44 (testes do Claude Design), 57 (referências visuais; falta ver a aparência), 64 (avaliação de IAs de imagem).
-- **Prontas, sem dependência pendente:** 31, 32, 33, 37, 38 (tasks da Fase 9); 58 (plataformas de ebook); 68 (linguagem visual) e 69 (página "Quem somos", que ainda precisa dos dados do autor).
+- **Em andamento:** 41 (benchmark de concorrentes; matriz incompleta), 43 (engenharia reversa; falta evidência de quadrinho e ebook), 44 (testes do Claude Design), 57 (referências visuais; falta ver a aparência), 64 (avaliação de IAs de imagem), 68 (linguagem visual; tokens e degradação feitos, faltam as telas).
+- **Prontas, sem dependência pendente:** 31, 32, 33, 37, 38 (tasks da Fase 9); 58 (plataformas de ebook) e 69 (página "Quem somos", que ainda precisa dos dados do autor).
 - **Dependência concluída, mas com decisão adiada (D5):** 30.
 - **Bloqueada por dependência externa:** 35 (precisa do vídeo gravado).
 - **Concluídas na Fase 9 e na evolução v2:** 28, 29, 39, 40, 42, 45, 65, 66, 67.
 
 ### Estado consolidado (2026-11-05)
 
-**70 tasks:** 36 `done` (1–29, 39, 40, 42, 45, 65, 66, 67), 5 `in-progress` (41,
-43, 44, 57, 64), 9 `pending` (30, 31, 32, 33, 37, 38, 58, 68, 69) e 20 `blocked`
-(34, 35, 36, 46–56, 59–63, 70). As Tasks 65 a 67 estão implementadas na branch
-`feat/fluxo-livre-trilha` (PR A) e valem como concluídas quando o PR for mesclado. As Tasks 66 a 70 vêm do plano do fluxo v3
+**70 tasks:** 36 `done` (1–29, 39, 40, 42, 45, 65, 66, 67), 6 `in-progress` (41,
+43, 44, 57, 64, 68), 8 `pending` (30, 31, 32, 33, 37, 38, 58, 69) e 20 `blocked`
+(34, 35, 36, 46–56, 59–63, 70). As Tasks 65 a 67 foram entregues no PR A (#17,
+mesclado em 2026-11-06); a Task 68 está no PR B, em andamento. As Tasks 66 a 70 vêm do plano do fluxo v3
 (`docs/plano-implementacao-fluxo-v3.md`); a proposta de reescopo das Tasks 46,
 51, 52 e 53 aguarda confirmação e não alterou nenhum status.
 

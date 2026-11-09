@@ -43,7 +43,7 @@ export function TrailBottomBar() {
   return (
     <nav
       aria-label="Trilha do curso"
-      className="grid h-16 shrink-0 grid-cols-5 border-t border-(--border) bg-(--surface) md:hidden"
+      className="panel-bottom grid h-16 shrink-0 grid-cols-5 md:hidden"
     >
       {trail.items.map((item) => {
         const Icon = ICONS[item.id];
@@ -69,7 +69,7 @@ export function TrailBottomBar() {
             aria-current={isCurrent ? "page" : undefined}
             className={`${CELL} ${
               isCurrent
-                ? "border-(--gold) bg-(--surface-secondary) text-(--foreground)"
+                ? "border-(--gold) bg-(--surface-secondary) bg-(image:--grad-highlight) text-(--foreground)"
                 : item.status === "done"
                   ? "border-transparent text-(--success)"
                   : "border-transparent text-(--foreground)"

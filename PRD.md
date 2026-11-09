@@ -73,14 +73,13 @@ relatório) em produção, com o menor custo de implementação possível.
 >   IA necessária).
 > - **O que você será capaz de fazer ao final** — cartões de competências
 >   (planejar, pedir bem à IA, analisar respostas, melhorar o material).
-> - **Como funciona** — as três etapas da jornada (vídeo, avaliação,
->   relatório) em formato de cartão.
+> - **Como funciona** — os cinco itens da trilha (vídeo, e-book, mapa,
+>   avaliação, relatório) em formato de cartão.
 > - **Formato e recursos** — ritmo livre, acesso em qualquer dispositivo,
 >   acessível, sem cadastro.
 > - **Perguntas frequentes** — acordeão com 5 perguntas (ex. "Preciso saber
->   usar IA antes de começar?", "Posso pular etapas?").
-> - Rodapé de CTA ("Pronto para começar?") levando de volta ao formulário
->   de entrada.
+>   usar IA antes de começar?", "Preciso seguir uma ordem?").
+> - Rodapé de CTA ("Pronto para começar?") levando de volta ao topo da página.
 >
 > Conteúdo centralizado em `content/landing.ts`; seções em
 > `components/public/CourseSections.tsx` e

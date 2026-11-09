@@ -30,7 +30,7 @@ function QuickButton({ layout, label, children, ...rest }: QuickButtonProps) {
     <button
       type="button"
       {...rest}
-      className={`inline-flex items-center justify-center rounded-xl border border-(--border) bg-(--surface) font-bold text-(--foreground) hover:bg-(--surface-secondary) focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-(--focus) disabled:cursor-not-allowed disabled:opacity-45 aria-pressed:border-(--accent) aria-pressed:bg-(--accent) aria-pressed:text-(--accent-foreground) ${size}`}
+      className={`surface-card inline-flex items-center justify-center rounded-xl font-bold text-(--foreground) hover:bg-(--surface-secondary) hover:bg-(image:--grad-tint) focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-(--focus) disabled:cursor-not-allowed disabled:opacity-45 aria-pressed:border-(--accent) aria-pressed:bg-(--accent) aria-pressed:bg-(image:--grad-primary) aria-pressed:text-(--accent-foreground) ${size}`}
     >
       {children}
       <span>{label}</span>

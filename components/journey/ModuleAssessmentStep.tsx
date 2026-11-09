@@ -108,7 +108,7 @@ export function ModuleAssessmentStep() {
 
       <section
         aria-label={`Pergunta ${currentIndex + 1} de ${questions.length}`}
-        className="flex min-h-0 flex-1 flex-col rounded-xl border border-(--border) bg-(--surface)"
+        className="surface-card flex min-h-0 flex-1 flex-col rounded-xl"
       >
         <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto p-4 sm:p-6">
           <QuestionRenderer

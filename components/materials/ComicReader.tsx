@@ -33,17 +33,29 @@ const BALLOON_POSITION: Record<BalloonPosition, string> = {
   right: "sm:top-[10%] sm:right-[4%]",
 };
 
-const BOX_TONE: Record<ComicBox["tone"], string> = {
-  narrator: "border-l-4 border-(--gold) bg-(--surface)",
-  command: "border-2 border-dashed border-(--brand) bg-(--surface-secondary)",
-  ai: "border-l-4 border-(--accent) bg-(--surface-secondary)",
+/**
+ * Cada tipo de fala tem a sua tinta e o seu rótulo em pílula cheia, no lugar da faixa colorida na
+ * lateral. A pílula é o que diz de quem é a fala no alto contraste, onde a tinta some.
+ */
+const BOX_TONE: Record<ComicBox["tone"], { box: string; pill: string }> = {
+  narrator: { box: "surface-highlight", pill: "bg-(--gold) text-(--brand)" },
+  command: {
+    box: "surface-tint border-2 border-dashed border-(--brand)",
+    pill: "bg-(--brand) text-white",
+  },
+  ai: { box: "surface-tint", pill: "bg-(--accent) text-(--accent-foreground)" },
 };
 
 function Box({ box }: { box: ComicBox }) {
+  const tone = BOX_TONE[box.tone];
   return (
-    <div className={`rounded-lg px-3 py-2 ${BOX_TONE[box.tone]}`}>
-      <p className="text-xs font-bold tracking-wide text-(--muted) uppercase">{box.label}</p>
-      <p className="mt-0.5 text-sm">{box.text}</p>
+    <div className={`rounded-lg px-3 py-2 ${tone.box}`}>
+      <p
+        className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-bold tracking-wide uppercase ${tone.pill}`}
+      >
+        {box.label}
+      </p>
+      <p className="mt-1 text-sm">{box.text}</p>
     </div>
   );
 }
@@ -62,7 +74,7 @@ function PanelFigure({ panel }: { panel: ComicPanel }) {
         className="h-auto max-h-[56dvh] w-auto max-w-full rounded-xl border-2 border-(--brand)"
       />
       <p
-        className={`relative mt-2 rounded-2xl border-2 border-(--brand) bg-white px-3 py-2 text-sm font-bold text-(--brand) shadow-sm sm:absolute sm:mt-0 sm:max-w-[46%] ${BALLOON_POSITION[balloon.position]}`}
+        className={`relative mt-2 rounded-2xl border-2 border-(--brand) bg-white px-3 py-2 text-sm font-bold text-(--brand) shadow-(--shadow-card) sm:absolute sm:mt-0 sm:max-w-[46%] ${BALLOON_POSITION[balloon.position]}`}
       >
         {balloon.text}
         <span
@@ -120,8 +132,8 @@ function Decision({
       <div role="status" aria-live="polite">
         {chosen ? (
           <p
-            className={`flex gap-2 rounded-lg border-l-4 bg-(--surface-secondary) px-3 py-2 text-sm ${
-              chosen.correct ? "border-(--success)" : "border-(--danger)"
+            className={`flex gap-2 rounded-lg px-3 py-2 text-sm ${
+              chosen.correct ? "surface-success" : "surface-danger"
             }`}
           >
             {chosen.correct ? (
@@ -143,7 +155,7 @@ function Decision({
 
 function ClosingLinks() {
   return (
-    <div className="flex flex-col gap-3 rounded-xl border-l-4 border-(--gold) bg-(--surface) p-4">
+    <div className="surface-highlight flex flex-col gap-3 rounded-xl p-4">
       <p className="font-medium">
         Quer ver os quatro elementos de um plano e a falha típica da IA em cada um? O mapa mostra,
         e o e-book detalha a auditoria.
@@ -174,7 +186,7 @@ function ScriptView() {
           <li key={panel.id}>
             <article
               aria-labelledby={`roteiro-${panel.id}`}
-              className="flex flex-col gap-2 rounded-2xl border border-(--border) bg-(--surface-secondary) p-4 text-sm"
+              className="surface-tint flex flex-col gap-2 rounded-2xl p-4 text-sm"
             >
               <h2 id={`roteiro-${panel.id}`} className="text-lg font-bold">
                 Painel {index + 1}
@@ -295,7 +307,7 @@ export function ComicReader() {
               ))}
               <Decision panel={panel} answer={answer} onChoose={choose} />
               {panel.deepDive ? (
-                <details className="rounded-lg border border-(--border) bg-(--surface) px-3 py-2 text-sm">
+                <details className="surface-card rounded-lg px-3 py-2 text-sm">
                   <summary className="cursor-pointer font-semibold">{panel.deepDive.title}</summary>
                   <p className="mt-2">{panel.deepDive.text}</p>
                 </details>

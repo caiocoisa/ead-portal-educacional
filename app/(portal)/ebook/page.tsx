@@ -39,7 +39,7 @@ export default function EbookPage() {
       <iframe
         src={LEITOR}
         title="E-book Planejar com IA sem perder a didática: leitor interativo de 18 páginas"
-        className="min-h-0 w-full flex-1 rounded-xl border border-(--border) bg-(--brand)"
+        className="surface-frame min-h-0 w-full flex-1 rounded-xl bg-(--brand)"
       />
     </main>
   );

@@ -81,7 +81,7 @@ function Row({
         {doing ? (
           <span aria-hidden="true" className="mt-1 block h-1.5 w-full max-w-56 rounded-full bg-(--border)">
             <span
-              className="block h-full rounded-full bg-(--accent)"
+              className="fill-progress block h-full rounded-full"
               style={{ width: `${item.percent}%` }}
             />
           </span>
@@ -91,7 +91,15 @@ function Row({
   );
 
   return (
-    <li className="relative pb-3 last:pb-0">
+    <li className="relative isolate pb-3 last:pb-0">
+      {/* Destaque do item sugerido, numa camada atrás da linha: o círculo e o fio que liga os itens
+          não saem do lugar. No alto contraste o gradiente some, e fica o rótulo "Próximo". */}
+      {isNext ? (
+        <span
+          aria-hidden="true"
+          className="absolute -inset-x-3 -top-2 bottom-1 -z-10 rounded-xl bg-(image:--grad-highlight)"
+        />
+      ) : null}
       {isLast ? null : (
         <span
           aria-hidden="true"
@@ -143,7 +151,7 @@ export function TrailCard() {
   return (
     <section
       aria-labelledby="trilha-title"
-      className="flex flex-col gap-4 rounded-2xl border border-(--border) bg-(--surface) p-5"
+      className="surface-card flex flex-col gap-4 rounded-2xl p-5"
     >
       <h2 id="trilha-title" className="text-xl font-bold">
         Sua trilha
@@ -159,7 +167,7 @@ export function TrailCard() {
           className="h-2.5 w-full rounded-full bg-(--border)"
         >
           <div
-            className="h-full rounded-full bg-(--accent)"
+            className="fill-progress h-full rounded-full"
             style={{ width: `${trail.overallPercent}%` }}
           />
         </div>

@@ -45,7 +45,7 @@ export function TrailRail() {
   return (
     <aside
       aria-label="Sua trilha"
-      className="hidden w-[280px] shrink-0 flex-col gap-4 overflow-y-auto border-r border-(--border) bg-(--surface) p-[18px] wide:flex"
+      className="panel-left hidden w-[280px] shrink-0 flex-col gap-4 overflow-y-auto p-[18px] wide:flex"
     >
       <h2 className="text-lg font-bold">Sua trilha</h2>
       <div className="flex flex-col gap-1.5">
@@ -59,7 +59,7 @@ export function TrailRail() {
           className="h-2.5 w-full rounded-full bg-(--border)"
         >
           <div
-            className="h-full rounded-full bg-(--accent)"
+            className="fill-progress h-full rounded-full"
             style={{ width: `${trail.overallPercent}%` }}
           />
         </div>
@@ -74,7 +74,7 @@ export function TrailRail() {
                   aria-current={pathname === item.href ? "page" : undefined}
                   className={`${ROW} focus-visible:outline-3 focus-visible:outline-offset-2 focus-visible:outline-(--focus) ${
                     pathname === item.href
-                      ? "border-(--gold) bg-(--surface-secondary)"
+                      ? "border-(--gold) bg-(--surface-secondary) bg-(image:--grad-highlight)"
                       : item.id === trail.next
                         ? "border-(--gold)/60"
                         : "border-transparent hover:bg-(--surface-secondary)"
