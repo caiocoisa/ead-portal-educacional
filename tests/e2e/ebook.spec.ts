@@ -107,6 +107,20 @@ test.describe("e-book no portal", () => {
     expect((await request.get("/ebook/leitor.html")).status()).toBe(200);
   });
 
+  test("o link para a versão do FlipHTML5 abre em nova aba e o leitor próprio segue na página", async ({ page }) => {
+    await page.goto("/ebook");
+    const flip = page.getByRole("link", { name: /Ler no FlipHTML5/ });
+    await expect(flip).toHaveAttribute(
+      "href",
+      "https://online.fliphtml5.com/ykoqbl/ebook-planejar-com-ia/index.html",
+    );
+    await expect(flip).toHaveAttribute("target", "_blank");
+    await expect(flip).toHaveAttribute("rel", /noopener/);
+    await expect(flip).toContainText("abre em uma nova aba");
+    // O leitor próprio continua embedado: é ele que registra as páginas vistas na trilha.
+    await expect(page.locator("iframe")).toHaveAttribute("src", "/ebook/leitor.html");
+  });
+
   test("a contracapa do leitor não promete mais uma versão em PDF", async ({ page }) => {
     await page.goto("/ebook/leitor.html#p1");
     await expect(page.locator("body")).not.toContainText("em HTML e PDF");
